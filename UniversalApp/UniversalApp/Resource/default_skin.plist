@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>app_navi_back</key>
+	<string>app_navi_back</string>
+	<key>app_icon</key>
+	<string>app_icon</string>
+</dict>
+</plist>

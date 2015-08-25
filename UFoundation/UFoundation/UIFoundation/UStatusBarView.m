@@ -1,0 +1,145 @@
+//
+//  UStatusBarView.m
+//  UFoundation
+//
+//  Created by Think on 15/5/12.
+//  Copyright (c) 2015年 think. All rights reserved.
+//
+
+#import "UStatusBarView.h"
+#import "UDefines.h"
+#import "UIColor+UAExtension.h"
+#import "UIView+UAExtension.h"
+#import "NSObject+UAExtension.h"
+
+@interface UStatusBarView ()
+{
+    BOOL _needsStretch;
+}
+
+@property (nonatomic, retain) UIImageView *contentView;
+@property (nonatomic, retain) UIImageView *lastBGView;
+@property (nonatomic, retain) UIImageView *currentBGView;
+
+@end
+
+@implementation UStatusBarView
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.userInteractionEnabled = YES;
+        self.backgroundColor = sysClearColor();
+        
+        _needsStretch = NO;
+        
+        [self contentView];
+    }
+    
+    return self;
+}
+
+- (void)dealloc
+{
+    //
+}
+
+#pragma mark - Properites
+
+- (UIImageView *)contentView
+{
+    if (_contentView) {
+        return _contentView;
+    }
+    
+    UIImageView *contentView = [[UIImageView alloc]init];
+    contentView.frame = rectMake(0, 0, screenWidth(), statusHeight());
+    contentView.userInteractionEnabled = YES;
+    contentView.backgroundColor = sysWhiteColor();
+    [self addSubview:contentView];
+    _contentView = contentView;
+    
+    return _contentView;
+}
+
+- (CGFloat)alpha
+{
+    return _contentView.alpha;
+}
+
+- (void)setAlpha:(CGFloat)alpha
+{
+    _contentView.alpha = alpha;
+}
+
+- (BOOL)hidden
+{
+    return _contentView.hidden;
+}
+
+- (void)setHidden:(BOOL)hidden
+{
+    _contentView.hidden = hidden;
+}
+
+- (UIColor *)backgroundColor
+{
+    return _contentView.backgroundColor;
+}
+
+- (void)setBackgroundColor:(UIColor *)color
+{
+    _contentView.backgroundColor = color;
+}
+
+- (void)stretch
+{
+    [self setStretch:NO animated:NO];
+}
+
+- (void)collapse
+{
+    [self setStretch:YES animated:NO];
+}
+
+- (void)stretchWithAnimation
+{
+    [self setStretch:NO animated:YES];
+}
+
+- (void)collapseWithAnimation
+{
+    [self setStretch:YES animated:YES];
+}
+
+- (void)setStretch:(BOOL)stretch animated:(BOOL)animated
+{
+    if (_needsStretch == stretch) {
+        return;
+    }
+    _needsStretch = stretch;
+    
+    CGFloat originY = stretch?- statusHeight():0;
+    if (self.originY != originY) {
+        if (!animated) {
+            self.originY = originY;
+        } else {
+            [UIView beginAnimations:@"UStatusBarViewStretchAnimation" context:nil];
+            [UIView setAnimationDelegate:self];
+            [UIView setAnimationBeginsFromCurrentState:YES];
+            [UIView setAnimationDuration:animationDuration()];
+            
+            self.originY = originY;
+            
+            [UIView commitAnimations];
+        }
+    }
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    //
+}
+
+@end

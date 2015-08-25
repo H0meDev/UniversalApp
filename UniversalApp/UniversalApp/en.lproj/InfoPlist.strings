@@ -1,0 +1,7 @@
+/*
+ * English
+ *
+ * For app display name
+ */
+
+CFBundleDisplayName = "Application name";

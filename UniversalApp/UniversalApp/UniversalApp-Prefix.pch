@@ -1,0 +1,25 @@
+//
+//  Universal-Prefix.pch
+//  UniversalApp
+//
+//  Created by Think on 15/8/4.
+//  Copyright (c) 2015年 think. All rights reserved.
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <UFoundation/UFoundation.h>
+
+// 开发模式
+#define APP_DEMO_MODE
+
+#import "Constants.h"
+
+#endif

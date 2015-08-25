@@ -1,0 +1,7 @@
+/*
+ * Chinese - Simplified
+ *
+ * For app display name
+ */
+
+CFBundleDisplayName = "应用名称";
