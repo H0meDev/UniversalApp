@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C836B9F5-D6A2-4288-B776-BBAEBD9FB6BD</string>
+	<key>IDESourceControlProjectName</key>
+	<string>UniversalApp</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>387634BBA35F4DBC9F6C20BF4ECAF4512D885BAE</key>
+		<string>https://github.com/H0meDev/UniversalApp</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>UniversalApp/UniversalApp.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>387634BBA35F4DBC9F6C20BF4ECAF4512D885BAE</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/H0meDev/UniversalApp</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>387634BBA35F4DBC9F6C20BF4ECAF4512D885BAE</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>387634BBA35F4DBC9F6C20BF4ECAF4512D885BAE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>iOS</string>
+		</dict>
+	</array>
+</dict>
+</plist>

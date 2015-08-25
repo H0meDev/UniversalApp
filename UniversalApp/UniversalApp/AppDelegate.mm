@@ -7,9 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "AModel.h"
-#import "HomeViewController.h"
-#import "BaseNavigationController.h"
 
 @interface AppDelegate ()
 
@@ -24,13 +21,6 @@
     self.window = [[UIWindow alloc]initWithFrame:screenBounds()];
     self.window.backgroundColor = sysWhiteColor();
     [self.window makeKeyAndVisible];
-    
-    NSDictionary *dict = @{@"type":@"1",@"name":@"cailiang",@"info":@{@"uid":@"5201314",@"nick":@"h0medev"}};
-    AModel *model = [AModel modelWith:dict];
-    NSDictionary *mdict = [model dictionary];
-    
-    HomeViewController *home = [[HomeViewController alloc]init];
-    self.window.rootViewController = [[BaseNavigationController alloc]initWithRootViewController:home];
     
     return YES;
 }

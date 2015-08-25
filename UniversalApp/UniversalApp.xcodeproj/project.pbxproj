@@ -14,10 +14,6 @@
 		F50E631B1B7C7E0F00E442E8 /* BaseScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = F50E631A1B7C7E0F00E442E8 /* BaseScrollView.m */; };
 		F50E631E1B7C7E3100E442E8 /* BaseTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F50E631D1B7C7E3100E442E8 /* BaseTableView.m */; };
 		F511C1DC1B6F2A5F00DBAECE /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F511C1DB1B6F2A5F00DBAECE /* Resource.bundle */; };
-		F51431BF1B88C2CF00C2372E /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51431BE1B88C2CF00C2372E /* HomeViewController.m */; };
-		F51431C21B88C43300C2372E /* NextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51431C11B88C43300C2372E /* NextViewController.m */; };
-		F51664BD1B85FFC1006D413D /* AModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F51664BC1B85FFC1006D413D /* AModel.m */; };
-		F51664C11B85FFDF006D413D /* BModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F51664C01B85FFDF006D413D /* BModel.m */; };
 		F518AB751B7AE554003A9A93 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB701B7AE554003A9A93 /* BaseNavigationController.m */; };
 		F518AB761B7AE554003A9A93 /* BaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB721B7AE554003A9A93 /* BaseTabBarController.m */; };
 		F518AB771B7AE554003A9A93 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB741B7AE554003A9A93 /* BaseViewController.m */; };
@@ -61,14 +57,6 @@
 		F50E631C1B7C7E3100E442E8 /* BaseTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableView.h; sourceTree = "<group>"; };
 		F50E631D1B7C7E3100E442E8 /* BaseTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableView.m; sourceTree = "<group>"; };
 		F511C1DB1B6F2A5F00DBAECE /* Resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Resource.bundle; path = ../UFoundation/Resource.bundle; sourceTree = "<group>"; };
-		F51431BD1B88C2CF00C2372E /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeViewController.h; path = Controller/HomeViewController.h; sourceTree = "<group>"; };
-		F51431BE1B88C2CF00C2372E /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = Controller/HomeViewController.m; sourceTree = "<group>"; };
-		F51431C01B88C43300C2372E /* NextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NextViewController.h; path = Controller/NextViewController.h; sourceTree = "<group>"; };
-		F51431C11B88C43300C2372E /* NextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NextViewController.m; path = Controller/NextViewController.m; sourceTree = "<group>"; };
-		F51664BB1B85FFC1006D413D /* AModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AModel.h; sourceTree = "<group>"; };
-		F51664BC1B85FFC1006D413D /* AModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AModel.m; sourceTree = "<group>"; };
-		F51664BF1B85FFDF006D413D /* BModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BModel.h; sourceTree = "<group>"; };
-		F51664C01B85FFDF006D413D /* BModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BModel.m; sourceTree = "<group>"; };
 		F518AB6F1B7AE554003A9A93 /* BaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
 		F518AB701B7AE554003A9A93 /* BaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationController.m; sourceTree = "<group>"; };
 		F518AB711B7AE554003A9A93 /* BaseTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTabBarController.h; sourceTree = "<group>"; };
@@ -270,10 +258,6 @@
 				F502DA161B708FF400AC5B52 /* KeyValueObserver.m */,
 				F518AB901B7B1631003A9A93 /* SkinManager.h */,
 				F518AB911B7B1631003A9A93 /* SkinManager.m */,
-				F51664BB1B85FFC1006D413D /* AModel.h */,
-				F51664BC1B85FFC1006D413D /* AModel.m */,
-				F51664BF1B85FFDF006D413D /* BModel.h */,
-				F51664C01B85FFDF006D413D /* BModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -281,10 +265,6 @@
 		F5687D8F1B022F410073594C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				F51431BD1B88C2CF00C2372E /* HomeViewController.h */,
-				F51431BE1B88C2CF00C2372E /* HomeViewController.m */,
-				F51431C01B88C43300C2372E /* NextViewController.h */,
-				F51431C11B88C43300C2372E /* NextViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -411,8 +391,6 @@
 				F5687D351B022B640073594C /* AppDelegate.mm in Sources */,
 				F518AB771B7AE554003A9A93 /* BaseViewController.m in Sources */,
 				F518AB751B7AE554003A9A93 /* BaseNavigationController.m in Sources */,
-				F51664C11B85FFDF006D413D /* BModel.m in Sources */,
-				F51431C21B88C43300C2372E /* NextViewController.m in Sources */,
 				F5687D931B022F8D0073594C /* UserInfo.m in Sources */,
 				F518AB7F1B7AE614003A9A93 /* BaseTableViewCell.m in Sources */,
 				F56802B71B16C17B00A3F2CD /* NetworkSDK.m in Sources */,
@@ -420,12 +398,10 @@
 				F502DA171B708FF400AC5B52 /* KeyValueObserver.m in Sources */,
 				F5C674C41B1043C9002901EE /* NetworkModel.m in Sources */,
 				F50E631B1B7C7E0F00E442E8 /* BaseScrollView.m in Sources */,
-				F51664BD1B85FFC1006D413D /* AModel.m in Sources */,
 				F50E631E1B7C7E3100E442E8 /* BaseTableView.m in Sources */,
 				F518AB7B1B7AE55F003A9A93 /* BaseModel.m in Sources */,
 				F50CF2711B70585F00E7E509 /* LocalNotification.m in Sources */,
 				F518AB761B7AE554003A9A93 /* BaseTabBarController.m in Sources */,
-				F51431BF1B88C2CF00C2372E /* HomeViewController.m in Sources */,
 				F5687D321B022B640073594C /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
