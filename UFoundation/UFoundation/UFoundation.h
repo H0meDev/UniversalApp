@@ -17,6 +17,7 @@
 #import "UTabBarController.h"
 #import "UImagePickerControllerController.h"
 
+// Universal UI Elements
 #import "UView.h"
 #import "ULabel.h"
 #import "UButton.h"
@@ -33,7 +34,7 @@
 #import "UNavigationBarButton.h"
 #import "UTabBarButton.h"
 
-// Category
+// Categories
 #import "NSObject+UAExtension.h"
 #import "NSData+UAExtension.h"
 #import "NSDate+UAExtension.h"
@@ -51,7 +52,7 @@
 #import "UITableViewCell+UAExtension.h"
 #import "UIViewController+UAExtension.h"
 
-// Ultity
+// Ultities
 #import "UModel.h"
 #import "UProgressHUD.h"
 #import "UHTTPOperation.h"
