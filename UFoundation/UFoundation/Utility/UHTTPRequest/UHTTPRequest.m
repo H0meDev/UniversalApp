@@ -42,7 +42,7 @@ static UHTTPRequest *sharedManager = nil;
     return nil;
 }
 
-- (instancetype)init
+- (id)init
 {
     @synchronized(self) {
         self = [super init];

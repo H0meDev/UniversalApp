@@ -14,10 +14,10 @@
 @interface UModel : NSObject
 
 // Init
-+ (instancetype)model;
++ (id)model;
 
 // Init with dictionary
-+ (instancetype)modelWith:(NSDictionary *)dict;
++ (id)modelWith:(NSDictionary *)dict;
 
 // Model to NSDictionary
 - (NSDictionary *)dictionary;

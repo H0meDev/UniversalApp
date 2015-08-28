@@ -12,12 +12,12 @@
 
 @implementation UModel
 
-+ (instancetype)model
++ (id)model
 {
     return [self instance];
 }
 
-+ (instancetype)modelWith:(NSDictionary *)dict
++ (id)modelWith:(NSDictionary *)dict
 {
     @autoreleasepool
     {

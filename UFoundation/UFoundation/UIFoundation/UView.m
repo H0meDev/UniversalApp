@@ -11,7 +11,7 @@
 
 @implementation UView
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {

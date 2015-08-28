@@ -11,10 +11,10 @@
 @interface NSObject (UAExtension)
 
 // Create an instance
-+ (instancetype)instance;
++ (id)instance;
 
 // Get weak self
-- (instancetype)weakself;
+- (id)weakself;
 
 // Perform the selector
 - (void)performWithName:(NSString *)selectorName;

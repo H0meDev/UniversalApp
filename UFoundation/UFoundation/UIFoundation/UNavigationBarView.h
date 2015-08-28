@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ULabel.h"
-#import "UButton.h"
+#import "UNavigationBarButton.h"
 
 @interface UNavigationBarView : UIView
 
@@ -19,8 +19,8 @@
 @property (nonatomic, retain) UIImage *backgroundImage;
 @property (nonatomic, assign) BOOL bottomLineHidden;
 
-@property (nonatomic, retain) UIButton *leftButton;
-@property (nonatomic, retain) UIButton *rightButton;
+@property (nonatomic, retain) UNavigationBarButton *leftButton;
+@property (nonatomic, retain) UNavigationBarButton *rightButton;
 
 - (void)stretch;
 - (void)collapse;

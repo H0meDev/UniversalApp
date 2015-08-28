@@ -10,17 +10,17 @@
 
 @implementation UITableViewCell (UAExtension)
 
-+ (instancetype)cell
++ (id)cell
 {
     return [self cellWithStyle:UITableViewCellStyleDefault];
 }
 
-+ (instancetype)cellWithStyle:(UITableViewCellStyle)style
++ (id)cellWithStyle:(UITableViewCellStyle)style
 {
     return [self cellWithStyle:style identifier:NSStringFromClass(self.class)];
 }
 
-+ (instancetype)cellWithStyle:(UITableViewCellStyle)style identifier:(NSString *)identifier
++ (id)cellWithStyle:(UITableViewCellStyle)style identifier:(NSString *)identifier
 {
     @autoreleasepool
     {

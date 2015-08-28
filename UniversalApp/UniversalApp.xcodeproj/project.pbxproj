@@ -14,6 +14,9 @@
 		F50E631B1B7C7E0F00E442E8 /* BaseScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = F50E631A1B7C7E0F00E442E8 /* BaseScrollView.m */; };
 		F50E631E1B7C7E3100E442E8 /* BaseTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F50E631D1B7C7E3100E442E8 /* BaseTableView.m */; };
 		F511C1DC1B6F2A5F00DBAECE /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F511C1DB1B6F2A5F00DBAECE /* Resource.bundle */; };
+		F5164DAE1B8F149B00B9573F /* NextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5164DAD1B8F149B00B9573F /* NextViewController.m */; };
+		F5164DB21B8F14C800B9573F /* HomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5164DB11B8F14C800B9573F /* HomePageViewController.m */; };
+		F5164DB51B8F159E00B9573F /* LastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5164DB41B8F159E00B9573F /* LastViewController.m */; };
 		F518AB751B7AE554003A9A93 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB701B7AE554003A9A93 /* BaseNavigationController.m */; };
 		F518AB761B7AE554003A9A93 /* BaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB721B7AE554003A9A93 /* BaseTabBarController.m */; };
 		F518AB771B7AE554003A9A93 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB741B7AE554003A9A93 /* BaseViewController.m */; };
@@ -21,6 +24,7 @@
 		F518AB7F1B7AE614003A9A93 /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB7E1B7AE614003A9A93 /* BaseTableViewCell.m */; };
 		F518AB8F1B7B150E003A9A93 /* default_skin.plist in Resources */ = {isa = PBXBuildFile; fileRef = F518AB8E1B7B150E003A9A93 /* default_skin.plist */; };
 		F518AB921B7B1631003A9A93 /* SkinManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB911B7B1631003A9A93 /* SkinManager.m */; };
+		F51EE3DD1B8D9AF500A34F39 /* HomeTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51EE3DC1B8D9AF500A34F39 /* HomeTabViewController.m */; };
 		F56802B71B16C17B00A3F2CD /* NetworkSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = F56802B61B16C17B00A3F2CD /* NetworkSDK.m */; };
 		F5687D321B022B640073594C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F5687D311B022B640073594C /* main.m */; };
 		F5687D351B022B640073594C /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = F5687D341B022B640073594C /* AppDelegate.mm */; };
@@ -57,6 +61,12 @@
 		F50E631C1B7C7E3100E442E8 /* BaseTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableView.h; sourceTree = "<group>"; };
 		F50E631D1B7C7E3100E442E8 /* BaseTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableView.m; sourceTree = "<group>"; };
 		F511C1DB1B6F2A5F00DBAECE /* Resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Resource.bundle; path = ../UFoundation/Resource.bundle; sourceTree = "<group>"; };
+		F5164DAC1B8F149B00B9573F /* NextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NextViewController.h; path = Controller/NextViewController.h; sourceTree = "<group>"; };
+		F5164DAD1B8F149B00B9573F /* NextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NextViewController.m; path = Controller/NextViewController.m; sourceTree = "<group>"; };
+		F5164DB01B8F14C800B9573F /* HomePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomePageViewController.h; path = Controller/HomePageViewController.h; sourceTree = "<group>"; };
+		F5164DB11B8F14C800B9573F /* HomePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomePageViewController.m; path = Controller/HomePageViewController.m; sourceTree = "<group>"; };
+		F5164DB31B8F159E00B9573F /* LastViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LastViewController.h; path = Controller/LastViewController.h; sourceTree = "<group>"; };
+		F5164DB41B8F159E00B9573F /* LastViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LastViewController.m; path = Controller/LastViewController.m; sourceTree = "<group>"; };
 		F518AB6F1B7AE554003A9A93 /* BaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
 		F518AB701B7AE554003A9A93 /* BaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationController.m; sourceTree = "<group>"; };
 		F518AB711B7AE554003A9A93 /* BaseTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTabBarController.h; sourceTree = "<group>"; };
@@ -70,6 +80,8 @@
 		F518AB8E1B7B150E003A9A93 /* default_skin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = default_skin.plist; sourceTree = "<group>"; };
 		F518AB901B7B1631003A9A93 /* SkinManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SkinManager.h; path = Model/SkinManager.h; sourceTree = "<group>"; };
 		F518AB911B7B1631003A9A93 /* SkinManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SkinManager.m; path = Model/SkinManager.m; sourceTree = "<group>"; };
+		F51EE3DB1B8D9AF500A34F39 /* HomeTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeTabViewController.h; path = Controller/HomeTabViewController.h; sourceTree = "<group>"; };
+		F51EE3DC1B8D9AF500A34F39 /* HomeTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeTabViewController.m; path = Controller/HomeTabViewController.m; sourceTree = "<group>"; };
 		F56802B51B16C17B00A3F2CD /* NetworkSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkSDK.h; path = Model/NetworkSDK.h; sourceTree = "<group>"; };
 		F56802B61B16C17B00A3F2CD /* NetworkSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NetworkSDK.m; path = Model/NetworkSDK.m; sourceTree = "<group>"; };
 		F56802B81B16CB0100A3F2CD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -265,6 +277,14 @@
 		F5687D8F1B022F410073594C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				F51EE3DB1B8D9AF500A34F39 /* HomeTabViewController.h */,
+				F51EE3DC1B8D9AF500A34F39 /* HomeTabViewController.m */,
+				F5164DB01B8F14C800B9573F /* HomePageViewController.h */,
+				F5164DB11B8F14C800B9573F /* HomePageViewController.m */,
+				F5164DAC1B8F149B00B9573F /* NextViewController.h */,
+				F5164DAD1B8F149B00B9573F /* NextViewController.m */,
+				F5164DB31B8F159E00B9573F /* LastViewController.h */,
+				F5164DB41B8F159E00B9573F /* LastViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -391,7 +411,9 @@
 				F5687D351B022B640073594C /* AppDelegate.mm in Sources */,
 				F518AB771B7AE554003A9A93 /* BaseViewController.m in Sources */,
 				F518AB751B7AE554003A9A93 /* BaseNavigationController.m in Sources */,
+				F5164DB21B8F14C800B9573F /* HomePageViewController.m in Sources */,
 				F5687D931B022F8D0073594C /* UserInfo.m in Sources */,
+				F51EE3DD1B8D9AF500A34F39 /* HomeTabViewController.m in Sources */,
 				F518AB7F1B7AE614003A9A93 /* BaseTableViewCell.m in Sources */,
 				F56802B71B16C17B00A3F2CD /* NetworkSDK.m in Sources */,
 				F50CF26A1B7055D200E7E509 /* GlobalManager.m in Sources */,
@@ -403,6 +425,8 @@
 				F50CF2711B70585F00E7E509 /* LocalNotification.m in Sources */,
 				F518AB761B7AE554003A9A93 /* BaseTabBarController.m in Sources */,
 				F5687D321B022B640073594C /* main.m in Sources */,
+				F5164DB51B8F159E00B9573F /* LastViewController.m in Sources */,
+				F5164DAE1B8F149B00B9573F /* NextViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

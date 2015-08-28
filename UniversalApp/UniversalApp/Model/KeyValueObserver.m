@@ -39,7 +39,7 @@
 
 @implementation KeyValueObserver
 
-- (instancetype)init
+- (id)init
 {
     self = [super init];
     if (self) {
@@ -72,7 +72,8 @@
         return;
     }
     
-    for (KeyValueObserverItem *item in self.observers) {
+    NSArray *observers = [NSArray arrayWithArray:self.observers];
+    for (KeyValueObserverItem *item in observers) {
         if (item.observer == observer &&
             item.target == target &&
             [item.keyPath isEqualToString:keyPath])
@@ -92,7 +93,8 @@
         return;
     }
     
-    for (KeyValueObserverItem *item in self.observers) {
+    NSArray *observers = [NSArray arrayWithArray:self.observers];
+    for (KeyValueObserverItem *item in observers) {
         if (item.observer == observer) {
             // Remove KVO
             [item.target removeObserver:item.observer forKeyPath:item.keyPath];

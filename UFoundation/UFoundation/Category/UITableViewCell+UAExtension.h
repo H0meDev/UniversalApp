@@ -11,8 +11,8 @@
 @interface UITableViewCell (UAExtension)
 
 // Default style
-+ (instancetype)cell;
-+ (instancetype)cellWithStyle:(UITableViewCellStyle)style;
-+ (instancetype)cellWithStyle:(UITableViewCellStyle)style identifier:(NSString *)identifier;
++ (id)cell;
++ (id)cellWithStyle:(UITableViewCellStyle)style;
++ (id)cellWithStyle:(UITableViewCellStyle)style identifier:(NSString *)identifier;
 
 @end

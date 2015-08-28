@@ -88,16 +88,16 @@ typedef void (^UHTTPCallback)(UHTTPStatus *status, id data);
 @property (nonatomic, readonly) NSURLRequest *request;
 
 // Block style
-- (instancetype)initWithRequest:(NSURLRequest *)request callback:(UHTTPCallback)callback;
+- (id)initWithRequest:(NSURLRequest *)request callback:(UHTTPCallback)callback;
 
 // Block style with recevied data
-- (instancetype)initWithRequest:(NSURLRequest *)request recevied:(UHTTPReceivedDataCallback)recevied callback:(UHTTPCallback)callback;
+- (id)initWithRequest:(NSURLRequest *)request recevied:(UHTTPReceivedDataCallback)recevied callback:(UHTTPCallback)callback;
 
 // Block style with recevied response & data
-- (instancetype)initWithRequest:(NSURLRequest *)request response:(UHTTPReceivedResponseCallback)response recevied:(UHTTPReceivedDataCallback)recevied callback:(UHTTPCallback)callback;
+- (id)initWithRequest:(NSURLRequest *)request response:(UHTTPReceivedResponseCallback)response recevied:(UHTTPReceivedDataCallback)recevied callback:(UHTTPCallback)callback;
 
 // Delegate
-- (instancetype)initWithRequest:(NSURLRequest *)request delegate:(id<UHTTPRequestDelegate>)delegate tag:(int)tag;
+- (id)initWithRequest:(NSURLRequest *)request delegate:(id<UHTTPRequestDelegate>)delegate tag:(int)tag;
 
 // Set timeout, seconds should not less than 1s
 // Seconds default is 30s

@@ -47,7 +47,7 @@
             UIImage *image = [UIImage imageWithCGImage:asset.thumbnail];
             
             // Button for selection
-            UButton *button = [UButton customButton];
+            UNavigationBarButton *button = [UNavigationBarButton button];
             button.tag = i;
             button.frame = rectMake(originX, 2, width, width);
             [button setImage:image];
@@ -59,7 +59,7 @@
     }
 }
 
-- (void)selectAction:(UButton *)button
+- (void)selectAction:(UNavigationBarButton *)button
 {
     button.selected = !button.selected;
     
@@ -88,7 +88,7 @@
 
 @implementation UImageSelectorControllerController
 
-- (instancetype)initWithData:(id)data
+- (id)initWithData:(id)data
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
@@ -124,10 +124,10 @@
         [self loadAssetsWith:_assetsGroup];
     }
     
-    UButton *rightButton = [UButton customButton];
+    UNavigationBarButton *rightButton = [UNavigationBarButton button];
     rightButton.frame = rectMake(screenWidth() - 46, 0, 46, naviHeight() - naviBLineH());
     [rightButton setTitle:@"选择"];
-    [rightButton setTitleFont:naviButtonFont()];
+    [rightButton setTitleFont:systemFont(16)];
     [rightButton setTitleColor:rgbColor(29, 158, 246)];
     [rightButton addTarget:self action:@selector(rightButtonAction)];
     self.navigationBarView.rightButton = rightButton;
@@ -338,10 +338,10 @@
     
     // Navigation bar
     self.navigationBarView.title = @"相簿";
-    UButton *leftButton = [UButton customButton];
+    UNavigationBarButton *leftButton = [UNavigationBarButton button];
     leftButton.frame = rectMake(0, 0, 46, naviHeight() - naviBLineH());
     [leftButton setTitle:@"取消"];
-    [leftButton setTitleFont:naviButtonFont()];
+    [leftButton setTitleFont:systemFont(16)];
     [leftButton setTitleColor:rgbColor(29, 158, 246)];
     [leftButton addTarget:self action:@selector(leftButtonAction)];
     self.navigationBarView.leftButton = leftButton;

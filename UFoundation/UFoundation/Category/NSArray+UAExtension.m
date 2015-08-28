@@ -15,8 +15,9 @@
 {
     @autoreleasepool
     {
-        NSMutableArray *marray = [[NSMutableArray alloc]initWithArray:self];
+        NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
         [marray addObject:object];
+        
         return [marray copy];
     }
 }
@@ -25,8 +26,9 @@
 {
     @autoreleasepool
     {
-        NSMutableArray *marray = [[NSMutableArray alloc]initWithArray:self];
+        NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
         [marray insertObject:object atIndex:index];
+        
         return [marray copy];
     }
 }
@@ -35,8 +37,9 @@
 {
     @autoreleasepool
     {
-        NSMutableArray *marray = [[NSMutableArray alloc]initWithArray:self];
+        NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
         [marray removeLastObject];
+        
         return [marray copy];
     }
 }
@@ -45,8 +48,9 @@
 {
     @autoreleasepool
     {
-        NSMutableArray *marray = [[NSMutableArray alloc]initWithArray:self];
+        NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
         [marray removeObjectAtIndex:index];
+        
         return [marray copy];
     }
 }
@@ -55,8 +59,20 @@
 {
     @autoreleasepool
     {
-        NSMutableArray *marray = [[NSMutableArray alloc]initWithArray:self];
+        NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
         [marray replaceObjectAtIndex:index withObject:object];
+        
+        return [marray copy];
+    }
+}
+
+- (NSArray *)appendArray:(NSArray *)array
+{
+    @autoreleasepool
+    {
+        NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
+        [marray arrayByAddingObjectsFromArray:array];
+        
         return [marray copy];
     }
 }

@@ -11,9 +11,9 @@
 @interface UIButton (UAExtension)
 
 /*
- * Custom button
+ * Button with UIButtonTypeCustom
  */
-+ (instancetype)customButton;
++ (id)button;
 
 /*
  * Add Target and action

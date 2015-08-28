@@ -83,10 +83,6 @@ CG_INLINE CGRange CGRangeMake(CGFloat min, CGFloat max)
 #define systemFont(size)      [UIFont systemFontOfSize:size]
 #define boldSystemFont(size)  [UIFont boldSystemFontOfSize:size]
 
-#define naviTitleFont()       systemFont(16)
-#define naviButtonFont()      systemFont(16)
-#define tabBarFont()          systemFont(14)
-
 // Color
 #define rgbColor(r,g,b)       [UIColor colorWithRed:r/255.f green:g/255.f blue:b/255.f alpha:1.0f]
 #define rgbaColor(r,g,b,a)    [UIColor colorWithRed:r/255.f green:g/255.f blue:b/255.f alpha:a]

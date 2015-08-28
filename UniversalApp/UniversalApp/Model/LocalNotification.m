@@ -17,13 +17,13 @@
 @property (nonatomic, assign) id object;
 
 // Create new instance
-+ (instancetype)notificationItem;
++ (id)notificationItem;
 
 @end
 
 @implementation LocalNotificationItem
 
-+ (instancetype)notificationItem
++ (id)notificationItem
 {
     @autoreleasepool
     {
@@ -41,7 +41,7 @@
 
 @implementation LocalNotification
 
-- (instancetype)init
+- (id)init
 {
     self = [super init];
     if (self) {
@@ -83,7 +83,8 @@
         return;
     }
     
-    for (LocalNotificationItem *item in self.notifications) {
+    NSArray *notifications = [NSArray arrayWithArray:self.notifications];
+    for (LocalNotificationItem *item in notifications) {
         if (target == item.target && [name isEqualToString:item.name]) {
             // Remove from NSNotificationCenter
             [NotificationDefaultCenter removeObserver:item.target name:item.name object:item.object];
@@ -100,7 +101,8 @@
         return;
     }
     
-    for (LocalNotificationItem *item in self.notifications) {
+    NSArray *notifications = [NSArray arrayWithArray:self.notifications];
+    for (LocalNotificationItem *item in notifications) {
         if (target == item.target) {
             // Remove from NSNotificationCenter
             [NotificationDefaultCenter removeObserver:item.target name:item.name object:item.object];

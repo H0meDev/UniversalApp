@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "BaseNavigationController.h"
+#import "HomeTabViewController.h"
 
 @interface AppDelegate ()
 
@@ -21,6 +23,9 @@
     self.window = [[UIWindow alloc]initWithFrame:screenBounds()];
     self.window.backgroundColor = sysWhiteColor();
     [self.window makeKeyAndVisible];
+    
+    // Goto home
+    [self gotoHomePage];
     
     return YES;
 }
@@ -60,6 +65,15 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - Methods
+
+- (void)gotoHomePage
+{
+    HomeTabViewController *home = [[HomeTabViewController alloc]init];
+    BaseNavigationController *root = [[BaseNavigationController alloc]initWithRootViewController:home];
+    self.window.rootViewController = root;
 }
 
 @end

@@ -16,7 +16,7 @@
 
 @implementation BaseViewController
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -67,12 +67,20 @@
     _enableBackButton = enable;
     
     if (enable) {
-        UButton *leftButton = [UButton customButton];
+        UNavigationBarButton *leftButton = [UNavigationBarButton button];
         leftButton.frame = rectMake(0, 0, 60, naviHeight() - naviBLineH());
         [leftButton setImage:loadSkinImage(@"app_navi_back")];
-        leftButton.imageEdgeInsets = edgeMake(0, 4, 0, 12);
+        [leftButton setHAlpha:0.7];
+        [leftButton setTitle:@"返回"];
+        [leftButton setTitleColor:sysWhiteColor()];
+        [leftButton setTitleFont:systemFont(15)];
         [leftButton addTarget:self action:@selector(backAction)];
         self.navigationBarView.leftButton = leftButton;
+        
+        // Resize
+        leftButton.textAlignment = NSTextAlignmentLeft;
+        leftButton.imageFrame = rectMake(10, 0, 14, naviHeight() - naviBLineH());
+        leftButton.titleFrame = rectMake(22, 0, 38, naviHeight() - naviBLineH());
     } else {
         [self.navigationBarView.leftButton removeFromSuperview];
         self.navigationBarView.leftButton = nil;

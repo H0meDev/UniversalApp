@@ -42,17 +42,17 @@
 
 #pragma mark - Life Circle
 
-- (instancetype)initWithRequest:(NSURLRequest *)request callback:(UHTTPCallback)callback
+- (id)initWithRequest:(NSURLRequest *)request callback:(UHTTPCallback)callback
 {
     return [self initWithRequest:request recevied:NULL callback:callback];
 }
 
-- (instancetype)initWithRequest:(NSURLRequest *)request recevied:(UHTTPReceivedDataCallback)recevied callback:(UHTTPCallback)callback
+- (id)initWithRequest:(NSURLRequest *)request recevied:(UHTTPReceivedDataCallback)recevied callback:(UHTTPCallback)callback
 {
     return [self initWithRequest:request response:NULL recevied:recevied callback:callback];
 }
 
-- (instancetype)initWithRequest:(NSURLRequest *)request response:(UHTTPReceivedResponseCallback)response recevied:(UHTTPReceivedDataCallback)recevied callback:(UHTTPCallback)callback
+- (id)initWithRequest:(NSURLRequest *)request response:(UHTTPReceivedResponseCallback)response recevied:(UHTTPReceivedDataCallback)recevied callback:(UHTTPCallback)callback
 {
     self = [super init];
     if (self) {
@@ -88,7 +88,7 @@
     return self;
 }
 
-- (instancetype)initWithRequest:(NSURLRequest *)request delegate:(id<UHTTPRequestDelegate>)delegate tag:(int)tag
+- (id)initWithRequest:(NSURLRequest *)request delegate:(id<UHTTPRequestDelegate>)delegate tag:(int)tag
 {
     self = [super init];
     if (self) {

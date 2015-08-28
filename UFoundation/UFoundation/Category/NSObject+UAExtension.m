@@ -11,7 +11,7 @@
 
 @implementation NSObject (UAExtension)
 
-+ (instancetype)instance
++ (id)instance
 {
     @autoreleasepool
     {
@@ -19,7 +19,7 @@
     }
 }
 
-- (instancetype)weakself
+- (id)weakself
 {
     @autoreleasepool
     {

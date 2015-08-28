@@ -19,6 +19,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[UBarButton beginTrackingWithTouch:withEvent:]:UBarButton.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.state">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__43-[UNavigationController popAnimationWithX:]_block_invoke121:UNavigationController.m">
          <PersistentStrings>
             <PersistentString
@@ -56,6 +64,9 @@
          <PersistentStrings>
             <PersistentString
                value = "self.center">
+            </PersistentString>
+            <PersistentString
+               value = "self.state">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -369,6 +380,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[UBarButton didMoveToWindow]:UBarButton.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.backgroundView.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[UNavigationController contentViewWithIndex:]:UNavigationController.m">
          <PersistentStrings>
             <PersistentString
@@ -405,10 +424,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[UBarButton refreshButtonWith:]:UBarButton.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "item.color">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[UNavigationController setViewController:]:UNavigationController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_currentNavigationItem">
+               value = "self.navigationController">
             </PersistentString>
             <PersistentString
                value = "_itemArray">
@@ -417,13 +444,13 @@
                value = "_isPopAction">
             </PersistentString>
             <PersistentString
+               value = "viewController.navigationBarItem">
+            </PersistentString>
+            <PersistentString
                value = "title">
             </PersistentString>
             <PersistentString
-               value = "self.navigationController">
-            </PersistentString>
-            <PersistentString
-               value = "viewController.navigationBarItem">
+               value = "_currentNavigationItem">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

@@ -64,6 +64,9 @@
     tabBarView.backgroundColor = sysWhiteColor();
     _tabBarView = tabBarView;
     
+    // Customize tabBarView layout
+    [self customizeLayout];
+    
     // Hide original
     self.tabBar.hidden = YES;
     

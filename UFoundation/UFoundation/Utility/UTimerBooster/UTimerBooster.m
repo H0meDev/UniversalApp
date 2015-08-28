@@ -24,14 +24,14 @@
 @property (nonatomic, assign) NSTimeInterval timeInterval;
 @property (nonatomic, assign) NSInteger repeat;
 
-- (instancetype)init;
+- (id)init;
 - (BOOL)execute;
 
 @end
 
 @implementation UTimerItem
 
-- (instancetype)init
+- (id)init
 {
     self = [super init];
     if (self) {
@@ -141,7 +141,7 @@ static UTimerBooster *sharedManager = nil;
     return nil;
 }
 
-- (instancetype)init
+- (id)init
 {
     @synchronized(self) {
         self = [super init];

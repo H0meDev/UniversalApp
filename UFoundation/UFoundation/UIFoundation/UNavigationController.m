@@ -40,7 +40,7 @@
 @synthesize statusBarView = _statusBarView;
 @synthesize navigationBarView = _navigationBarView;
 
-- (instancetype)initWithRootViewController:(UIViewController *)rootViewController
+- (id)initWithRootViewController:(UIViewController *)rootViewController
 {
     self = [super initWithRootViewController:rootViewController];
     if (self) {

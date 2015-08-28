@@ -7,6 +7,7 @@
 //
 
 #import "UTabBarButton.h"
+#import "UDefines.h"
 
 @implementation UTabBarButton
 

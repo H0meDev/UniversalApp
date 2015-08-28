@@ -16,5 +16,6 @@
 - (NSArray *)removeLastObject;
 - (NSArray *)removeObjectAtIndex:(NSUInteger)index;
 - (NSArray *)replaceObjectAtIndex:(NSUInteger)index withObject:(id)object;
+- (NSArray *)appendArray:(NSArray *)array; // Append to last
 
 @end

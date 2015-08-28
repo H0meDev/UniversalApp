@@ -8,19 +8,22 @@
 
 #import "UNavigationBarView.h"
 #import "UDefines.h"
+#import "UView.h"
+#import "UImageView.h"
 #import "UIView+UAExtension.h"
 #import "NSObject+UAExtension.h"
 
 @interface UNavigationContentView : UIImageView
 
+@property (nonatomic, retain) UView *containerView;
 @property (nonatomic, retain) ULabel *titleLabel;
-@property (nonatomic, retain) UIImageView *bottomLineView;
+@property (nonatomic, retain) UImageView *bottomLineView;
 
 @end
 
 @implementation UNavigationContentView
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -30,6 +33,21 @@
     }
     
     return self;
+}
+
+- (UView *)containerView
+{
+    if (_containerView) {
+        return _containerView;
+    }
+    
+    UView *containerView = [[UView alloc]init];
+    containerView.frame = rectMake(0, 0, screenWidth(), naviHeight());
+    containerView.backgroundColor = sysClearColor();
+    [self addSubview:containerView];
+    _containerView = containerView;
+    
+    return _containerView;
 }
 
 - (ULabel *)titleLabel
@@ -42,25 +60,25 @@
     CGFloat width = screenWidth() - originX * 2;
     ULabel *titleLabel = [[ULabel alloc]init];
     titleLabel.frame = rectMake(originX, 0, width, naviHeight());
-    titleLabel.font = naviTitleFont();
+    titleLabel.font = systemFont(16);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.textColor = sysBlackColor();
-    [self addSubview:titleLabel];
+    [self.containerView addSubview:titleLabel];
     _titleLabel = titleLabel;
     
     return _titleLabel;
 }
 
-- (UIImageView *)bottomLineView
+- (UImageView *)bottomLineView
 {
     if (_bottomLineView) {
         return _bottomLineView;
     }
     
-    UIImageView *bottomLineView = [[UIImageView alloc]init];
+    UImageView *bottomLineView = [[UImageView alloc]init];
     bottomLineView.frame = rectMake(0, naviHeight() - naviBLineH(), screenWidth(), naviBLineH());
     bottomLineView.backgroundColor = sysLightGrayColor();
-    [self addSubview:bottomLineView];
+    [self.containerView addSubview:bottomLineView];
     _bottomLineView = bottomLineView;
     
     return _bottomLineView;
@@ -80,7 +98,7 @@
 
 @implementation UNavigationBarView
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -190,7 +208,7 @@
     _contentView.bottomLineView.hidden = hidden;
 }
 
-- (void)setLeftButton:(UIButton *)leftButton
+- (void)setLeftButton:(UNavigationBarButton *)leftButton
 {
     if (_leftButton) {
         [_leftButton removeFromSuperview];
@@ -200,7 +218,7 @@
     [_contentView addSubview:leftButton];
 }
 
-- (void)setRightButton:(UIButton *)rightButton
+- (void)setRightButton:(UNavigationBarButton *)rightButton
 {
     if (_rightButton) {
         [_rightButton removeFromSuperview];

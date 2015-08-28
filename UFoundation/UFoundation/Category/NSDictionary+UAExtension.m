@@ -27,7 +27,7 @@
 {
     @autoreleasepool
     {
-        NSMutableDictionary *mdict = [[NSMutableDictionary alloc]initWithDictionary:self];
+        NSMutableDictionary *mdict = [NSMutableDictionary dictionaryWithDictionary:self];
         [mdict setValue:value forKey:key];
         
         return [mdict copy];

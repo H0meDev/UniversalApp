@@ -8,21 +8,58 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, UBarButtonType)
-{
-    UBarButtonTypeImageLeftTitleRight = 0, // Default
-    UBarButtonTypeImageRightTitleLeft = 1,
-    UBarButtonTypeImageUpTitleDown    = 2,
-    UBarButtonTypeImageDownTitleUp    = 3,
-};
-
 @interface UBarButton : UIControl
 
-+ (UBarButton *)button;
-+ (UBarButton *)buttonWith:(UBarButtonType)type;
++ (id)button;
 
+// Custom inner frame for imageView & titleLabel
+@property (nonatomic, assign) CGRect imageFrame;
+@property (nonatomic, assign) CGRect titleFrame;
+
+// Custom text alignment, default is NSTextAlignmentCenter
+@property (nonatomic, assign) NSTextAlignment textAlignment;
+
+// Title
 - (void)setTitle:(NSString *)title;
+- (void)setHTitle:(NSString *)title;
+- (void)setSTitle:(NSString *)title;
+- (void)setDTitle:(NSString *)title;
+
+// Color
 - (void)setTitleColor:(UIColor *)color;
+- (void)setHTitleColor:(UIColor *)color;
+- (void)setSTitleColor:(UIColor *)color;
+- (void)setDTitleColor:(UIColor *)color;
+
+// Font
+- (void)setTitleFont:(UIFont *)font;
+- (void)setHTitleFont:(UIFont *)font;
+- (void)setSTitleFont:(UIFont *)font;
+- (void)setDTitleFont:(UIFont *)font;
+
+// Image
+- (void)setImage:(UIImage *)image;
+- (void)setHImage:(UIImage *)image;
+- (void)setSImage:(UIImage *)image;
+- (void)setDImage:(UIImage *)image;
+
+// Background image
+- (void)setBackgroundImage:(UIImage *)image;
+- (void)setHBackgroundImage:(UIImage *)image;
+- (void)setSBackgroundImage:(UIImage *)image;
+- (void)setDBackgroundImage:(UIImage *)image;
+
+// Alpha
+- (void)setAlpha:(CGFloat)alpha;
+- (void)setHAlpha:(CGFloat)alpha;
+- (void)setSAlpha:(CGFloat)alpha;
+- (void)setDAlpha:(CGFloat)alpha;
+
+// Background alpha
+- (void)setBackgroundAlpha:(CGFloat)alpha;
+- (void)setHBackgroundAlpha:(CGFloat)alpha;
+- (void)setSBackgroundAlpha:(CGFloat)alpha;
+- (void)setDBackgroundAlpha:(CGFloat)alpha;
 
 // Action
 - (void)addTarget:(id)target action:(SEL)action;

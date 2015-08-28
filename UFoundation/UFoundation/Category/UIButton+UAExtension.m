@@ -11,7 +11,7 @@
 
 @implementation UIButton (UAExtension)
 
-+ (instancetype)customButton
++ (id)button
 {
     @autoreleasepool
     {
