@@ -17,8 +17,8 @@
 #import <Foundation/Foundation.h>
 #import <UFoundation/UFoundation.h>
 
-// 开发模式
-#define APP_DEMO_MODE
+// Development
+#define APP_DEVELOPMENT_MODE
 
 #import "Constants.h"
 

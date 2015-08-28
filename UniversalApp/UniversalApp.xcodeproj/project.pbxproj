@@ -8,32 +8,32 @@
 
 /* Begin PBXBuildFile section */
 		F50233311B70E3AA00DB94EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F50233331B70E3AA00DB94EB /* Localizable.strings */; };
-		F502DA171B708FF400AC5B52 /* KeyValueObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = F502DA161B708FF400AC5B52 /* KeyValueObserver.m */; };
-		F50CF26A1B7055D200E7E509 /* GlobalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F50CF2691B7055D200E7E509 /* GlobalManager.m */; };
-		F50CF2711B70585F00E7E509 /* LocalNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = F50CF2701B70585F00E7E509 /* LocalNotification.m */; };
-		F50E631B1B7C7E0F00E442E8 /* BaseScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = F50E631A1B7C7E0F00E442E8 /* BaseScrollView.m */; };
-		F50E631E1B7C7E3100E442E8 /* BaseTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F50E631D1B7C7E3100E442E8 /* BaseTableView.m */; };
 		F511C1DC1B6F2A5F00DBAECE /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F511C1DB1B6F2A5F00DBAECE /* Resource.bundle */; };
-		F5164DAE1B8F149B00B9573F /* NextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5164DAD1B8F149B00B9573F /* NextViewController.m */; };
-		F5164DB21B8F14C800B9573F /* HomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5164DB11B8F14C800B9573F /* HomePageViewController.m */; };
-		F5164DB51B8F159E00B9573F /* LastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5164DB41B8F159E00B9573F /* LastViewController.m */; };
-		F518AB751B7AE554003A9A93 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB701B7AE554003A9A93 /* BaseNavigationController.m */; };
-		F518AB761B7AE554003A9A93 /* BaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB721B7AE554003A9A93 /* BaseTabBarController.m */; };
-		F518AB771B7AE554003A9A93 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB741B7AE554003A9A93 /* BaseViewController.m */; };
-		F518AB7B1B7AE55F003A9A93 /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB7A1B7AE55F003A9A93 /* BaseModel.m */; };
-		F518AB7F1B7AE614003A9A93 /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB7E1B7AE614003A9A93 /* BaseTableViewCell.m */; };
-		F518AB8F1B7B150E003A9A93 /* default_skin.plist in Resources */ = {isa = PBXBuildFile; fileRef = F518AB8E1B7B150E003A9A93 /* default_skin.plist */; };
-		F518AB921B7B1631003A9A93 /* SkinManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F518AB911B7B1631003A9A93 /* SkinManager.m */; };
-		F51EE3DD1B8D9AF500A34F39 /* HomeTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51EE3DC1B8D9AF500A34F39 /* HomeTabViewController.m */; };
-		F56802B71B16C17B00A3F2CD /* NetworkSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = F56802B61B16C17B00A3F2CD /* NetworkSDK.m */; };
+		F51C116D1B905B6900F29C3F /* HomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11541B905B6900F29C3F /* HomePageViewController.m */; };
+		F51C116E1B905B6900F29C3F /* HomeTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11561B905B6900F29C3F /* HomeTabViewController.m */; };
+		F51C116F1B905B6900F29C3F /* LastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11581B905B6900F29C3F /* LastViewController.m */; };
+		F51C11701B905B6900F29C3F /* NextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C115A1B905B6900F29C3F /* NextViewController.m */; };
+		F51C11711B905B6900F29C3F /* GlobalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C115D1B905B6900F29C3F /* GlobalManager.m */; };
+		F51C11721B905B6900F29C3F /* KeyValueObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C115F1B905B6900F29C3F /* KeyValueObserver.m */; };
+		F51C11731B905B6900F29C3F /* LocalNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11611B905B6900F29C3F /* LocalNotification.m */; };
+		F51C11741B905B6900F29C3F /* NetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11631B905B6900F29C3F /* NetworkModel.m */; };
+		F51C11751B905B6900F29C3F /* NetworkSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11651B905B6900F29C3F /* NetworkSDK.m */; };
+		F51C11761B905B6900F29C3F /* SkinManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11671B905B6900F29C3F /* SkinManager.m */; };
+		F51C11771B905B6900F29C3F /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11691B905B6900F29C3F /* UserInfo.m */; };
+		F51C11781B905B6900F29C3F /* app_navi_back.png in Resources */ = {isa = PBXBuildFile; fileRef = F51C116B1B905B6900F29C3F /* app_navi_back.png */; };
+		F51C11791B905B6900F29C3F /* default_skin.plist in Resources */ = {isa = PBXBuildFile; fileRef = F51C116C1B905B6900F29C3F /* default_skin.plist */; };
+		F51C118C1B905BD200F29C3F /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C117D1B905BD200F29C3F /* BaseNavigationController.m */; };
+		F51C118D1B905BD200F29C3F /* BaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C117F1B905BD200F29C3F /* BaseTabBarController.m */; };
+		F51C118E1B905BD200F29C3F /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11811B905BD200F29C3F /* BaseViewController.m */; };
+		F51C118F1B905BD200F29C3F /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11841B905BD200F29C3F /* BaseModel.m */; };
+		F51C11901B905BD200F29C3F /* BaseScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11871B905BD200F29C3F /* BaseScrollView.m */; };
+		F51C11911B905BD200F29C3F /* BaseTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11891B905BD200F29C3F /* BaseTableView.m */; };
+		F51C11921B905BD200F29C3F /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C118B1B905BD200F29C3F /* BaseTableViewCell.m */; };
 		F5687D321B022B640073594C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F5687D311B022B640073594C /* main.m */; };
 		F5687D351B022B640073594C /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = F5687D341B022B640073594C /* AppDelegate.mm */; };
 		F5687D3D1B022B640073594C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5687D3C1B022B640073594C /* Images.xcassets */; };
 		F5687D651B022D510073594C /* UFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5687D641B022D510073594C /* UFoundation.framework */; };
-		F5687D931B022F8D0073594C /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F5687D921B022F8D0073594C /* UserInfo.m */; };
-		F5817C051B7B496800CAA646 /* app_navi_back.png in Resources */ = {isa = PBXBuildFile; fileRef = F5817C041B7B496800CAA646 /* app_navi_back.png */; };
 		F5859F471B70B0BC004EC7D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F5859F491B70B0BC004EC7D2 /* InfoPlist.strings */; };
-		F5C674C41B1043C9002901EE /* NetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F5C674C31B1043C9002901EE /* NetworkModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,41 +49,46 @@
 /* Begin PBXFileReference section */
 		F50233321B70E3AA00DB94EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F50233341B70E3AC00DB94EB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		F502DA151B708FF400AC5B52 /* KeyValueObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyValueObserver.h; path = Model/KeyValueObserver.h; sourceTree = "<group>"; };
-		F502DA161B708FF400AC5B52 /* KeyValueObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KeyValueObserver.m; path = Model/KeyValueObserver.m; sourceTree = "<group>"; };
 		F502DA191B709D0D00AC5B52 /* UniversalApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UniversalApp-Prefix.pch"; sourceTree = "<group>"; };
-		F50CF2681B7055D200E7E509 /* GlobalManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalManager.h; path = Model/GlobalManager.h; sourceTree = "<group>"; };
-		F50CF2691B7055D200E7E509 /* GlobalManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GlobalManager.m; path = Model/GlobalManager.m; sourceTree = "<group>"; };
-		F50CF26F1B70585F00E7E509 /* LocalNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalNotification.h; path = Model/LocalNotification.h; sourceTree = "<group>"; };
-		F50CF2701B70585F00E7E509 /* LocalNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalNotification.m; path = Model/LocalNotification.m; sourceTree = "<group>"; };
-		F50E63191B7C7E0F00E442E8 /* BaseScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseScrollView.h; sourceTree = "<group>"; };
-		F50E631A1B7C7E0F00E442E8 /* BaseScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseScrollView.m; sourceTree = "<group>"; };
-		F50E631C1B7C7E3100E442E8 /* BaseTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableView.h; sourceTree = "<group>"; };
-		F50E631D1B7C7E3100E442E8 /* BaseTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableView.m; sourceTree = "<group>"; };
 		F511C1DB1B6F2A5F00DBAECE /* Resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Resource.bundle; path = ../UFoundation/Resource.bundle; sourceTree = "<group>"; };
-		F5164DAC1B8F149B00B9573F /* NextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NextViewController.h; path = Controller/NextViewController.h; sourceTree = "<group>"; };
-		F5164DAD1B8F149B00B9573F /* NextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NextViewController.m; path = Controller/NextViewController.m; sourceTree = "<group>"; };
-		F5164DB01B8F14C800B9573F /* HomePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomePageViewController.h; path = Controller/HomePageViewController.h; sourceTree = "<group>"; };
-		F5164DB11B8F14C800B9573F /* HomePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomePageViewController.m; path = Controller/HomePageViewController.m; sourceTree = "<group>"; };
-		F5164DB31B8F159E00B9573F /* LastViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LastViewController.h; path = Controller/LastViewController.h; sourceTree = "<group>"; };
-		F5164DB41B8F159E00B9573F /* LastViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LastViewController.m; path = Controller/LastViewController.m; sourceTree = "<group>"; };
-		F518AB6F1B7AE554003A9A93 /* BaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
-		F518AB701B7AE554003A9A93 /* BaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationController.m; sourceTree = "<group>"; };
-		F518AB711B7AE554003A9A93 /* BaseTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTabBarController.h; sourceTree = "<group>"; };
-		F518AB721B7AE554003A9A93 /* BaseTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTabBarController.m; sourceTree = "<group>"; };
-		F518AB731B7AE554003A9A93 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
-		F518AB741B7AE554003A9A93 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
-		F518AB791B7AE55F003A9A93 /* BaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
-		F518AB7A1B7AE55F003A9A93 /* BaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseModel.m; sourceTree = "<group>"; };
-		F518AB7D1B7AE614003A9A93 /* BaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableViewCell.h; sourceTree = "<group>"; };
-		F518AB7E1B7AE614003A9A93 /* BaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableViewCell.m; sourceTree = "<group>"; };
-		F518AB8E1B7B150E003A9A93 /* default_skin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = default_skin.plist; sourceTree = "<group>"; };
-		F518AB901B7B1631003A9A93 /* SkinManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SkinManager.h; path = Model/SkinManager.h; sourceTree = "<group>"; };
-		F518AB911B7B1631003A9A93 /* SkinManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SkinManager.m; path = Model/SkinManager.m; sourceTree = "<group>"; };
-		F51EE3DB1B8D9AF500A34F39 /* HomeTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeTabViewController.h; path = Controller/HomeTabViewController.h; sourceTree = "<group>"; };
-		F51EE3DC1B8D9AF500A34F39 /* HomeTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeTabViewController.m; path = Controller/HomeTabViewController.m; sourceTree = "<group>"; };
-		F56802B51B16C17B00A3F2CD /* NetworkSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkSDK.h; path = Model/NetworkSDK.h; sourceTree = "<group>"; };
-		F56802B61B16C17B00A3F2CD /* NetworkSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NetworkSDK.m; path = Model/NetworkSDK.m; sourceTree = "<group>"; };
+		F51C11531B905B6900F29C3F /* HomePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePageViewController.h; sourceTree = "<group>"; };
+		F51C11541B905B6900F29C3F /* HomePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePageViewController.m; sourceTree = "<group>"; };
+		F51C11551B905B6900F29C3F /* HomeTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTabViewController.h; sourceTree = "<group>"; };
+		F51C11561B905B6900F29C3F /* HomeTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTabViewController.m; sourceTree = "<group>"; };
+		F51C11571B905B6900F29C3F /* LastViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastViewController.h; sourceTree = "<group>"; };
+		F51C11581B905B6900F29C3F /* LastViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastViewController.m; sourceTree = "<group>"; };
+		F51C11591B905B6900F29C3F /* NextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextViewController.h; sourceTree = "<group>"; };
+		F51C115A1B905B6900F29C3F /* NextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextViewController.m; sourceTree = "<group>"; };
+		F51C115C1B905B6900F29C3F /* GlobalManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalManager.h; sourceTree = "<group>"; };
+		F51C115D1B905B6900F29C3F /* GlobalManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalManager.m; sourceTree = "<group>"; };
+		F51C115E1B905B6900F29C3F /* KeyValueObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyValueObserver.h; sourceTree = "<group>"; };
+		F51C115F1B905B6900F29C3F /* KeyValueObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyValueObserver.m; sourceTree = "<group>"; };
+		F51C11601B905B6900F29C3F /* LocalNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalNotification.h; sourceTree = "<group>"; };
+		F51C11611B905B6900F29C3F /* LocalNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalNotification.m; sourceTree = "<group>"; };
+		F51C11621B905B6900F29C3F /* NetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkModel.h; sourceTree = "<group>"; };
+		F51C11631B905B6900F29C3F /* NetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkModel.m; sourceTree = "<group>"; };
+		F51C11641B905B6900F29C3F /* NetworkSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkSDK.h; sourceTree = "<group>"; };
+		F51C11651B905B6900F29C3F /* NetworkSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkSDK.m; sourceTree = "<group>"; };
+		F51C11661B905B6900F29C3F /* SkinManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkinManager.h; sourceTree = "<group>"; };
+		F51C11671B905B6900F29C3F /* SkinManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkinManager.m; sourceTree = "<group>"; };
+		F51C11681B905B6900F29C3F /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
+		F51C11691B905B6900F29C3F /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
+		F51C116B1B905B6900F29C3F /* app_navi_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_navi_back.png; sourceTree = "<group>"; };
+		F51C116C1B905B6900F29C3F /* default_skin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = default_skin.plist; sourceTree = "<group>"; };
+		F51C117C1B905BD200F29C3F /* BaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
+		F51C117D1B905BD200F29C3F /* BaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationController.m; sourceTree = "<group>"; };
+		F51C117E1B905BD200F29C3F /* BaseTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTabBarController.h; sourceTree = "<group>"; };
+		F51C117F1B905BD200F29C3F /* BaseTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTabBarController.m; sourceTree = "<group>"; };
+		F51C11801B905BD200F29C3F /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		F51C11811B905BD200F29C3F /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		F51C11831B905BD200F29C3F /* BaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
+		F51C11841B905BD200F29C3F /* BaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseModel.m; sourceTree = "<group>"; };
+		F51C11861B905BD200F29C3F /* BaseScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseScrollView.h; sourceTree = "<group>"; };
+		F51C11871B905BD200F29C3F /* BaseScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseScrollView.m; sourceTree = "<group>"; };
+		F51C11881B905BD200F29C3F /* BaseTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableView.h; sourceTree = "<group>"; };
+		F51C11891B905BD200F29C3F /* BaseTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableView.m; sourceTree = "<group>"; };
+		F51C118A1B905BD200F29C3F /* BaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableViewCell.h; sourceTree = "<group>"; };
+		F51C118B1B905BD200F29C3F /* BaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableViewCell.m; sourceTree = "<group>"; };
 		F56802B81B16CB0100A3F2CD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		F5687D2C1B022B640073594C /* UniversalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UniversalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5687D311B022B640073594C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -94,15 +99,10 @@
 		F5687D4B1B022B640073594C /* UniversalAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UniversalAppTests.m; sourceTree = "<group>"; };
 		F5687D5C1B022C570073594C /* UFoundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UFoundation.xcodeproj; path = ../UFoundation/UFoundation.xcodeproj; sourceTree = "<group>"; };
 		F5687D641B022D510073594C /* UFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UFoundation.framework; path = "DerivedData/UniversalApp/Build/Products/Debug-iphonesimulator/UFoundation.framework"; sourceTree = "<group>"; };
-		F5687D911B022F8D0073594C /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserInfo.h; path = Model/UserInfo.h; sourceTree = "<group>"; };
-		F5687D921B022F8D0073594C /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserInfo.m; path = Model/UserInfo.m; sourceTree = "<group>"; };
-		F5817C041B7B496800CAA646 /* app_navi_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_navi_back.png; sourceTree = "<group>"; };
 		F5859F481B70B0BC004EC7D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F5859F4A1B70B1A3004EC7D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Info.plist; sourceTree = "<group>"; };
 		F595BB001B70BB0800659E1D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		F595BB011B70BB0800659E1D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "zh-Hans"; path = "zh-Hans.lproj/Info.plist"; sourceTree = "<group>"; };
-		F5C674C21B1043C9002901EE /* NetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkModel.h; path = Model/NetworkModel.h; sourceTree = "<group>"; };
-		F5C674C31B1043C9002901EE /* NetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NetworkModel.m; path = Model/NetworkModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,51 +124,101 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F518AB6E1B7AE554003A9A93 /* Controller */ = {
+		F51C11511B905B6900F29C3F /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				F518AB6F1B7AE554003A9A93 /* BaseNavigationController.h */,
-				F518AB701B7AE554003A9A93 /* BaseNavigationController.m */,
-				F518AB711B7AE554003A9A93 /* BaseTabBarController.h */,
-				F518AB721B7AE554003A9A93 /* BaseTabBarController.m */,
-				F518AB731B7AE554003A9A93 /* BaseViewController.h */,
-				F518AB741B7AE554003A9A93 /* BaseViewController.m */,
 			);
-			name = Controller;
-			path = AppBase/Controller;
+			path = Categories;
 			sourceTree = "<group>";
 		};
-		F518AB781B7AE55F003A9A93 /* Model */ = {
+		F51C11521B905B6900F29C3F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F518AB791B7AE55F003A9A93 /* BaseModel.h */,
-				F518AB7A1B7AE55F003A9A93 /* BaseModel.m */,
+				F51C11531B905B6900F29C3F /* HomePageViewController.h */,
+				F51C11541B905B6900F29C3F /* HomePageViewController.m */,
+				F51C11551B905B6900F29C3F /* HomeTabViewController.h */,
+				F51C11561B905B6900F29C3F /* HomeTabViewController.m */,
+				F51C11571B905B6900F29C3F /* LastViewController.h */,
+				F51C11581B905B6900F29C3F /* LastViewController.m */,
+				F51C11591B905B6900F29C3F /* NextViewController.h */,
+				F51C115A1B905B6900F29C3F /* NextViewController.m */,
 			);
-			name = Model;
-			path = AppBase/Model;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
-		F518AB7C1B7AE5F2003A9A93 /* View */ = {
+		F51C115B1B905B6900F29C3F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F50E63191B7C7E0F00E442E8 /* BaseScrollView.h */,
-				F50E631A1B7C7E0F00E442E8 /* BaseScrollView.m */,
-				F50E631C1B7C7E3100E442E8 /* BaseTableView.h */,
-				F50E631D1B7C7E3100E442E8 /* BaseTableView.m */,
-				F518AB7D1B7AE614003A9A93 /* BaseTableViewCell.h */,
-				F518AB7E1B7AE614003A9A93 /* BaseTableViewCell.m */,
+				F51C115C1B905B6900F29C3F /* GlobalManager.h */,
+				F51C115D1B905B6900F29C3F /* GlobalManager.m */,
+				F51C115E1B905B6900F29C3F /* KeyValueObserver.h */,
+				F51C115F1B905B6900F29C3F /* KeyValueObserver.m */,
+				F51C11601B905B6900F29C3F /* LocalNotification.h */,
+				F51C11611B905B6900F29C3F /* LocalNotification.m */,
+				F51C11621B905B6900F29C3F /* NetworkModel.h */,
+				F51C11631B905B6900F29C3F /* NetworkModel.m */,
+				F51C11641B905B6900F29C3F /* NetworkSDK.h */,
+				F51C11651B905B6900F29C3F /* NetworkSDK.m */,
+				F51C11661B905B6900F29C3F /* SkinManager.h */,
+				F51C11671B905B6900F29C3F /* SkinManager.m */,
+				F51C11681B905B6900F29C3F /* UserInfo.h */,
+				F51C11691B905B6900F29C3F /* UserInfo.m */,
 			);
-			name = View;
-			path = AppBase/View;
+			path = Models;
 			sourceTree = "<group>";
 		};
-		F518AB8C1B7B147A003A9A93 /* Resource */ = {
+		F51C116A1B905B6900F29C3F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F5817C041B7B496800CAA646 /* app_navi_back.png */,
-				F518AB8E1B7B150E003A9A93 /* default_skin.plist */,
+				F51C116B1B905B6900F29C3F /* app_navi_back.png */,
+				F51C116C1B905B6900F29C3F /* default_skin.plist */,
 			);
-			path = Resource;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F51C117A1B905B9400F29C3F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F51C117B1B905BD200F29C3F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F51C117C1B905BD200F29C3F /* BaseNavigationController.h */,
+				F51C117D1B905BD200F29C3F /* BaseNavigationController.m */,
+				F51C117E1B905BD200F29C3F /* BaseTabBarController.h */,
+				F51C117F1B905BD200F29C3F /* BaseTabBarController.m */,
+				F51C11801B905BD200F29C3F /* BaseViewController.h */,
+				F51C11811B905BD200F29C3F /* BaseViewController.m */,
+			);
+			name = Controllers;
+			path = AppBase/Controllers;
+			sourceTree = "<group>";
+		};
+		F51C11821B905BD200F29C3F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F51C11831B905BD200F29C3F /* BaseModel.h */,
+				F51C11841B905BD200F29C3F /* BaseModel.m */,
+			);
+			name = Models;
+			path = AppBase/Models;
+			sourceTree = "<group>";
+		};
+		F51C11851B905BD200F29C3F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F51C11861B905BD200F29C3F /* BaseScrollView.h */,
+				F51C11871B905BD200F29C3F /* BaseScrollView.m */,
+				F51C11881B905BD200F29C3F /* BaseTableView.h */,
+				F51C11891B905BD200F29C3F /* BaseTableView.m */,
+				F51C118A1B905BD200F29C3F /* BaseTableViewCell.h */,
+				F51C118B1B905BD200F29C3F /* BaseTableViewCell.m */,
+			);
+			name = Views;
+			path = AppBase/Views;
 			sourceTree = "<group>";
 		};
 		F5687D231B022B640073594C = {
@@ -193,11 +243,12 @@
 		F5687D2E1B022B640073594C /* UniversalApp */ = {
 			isa = PBXGroup;
 			children = (
-				F518AB8C1B7B147A003A9A93 /* Resource */,
+				F51C11511B905B6900F29C3F /* Categories */,
+				F51C115B1B905B6900F29C3F /* Models */,
+				F51C117A1B905B9400F29C3F /* Views */,
+				F51C11521B905B6900F29C3F /* Controllers */,
+				F51C116A1B905B6900F29C3F /* Resources */,
 				F56C2CF71B0446B100D5DF66 /* AppBase */,
-				F5687D8E1B022F380073594C /* Model */,
-				F5687D901B022F490073594C /* View */,
-				F5687D8F1B022F410073594C /* Controller */,
 				F5687D331B022B640073594C /* AppDelegate.h */,
 				F5687D341B022B640073594C /* AppDelegate.mm */,
 				F5687D3C1B022B640073594C /* Images.xcassets */,
@@ -253,56 +304,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F5687D8E1B022F380073594C /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				F50CF2681B7055D200E7E509 /* GlobalManager.h */,
-				F50CF2691B7055D200E7E509 /* GlobalManager.m */,
-				F5C674C21B1043C9002901EE /* NetworkModel.h */,
-				F5C674C31B1043C9002901EE /* NetworkModel.m */,
-				F56802B51B16C17B00A3F2CD /* NetworkSDK.h */,
-				F56802B61B16C17B00A3F2CD /* NetworkSDK.m */,
-				F5687D911B022F8D0073594C /* UserInfo.h */,
-				F5687D921B022F8D0073594C /* UserInfo.m */,
-				F50CF26F1B70585F00E7E509 /* LocalNotification.h */,
-				F50CF2701B70585F00E7E509 /* LocalNotification.m */,
-				F502DA151B708FF400AC5B52 /* KeyValueObserver.h */,
-				F502DA161B708FF400AC5B52 /* KeyValueObserver.m */,
-				F518AB901B7B1631003A9A93 /* SkinManager.h */,
-				F518AB911B7B1631003A9A93 /* SkinManager.m */,
-			);
-			name = Model;
-			sourceTree = "<group>";
-		};
-		F5687D8F1B022F410073594C /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				F51EE3DB1B8D9AF500A34F39 /* HomeTabViewController.h */,
-				F51EE3DC1B8D9AF500A34F39 /* HomeTabViewController.m */,
-				F5164DB01B8F14C800B9573F /* HomePageViewController.h */,
-				F5164DB11B8F14C800B9573F /* HomePageViewController.m */,
-				F5164DAC1B8F149B00B9573F /* NextViewController.h */,
-				F5164DAD1B8F149B00B9573F /* NextViewController.m */,
-				F5164DB31B8F159E00B9573F /* LastViewController.h */,
-				F5164DB41B8F159E00B9573F /* LastViewController.m */,
-			);
-			name = Controller;
-			sourceTree = "<group>";
-		};
-		F5687D901B022F490073594C /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = View;
-			sourceTree = "<group>";
-		};
 		F56C2CF71B0446B100D5DF66 /* AppBase */ = {
 			isa = PBXGroup;
 			children = (
 				F56802B81B16CB0100A3F2CD /* Constants.h */,
-				F518AB7C1B7AE5F2003A9A93 /* View */,
-				F518AB781B7AE55F003A9A93 /* Model */,
-				F518AB6E1B7AE554003A9A93 /* Controller */,
+				F51C11821B905BD200F29C3F /* Models */,
+				F51C11851B905BD200F29C3F /* Views */,
+				F51C117B1B905BD200F29C3F /* Controllers */,
 			);
 			name = AppBase;
 			sourceTree = "<group>";
@@ -391,12 +399,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F518AB8F1B7B150E003A9A93 /* default_skin.plist in Resources */,
 				F5687D3D1B022B640073594C /* Images.xcassets in Resources */,
 				F50233311B70E3AA00DB94EB /* Localizable.strings in Resources */,
 				F5859F471B70B0BC004EC7D2 /* InfoPlist.strings in Resources */,
 				F511C1DC1B6F2A5F00DBAECE /* Resource.bundle in Resources */,
-				F5817C051B7B496800CAA646 /* app_navi_back.png in Resources */,
+				F51C11791B905B6900F29C3F /* default_skin.plist in Resources */,
+				F51C11781B905B6900F29C3F /* app_navi_back.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,26 +415,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F518AB921B7B1631003A9A93 /* SkinManager.m in Sources */,
+				F51C11741B905B6900F29C3F /* NetworkModel.m in Sources */,
+				F51C11771B905B6900F29C3F /* UserInfo.m in Sources */,
 				F5687D351B022B640073594C /* AppDelegate.mm in Sources */,
-				F518AB771B7AE554003A9A93 /* BaseViewController.m in Sources */,
-				F518AB751B7AE554003A9A93 /* BaseNavigationController.m in Sources */,
-				F5164DB21B8F14C800B9573F /* HomePageViewController.m in Sources */,
-				F5687D931B022F8D0073594C /* UserInfo.m in Sources */,
-				F51EE3DD1B8D9AF500A34F39 /* HomeTabViewController.m in Sources */,
-				F518AB7F1B7AE614003A9A93 /* BaseTableViewCell.m in Sources */,
-				F56802B71B16C17B00A3F2CD /* NetworkSDK.m in Sources */,
-				F50CF26A1B7055D200E7E509 /* GlobalManager.m in Sources */,
-				F502DA171B708FF400AC5B52 /* KeyValueObserver.m in Sources */,
-				F5C674C41B1043C9002901EE /* NetworkModel.m in Sources */,
-				F50E631B1B7C7E0F00E442E8 /* BaseScrollView.m in Sources */,
-				F50E631E1B7C7E3100E442E8 /* BaseTableView.m in Sources */,
-				F518AB7B1B7AE55F003A9A93 /* BaseModel.m in Sources */,
-				F50CF2711B70585F00E7E509 /* LocalNotification.m in Sources */,
-				F518AB761B7AE554003A9A93 /* BaseTabBarController.m in Sources */,
+				F51C116F1B905B6900F29C3F /* LastViewController.m in Sources */,
+				F51C116E1B905B6900F29C3F /* HomeTabViewController.m in Sources */,
+				F51C118D1B905BD200F29C3F /* BaseTabBarController.m in Sources */,
+				F51C11921B905BD200F29C3F /* BaseTableViewCell.m in Sources */,
+				F51C118C1B905BD200F29C3F /* BaseNavigationController.m in Sources */,
+				F51C11721B905B6900F29C3F /* KeyValueObserver.m in Sources */,
+				F51C11701B905B6900F29C3F /* NextViewController.m in Sources */,
+				F51C116D1B905B6900F29C3F /* HomePageViewController.m in Sources */,
+				F51C11901B905BD200F29C3F /* BaseScrollView.m in Sources */,
+				F51C11731B905B6900F29C3F /* LocalNotification.m in Sources */,
+				F51C11711B905B6900F29C3F /* GlobalManager.m in Sources */,
+				F51C118F1B905BD200F29C3F /* BaseModel.m in Sources */,
+				F51C11751B905B6900F29C3F /* NetworkSDK.m in Sources */,
+				F51C11761B905B6900F29C3F /* SkinManager.m in Sources */,
+				F51C11911B905BD200F29C3F /* BaseTableView.m in Sources */,
 				F5687D321B022B640073594C /* main.m in Sources */,
-				F5164DB51B8F159E00B9573F /* LastViewController.m in Sources */,
-				F5164DAE1B8F149B00B9573F /* NextViewController.m in Sources */,
+				F51C118E1B905BD200F29C3F /* BaseViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

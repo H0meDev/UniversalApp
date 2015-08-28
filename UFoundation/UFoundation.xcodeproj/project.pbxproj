@@ -129,6 +129,7 @@
 		F51431C91B89AE9300C2372E /* UTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UTabBarButton.m; path = UIFoundation/UTabBarButton.m; sourceTree = "<group>"; };
 		F51431CC1B89AFFF00C2372E /* UBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UBarButton.h; path = UIFoundation/UBarButton.h; sourceTree = "<group>"; };
 		F51431CD1B89AFFF00C2372E /* UBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UBarButton.m; path = UIFoundation/UBarButton.m; sourceTree = "<group>"; };
+		F51C114D1B90567900F29C3F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		F5624B841B301937001B7B15 /* NSString+UAExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+UAExtension.h"; path = "Category/NSString+UAExtension.h"; sourceTree = "<group>"; };
 		F5624B851B301937001B7B15 /* NSString+UAExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+UAExtension.m"; path = "Category/NSString+UAExtension.m"; sourceTree = "<group>"; };
 		F56C2CAF1B04449400D5DF66 /* UNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UNavigationController.h; path = UIFoundation/UNavigationController.h; sourceTree = "<group>"; };
@@ -203,12 +204,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F50DAE071B6750730032077A /* Resource */ = {
+		F50DAE071B6750730032077A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				F511C1D91B6F2A5400DBAECE /* Resource.bundle */,
 			);
-			name = Resource;
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		F50E63081B7C3DDE00E442E8 /* UProgressHUD */ = {
@@ -230,11 +231,19 @@
 			name = UModel;
 			sourceTree = "<group>";
 		};
-		F53867381B41589C0024EA4F /* Model */ = {
+		F51C114F1B90575400F29C3F /* References */ = {
+			isa = PBXGroup;
+			children = (
+				F51C114D1B90567900F29C3F /* Accelerate.framework */,
+			);
+			name = References;
+			sourceTree = "<group>";
+		};
+		F53867381B41589C0024EA4F /* Models */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = Model;
+			name = Models;
 			sourceTree = "<group>";
 		};
 		F576E70E1B08835600ECE214 /* UTimerBooster */ = {
@@ -258,8 +267,9 @@
 		F5974CBA1B01FA0D004AA14F = {
 			isa = PBXGroup;
 			children = (
+				F51C114F1B90575400F29C3F /* References */,
 				F5974CC51B01FA0E004AA14F /* UFoundation */,
-				F50DAE071B6750730032077A /* Resource */,
+				F50DAE071B6750730032077A /* Resources */,
 				F5974CC41B01FA0E004AA14F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -296,9 +306,9 @@
 		F5974CCF1B02009C004AA14F /* UIFoundation */ = {
 			isa = PBXGroup;
 			children = (
-				F53867381B41589C0024EA4F /* Model */,
-				F5974CE01B020352004AA14F /* Controller */,
-				F5974CE11B020367004AA14F /* View */,
+				F53867381B41589C0024EA4F /* Models */,
+				F5974CE01B020352004AA14F /* Controllers */,
+				F5974CE11B020367004AA14F /* Views */,
 			);
 			name = UIFoundation;
 			sourceTree = "<group>";
@@ -356,7 +366,7 @@
 			name = Utility;
 			sourceTree = "<group>";
 		};
-		F5974CE01B020352004AA14F /* Controller */ = {
+		F5974CE01B020352004AA14F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				F56C2CB31B04449400D5DF66 /* UViewController.h */,
@@ -368,10 +378,10 @@
 				F50ED6051B79A1230027EC82 /* UImagePickerControllerController.h */,
 				F50ED6061B79A1230027EC82 /* UImagePickerControllerController.m */,
 			);
-			name = Controller;
+			name = Controllers;
 			sourceTree = "<group>";
 		};
-		F5974CE11B020367004AA14F /* View */ = {
+		F5974CE11B020367004AA14F /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				F56C2CCF1B0444D300D5DF66 /* UView.h */,
@@ -407,7 +417,7 @@
 				F51431C41B89AE7800C2372E /* UNavigationBarButton.h */,
 				F51431C51B89AE7800C2372E /* UNavigationbarButton.m */,
 			);
-			name = View;
+			name = Views;
 			sourceTree = "<group>";
 		};
 		F5C674C71B10469F002901EE /* UOperationQueue */ = {
