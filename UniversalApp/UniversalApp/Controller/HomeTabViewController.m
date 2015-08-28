@@ -80,14 +80,18 @@
         [button setTitleColor:sysDarkGrayColor()];
         [button setHTitleColor:sysRedColor()];
         [button setSTitleColor:sysRedColor()];
-        [button setHTitleFont:boldSystemFont(16)];
-        [button addTouchDownTarget:self action:@selector(tabAction:)];
+        [button setHTitleFont:boldSystemFont(18)];
+        [button setSTitleFont:boldSystemFont(16)];
+        [button addTarget:self action:@selector(tabAction:)];
         [self.tabBarView addSubview:button];
         [buttons addObject:button];
         
         originX += width;
     }
     _tabButtons = buttons;
+    
+    // Default selection
+    self.selectedIndex = 0;
 }
 
 - (void)setSelectedIndex:(NSUInteger)index

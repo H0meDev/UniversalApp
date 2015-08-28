@@ -80,7 +80,7 @@
         // Resize
         leftButton.textAlignment = NSTextAlignmentLeft;
         leftButton.imageFrame = rectMake(10, 0, 14, naviHeight() - naviBLineH());
-        leftButton.titleFrame = rectMake(22, 0, 38, naviHeight() - naviBLineH());
+        leftButton.titleFrame = rectMake(24, 0, 36, naviHeight() - naviBLineH());
     } else {
         [self.navigationBarView.leftButton removeFromSuperview];
         self.navigationBarView.leftButton = nil;
