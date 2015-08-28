@@ -78,7 +78,7 @@
         button.frame = rectMake(originX, tabBLineH(), width, tabHeight() - tabBLineH());
         [button setTitle:titles[i]];
         [button setTitleColor:sysDarkGrayColor()];
-        [button setHTitleColor:sysRedColor()];
+        [button setHTitleColor:sysDarkGrayColor()];
         [button setSTitleColor:sysRedColor()];
         [button setHTitleFont:boldSystemFont(18)];
         [button setSTitleFont:boldSystemFont(16)];
