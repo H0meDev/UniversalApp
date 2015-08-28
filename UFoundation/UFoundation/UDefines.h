@@ -121,17 +121,13 @@ CG_INLINE CGRange CGRangeMake(CGFloat min, CGFloat max)
 #define checkValidNSData(data)             ([data isKindOfClass:NSData.class] && ((NSData *)data).length > 0)
 #define checkValidNSString(string)         ([string isKindOfClass:NSString.class] && ((NSString *)string).length > 0)
 #define checkValidNSArray(array)           ([array isKindOfClass:NSArray.class] && ((NSArray *)array).count > 0)
-#define checkValidNSDictionary(dict)        ([dict isKindOfClass:NSDictionary.class] && ((NSDictionary *)dict).count > 0)
+#define checkValidNSDictionary(dict)       ([dict isKindOfClass:NSDictionary.class] && ((NSDictionary *)dict).count > 0)
 
 // Data safety
 #define checkValidNSDataWith(data, size)       ([data isKindOfClass:NSData.class] && ((NSData *)data).length >= size)
 #define checkValidNSStringWith(string, size)   ([string isKindOfClass:NSString.class] && ((NSString *)string).length >= size)
 #define checkValidNSArrayWith(array, size)     ([array isKindOfClass:NSArray.class] && ((NSArray *)array).count >= size)
 #define checkValidNSDictionaryWith(dict, size) ([dict isKindOfClass:NSDictionary.class] && ((NSDictionary *)dict).count >= size)
-
-// Version check
-// Result: NSOrderedSame, NSOrderedAscending, NSOrderedDescending
-#define checkVersion(ver1, ver2) [ver1 compare:v2 options:NSNumericSearch]
 
 // Singleton interface
 #define singletonInterface(classname) + (classname *)shared##classname
@@ -153,7 +149,7 @@ static classname *shared##classname = nil; \
 #define getUserDefaults(key)         [[NSUserDefaults standardUserDefaults]objectForKey:key]
 
 // Notification
-#define NotificationDefaultCenter       [NSNotificationCenter defaultCenter]
+#define NotificationDefaultCenter    [NSNotificationCenter defaultCenter]
 
 // Path
 #define currentDocumentsPath()            NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]
@@ -176,9 +172,9 @@ static classname *shared##classname = nil; \
 #define current_queue()     dispatch_get_current_queue()
 
 // HUD
-#define showWaitWith(text)           (systemVersionFloat() < 7.0)?[UProgressHUD showWithStatus:text]:[UProgressHUD showLWithStatus:text]
-#define showSuccessWith(text)    (systemVersionFloat() < 7.0)?[UProgressHUD showSuccessWithStatus:text]:[UProgressHUD showLSuccessWithStatus:text]
-#define showErrorWith(text)      (systemVersionFloat() < 7.0)?[UProgressHUD showErrorWithStatus:text]:[UProgressHUD showLErrorWithStatus:text]
-#define dismiss()                      [UProgressHUD dismiss]
+#define showWaitWith(text)    (systemVersionFloat() < 7.0)?[UProgressHUD showWithStatus:text]:[UProgressHUD showLWithStatus:text]
+#define showSuccessWith(text) (systemVersionFloat() < 7.0)?[UProgressHUD showSuccessWithStatus:text]:[UProgressHUD showLSuccessWithStatus:text]
+#define showErrorWith(text)   (systemVersionFloat() < 7.0)?[UProgressHUD showErrorWithStatus:text]:[UProgressHUD showLErrorWithStatus:text]
+#define dismiss()             [UProgressHUD dismiss]
 
 #endif
