@@ -21,7 +21,9 @@
 
 #endif
 
-// Defines
+/*
+ *  Defines
+ */
 
 // For skin
 #define loadSkinImage(name)   [[GlobalManager manager].skinManager imageForKey:name]
