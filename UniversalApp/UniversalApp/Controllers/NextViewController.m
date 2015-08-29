@@ -20,7 +20,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.navigationBarView.title = @"Next Page";
+    self.navigationBarView.title = @"Next";
+    [self.navigationBarView.leftButton setTitle:@"Home"];
     
     UButton *button = [UButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);

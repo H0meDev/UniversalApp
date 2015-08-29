@@ -42,9 +42,7 @@
     self.containerView.frame = rectMake(0, originY, screenWidth(), screenHeight() - originY);
     
     // Navi back
-    if (self.navigationController) {
-        self.enableBackButton = YES;
-    }
+    self.enableBackButton = YES;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -68,19 +66,19 @@
     
     if (enable) {
         UNavigationBarButton *leftButton = [UNavigationBarButton button];
-        leftButton.frame = rectMake(0, 0, 60, naviHeight() - naviBLineH());
+        leftButton.frame = rectMake(0, 0, 70, naviHeight() - naviBLineH());
         [leftButton setImage:loadSkinImage(@"app_navi_back")];
-        [leftButton setHAlpha:0.7];
+        [leftButton setHAlpha:0.3];
         [leftButton setTitle:@"返回"];
         [leftButton setTitleColor:sysWhiteColor()];
-        [leftButton setTitleFont:systemFont(15)];
+        [leftButton setTitleFont:systemFont(17)];
         [leftButton addTarget:self action:@selector(backAction)];
         self.navigationBarView.leftButton = leftButton;
         
         // Resize
         leftButton.textAlignment = NSTextAlignmentLeft;
         leftButton.imageFrame = rectMake(10, 0, 14, naviHeight() - naviBLineH());
-        leftButton.titleFrame = rectMake(24, 0, 36, naviHeight() - naviBLineH());
+        leftButton.titleFrame = rectMake(24, 0, 54, naviHeight() - naviBLineH());
     } else {
         [self.navigationBarView.leftButton removeFromSuperview];
         self.navigationBarView.leftButton = nil;

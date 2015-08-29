@@ -29,6 +29,7 @@
     __weak UNavigationBarView *_currentNavigationView;
 }
 
+@property (nonatomic, retain) UIView *contentView;
 @property (nonatomic, retain) UIView *shadowView;
 @property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
 @property (nonatomic, weak) UViewController *viewController;
@@ -112,6 +113,21 @@
 
 #pragma mark - Properties
 
+- (UIView *)contentView
+{
+    if (_contentView) {
+        return _contentView;
+    }
+    
+    UIView *contentView = [[UIView alloc]init];
+    contentView.frame = rectMake(0, 0, screenWidth(), statusHeight() + naviHeight());
+    contentView.backgroundColor = rgbColor(231, 68, 113);
+    [self.view addSubview:contentView];
+    _contentView = contentView;
+    
+    return _contentView;
+}
+
 - (UIView *)shadowView
 {
     if (_shadowView) {
@@ -136,18 +152,26 @@
     _lastStatusView = _currentStatusView;
     _lastNavigationView = _currentNavigationView;
     
+    _lastStatusView.hidden = YES;
+    _lastNavigationView.hidden = YES;
+    
     _viewController = viewController;
     
     _currentStatusView = viewController.statusBarView;
     _currentNavigationView = viewController.navigationBarView;
     
-    [self.view addSubview:_currentStatusView];
-    [self.view addSubview:_currentNavigationView];
-    [self.view bringSubviewToFront:_currentStatusView];
-    [self.view bringSubviewToFront:_currentNavigationView];
+    _currentStatusView.hidden = NO;
+    _currentNavigationView.hidden = NO;
+    
+    [self.contentView addSubview:_currentStatusView];
+    [self.contentView bringSubviewToFront:_currentStatusView];
+    [self.contentView addSubview:_currentNavigationView];
+    [self.contentView bringSubviewToFront:_currentNavigationView];
     
     // Refresh status bar style
     [self setNeedsStatusBarAppearanceUpdate];
+    
+    NSLog(@"SET CONTROLLER:%@", NSStringFromClass(viewController.class));
 }
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
@@ -157,7 +181,7 @@
 
 - (BOOL)isValidateInPoint:(CGPoint)point
 {
-    return (point.x > 0 && point.x <= 30) && (point.y > naviHeight());
+    return (point.x > 0 && point.x <= 40) && (point.y > naviHeight());
 }
 
 - (void)repositionAllViewWithX:(CGFloat)xvalue
@@ -189,10 +213,25 @@
         self.shadowView.alpha = (1.0 - progress) * 0.1;
         [lastContentView addSubview:self.shadowView];
         
+        // Bar animation
+        [self barAnimationWithX:xvalue];
+        
         // Callback
         if (_viewController && [_viewController respondsToSelector:@selector(controllerIsMovingWith:)]) {
             [_viewController controllerIsMovingWith:progress];
         }
+    }
+}
+
+- (void)barAnimationWithX:(CGFloat)xvalue
+{
+    _currentNavigationView.originX = xvalue;
+    
+    if (_lastNavigationView) {
+        _lastNavigationView.hidden = NO;
+        _lastNavigationView.originX = xvalue - screenWidth();
+        [self.contentView addSubview:_lastNavigationView];
+        [self.contentView insertSubview:_lastNavigationView belowSubview:_currentNavigationView];
     }
 }
 
@@ -313,6 +352,8 @@
         return;
     }
     
+    NSLog(@"PUSH ACTION: %@", NSStringFromClass(viewController.class));
+    
     [super pushViewController:viewController animated:animated];
 }
 
@@ -321,6 +362,8 @@
     if (_isGestureMoving) {
         return nil;
     }
+    
+    NSLog(@"POP ACTION");
     
     NSInteger count = _viewController.countOfControllerToPop + 1;
     NSInteger index = self.viewControllers.count - count;

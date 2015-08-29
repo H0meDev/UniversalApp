@@ -15,7 +15,6 @@
 
 @interface UNavigationContentView : UIImageView
 
-@property (nonatomic, retain) UView *containerView;
 @property (nonatomic, retain) ULabel *titleLabel;
 @property (nonatomic, retain) UImageView *bottomLineView;
 
@@ -35,35 +34,20 @@
     return self;
 }
 
-- (UView *)containerView
-{
-    if (_containerView) {
-        return _containerView;
-    }
-    
-    UView *containerView = [[UView alloc]init];
-    containerView.frame = rectMake(0, 0, screenWidth(), naviHeight());
-    containerView.backgroundColor = sysClearColor();
-    [self addSubview:containerView];
-    _containerView = containerView;
-    
-    return _containerView;
-}
-
 - (ULabel *)titleLabel
 {
     if (_titleLabel) {
         return _titleLabel;
     }
     
-    CGFloat originX = screenWidth() * 0.2;
-    CGFloat width = screenWidth() - originX * 2;
+    CGFloat width = screenWidth() - screenWidth() * 0.4;
     ULabel *titleLabel = [[ULabel alloc]init];
-    titleLabel.frame = rectMake(originX, 0, width, naviHeight());
-    titleLabel.font = systemFont(16);
+    titleLabel.frame = rectMake(0, 0, width, naviHeight());
+    titleLabel.center = pointMake(screenWidth() / 2., naviHeight() / 2.);
+    titleLabel.font = boldSystemFont(17);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.textColor = sysBlackColor();
-    [self.containerView addSubview:titleLabel];
+    [self addSubview:titleLabel];
     _titleLabel = titleLabel;
     
     return _titleLabel;
@@ -78,7 +62,7 @@
     UImageView *bottomLineView = [[UImageView alloc]init];
     bottomLineView.frame = rectMake(0, naviHeight() - naviBLineH(), screenWidth(), naviBLineH());
     bottomLineView.backgroundColor = sysLightGrayColor();
-    [self.containerView addSubview:bottomLineView];
+    [self addSubview:bottomLineView];
     _bottomLineView = bottomLineView;
     
     return _bottomLineView;
@@ -129,7 +113,7 @@
     UNavigationContentView *contentView = [[UNavigationContentView alloc]init];
     contentView.frame = rectMake(0, 0, screenWidth(), naviHeight());
     contentView.userInteractionEnabled = YES;
-    contentView.backgroundColor = sysWhiteColor();
+    contentView.backgroundColor = sysClearColor();
     [self addSubview:contentView];
     _contentView = contentView;
     
@@ -158,12 +142,12 @@
 
 - (UIColor *)backgroundColor
 {
-    return _contentView.backgroundColor;
+    return nil;
 }
 
 - (void)setBackgroundColor:(UIColor *)color
 {
-    _contentView.backgroundColor = color;
+    //
 }
 
 - (void)setTitle:(NSString *)title
@@ -171,6 +155,8 @@
     _title = title;
     
     _contentView.titleLabel.text = title;
+    [_contentView.titleLabel resizeToFitWidth];
+    _contentView.titleLabel.centerX = screenWidth() / 2.;
 }
 
 - (void)setTitleColor:(UIColor *)color
@@ -199,6 +185,38 @@
     _titleFont = font;
     
     _contentView.titleLabel.font = font;
+}
+
+- (void)setOriginX:(CGFloat)originX
+{
+    CGFloat centerX = (screenWidth() - _contentView.titleLabel.sizeWidth) / 2.0;
+    CGFloat progress = (screenWidth() - fabs(originX)) / screenWidth();
+    CGFloat titleAlpha = powf(progress, 2.0);
+    CGFloat buttonAlpha = powf(progress, 3.0);
+    
+    if (originX >= 0) {
+        _contentView.titleLabel.alpha = titleAlpha;
+        _contentView.titleLabel.originX = centerX + originX * 0.5;
+    } else {
+        CGFloat roriginX = originX + screenWidth();
+        _contentView.titleLabel.alpha = buttonAlpha;
+        if (buttonAlpha > 0.01) {
+            _contentView.titleLabel.originX = 24 + roriginX * 0.32;
+        } else {
+            _contentView.titleLabel.originX = centerX + originX * 0.5;
+        }
+    }
+    
+    if (_leftButton) {
+        UILabel *titleLabel = [_leftButton valueForKey:@"titleLabel"];
+        titleLabel.alpha = buttonAlpha;
+        titleLabel.originX = 24 + originX * 0.32;
+    }
+    
+    if (_rightButton) {
+        UILabel *titleLabel = [_rightButton valueForKey:@"titleLabel"];
+        titleLabel.alpha = buttonAlpha;
+    }
 }
 
 - (void)setBottomLineHidden:(BOOL)hidden

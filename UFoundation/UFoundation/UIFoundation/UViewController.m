@@ -33,6 +33,16 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Initliaze
+        self.view.backgroundColor = sysWhiteColor();
+        self.countOfControllerToPop = 1;
+        
+        // Inialize views
+        [self contentView];
+        [self statusBarView];
+        [self navigationBarView];
+        [self containerView];
+        
+        NSLog(@"INIT CONTROLLER:%@", NSStringFromClass(self.class));
     }
     
     return self;
@@ -42,16 +52,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    self.view.backgroundColor = sysWhiteColor();
-    self.countOfControllerToPop = 1;
-    
-    // Inialize views
-    [self contentView];
-    [self statusBarView];
-    [self navigationBarView];
-    [self contentView];
-    [self containerView];
 }
 
 - (void)viewWillAppear:(BOOL)animated

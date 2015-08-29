@@ -34,6 +34,18 @@
 // Set originY, can not be used in setFrame method
 - (void)setOriginY:(CGFloat)originY;
 
+// Center X of origin
+- (CGFloat)centerX;
+
+// Set centerX, can not be used in setFrame method
+- (void)setCenterX:(CGFloat)centerX;
+
+// Center Y of origin
+- (CGFloat)centerY;
+
+// Set centerY, can not be used in setFrame method
+- (void)setCenterY:(CGFloat)centerY;
+
 // Size width of origin
 - (CGFloat)sizeWidth;
 

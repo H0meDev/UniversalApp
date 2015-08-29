@@ -20,7 +20,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.navigationBarView.title = @"Last Page";
+    self.navigationBarView.title = @"Last";
+    [self.navigationBarView.leftButton setTitle:@"Next"];
     
     UButton *button = [UButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);
