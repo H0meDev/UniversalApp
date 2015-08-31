@@ -485,7 +485,7 @@
     if (_isGestureMoving) {
         [self repositionAllViewWithX:offsetX];
     } else {
-        if (offsetX > screenWidth() / 4.0) {
+        if (offsetX > screenWidth() * 0.3) {
             [self popAnimationWithX:offsetX];
         } else {
             [self rollbackAnimationWithX:offsetX];
