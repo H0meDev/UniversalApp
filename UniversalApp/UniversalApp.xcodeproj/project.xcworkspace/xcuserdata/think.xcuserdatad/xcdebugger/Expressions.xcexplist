@@ -44,10 +44,10 @@
          contextName = "-[UNavigationController resetAllStates]:UNavigationController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_viewController">
+               value = "_viewController.contentView">
             </PersistentString>
             <PersistentString
-               value = "_viewController.contentView">
+               value = "_viewController">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -56,6 +56,17 @@
          <PersistentStrings>
             <PersistentString
                value = "self.navigationController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[UNavigationController repositionAllViewWithX:]:UNavigationController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_viewController.countOfControllerToPop">
+            </PersistentString>
+            <PersistentString
+               value = "_viewController">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -98,10 +109,10 @@
                value = "self.viewControllers">
             </PersistentString>
             <PersistentString
-               value = "_viewController">
+               value = "currentController">
             </PersistentString>
             <PersistentString
-               value = "currentController">
+               value = "_viewController">
             </PersistentString>
             <PersistentString
                value = "_currentNavigationItem">
@@ -142,7 +153,7 @@
          contextName = "-[UNavigationController repositionBarsWithX:]:UNavigationController.m">
          <PersistentStrings>
             <PersistentString
-               value = "leftButton">
+               value = "leftButton.attachedLabel.text">
             </PersistentString>
             <PersistentString
                value = "_currentNavigationItem.leftButton">
@@ -151,7 +162,7 @@
                value = "_currentNavigationItem">
             </PersistentString>
             <PersistentString
-               value = "leftButton.attachedLabel.text">
+               value = "leftButton">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -208,10 +219,10 @@
                value = "lastTitleLabel.text">
             </PersistentString>
             <PersistentString
-               value = "_lastNavigationItem">
+               value = "leftButton.superview ">
             </PersistentString>
             <PersistentString
-               value = "leftButton.superview ">
+               value = "_lastNavigationItem">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

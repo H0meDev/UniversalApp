@@ -186,19 +186,27 @@
 {
     UIViewController *controller = [self.viewControllers lastObject];
     UViewController *theController = [self controllerWith:controller];
-    [self setViewController:theController];
+    [self refreshViewController:theController withPush:NO];
 }
 
-- (void)setViewController:(UViewController *)viewController
+- (void)refreshViewController:(UViewController *)viewController withPush:(BOOL)push
 {
     _viewController = viewController;
     
-    NSInteger count = self.viewControllers.count;
-    UIViewController *controller = self.viewControllers[count - 1];
+    NSInteger count = 1;
+    if(!push) {
+        count = _viewController.countOfControllerToPop;
+    }
+    
+    // Index
+    NSInteger index = self.viewControllers.count - count - 1;
+    index = (index < 0)?0:index;
+    
+    UIViewController *controller = self.viewControllers[index];
     if (controller) {
         if (controller == viewController) {
-            if (count >= 2) {
-                controller = self.viewControllers[count - 2];
+            if (count >= 1) {
+                controller = self.viewControllers[count - 1];
             }
         }
         
@@ -483,7 +491,7 @@
     
     // Reset bars
     UViewController *controller = [self controllerWith:viewController];
-    [self setViewController:controller];
+    [self refreshViewController:controller withPush:YES];
     
     if (animated) {
         // Push animation
@@ -497,8 +505,8 @@
         return nil;
     }
     
-    NSInteger count = _viewController.countOfControllerToPop + 1;
-    NSInteger index = self.viewControllers.count - count;
+    NSInteger count = _viewController.countOfControllerToPop;
+    NSInteger index = self.viewControllers.count - count - 1;
     if (index >= 0) {
         // Callback
         if (_viewController && [_viewController respondsToSelector:@selector(controllerWillPop)]) {
@@ -514,7 +522,7 @@
         } else {
             UIViewController *controller = [self.viewControllers lastObject];
             UViewController *theController = [self controllerWith:controller];
-            [self setViewController:theController];
+            [self refreshViewController:theController withPush:NO];
         }
         
         return controller;

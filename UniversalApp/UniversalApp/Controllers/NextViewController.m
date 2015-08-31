@@ -52,7 +52,6 @@
 - (void)buttonAction
 {
     LastViewController *next = [[LastViewController alloc]init];
-    [next.navigationBarView.leftButton setTitle:self.navigationBarView.title];
     [self pushViewController:next];
 }
 
