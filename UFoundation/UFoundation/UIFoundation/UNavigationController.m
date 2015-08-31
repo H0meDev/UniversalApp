@@ -378,7 +378,7 @@
 - (void)pushAnimation
 {
     [self repositionBarsWithX:screenWidth()];
-    [UIView animateWithDuration:animationSlowDuration() animations:^{
+    [UIView animateWithDuration:animationDuration() animations:^{
         [self repositionBarsWithX:0];
     } completion:^(BOOL finished) {
         if (finished) {
@@ -390,7 +390,7 @@
 - (void)popAnimation
 {
     [self repositionBarsWithX:0];
-    [UIView animateWithDuration:animationSlowDuration() animations:^{
+    [UIView animateWithDuration:animationDuration() animations:^{
         [self repositionBarsWithX:screenWidth()];
     }completion:^(BOOL finished) {
         if (finished) {
