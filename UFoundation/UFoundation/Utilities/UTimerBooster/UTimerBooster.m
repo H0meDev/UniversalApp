@@ -224,11 +224,8 @@ static UTimerBooster *sharedManager = nil;
     NSTimeInterval timeInterval = [self timeInterval];
     for (UTimerItem *item in self.itemArray) {
         if (item.excuteTime <= timeInterval) {
-#ifdef DEBUG // To avoid mass execution when debugging
             item.excuteTime = timeInterval + item.timeInterval;
-#else
-            item.excuteTime += item.timeInterval;
-#endif
+            
             // Excute in thread pool
             [UThreadPool addTarget:self sel:@selector(executeWith:) object:item];
         }

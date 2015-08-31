@@ -25,6 +25,6 @@
 - (CGFloat)alphaValue;
 
 // UIColor compare
-- (BOOL)isEqualColor:(UIColor *)color;
+- (BOOL)isEqualToColor:(UIColor *)color;
 
 @end

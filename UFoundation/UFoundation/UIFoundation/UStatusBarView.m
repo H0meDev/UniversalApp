@@ -14,12 +14,11 @@
 
 @interface UStatusBarView ()
 {
+    UIColor *_backgroundColor;
     BOOL _needsStretch;
 }
 
 @property (nonatomic, retain) UIImageView *contentView;
-@property (nonatomic, retain) UIImageView *lastBGView;
-@property (nonatomic, retain) UIImageView *currentBGView;
 
 @end
 
@@ -56,7 +55,7 @@
     UIImageView *contentView = [[UIImageView alloc]init];
     contentView.frame = rectMake(0, 0, screenWidth(), statusHeight());
     contentView.userInteractionEnabled = YES;
-    contentView.backgroundColor = sysWhiteColor();
+    contentView.backgroundColor = sysClearColor();
     [self addSubview:contentView];
     _contentView = contentView;
     
@@ -85,12 +84,12 @@
 
 - (UIColor *)backgroundColor
 {
-    return _contentView.backgroundColor;
+    return _backgroundColor;
 }
 
 - (void)setBackgroundColor:(UIColor *)color
 {
-    _contentView.backgroundColor = color;
+    _backgroundColor = color;
 }
 
 - (void)stretch

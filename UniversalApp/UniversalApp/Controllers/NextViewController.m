@@ -21,6 +21,9 @@
     // Do any additional setup after loading the view.
     
     self.navigationBarView.title = @"Next";
+    self.statusBarView.backgroundColor = sysClearColor();
+    self.navigationBarView.backgroundColor = sysClearColor();
+    self.containerView.backgroundColor = sysYellowColor();
     
     UButton *button = [UButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);

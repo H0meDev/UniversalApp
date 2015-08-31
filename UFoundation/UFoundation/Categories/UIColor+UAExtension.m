@@ -58,7 +58,7 @@
     return CGColorGetComponents(self.CGColor)[3];
 }
 
-- (BOOL)isEqualColor:(UIColor *)color
+- (BOOL)isEqualToColor:(UIColor *)color
 {
     if (color) {
         return CGColorEqualToColor(self.CGColor, color.CGColor);

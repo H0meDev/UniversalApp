@@ -23,6 +23,12 @@
     BOOL _isGestureMoving;
     CGFloat _transformRate;
     
+    UImageView *_lastStatusBGView;
+    UImageView *_currentStatusBGView;
+    UImageView *_lastNaviBGView;
+    UImageView *_currentNaviBGView;
+    
+    // For bars
     __weak UStatusBarView *_lastStatusView;
     __weak UStatusBarView *_currentStatusView;
     __weak UNavigationBarView *_lastNavigationView;
@@ -55,7 +61,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
     self.navigationBarHidden = YES;
     self.view.backgroundColor = sysClearColor();
     
@@ -74,6 +79,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // Refresh Bars
+    [self refreshBarUserInterface];
 }
 
 - (void)didReceiveMemoryWarning
@@ -119,9 +127,36 @@
         return _contentView;
     }
     
+    // Status bar background
+    UImageView *lastStatusBGView = [[UImageView alloc]init];
+    lastStatusBGView.frame = rectMake(0, 0, screenWidth(), statusHeight());
+    lastStatusBGView.backgroundColor = sysBlueColor();
+    [self.view addSubview:lastStatusBGView];
+    _lastStatusBGView = lastStatusBGView;
+    
+    UImageView *currentStatusBGView = [[UImageView alloc]init];
+    currentStatusBGView.frame = rectMake(0, 0, screenWidth(), statusHeight());
+    currentStatusBGView.backgroundColor = sysBlueColor();
+    [self.view addSubview:currentStatusBGView];
+    _currentStatusBGView = currentStatusBGView;
+    
+    // Navigation bar background
+    UImageView *lastNaviBGView = [[UImageView alloc]init];
+    lastNaviBGView.frame = rectMake(0, statusHeight(), screenWidth(), naviHeight());
+    lastNaviBGView.backgroundColor = rgbColor(239, 239, 239);
+    [self.view addSubview:lastNaviBGView];
+    _lastNaviBGView = lastNaviBGView;
+    
+    UImageView *currentNaviBGView = [[UImageView alloc]init];
+    currentNaviBGView.frame = rectMake(0, statusHeight(), screenWidth(), naviHeight());
+    currentNaviBGView.backgroundColor = rgbColor(239, 239, 239);
+    [self.view addSubview:currentNaviBGView];
+    _currentNaviBGView = currentNaviBGView;
+    
     UIView *contentView = [[UIView alloc]init];
     contentView.frame = rectMake(0, 0, screenWidth(), statusHeight() + naviHeight());
-    contentView.backgroundColor = rgbColor(231, 68, 113);
+    contentView.userInteractionEnabled = YES;
+    contentView.backgroundColor = sysClearColor();
     [self.view addSubview:contentView];
     _contentView = contentView;
     
@@ -170,6 +205,8 @@
         UViewController *theController = [self controllerWith:controller];
         _lastStatusView = theController.statusBarView;
         _lastNavigationView = theController.navigationBarView;
+        _lastStatusBGView.backgroundColor = theController.statusBarView.backgroundColor;
+        _lastNaviBGView.backgroundColor = theController.navigationBarView.backgroundColor;
     }
     
     _lastStatusView.hidden = YES;
@@ -179,6 +216,8 @@
     
     _currentStatusView = viewController.statusBarView;
     _currentNavigationView = viewController.navigationBarView;
+    _currentStatusBGView.backgroundColor = viewController.statusBarView.backgroundColor;
+    _currentNaviBGView.backgroundColor = viewController.navigationBarView.backgroundColor;
     
     _currentStatusView.hidden = NO;
     _currentNavigationView.hidden = NO;
@@ -246,6 +285,19 @@
         [self.contentView addSubview:_lastNavigationView];
         [self.contentView insertSubview:_lastNavigationView belowSubview:_currentNavigationView];
     }
+    
+    CGFloat alpha = xvalue / screenWidth();
+    // Status background change
+    if (![_lastStatusBGView.backgroundColor isEqualToColor:_currentStatusBGView.backgroundColor]) {
+        _lastStatusBGView.alpha = alpha;
+        _currentStatusBGView.alpha = 1.0 - alpha;
+    }
+    
+    // Navigation background change
+    if (![_lastNaviBGView.backgroundColor isEqualToColor:_currentNaviBGView.backgroundColor]) {
+        _lastNaviBGView.alpha = alpha;
+        _currentNaviBGView.alpha = 1.0 - alpha;
+    }
 }
 
 - (void)rollbackAnimationWithX:(CGFloat)xvalue
@@ -300,6 +352,16 @@
             
             // Pop controller
             [weakself popViewControllerAnimated:NO];
+            
+            if (![_lastStatusBGView.backgroundColor isEqualToColor:_currentStatusBGView.backgroundColor]) {
+                _lastStatusBGView.alpha = 0;
+                _currentStatusBGView.alpha = 1.0 - _lastStatusBGView.alpha;
+            }
+            
+            if (![_lastNaviBGView.backgroundColor isEqualToColor:_currentNaviBGView.backgroundColor]) {
+                _lastNaviBGView.alpha = 0;
+                _currentNaviBGView.alpha = 1.0 - _lastNaviBGView.alpha;
+            }
         }
     }];
     
@@ -395,6 +457,16 @@
     }completion:^(BOOL finished) {
         if (finished) {
             [self refreshBarUserInterface];
+            
+            if (![_lastStatusBGView.backgroundColor isEqualToColor:_currentStatusBGView.backgroundColor]) {
+                _lastStatusBGView.alpha = 0;
+                _currentStatusBGView.alpha = 1.0 - _lastStatusBGView.alpha;
+            }
+            
+            if (![_lastNaviBGView.backgroundColor isEqualToColor:_currentNaviBGView.backgroundColor]) {
+                _lastNaviBGView.alpha = 0;
+                _currentNaviBGView.alpha = 1.0 - _lastNaviBGView.alpha;
+            }
         }
     }];
 }
@@ -485,7 +557,7 @@
     if (_isGestureMoving) {
         [self repositionAllViewWithX:offsetX];
     } else {
-        if (offsetX > screenWidth() * 0.3) {
+        if (offsetX > screenWidth() * 0.25) {
             [self popAnimationWithX:offsetX];
         } else {
             [self rollbackAnimationWithX:offsetX];

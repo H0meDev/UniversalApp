@@ -44,7 +44,7 @@
     ULabel *titleLabel = [[ULabel alloc]init];
     titleLabel.frame = rectMake(0, 0, width, naviHeight());
     titleLabel.center = pointMake(screenWidth() / 2., naviHeight() / 2.);
-    titleLabel.font = boldSystemFont(17);
+    titleLabel.font = systemFont(17);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.textColor = sysBlackColor();
     [self addSubview:titleLabel];
@@ -74,6 +74,7 @@
 {
     BOOL _needsStretch;
     BOOL _bottomLineHidden;
+    UIColor *_backgroundColor;
 }
 
 @property (nonatomic, retain) UNavigationContentView *contentView;
@@ -86,10 +87,10 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        // Initalize
         self.userInteractionEnabled = YES;
+        super.backgroundColor = sysClearColor();
         self.backgroundColor = sysClearColor();
-        
-        _needsStretch = NO;
         
         [self contentView];
     }
@@ -142,12 +143,12 @@
 
 - (UIColor *)backgroundColor
 {
-    return nil;
+    return _backgroundColor;
 }
 
 - (void)setBackgroundColor:(UIColor *)color
 {
-    //
+    _backgroundColor = color;
 }
 
 - (void)setTitle:(NSString *)title
@@ -200,7 +201,7 @@
     } else {
         CGFloat roriginX = originX + screenWidth();
         _contentView.titleLabel.alpha = buttonAlpha;
-        if (buttonAlpha > 0.01) {
+        if (buttonAlpha >= 0.01) {
             _contentView.titleLabel.originX = 24 + roriginX * 0.35;
         } else {
             _contentView.titleLabel.originX = centerX + originX * 0.5;

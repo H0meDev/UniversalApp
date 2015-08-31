@@ -36,6 +36,7 @@
     self.statusBarView.backgroundColor = rgbColor(231, 68, 113);
     self.navigationBarView.backgroundColor = rgbColor(231, 68, 113);
     self.navigationBarView.titleColor = sysWhiteColor();
+    self.contentView.backgroundColor = rgbColor(239, 239, 239);
     
     // Resize container view
     CGFloat originY = statusHeight() + naviHeight();
@@ -69,9 +70,8 @@
         leftButton.frame = rectMake(0, 0, 70, naviHeight() - naviBLineH());
         [leftButton setImage:loadSkinImage(@"app_navi_back")];
         [leftButton setHAlpha:0.3];
-        [leftButton setTitle:@"返回"];
         [leftButton setTitleColor:sysWhiteColor()];
-        [leftButton setTitleFont:systemFont(15)];
+        [leftButton setTitleFont:systemFont(16)];
         [leftButton addTarget:self action:@selector(backAction)];
         self.navigationBarView.leftButton = leftButton;
         
