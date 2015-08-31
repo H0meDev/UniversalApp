@@ -1,26 +1,27 @@
 //
-//  LastViewController.m
+//  LeftPageViewController.m
 //  UniversalApp
 //
-//  Created by Think on 15/8/27.
+//  Created by Think on 15/8/30.
 //  Copyright (c) 2015年 think. All rights reserved.
 //
 
-#import "LastViewController.h"
+#import "LeftPageViewController.h"
 #import "NextViewController.h"
 
-@interface LastViewController ()
+@interface LeftPageViewController ()
 
 @end
 
-@implementation LastViewController
+@implementation LeftPageViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.navigationBarView.title = @"Last";
+    self.enableBackButton = NO;
+    self.navigationBarView.title = @"Left";
     
     UButton *button = [UButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);

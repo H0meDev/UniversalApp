@@ -216,11 +216,6 @@
 
 #pragma mark - Methods
 
-- (void)refreshContentUserInterface;
-{
-    [self performOnMainThread:@selector(customizeRelayout)];
-}
-
 - (void)pushViewController:(UIViewController *)viewController
 {
     [self pushViewController:viewController animated:YES];
@@ -300,12 +295,6 @@
     self.contentView.originX = 0;
     [self.view addSubview:self.contentView];
     [self.view bringSubviewToFront:self.contentView];
-    
-    // For status & navigation
-    UNavigationController *navi = (UNavigationController *)self.navigationController;
-    if (checkClass(navi, UNavigationController)) {
-        [navi setValue:self forKey:@"viewController"];
-    }
 }
 
 #pragma mark - Callback

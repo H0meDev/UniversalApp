@@ -1,13 +1,13 @@
 //
-//  HomePageViewController.h
+//  RightPageViewController.h
 //  UniversalApp
 //
-//  Created by Think on 15/8/26.
+//  Created by Think on 15/8/30.
 //  Copyright (c) 2015年 think. All rights reserved.
 //
 
 #import "BaseViewController.h"
 
-@interface HomePageViewController : BaseViewController
+@interface RightPageViewController : BaseViewController
 
 @end

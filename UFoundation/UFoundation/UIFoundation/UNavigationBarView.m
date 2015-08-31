@@ -192,7 +192,7 @@
     CGFloat centerX = (screenWidth() - _contentView.titleLabel.sizeWidth) / 2.0;
     CGFloat progress = (screenWidth() - fabs(originX)) / screenWidth();
     CGFloat titleAlpha = powf(progress, 2.0);
-    CGFloat buttonAlpha = powf(progress, 3.0);
+    CGFloat buttonAlpha = powf(titleAlpha, 2.0);
     
     if (originX >= 0) {
         _contentView.titleLabel.alpha = titleAlpha;
@@ -201,16 +201,20 @@
         CGFloat roriginX = originX + screenWidth();
         _contentView.titleLabel.alpha = buttonAlpha;
         if (buttonAlpha > 0.01) {
-            _contentView.titleLabel.originX = 24 + roriginX * 0.32;
+            _contentView.titleLabel.originX = 24 + roriginX * 0.35;
         } else {
             _contentView.titleLabel.originX = centerX + originX * 0.5;
         }
     }
     
     if (_leftButton) {
-        UILabel *titleLabel = [_leftButton valueForKey:@"titleLabel"];
+        _leftButton.enabled = (originX > 0)?NO:YES;
+        ULabel *titleLabel = [_leftButton valueForKey:@"titleLabel"];
         titleLabel.alpha = buttonAlpha;
-        titleLabel.originX = 24 + originX * 0.32;
+        titleLabel.originX = 24 + originX * 0.35;
+        
+        UImageView *imageView = [_leftButton valueForKey:@"imageView"];
+        imageView.alpha = (originX >= 0)?buttonAlpha:1;
     }
     
     if (_rightButton) {

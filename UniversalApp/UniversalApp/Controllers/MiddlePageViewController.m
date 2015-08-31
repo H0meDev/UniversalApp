@@ -1,19 +1,19 @@
 //
-//  HomePageViewController.m
+//  MiddlePageViewController.m
 //  UniversalApp
 //
-//  Created by Think on 15/8/26.
+//  Created by Think on 15/8/30.
 //  Copyright (c) 2015年 think. All rights reserved.
 //
 
-#import "HomePageViewController.h"
+#import "MiddlePageViewController.h"
 #import "NextViewController.h"
 
-@interface HomePageViewController ()
+@interface MiddlePageViewController ()
 
 @end
 
-@implementation HomePageViewController
+@implementation MiddlePageViewController
 
 - (void)viewDidLoad
 {
@@ -21,7 +21,7 @@
     // Do any additional setup after loading the view.
     
     self.enableBackButton = NO;
-    self.navigationBarView.title = NSLocalizedString(@"HomePageTitle", /*首页*/);
+    self.navigationBarView.title = @"Middle";
     
     UButton *button = [UButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);
@@ -50,6 +50,7 @@
 - (void)buttonAction
 {
     NextViewController *next = [[NextViewController alloc]init];
+    [next.navigationBarView.leftButton setTitle:self.navigationBarView.title];
     [self pushViewController:next];
 }
 

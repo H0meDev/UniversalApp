@@ -7,7 +7,9 @@
 //
 
 #import "HomeTabViewController.h"
-#import "HomePageViewController.h"
+#import "LeftPageViewController.h"
+#import "MiddlePageViewController.h"
+#import "RightPageViewController.h"
 
 @interface HomeTabViewController ()
 {
@@ -60,9 +62,9 @@
 
 - (void)initTabControllers
 {
-    HomePageViewController *left = [[HomePageViewController alloc]init];
-    HomePageViewController *middle = [[HomePageViewController alloc]init];
-    HomePageViewController *right = [[HomePageViewController alloc]init];
+    LeftPageViewController *left = [[LeftPageViewController alloc]init];
+    MiddlePageViewController *middle = [[MiddlePageViewController alloc]init];
+    RightPageViewController *right = [[RightPageViewController alloc]init];
     
     self.viewControllers = @[left, middle, right];
     

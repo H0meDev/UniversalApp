@@ -21,7 +21,6 @@
     // Do any additional setup after loading the view.
     
     self.navigationBarView.title = @"Next";
-    [self.navigationBarView.leftButton setTitle:@"Home"];
     
     UButton *button = [UButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);
@@ -50,6 +49,7 @@
 - (void)buttonAction
 {
     LastViewController *next = [[LastViewController alloc]init];
+    [next.navigationBarView.leftButton setTitle:self.navigationBarView.title];
     [self pushViewController:next];
 }
 

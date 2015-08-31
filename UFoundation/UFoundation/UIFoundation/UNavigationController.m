@@ -147,15 +147,35 @@
 
 #pragma mark - Methods
 
+- (void)refreshBarUserInterface
+{
+    UIViewController *controller = [self.viewControllers lastObject];
+    UViewController *theController = [self controllerWith:controller];
+    [self setViewController:theController];
+}
+
 - (void)setViewController:(UViewController *)viewController
 {
-    _lastStatusView = _currentStatusView;
-    _lastNavigationView = _currentNavigationView;
+    _viewController = viewController;
+    
+    NSInteger count = self.viewControllers.count;
+    UIViewController *controller = self.viewControllers[count - 1];
+    if (controller) {
+        if (controller == viewController) {
+            if (count >= 2) {
+                controller = self.viewControllers[count - 2];
+            }
+        }
+        
+        UViewController *theController = [self controllerWith:controller];
+        _lastStatusView = theController.statusBarView;
+        _lastNavigationView = theController.navigationBarView;
+    }
     
     _lastStatusView.hidden = YES;
     _lastNavigationView.hidden = YES;
-    
-    _viewController = viewController;
+    _currentStatusView.hidden = YES;
+    _currentNavigationView.hidden = YES;
     
     _currentStatusView = viewController.statusBarView;
     _currentNavigationView = viewController.navigationBarView;
@@ -164,19 +184,12 @@
     _currentNavigationView.hidden = NO;
     
     [self.contentView addSubview:_currentStatusView];
-    [self.contentView bringSubviewToFront:_currentStatusView];
     [self.contentView addSubview:_currentNavigationView];
+    [self.contentView bringSubviewToFront:_currentStatusView];
     [self.contentView bringSubviewToFront:_currentNavigationView];
     
     // Refresh status bar style
     [self setNeedsStatusBarAppearanceUpdate];
-    
-    NSLog(@"SET CONTROLLER:%@", NSStringFromClass(viewController.class));
-}
-
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
-{
-    //
 }
 
 - (BOOL)isValidateInPoint:(CGPoint)point
@@ -247,7 +260,10 @@
             // Remove shadow
             [weakself.shadowView removeFromSuperview];
             
-            // If current is not UTabBarController
+            // Refresh bar
+            [self refreshBarUserInterface];
+            
+            // If current is UTabBarController
             UIViewController *currentController = [weakself.viewControllers lastObject];
             if (checkClass(currentController, UTabBarController)) {
                 [currentController viewWillAppear:NO];
@@ -344,6 +360,45 @@
     [self setNavigationBarHidden:hidden animated:NO];
 }
 
+- (UViewController *)controllerWith:(UIViewController *)viewController
+{
+    while (1) {
+        if (checkClass(viewController, UViewController)) {
+            return (UViewController *)viewController;
+        } else if (checkClass(viewController, UTabBarController)) {
+            UTabBarController *tabController = (UTabBarController *)viewController;
+            viewController = tabController.selectedViewController;
+        } else if (checkClass(viewController, UNavigationController)) {
+            UNavigationController *navController = (UNavigationController *)viewController;
+            viewController = navController.visibleViewController;
+        }
+    }
+}
+
+- (void)pushAnimation
+{
+    [self barAnimationWithX:screenWidth()];
+    [UIView animateWithDuration:animationSlowDuration() animations:^{
+        [self barAnimationWithX:0];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [self refreshBarUserInterface];
+        }
+    }];
+}
+
+- (void)popAnimation
+{
+    [self barAnimationWithX:0];
+    [UIView animateWithDuration:animationDuration() animations:^{
+        [self barAnimationWithX:screenWidth()];
+    }completion:^(BOOL finished) {
+        if (finished) {
+            [self refreshBarUserInterface];
+        }
+    }];
+}
+
 #pragma mark - Override
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -352,9 +407,16 @@
         return;
     }
     
-    NSLog(@"PUSH ACTION: %@", NSStringFromClass(viewController.class));
-    
     [super pushViewController:viewController animated:animated];
+    
+    // Reset bars
+    UViewController *controller = [self controllerWith:viewController];
+    [self setViewController:controller];
+    
+    if (animated) {
+        // Push animation
+        [self pushAnimation];
+    }
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated
@@ -362,8 +424,6 @@
     if (_isGestureMoving) {
         return nil;
     }
-    
-    NSLog(@"POP ACTION");
     
     NSInteger count = _viewController.countOfControllerToPop + 1;
     NSInteger index = self.viewControllers.count - count;
@@ -375,6 +435,15 @@
         
         UIViewController *controller = self.viewControllers[index];
         [super popToViewController:controller animated:animated];
+        
+        if (animated) {
+            // Pop animation
+            [self popAnimation];
+        } else {
+            UIViewController *controller = [self.viewControllers lastObject];
+            UViewController *theController = [self controllerWith:controller];
+            [self setViewController:theController];
+        }
         
         return controller;
     }

@@ -7,9 +7,9 @@
 //
 
 #import "UDefines.h"
+#import "NSObject+UAExtension.h"
 #import "UTabBarController.h"
 #import "UNavigationController.h"
-
 
 @interface UTabBarController ()
 
@@ -88,6 +88,16 @@
     }
     
     return (UViewController *)controller;
+}
+
+- (void)setSelectedIndex:(NSUInteger)index
+{
+    [super setSelectedIndex:index];
+    
+    if (checkClass(self.navigationController, UNavigationController)) {
+        UNavigationController *controller = (UNavigationController *)self.navigationController;
+        [controller performWithName:@"refreshBarUserInterface"];
+    }
 }
 
 #pragma mark - Methods

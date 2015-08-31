@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		F50233311B70E3AA00DB94EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F50233331B70E3AA00DB94EB /* Localizable.strings */; };
 		F511C1DC1B6F2A5F00DBAECE /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F511C1DB1B6F2A5F00DBAECE /* Resource.bundle */; };
-		F51C116D1B905B6900F29C3F /* HomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11541B905B6900F29C3F /* HomePageViewController.m */; };
+		F515080C1B92F60D00C12A87 /* LeftPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F515080B1B92F60D00C12A87 /* LeftPageViewController.m */; };
+		F51508101B92F61E00C12A87 /* MiddlePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F515080F1B92F61E00C12A87 /* MiddlePageViewController.m */; };
+		F51508131B92F62D00C12A87 /* RightPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51508121B92F62D00C12A87 /* RightPageViewController.m */; };
 		F51C116E1B905B6900F29C3F /* HomeTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11561B905B6900F29C3F /* HomeTabViewController.m */; };
 		F51C116F1B905B6900F29C3F /* LastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11581B905B6900F29C3F /* LastViewController.m */; };
 		F51C11701B905B6900F29C3F /* NextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C115A1B905B6900F29C3F /* NextViewController.m */; };
@@ -51,8 +53,12 @@
 		F50233341B70E3AC00DB94EB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		F502DA191B709D0D00AC5B52 /* UniversalApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UniversalApp-Prefix.pch"; sourceTree = "<group>"; };
 		F511C1DB1B6F2A5F00DBAECE /* Resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Resource.bundle; path = ../UFoundation/Resource.bundle; sourceTree = "<group>"; };
-		F51C11531B905B6900F29C3F /* HomePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePageViewController.h; sourceTree = "<group>"; };
-		F51C11541B905B6900F29C3F /* HomePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePageViewController.m; sourceTree = "<group>"; };
+		F515080A1B92F60D00C12A87 /* LeftPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftPageViewController.h; sourceTree = "<group>"; };
+		F515080B1B92F60D00C12A87 /* LeftPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftPageViewController.m; sourceTree = "<group>"; };
+		F515080E1B92F61E00C12A87 /* MiddlePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiddlePageViewController.h; sourceTree = "<group>"; };
+		F515080F1B92F61E00C12A87 /* MiddlePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MiddlePageViewController.m; sourceTree = "<group>"; };
+		F51508111B92F62D00C12A87 /* RightPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RightPageViewController.h; sourceTree = "<group>"; };
+		F51508121B92F62D00C12A87 /* RightPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightPageViewController.m; sourceTree = "<group>"; };
 		F51C11551B905B6900F29C3F /* HomeTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTabViewController.h; sourceTree = "<group>"; };
 		F51C11561B905B6900F29C3F /* HomeTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTabViewController.m; sourceTree = "<group>"; };
 		F51C11571B905B6900F29C3F /* LastViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastViewController.h; sourceTree = "<group>"; };
@@ -134,14 +140,18 @@
 		F51C11521B905B6900F29C3F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F51C11531B905B6900F29C3F /* HomePageViewController.h */,
-				F51C11541B905B6900F29C3F /* HomePageViewController.m */,
 				F51C11551B905B6900F29C3F /* HomeTabViewController.h */,
 				F51C11561B905B6900F29C3F /* HomeTabViewController.m */,
 				F51C11571B905B6900F29C3F /* LastViewController.h */,
 				F51C11581B905B6900F29C3F /* LastViewController.m */,
 				F51C11591B905B6900F29C3F /* NextViewController.h */,
 				F51C115A1B905B6900F29C3F /* NextViewController.m */,
+				F515080A1B92F60D00C12A87 /* LeftPageViewController.h */,
+				F515080B1B92F60D00C12A87 /* LeftPageViewController.m */,
+				F515080E1B92F61E00C12A87 /* MiddlePageViewController.h */,
+				F515080F1B92F61E00C12A87 /* MiddlePageViewController.m */,
+				F51508111B92F62D00C12A87 /* RightPageViewController.h */,
+				F51508121B92F62D00C12A87 /* RightPageViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -415,17 +425,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F51508101B92F61E00C12A87 /* MiddlePageViewController.m in Sources */,
 				F51C11741B905B6900F29C3F /* NetworkModel.m in Sources */,
 				F51C11771B905B6900F29C3F /* UserInfo.m in Sources */,
+				F515080C1B92F60D00C12A87 /* LeftPageViewController.m in Sources */,
 				F5687D351B022B640073594C /* AppDelegate.mm in Sources */,
 				F51C116F1B905B6900F29C3F /* LastViewController.m in Sources */,
 				F51C116E1B905B6900F29C3F /* HomeTabViewController.m in Sources */,
 				F51C118D1B905BD200F29C3F /* BaseTabBarController.m in Sources */,
 				F51C11921B905BD200F29C3F /* BaseTableViewCell.m in Sources */,
 				F51C118C1B905BD200F29C3F /* BaseNavigationController.m in Sources */,
+				F51508131B92F62D00C12A87 /* RightPageViewController.m in Sources */,
 				F51C11721B905B6900F29C3F /* KeyValueObserver.m in Sources */,
 				F51C11701B905B6900F29C3F /* NextViewController.m in Sources */,
-				F51C116D1B905B6900F29C3F /* HomePageViewController.m in Sources */,
 				F51C11901B905BD200F29C3F /* BaseScrollView.m in Sources */,
 				F51C11731B905B6900F29C3F /* LocalNotification.m in Sources */,
 				F51C11711B905B6900F29C3F /* GlobalManager.m in Sources */,

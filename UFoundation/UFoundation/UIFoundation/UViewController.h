@@ -51,11 +51,6 @@
 @property (nonatomic, assign) NSUInteger countOfControllerToPop;
 
 /*
- * Refresh user interface
- */
-- (void)refreshContentUserInterface;
-
-/*
  * If enableGuesture is YES, these methods will work
  */
 - (void)controllerWillMove;
