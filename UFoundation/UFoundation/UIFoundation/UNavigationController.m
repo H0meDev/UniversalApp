@@ -227,7 +227,7 @@
         [lastContentView addSubview:self.shadowView];
         
         // Bar animation
-        [self barAnimationWithX:xvalue];
+        [self repositionBarsWithX:xvalue];
         
         // Callback
         if (_viewController && [_viewController respondsToSelector:@selector(controllerIsMovingWith:)]) {
@@ -236,7 +236,7 @@
     }
 }
 
-- (void)barAnimationWithX:(CGFloat)xvalue
+- (void)repositionBarsWithX:(CGFloat)xvalue
 {
     _currentNavigationView.originX = xvalue;
     
@@ -377,9 +377,9 @@
 
 - (void)pushAnimation
 {
-    [self barAnimationWithX:screenWidth()];
+    [self repositionBarsWithX:screenWidth()];
     [UIView animateWithDuration:animationSlowDuration() animations:^{
-        [self barAnimationWithX:0];
+        [self repositionBarsWithX:0];
     } completion:^(BOOL finished) {
         if (finished) {
             [self refreshBarUserInterface];
@@ -389,9 +389,9 @@
 
 - (void)popAnimation
 {
-    [self barAnimationWithX:0];
-    [UIView animateWithDuration:animationDuration() animations:^{
-        [self barAnimationWithX:screenWidth()];
+    [self repositionBarsWithX:0];
+    [UIView animateWithDuration:animationSlowDuration() animations:^{
+        [self repositionBarsWithX:screenWidth()];
     }completion:^(BOOL finished) {
         if (finished) {
             [self refreshBarUserInterface];

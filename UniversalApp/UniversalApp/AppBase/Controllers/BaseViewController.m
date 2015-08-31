@@ -71,7 +71,7 @@
         [leftButton setHAlpha:0.3];
         [leftButton setTitle:@"返回"];
         [leftButton setTitleColor:sysWhiteColor()];
-        [leftButton setTitleFont:systemFont(17)];
+        [leftButton setTitleFont:systemFont(15)];
         [leftButton addTarget:self action:@selector(backAction)];
         self.navigationBarView.leftButton = leftButton;
         
