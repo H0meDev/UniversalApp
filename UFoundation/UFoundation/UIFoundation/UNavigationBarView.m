@@ -206,7 +206,7 @@
     CGFloat titleAlpha = powf(progress, 2.0);
     CGFloat buttonAlpha = powf(titleAlpha, 2.0);
     
-    if (!isLast) {
+    if (xvalue >= 0) {
         _contentView.titleLabel.alpha = titleAlpha;
         _contentView.titleLabel.originX = centerX + xvalue * 0.5;
     } else {
