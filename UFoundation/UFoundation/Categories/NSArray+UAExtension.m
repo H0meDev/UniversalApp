@@ -13,68 +13,50 @@
 
 - (NSArray *)addObject:(id)object
 {
-    @autoreleasepool
-    {
-        NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
-        [marray addObject:object];
-        
-        return [marray copy];
-    }
+    NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
+    [marray addObject:object];
+    
+    return marray;
 }
 
 - (NSArray *)insertObject:(id)object atIndex:(NSUInteger)index
 {
-    @autoreleasepool
-    {
-        NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
-        [marray insertObject:object atIndex:index];
-        
-        return [marray copy];
-    }
+    NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
+    [marray insertObject:object atIndex:index];
+    
+    return marray;
 }
 
 - (NSArray *)removeLastObject
 {
-    @autoreleasepool
-    {
-        NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
-        [marray removeLastObject];
-        
-        return [marray copy];
-    }
+    NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
+    [marray removeLastObject];
+    
+    return marray;
 }
 
 - (NSArray *)removeObjectAtIndex:(NSUInteger)index
 {
-    @autoreleasepool
-    {
-        NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
-        [marray removeObjectAtIndex:index];
-        
-        return [marray copy];
-    }
+    NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
+    [marray removeObjectAtIndex:index];
+    
+    return marray;
 }
 
 - (NSArray *)replaceObjectAtIndex:(NSUInteger)index withObject:(id)object
 {
-    @autoreleasepool
-    {
-        NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
-        [marray replaceObjectAtIndex:index withObject:object];
-        
-        return [marray copy];
-    }
+    NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
+    [marray replaceObjectAtIndex:index withObject:object];
+    
+    return marray;
 }
 
 - (NSArray *)appendArray:(NSArray *)array
 {
-    @autoreleasepool
-    {
-        NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
-        [marray arrayByAddingObjectsFromArray:array];
-        
-        return [marray copy];
-    }
+    NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
+    [marray arrayByAddingObjectsFromArray:array];
+    
+    return marray;
 }
 
 @end

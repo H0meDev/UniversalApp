@@ -13,25 +13,24 @@
 
 - (NSString *)JSONString
 {
-    @autoreleasepool
-    {
-        NSData *data = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *json = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-        json = [json stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-        
-        return json;
+    NSError *error = nil;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingPrettyPrinted error:&error];
+    if (error) {
+        return nil;
     }
+    
+    NSString *json = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    json = [json stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    
+    return json;
 }
 
 - (NSDictionary *)setValue:(id)value forKey:(NSString *)key
 {
-    @autoreleasepool
-    {
-        NSMutableDictionary *mdict = [NSMutableDictionary dictionaryWithDictionary:self];
-        [mdict setValue:value forKey:key];
-        
-        return [mdict copy];
-    }
+    NSMutableDictionary *mdict = [NSMutableDictionary dictionaryWithDictionary:self];
+    [mdict setValue:value forKey:key];
+    
+    return mdict;
 }
 
 @end
