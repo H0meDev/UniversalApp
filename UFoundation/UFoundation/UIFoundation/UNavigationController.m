@@ -285,13 +285,21 @@
 
 - (void)repositionBarsWithX:(CGFloat)xvalue
 {
-    _currentNavigationView.originX = xvalue;
-    
     if (_lastNavigationView) {
         _lastNavigationView.hidden = NO;
-        _lastNavigationView.originX = xvalue - screenWidth();
         [self.contentView addSubview:_lastNavigationView];
         [self.contentView insertSubview:_lastNavigationView belowSubview:_currentNavigationView];
+        
+        // Reposition last
+        [_lastNavigationView performWithName:@"repositionLastWith:" with:@(xvalue - screenWidth())];
+    }
+    
+    if (!_lastNavigationView.leftButton) {
+        // As last
+        [_currentNavigationView performWithName:@"repositionLastWith:" with:@(xvalue)];
+    } else {
+        // As current
+        [_currentNavigationView performWithName:@"repositionCurrentWith:" with:@(xvalue)];
     }
     
     CGFloat alpha = xvalue / screenWidth();

@@ -61,6 +61,7 @@
     
     UImageView *bottomLineView = [[UImageView alloc]init];
     bottomLineView.frame = rectMake(0, naviHeight() - naviBLineH(), screenWidth(), naviBLineH());
+    bottomLineView.alpha = 0.3;
     bottomLineView.backgroundColor = sysLightGrayColor();
     [self addSubview:bottomLineView];
     _bottomLineView = bottomLineView;
@@ -188,34 +189,46 @@
     _contentView.titleLabel.font = font;
 }
 
-- (void)setOriginX:(CGFloat)originX
+- (void)repositionLastWith:(NSNumber *)xvalue
+{
+    [self repositionWith:[xvalue floatValue] isLast:YES];
+}
+
+- (void)repositionCurrentWith:(NSNumber *)xvalue
+{
+    [self repositionWith:[xvalue floatValue] isLast:NO];
+}
+
+- (void)repositionWith:(CGFloat)xvalue isLast:(BOOL)isLast
 {
     CGFloat centerX = (screenWidth() - _contentView.titleLabel.sizeWidth) / 2.0;
-    CGFloat progress = (screenWidth() - fabs(originX)) / screenWidth();
+    CGFloat progress = (screenWidth() - fabs(xvalue)) / screenWidth();
     CGFloat titleAlpha = powf(progress, 2.0);
     CGFloat buttonAlpha = powf(titleAlpha, 2.0);
     
-    if (originX >= 0) {
+    if (!isLast) {
         _contentView.titleLabel.alpha = titleAlpha;
-        _contentView.titleLabel.originX = centerX + originX * 0.5;
+        _contentView.titleLabel.originX = centerX + xvalue * 0.5;
     } else {
-        CGFloat roriginX = originX + screenWidth();
+        CGFloat rxvalue = xvalue + screenWidth();
         _contentView.titleLabel.alpha = buttonAlpha;
         if (buttonAlpha >= 0.01) {
-            _contentView.titleLabel.originX = 24 + roriginX * 0.35;
+            _contentView.titleLabel.originX = 24 + rxvalue * 0.35;
         } else {
-            _contentView.titleLabel.originX = centerX + originX * 0.5;
+            _contentView.titleLabel.originX = centerX + xvalue * 0.5;
         }
     }
     
     if (_leftButton) {
-        _leftButton.enabled = (originX > 0)?NO:YES;
+        _leftButton.enabled = (xvalue > 0)?NO:YES;
         ULabel *titleLabel = [_leftButton valueForKey:@"titleLabel"];
         titleLabel.alpha = buttonAlpha;
-        titleLabel.originX = 24 + originX * 0.35;
+        titleLabel.originX = 24 + xvalue * 0.35;
         
-        UImageView *imageView = [_leftButton valueForKey:@"imageView"];
-        imageView.alpha = (originX >= 0)?buttonAlpha:1;
+        if (isLast) {
+            UImageView *imageView = [_leftButton valueForKey:@"imageView"];
+            imageView.alpha = buttonAlpha;
+        }
     }
     
     if (_rightButton) {

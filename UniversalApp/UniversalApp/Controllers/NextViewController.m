@@ -25,6 +25,12 @@
     self.navigationBarView.backgroundColor = sysClearColor();
     self.containerView.backgroundColor = sysYellowColor();
     
+    CGFloat height = statusHeight() + naviHeight();
+    UView *navigationView = [[UView alloc]init];
+    navigationView.frame = rectMake(0, - height, screenWidth(), height);
+    navigationView.backgroundColor = sysYellowColor();
+    [self addSubview:navigationView];
+    
     UButton *button = [UButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);
     [button setTitle:@"Push"];

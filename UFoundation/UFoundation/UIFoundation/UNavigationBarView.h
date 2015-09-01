@@ -22,9 +22,4 @@
 @property (nonatomic, retain) UNavigationBarButton *leftButton;
 @property (nonatomic, retain) UNavigationBarButton *rightButton;
 
-- (void)stretch;
-- (void)collapse;
-- (void)stretchWithAnimation;
-- (void)collapseWithAnimation;
-
 @end

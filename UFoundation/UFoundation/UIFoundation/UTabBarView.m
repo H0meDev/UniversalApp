@@ -36,6 +36,7 @@
     
     UIImageView *topLineView = [[UIImageView alloc]init];
     topLineView.frame = rectMake(0, 0, screenWidth(), tabBLineH());
+    topLineView.alpha = 0.3;
     topLineView.backgroundColor = sysLightGrayColor();
     [self addSubview:topLineView];
     _topLineView = topLineView;

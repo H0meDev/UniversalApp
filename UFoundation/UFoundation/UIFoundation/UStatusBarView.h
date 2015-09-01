@@ -10,9 +10,4 @@
 
 @interface UStatusBarView : UIView
 
-- (void)stretch;
-- (void)collapse;
-- (void)stretchWithAnimation;
-- (void)collapseWithAnimation;
-
 @end
