@@ -24,12 +24,39 @@
     self.navigationBarView.title = @"Last";
     [self.navigationBarView.leftButton setTitle:@"Next"];
     
-    UButton *button = [UButton button];
-    button.frame = rectMake(0, 160, screenWidth(), 50);
-    [button setTitle:@"Push"];
-    button.backgroundColor = sysRedColor();
-    [button addTarget:self action:@selector(buttonAction)];
-    [self addSubview:button];
+//    UButton *button = [UButton button];
+//    button.frame = rectMake(0, 160, screenWidth(), 50);
+//    [button setTitle:@"Push"];
+//    button.backgroundColor = sysRedColor();
+//    [button addTarget:self action:@selector(buttonAction)];
+//    [self addSubview:button];
+    
+    UTableView *tableView = [[UTableView alloc]init];
+    tableView.frame = rectMake(0, 0, screenWidth(), self.containerView.sizeHeight);
+    [self addSubview:tableView];
+    
+    NSMutableArray *sectionArray = [NSMutableArray array];
+    for (int i = 0; i < 10; i ++) {
+        UTableViewDataSection *section = [UTableViewDataSection section];
+        for (int j = 0; j < 3; j ++) {
+            UTableViewDataRow *row = [UTableViewDataRow row];
+            row.cellHeight = -1;
+            row.cellName = @"LastListItemCell";
+            [section addRow:row];
+        }
+        
+        if (i > 0) {
+            section.headerHeight = 5;
+        }
+        
+        if (i < 9) {
+            section.footerHeight = 5;
+        }
+        
+        [sectionArray addObject:section];
+    }
+    
+    tableView.sectionArray = sectionArray;
 }
 
 - (void)didReceiveMemoryWarning

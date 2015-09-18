@@ -158,6 +158,39 @@
     return self.originY + self.sizeHeight;
 }
 
+- (void)setScaleOriginX:(CGFloat)value
+{
+    self.originX = value * screenWidthScale();
+}
+
+- (void)setScaleOriginY:(CGFloat)value
+{
+    self.originY = value * screenWidthScale();
+}
+
+- (void)setScaleSizeWidth:(CGFloat)value
+{
+    self.sizeWidth = value * screenWidthScale();
+}
+
+- (void)setScaleSizeHeight:(CGFloat)value
+{
+    self.sizeHeight = value * screenWidthScale();
+}
+
+- (void)setScaleSize:(CGSize)size
+{
+    self.size = sizeMake(size.width * screenWidthScale(), size.height * screenWidthScale());
+}
+
+- (void)setScaleFrame:(CGRect)frame
+{
+    self.frame = rectMake(frame.origin.x * screenWidthScale(),
+                          frame.origin.y * screenWidthScale(),
+                          frame.size.width * screenWidthScale(),
+                          frame.size.height * screenWidthScale());
+}
+
 - (UIViewController *)viewController
 {
     UIResponder *responder = [self nextResponder];

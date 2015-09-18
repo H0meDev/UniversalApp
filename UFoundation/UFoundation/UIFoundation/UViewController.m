@@ -35,6 +35,10 @@
         // Initliaze
         self.countOfControllerToPop = 1;
         self.view.backgroundColor = sysWhiteColor();
+        
+        if (systemVersionFloat() >= 7.0) {
+            self.automaticallyAdjustsScrollViewInsets = NO;
+        }
     }
     
     return self;

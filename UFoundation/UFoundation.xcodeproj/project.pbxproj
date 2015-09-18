@@ -19,6 +19,8 @@
 		F51431CB1B89AE9300C2372E /* UTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F51431C91B89AE9300C2372E /* UTabBarButton.m */; };
 		F51431CE1B89AFFF00C2372E /* UBarButton.h in Headers */ = {isa = PBXBuildFile; fileRef = F51431CC1B89AFFF00C2372E /* UBarButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F51431CF1B89AFFF00C2372E /* UBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F51431CD1B89AFFF00C2372E /* UBarButton.m */; };
+		F515938B1BAC55440043FFE9 /* UIScrollView+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51593891BAC55440043FFE9 /* UIScrollView+UAExtension.h */; settings = {ASSET_TAGS = (); }; };
+		F515938C1BAC55440043FFE9 /* UIScrollView+UAExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F515938A1BAC55440043FFE9 /* UIScrollView+UAExtension.m */; settings = {ASSET_TAGS = (); }; };
 		F51C11CF1B90630300F29C3F /* NSArray+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51C11991B90630300F29C3F /* NSArray+UAExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F51C11D01B90630300F29C3F /* NSArray+UAExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C119A1B90630300F29C3F /* NSArray+UAExtension.m */; };
 		F51C11D11B90630300F29C3F /* NSData+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51C119B1B90630300F29C3F /* NSData+UAExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -113,6 +115,8 @@
 		F51431C91B89AE9300C2372E /* UTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UTabBarButton.m; path = UIFoundation/UTabBarButton.m; sourceTree = "<group>"; };
 		F51431CC1B89AFFF00C2372E /* UBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UBarButton.h; path = UIFoundation/UBarButton.h; sourceTree = "<group>"; };
 		F51431CD1B89AFFF00C2372E /* UBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UBarButton.m; path = UIFoundation/UBarButton.m; sourceTree = "<group>"; };
+		F51593891BAC55440043FFE9 /* UIScrollView+UAExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+UAExtension.h"; sourceTree = "<group>"; };
+		F515938A1BAC55440043FFE9 /* UIScrollView+UAExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+UAExtension.m"; sourceTree = "<group>"; };
 		F51C114D1B90567900F29C3F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		F51C11991B90630300F29C3F /* NSArray+UAExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+UAExtension.h"; sourceTree = "<group>"; };
 		F51C119A1B90630300F29C3F /* NSArray+UAExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+UAExtension.m"; sourceTree = "<group>"; };
@@ -249,6 +253,8 @@
 				F51C11FE1B90633900F29C3F /* UIImageView+UAExtension.m */,
 				F51C11AB1B90630300F29C3F /* UILabel+UAExtension.h */,
 				F51C11AC1B90630300F29C3F /* UILabel+UAExtension.m */,
+				F51593891BAC55440043FFE9 /* UIScrollView+UAExtension.h */,
+				F515938A1BAC55440043FFE9 /* UIScrollView+UAExtension.m */,
 				F51C11AD1B90630300F29C3F /* UITableView+UAExtension.h */,
 				F51C11AE1B90630300F29C3F /* UITableView+UAExtension.m */,
 				F51C11AF1B90630300F29C3F /* UITableViewCell+UAExtension.h */,
@@ -465,6 +471,7 @@
 				F51C11F71B90630300F29C3F /* UProgressHUD.h in Headers */,
 				F51C11D11B90630300F29C3F /* NSData+UAExtension.h in Headers */,
 				F51C11E71B90630300F29C3F /* UITextField+UAExtension.h in Headers */,
+				F515938B1BAC55440043FFE9 /* UIScrollView+UAExtension.h in Headers */,
 				F51C11F51B90630300F29C3F /* UOperationQueue.h in Headers */,
 				F51C11DF1B90630300F29C3F /* UIImage+UAExtension.h in Headers */,
 				F51C11E11B90630300F29C3F /* UILabel+UAExtension.h in Headers */,
@@ -613,6 +620,7 @@
 				F51C11F01B90630300F29C3F /* UHTTPOperation.m in Sources */,
 				F56C2CE01B0444D300D5DF66 /* UTableView.m in Sources */,
 				F51C11E41B90630300F29C3F /* UITableView+UAExtension.m in Sources */,
+				F515938C1BAC55440043FFE9 /* UIScrollView+UAExtension.m in Sources */,
 				F51C11DE1B90630300F29C3F /* UIColor+UAExtension.m in Sources */,
 				F51431C71B89AE7800C2372E /* UNavigationbarButton.m in Sources */,
 				F56C2CE21B0444D300D5DF66 /* UTableViewCell.m in Sources */,

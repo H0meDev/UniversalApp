@@ -12,6 +12,8 @@
 		F515080C1B92F60D00C12A87 /* LeftPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F515080B1B92F60D00C12A87 /* LeftPageViewController.m */; };
 		F51508101B92F61E00C12A87 /* MiddlePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F515080F1B92F61E00C12A87 /* MiddlePageViewController.m */; };
 		F51508131B92F62D00C12A87 /* RightPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51508121B92F62D00C12A87 /* RightPageViewController.m */; };
+		F51593901BAC5A900043FFE9 /* LastListItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F515938E1BAC5A900043FFE9 /* LastListItemCell.m */; settings = {ASSET_TAGS = (); }; };
+		F51593911BAC5A900043FFE9 /* LastListItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F515938F1BAC5A900043FFE9 /* LastListItemCell.xib */; settings = {ASSET_TAGS = (); }; };
 		F51C116E1B905B6900F29C3F /* HomeTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11561B905B6900F29C3F /* HomeTabViewController.m */; };
 		F51C116F1B905B6900F29C3F /* LastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11581B905B6900F29C3F /* LastViewController.m */; };
 		F51C11701B905B6900F29C3F /* NextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C115A1B905B6900F29C3F /* NextViewController.m */; };
@@ -59,6 +61,9 @@
 		F515080F1B92F61E00C12A87 /* MiddlePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MiddlePageViewController.m; sourceTree = "<group>"; };
 		F51508111B92F62D00C12A87 /* RightPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RightPageViewController.h; sourceTree = "<group>"; };
 		F51508121B92F62D00C12A87 /* RightPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightPageViewController.m; sourceTree = "<group>"; };
+		F515938D1BAC5A900043FFE9 /* LastListItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastListItemCell.h; sourceTree = "<group>"; };
+		F515938E1BAC5A900043FFE9 /* LastListItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastListItemCell.m; sourceTree = "<group>"; };
+		F515938F1BAC5A900043FFE9 /* LastListItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LastListItemCell.xib; sourceTree = "<group>"; };
 		F51C11551B905B6900F29C3F /* HomeTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTabViewController.h; sourceTree = "<group>"; };
 		F51C11561B905B6900F29C3F /* HomeTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTabViewController.m; sourceTree = "<group>"; };
 		F51C11571B905B6900F29C3F /* LastViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastViewController.h; sourceTree = "<group>"; };
@@ -189,6 +194,9 @@
 		F51C117A1B905B9400F29C3F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F515938D1BAC5A900043FFE9 /* LastListItemCell.h */,
+				F515938E1BAC5A900043FFE9 /* LastListItemCell.m */,
+				F515938F1BAC5A900043FFE9 /* LastListItemCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -410,6 +418,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5687D3D1B022B640073594C /* Images.xcassets in Resources */,
+				F51593911BAC5A900043FFE9 /* LastListItemCell.xib in Resources */,
 				F50233311B70E3AA00DB94EB /* Localizable.strings in Resources */,
 				F5859F471B70B0BC004EC7D2 /* InfoPlist.strings in Resources */,
 				F511C1DC1B6F2A5F00DBAECE /* Resource.bundle in Resources */,
@@ -434,6 +443,7 @@
 				F51C116E1B905B6900F29C3F /* HomeTabViewController.m in Sources */,
 				F51C118D1B905BD200F29C3F /* BaseTabBarController.m in Sources */,
 				F51C11921B905BD200F29C3F /* BaseTableViewCell.m in Sources */,
+				F51593901BAC5A900043FFE9 /* LastListItemCell.m in Sources */,
 				F51C118C1B905BD200F29C3F /* BaseNavigationController.m in Sources */,
 				F51508131B92F62D00C12A87 /* RightPageViewController.m in Sources */,
 				F51C11721B905B6900F29C3F /* KeyValueObserver.m in Sources */,

@@ -7,7 +7,6 @@
 //
 
 #import "BaseTableView.h"
-//#import "MJRefresh.h"
 
 @implementation BaseTableView
 
@@ -18,15 +17,5 @@
     // Drawing code
 }
 */
-
-- (void)addHeaderRefreshWith:(id)target action:(SEL)selector
-{
-//    [self addLegendHeaderWithRefreshingTarget:self refreshingAction:selector];
-}
-
-- (void)addFooterRefreshWith:(id)target action:(SEL)selector
-{
-//    [self addLegendFooterWithRefreshingTarget:self refreshingAction:selector];
-}
 
 @end

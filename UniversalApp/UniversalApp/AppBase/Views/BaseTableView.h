@@ -10,7 +10,4 @@
 
 @interface BaseTableView : UTableView
 
-- (void)addHeaderRefreshWith:(id)target action:(SEL)selector;
-- (void)addFooterRefreshWith:(id)target action:(SEL)selector;
-
 @end

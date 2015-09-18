@@ -114,7 +114,8 @@ CG_INLINE CGRange CGRangeMake(CGFloat min, CGFloat max)
 #define screenWidth()       [UIScreen mainScreen].bounds.size.width
 #define screenHeight()      [UIScreen mainScreen].bounds.size.height
 #define screenBounds()      [UIScreen mainScreen].bounds
-#define screenSize()        [UIScreen mainScreen].bounds.size 
+#define screenSize()        [UIScreen mainScreen].bounds.size
+#define screenWidthScale()  screenWidth() / 320.
 
 // Class check
 #define checkClass(object, className)      [object isKindOfClass:[className class]]

@@ -70,6 +70,24 @@
 // Bottom padding
 - (CGFloat)paddingBottom;
 
+// Autolayout scale of originX
+- (void)setScaleOriginX:(CGFloat)value;
+
+// Autolayout scale of originY
+- (void)setScaleOriginY:(CGFloat)value;
+
+// Autolayout scale of sizeWidth
+- (void)setScaleSizeWidth:(CGFloat)value;
+
+// Autolayout scale of sizeHeight
+- (void)setScaleSizeHeight:(CGFloat)value;
+
+// Autolayout scale of size
+- (void)setScaleSize:(CGSize)size;
+
+// Autolayout scale of frame
+- (void)setScaleFrame:(CGRect)frame;
+
 // The controller of response
 - (UIViewController *)viewController;
 

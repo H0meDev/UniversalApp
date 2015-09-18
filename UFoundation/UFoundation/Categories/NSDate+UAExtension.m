@@ -6,7 +6,6 @@
 //
 
 #import "NSDate+UAExtension.h"
-#import "NSObject+UAExtension.h"
 
 @implementation NSDate (UAExtension)
 
