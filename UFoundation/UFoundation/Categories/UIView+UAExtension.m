@@ -12,35 +12,79 @@
 #import <objc/runtime.h>
 #import "UTimerBooster.h"
 
-@interface UIView (UAExtensionInner)
+@implementation UIViewLayoutParam
 
-@property (nonatomic, retain) UIImageView *indicatorView;
-
-@end
-
-@implementation UIView (UAExtensionInner)
-
-@dynamic indicatorView;
-
-- (UIImageView *)indicatorView
++ (UIViewLayoutParam *)param
 {
     @autoreleasepool
     {
-        UIImageView *_indicator = (UIImageView *)objc_getAssociatedObject(self, "UIView_indicatorView");
-        if (!_indicator) {
-            _indicator = [[UIImageView alloc]init];
-            _indicator.clipsToBounds = YES;
-            _indicator.userInteractionEnabled = YES;
-            objc_setAssociatedObject(self, "UIView_indicatorView", _indicator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        }
-        
-        return _indicator;
+        return [[UIViewLayoutParam alloc]init];
     }
 }
 
 @end
 
 @implementation UIView (UAExtension)
+
+- (UIViewController *)viewController
+{
+    UIResponder *responder = [self nextResponder];
+    while (!responder) {
+        if (checkClass(responder, UIViewController)) {
+            return (UIViewController *)responder.weakself;
+        }
+        
+        responder = [responder nextResponder];
+    }
+    
+    return nil;
+}
+
+- (UINavigationController *)navigationController
+{
+    return self.viewController.navigationController.weakself;
+}
+
+- (UITabBarController *)tabBarController
+{
+    return self.viewController.tabBarController.weakself;
+}
+
+- (void)removeAllSubviews
+{
+    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+}
+
+#pragma mark - Callback from super controller
+
+- (void)viewDidLoad
+{
+    //
+}
+
+- (void)viewWillAppear
+{
+    //
+}
+
+- (void)viewDidAppear
+{
+    //
+}
+
+- (void)viewWillDisappear
+{
+    //
+}
+
+- (void)viewDidDisappear
+{
+    //
+}
+
+@end
+
+@implementation UIView (UALayoutExtension)
 
 - (CGPoint)origin
 {
@@ -191,254 +235,142 @@
                           frame.size.height * screenWidthScale());
 }
 
-- (UIViewController *)viewController
+- (UIViewLayoutParam *)layoutParam
 {
-    UIResponder *responder = [self nextResponder];
-    while (!responder) {
-        if (checkClass(responder, UIViewController)) {
-            return (UIViewController *)responder.weakself;
+    return (UIViewLayoutParam *)objc_getAssociatedObject(self, "UIViewLayoutParam");
+}
+
+- (void)setLayoutParam:(UIViewLayoutParam *)param
+{
+    if (!checkClass(param, UIViewLayoutParam)) {
+        return;
+    }
+    
+    // Store
+    objc_setAssociatedObject(self, "UIViewLayoutParam", param, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    // Clear subviews
+    [self removeAllSubviews];
+    
+    switch (param.layoutType & 0xF0) {
+        case 0x10:
+        {
+            [self setLinearHLayout];
         }
-        
-        responder = [responder nextResponder];
-    }
-    
-    return nil;
-}
-
-- (UINavigationController *)navigationController
-{
-    return self.viewController.navigationController.weakself;
-}
-
-- (UITabBarController *)tabBarController
-{
-    return self.viewController.tabBarController.weakself;
-}
-
-#pragma mark - Callback from super controller
-
-- (void)viewDidLoad
-{
-    //
-}
-
-- (void)viewWillAppear
-{
-    //
-}
-
-- (void)viewDidAppear
-{
-    //
-}
-
-- (void)viewWillDisappear
-{
-    //
-}
-
-- (void)viewDidDisappear
-{
-    //
-}
-
-#pragma mark - HUD extension
-
-- (void)showWaitingWith:(NSString *)message
-{
-    @autoreleasepool
-    {
-        dispatch_async(main_queue(), ^{
-            [self dismissIndicatorView];
-            [self showIndicatorView];
+            break;
             
-            UIImageView *indicatorView = self.indicatorView;
-            
-            // Add indicator & title
-            UIActivityIndicatorView *indicator = self.indicator;
-            indicator.frame = rectMake(0, 5, 48, 48);
-            indicator.center = pointMake(indicatorView.sizeWidth / 2.0, 29);
-            [indicatorView addSubview:indicator];
-            [indicator startAnimating];
-            
-            UILabel *titleLabel = self.indicatorLabel;
-            titleLabel.frame = rectMake(0, 58, indicatorView.sizeWidth, 42);
-            titleLabel.text = message;
-            [indicatorView addSubview:titleLabel];
-            
-            [self showIndicatorAnimation];
-        });
-    }
-}
-
-- (void)showSuccessWith:(NSString *)message
-{
-    @autoreleasepool
-    {
-        dispatch_async(main_queue(), ^{
-            [self dismissIndicatorView];
-            [self showIndicatorView];
-            
-            UIImageView *indicatorView = self.indicatorView;
-            
-            // Add image & title
-            UIImageView *statusView = self.indicatorImage;
-            statusView.frame = rectMake(0, 15, 28, 28);
-            statusView.center = pointMake(indicatorView.sizeWidth / 2.0, 29);
-            statusView.image = loadBundleImage(@"Resource", @"hud_success_white");
-            [indicatorView addSubview:statusView];
-            
-            UILabel *titleLabel = self.indicatorLabel;
-            titleLabel.frame = rectMake(0, 58, indicatorView.sizeWidth, 42);
-            titleLabel.text = message;
-            [indicatorView addSubview:titleLabel];
-            
-            [self showIndicatorAnimation];
-            
-            [UTimerBooster addTarget:self sel:@selector(dismiss) time:1.0];
-        });
-    }
-}
-
-- (void)showErrorWith:(NSString *)message
-{
-    @autoreleasepool
-    {
-        dispatch_async(main_queue(), ^{
-            [self dismissIndicatorView];
-            [self showIndicatorView];
-            
-            UIImageView *indicatorView = self.indicatorView;
-            
-            // Add image & title
-            UIImageView *statusView = self.indicatorImage;
-            statusView.frame = rectMake(0, 15, 28, 28);
-            statusView.center = pointMake(indicatorView.sizeWidth / 2.0, 29);
-            statusView.image = loadBundleImage(@"Resource", @"hud_error_white");
-            [indicatorView addSubview:statusView];
-            
-            UILabel *titleLabel = self.indicatorLabel;
-            titleLabel.frame = rectMake(0, 58, indicatorView.sizeWidth, 42);
-            titleLabel.text = message;
-            [indicatorView addSubview:titleLabel];
-            
-            [self showIndicatorAnimation];
-            
-            [UTimerBooster addTarget:self sel:@selector(dismiss) time:1.0];
-        });
-    }
-}
-
-- (UIActivityIndicatorView *)indicator
-{
-    UIActivityIndicatorView *indicator = [UIActivityIndicatorView alloc];
-    indicator = [indicator initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    indicator.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin |
-                                  UIViewAutoresizingFlexibleTopMargin |
-                                  UIViewAutoresizingFlexibleRightMargin |
-                                  UIViewAutoresizingFlexibleLeftMargin);
-    
-    return indicator;
-}
-
-- (void)dismiss
-{
-    @autoreleasepool
-    {
-        dispatch_async(main_queue(), ^{
-            [self hideIndicatorAnimation];
-        });
-    }
-}
-
-- (void)showIndicatorView
-{
-    // Start timer
-    [UTimerBooster start];
-    
-    UIImageView *indicatorView = self.indicatorView;
-    indicatorView.frame = rectMake(0, 0, 160, 100);
-    indicatorView.center = pointMake(self.sizeWidth/2.0, self.sizeHeight/2.0);
-    indicatorView.layer.cornerRadius = 6;
-    indicatorView.backgroundColor = rgbaColor(0, 0, 0, 0.8);
-    [self addSubview:indicatorView];
-    [self bringSubviewToFront:indicatorView];
-}
-
-- (UIImageView *)indicatorImage
-{
-    @autoreleasepool
-    {
-        UIImageView *statusView = [[UIImageView alloc]init];
-        statusView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin |
-                                       UIViewAutoresizingFlexibleTopMargin |
-                                       UIViewAutoresizingFlexibleRightMargin |
-                                       UIViewAutoresizingFlexibleLeftMargin |
-                                       UIViewAutoresizingFlexibleWidth |
-                                       UIViewAutoresizingFlexibleHeight);
-        return statusView;
-    }
-}
-
-- (UILabel *)indicatorLabel
-{
-    @autoreleasepool
-    {
-        UILabel *titleLabel = [[UILabel alloc]init];
-        titleLabel.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin |
-                                       UIViewAutoresizingFlexibleTopMargin |
-                                       UIViewAutoresizingFlexibleRightMargin |
-                                       UIViewAutoresizingFlexibleLeftMargin |
-                                       UIViewAutoresizingFlexibleWidth |
-                                       UIViewAutoresizingFlexibleHeight);
-        titleLabel.font = systemFont(16);
-        titleLabel.textColor = sysWhiteColor();
-        titleLabel.backgroundColor = sysClearColor();
-        titleLabel.textAlignment = NSTextAlignmentCenter;
-        
-        return titleLabel;
-    }
-}
-
-- (void)showIndicatorAnimation
-{
-    UIImageView *indicatorView = self.indicatorView;
-    indicatorView.alpha = 0;
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        indicatorView.alpha = 1.0;
-    }];
-}
-
-- (void)hideIndicatorAnimation
-{
-    UIImageView *indicatorView = self.indicatorView;
-    indicatorView.alpha = 1.0;
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        indicatorView.alpha = 0;
-    } completion:^(BOOL finished) {
-        if (finished) {
-            [self dismissIndicatorView];
+        case 0x20:
+        {
+            [self setLinearVLayout];
         }
-    }];
+            break;
+            
+        case 0x30:
+        {
+            [self setGridLayout];
+        }
+            break;
+            
+        case 0x40:
+        {
+            [self setCenterLayout];
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
-- (void)dismissIndicatorView
+- (void)setLinearHLayout
 {
-    UIImageView *indicatorView = self.indicatorView;
-    for (UIView *view in indicatorView.subviews) {
-        if (checkClass(view, UIActivityIndicatorView)) {
-            UIActivityIndicatorView *indicator = (UIActivityIndicatorView *)view;
-            [indicator stopAnimating];
-        }
+    if (!self.layoutParam) {
+        return;
+    }
+    
+    CGFloat originX = self.layoutParam.edgeInsets.left;
+    CGFloat originY = self.layoutParam.edgeInsets.top;
+    CGFloat width = - 1;
+    CGFloat height = -1;
+    
+    if (checkValidNSArray(self.layoutParam.layoutViews)) {
+        CGFloat insetsH = self.layoutParam.edgeInsets.left + self.layoutParam.edgeInsets.right;
+        CGFloat insetsV = self.layoutParam.edgeInsets.top + self.layoutParam.edgeInsets.bottom;
+        CGFloat padding = self.layoutParam.spacingHorizontal * (self.layoutParam.layoutViews.count - 1);
         
-        if (checkClass(view, UIImageView)) {
-            UIImageView *statusView = (UIImageView *)view;
-            statusView.image = nil;
+        if (self.layoutParam.layoutType == UIViewLayoutTypeHLinearResizeAll) {
+            width = (self.sizeWidth - insetsH - padding) / self.layoutParam.layoutViews.count;
+            height = self.sizeHeight - insetsV;
+        } else if (self.layoutParam.layoutType == UIViewLayoutTypeHLinearResizeWidth) {
+            width = (self.sizeWidth - insetsH - padding) / self.layoutParam.layoutViews.count;
+        } else if (self.layoutParam.layoutType == UIViewLayoutTypeHLinearResizeHeight) {
+            height = self.sizeHeight - insetsV;
         }
+    }
+    
+    for (UIView *view in self.layoutParam.layoutViews) {
+        [self addSubview:view];
         
-        [view removeFromSuperview];
+        // Resize
+        width = (width == -1)?view.sizeWidth:width;
+        height = (height == -1)?view.sizeHeight:height;
+        view.frame = rectMake(originX, originY, width, height);
+        
+        // Horizontal
+        originX += view.sizeWidth + self.layoutParam.spacingHorizontal;
+    }
+}
+
+- (void)setLinearVLayout
+{
+    if (!self.layoutParam) {
+        return;
+    }
+    
+    CGFloat originX = self.layoutParam.edgeInsets.left;
+    CGFloat originY = self.layoutParam.edgeInsets.top;
+    CGFloat width = - 1;
+    CGFloat height = -1;
+    
+    if (checkValidNSArray(self.layoutParam.layoutViews)) {
+        CGFloat insetsH = self.layoutParam.edgeInsets.left + self.layoutParam.edgeInsets.right;
+        CGFloat insetsV = self.layoutParam.edgeInsets.top + self.layoutParam.edgeInsets.bottom;
+        CGFloat padding = self.layoutParam.spacingVertical * (self.layoutParam.layoutViews.count - 1);
+        
+        if (self.layoutParam.layoutType == UIViewLayoutTypeVLinearResizeAll) {
+            width = self.sizeWidth - insetsH;
+            height = (self.sizeHeight - insetsV - padding) / self.layoutParam.layoutViews.count;
+        } else if (self.layoutParam.layoutType == UIViewLayoutTypeVLinearResizeWidth) {
+            width = self.sizeWidth - insetsH;
+        } else if (self.layoutParam.layoutType == UIViewLayoutTypeVLinearResizeHeight) {
+            height = (self.sizeHeight - insetsV - padding) / self.layoutParam.layoutViews.count;
+        }
+    }
+    
+    for (UIView *view in self.layoutParam.layoutViews) {
+        [self addSubview:view];
+        
+        // Resize
+        width = (width == -1)?view.sizeWidth:width;
+        height = (height == -1)?view.sizeHeight:height;
+        view.frame = rectMake(originX, originY, width, height);
+        
+        // Vertical
+        originY += view.sizeHeight + self.layoutParam.spacingVertical;
+    }
+}
+
+- (void)setGridLayout
+{
+    if (!self.layoutParam) {
+        return;
+    }
+}
+
+- (void)setCenterLayout
+{
+    if (!self.layoutParam) {
+        return;
     }
 }
 

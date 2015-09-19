@@ -138,7 +138,6 @@
     _delegate = nil;
     _callback = NULL;
     _received = NULL;
-    [_receivedData setData:nil];
     _receivedData = nil;
     
     NSLog(@"UHTTPRequestOperation dealloc");

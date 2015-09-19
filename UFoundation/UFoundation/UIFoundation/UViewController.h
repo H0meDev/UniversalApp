@@ -89,12 +89,4 @@
  */
 - (void)removeAllAttachedViews;
 
-/*
- * HUD view
- */
-- (void)showWaitingWith:(NSString *)message;
-- (void)showSuccessWith:(NSString *)message;
-- (void)showErrorWith:(NSString *)message;
-- (void)dismiss;
-
 @end

@@ -281,11 +281,6 @@
 - (void)removeAllAttachedViews
 {
     if (_attachedViews) {
-        for (UIView *view in _attachedViews) {
-            if (view.superview) {
-                [view removeFromSuperview];
-            }
-        }
         [_attachedViews removeAllObjects];
     }
 }
@@ -329,28 +324,6 @@
 - (void)controllerWillPop
 {
     //
-}
-
-#pragma mark - HUD
-
-- (void)showWaitingWith:(NSString *)message
-{
-    [self.containerView showWaitingWith:message];
-}
-
-- (void)showSuccessWith:(NSString *)message
-{
-    [self.containerView showSuccessWith:message];
-}
-
-- (void)showErrorWith:(NSString *)message
-{
-    [self.containerView showErrorWith:message];
-}
-
-- (void)dismiss
-{
-    [self.containerView dismiss];
 }
 
 @end

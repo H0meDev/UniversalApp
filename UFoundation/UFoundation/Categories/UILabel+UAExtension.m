@@ -47,7 +47,7 @@
     }
     
     __autoreleasing NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc]init];
-    style.lineBreakMode = NSLineBreakByWordWrapping;
+    style.lineBreakMode = self.lineBreakMode;
     style.alignment = self.textAlignment;
     NSDictionary *attributes = @{NSFontAttributeName:self.font, NSParagraphStyleAttributeName:style.copy};
     

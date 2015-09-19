@@ -6,19 +6,136 @@
 //  Copyright (c) 2015年 think. All rights reserved.
 //
 
+#import <objc/runtime.h>
 #import "UDefines.h"
 #import "UTableView.h"
 #import "UIView+UAExtension.h"
 #import "NSObject+UAExtension.h"
 
-@interface UTableViewDefaultDataSource : NSObject <UITableViewDataSource, UITableViewDelegate>
-
-// UTableViewDataSection array for cell sections
-@property (atomic, copy) NSArray *sectionArray;
+@interface UTableView ()
+{
+    // For UTableViewDefault
+    NSArray *_sectionArray;
+}
 
 @end
 
-@implementation UTableViewDefaultDataSource
+@implementation UTableView
+
+@end
+
+@implementation UTableViewDataRow
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.cellName = @"UTableViewCell";
+        self.style = UITableViewCellStyleDefault;
+    }
+    
+    return self;
+}
+
++ (UTableViewDataRow *)row
+{
+    @autoreleasepool
+    {
+        return [[UTableViewDataRow alloc]init];
+    }
+}
+
+@end
+
+@implementation UTableViewDataSection
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.headerHeight = 0.01;
+        self.footerHeight = 0.01;
+        
+        self.headerView = [[UIView alloc]init];
+        self.footerView = [[UIView alloc]init];
+        self.headerView.backgroundColor = sysClearColor();
+        self.footerView.backgroundColor = sysClearColor();
+    }
+    
+    return self;
+}
+
++ (UTableViewDataSection *)section
+{
+    @autoreleasepool
+    {
+        return [[UTableViewDataSection alloc]init];
+    }
+}
+
+- (void)addRow:(UTableViewDataRow *)row
+{
+    if (!checkClass(row, UTableViewDataRow)) {
+        return;
+    }
+    
+    NSMutableArray *marray = nil;
+    if (_rowArray) {
+        marray = [NSMutableArray arrayWithArray:_rowArray];
+    } else {
+        marray = [NSMutableArray array];
+    }
+    
+    [marray addObject:row];
+    _rowArray = [marray copy];
+}
+
+@end
+
+@implementation UTableView (UTableViewDefault)
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.dataSource = self;
+        self.delegate = self;
+        self.backgroundColor = rgbColor(239, 239, 239);
+    }
+    
+    return self;
+}
+
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect {
+    // Drawing code
+}
+*/
+
+- (NSArray *)sectionArray
+{
+    return _sectionArray;
+}
+
+- (void)setSectionArray:(NSArray *)sectionArray
+{
+    _sectionArray = sectionArray;
+    
+    // Reload data
+    [self performOnMainThread:@selector(reloadData)];
+}
+
+- (id<UTableViewDefaultDelegate>)defaultDelegate
+{
+    return objc_getAssociatedObject(self, "UTableViewDefaultDelegate");
+}
+
+- (void)setDefaultDelegate:(id<UTableViewDefaultDelegate>)delegate
+{
+    objc_setAssociatedObject(self, "UTableViewDefaultDelegate", delegate, OBJC_ASSOCIATION_ASSIGN);
+}
 
 #pragma mark - UITableViewDataSource
 
@@ -118,122 +235,20 @@
     return cell;
 }
 
-@end
-
-@interface UTableView ()
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // For UTableViewDefault
-    UTableViewDefaultDataSource *_dataSource;
-    NSArray *_sectionArray;
-}
-
-@end
-
-@implementation UTableView
-
-@end
-
-@implementation UTableViewDataRow
-
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        self.cellName = @"UTableViewCell";
-        self.style = UITableViewCellStyleDefault;
-    }
-    
-    return self;
-}
-
-+ (UTableViewDataRow *)row
-{
-    @autoreleasepool {
-        return [[UTableViewDataRow alloc]init];
+    if (self.defaultDelegate && [self.defaultDelegate respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)])
+    {
+        [self.defaultDelegate tableView:(UTableView *)tableView didSelectRowAtIndexPath:indexPath];
     }
 }
 
-@end
-
-@implementation UTableViewDataSection
-
-- (id)init
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self = [super init];
-    if (self) {
-        self.headerHeight = 0.01;
-        self.footerHeight = 0.01;
-        
-        self.headerView = [[UIView alloc]init];
-        self.footerView = [[UIView alloc]init];
-        self.headerView.backgroundColor = sysClearColor();
-        self.footerView.backgroundColor = sysClearColor();
+    if (self.defaultDelegate && [self.defaultDelegate respondsToSelector:@selector(tableView:didDeselectRowAtIndexPath:)])
+    {
+        [self.defaultDelegate tableView:(UTableView *)tableView didDeselectRowAtIndexPath:indexPath];
     }
-    
-    return self;
-}
-
-+ (UTableViewDataSection *)section
-{
-    @autoreleasepool {
-        return [[UTableViewDataSection alloc]init];
-    }
-}
-
-- (void)addRow:(UTableViewDataRow *)row
-{
-    if (!checkClass(row, UTableViewDataRow)) {
-        return;
-    }
-    
-    NSMutableArray *marray = nil;
-    if (_rowArray) {
-        marray = [NSMutableArray arrayWithArray:_rowArray];
-    } else {
-        marray = [NSMutableArray array];
-    }
-    
-    [marray addObject:row];
-    _rowArray = [marray copy];
-}
-
-@end
-
-@implementation UTableView (UTableViewDefault)
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        _dataSource = [[UTableViewDefaultDataSource alloc]init];
-        self.dataSource = _dataSource;
-        self.delegate = _dataSource;
-        self.backgroundColor = rgbColor(239, 239, 239);
-    }
-    
-    return self;
-}
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
-
-- (NSArray *)sectionArray
-{
-    return _sectionArray;
-}
-
-- (void)setSectionArray:(NSArray *)sectionArray
-{
-    _sectionArray = sectionArray;
-    _dataSource.sectionArray = sectionArray;
-    
-    // Reload data
-    [self performOnMainThread:@selector(reloadData)];
 }
 
 @end

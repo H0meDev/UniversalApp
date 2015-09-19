@@ -8,7 +8,65 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, UIViewLayoutType)
+{
+    UIViewLayoutTypeHLinearResizeNone = 0x10,
+    UIViewLayoutTypeHLinearResizeWidth,
+    UIViewLayoutTypeHLinearResizeHeight,
+    UIViewLayoutTypeHLinearResizeAll,
+    
+    UIViewLayoutTypeVLinearResizeNone = 0x20,
+    UIViewLayoutTypeVLinearResizeWidth,
+    UIViewLayoutTypeVLinearResizeHeight,
+    UIViewLayoutTypeVLinearResizeAll,
+    
+    UIViewLayoutTypeGridResizeNone = 0x30,
+    UIViewLayoutTypeGridResizeWidth,
+    UIViewLayoutTypeGridResizeHeight,
+    UIViewLayoutTypeGridResizeAll,
+    
+    UIViewLayoutTypeCenterResizeNone = 0x40,
+    UIViewLayoutTypeCenterResizeWidth,
+    UIViewLayoutTypeCenterResizeHeight,
+    UIViewLayoutTypeCenterResizeAll,
+};
+
+@interface UIViewLayoutParam : NSObject
+
+@property (nonatomic, copy)   NSArray *layoutViews;
+@property (nonatomic, assign) UIViewLayoutType layoutType;
+@property (nonatomic, assign) UIEdgeInsets edgeInsets;
+@property (nonatomic, assign) CGFloat spacingVertical;
+@property (nonatomic, assign) CGFloat spacingHorizontal;
+
++ (UIViewLayoutParam *)param;
+
+@end
+
 @interface UIView (UAExtension)
+
+// The controller of response
+- (UIViewController *)viewController;
+
+// The controller of response
+- (UINavigationController *)navigationController;
+
+// The controller of response
+- (UITabBarController *)tabBarController;
+
+// Remove subviews
+- (void)removeAllSubviews;
+
+// Callback
+- (void)viewDidLoad;
+- (void)viewWillAppear;
+- (void)viewDidAppear;
+- (void)viewWillDisappear;
+- (void)viewDidDisappear;
+
+@end
+
+@interface UIView (UALayoutExtension)
 
 // Origin of view frame
 - (CGPoint)origin;
@@ -88,26 +146,8 @@
 // Autolayout scale of frame
 - (void)setScaleFrame:(CGRect)frame;
 
-// The controller of response
-- (UIViewController *)viewController;
-
-// The controller of response
-- (UINavigationController *)navigationController;
-
-// The controller of response
-- (UITabBarController *)tabBarController;
-
-// HUD
-- (void)showWaitingWith:(NSString *)message;
-- (void)showSuccessWith:(NSString *)message;
-- (void)showErrorWith:(NSString *)message;
-- (void)dismiss;
-
-// Callback
-- (void)viewDidLoad;
-- (void)viewWillAppear;
-- (void)viewDidAppear;
-- (void)viewWillDisappear;
-- (void)viewDidDisappear;
+// Params for subview layout
+- (UIViewLayoutParam *)layoutParam;
+- (void)setLayoutParam:(UIViewLayoutParam *)param;
 
 @end

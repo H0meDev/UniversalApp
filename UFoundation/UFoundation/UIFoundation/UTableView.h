@@ -17,7 +17,7 @@
 
 @property (nonatomic, strong) NSString *cellName;
 @property (nonatomic, assign) CGFloat cellHeight; // - 1 autoresize
-@property (nonatomic, assign) id cellData;
+@property (nonatomic, strong) id cellData;
 @property (nonatomic, assign) UITableViewCellStyle style;
 
 + (UTableViewDataRow *)row;
@@ -41,10 +41,22 @@
 
 @end
 
-@interface UTableView (UTableViewDefault)
+@protocol UTableViewDefaultDelegate <NSObject>
+
+@optional
+- (void)tableView:(UTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)tableView:(UTableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath;
+
+@end
+
+@interface UTableView (UTableViewDefault) <UITableViewDataSource, UITableViewDelegate>
 
 // UTableViewDataSection array for cell sections
 - (NSArray *)sectionArray;
 - (void)setSectionArray:(NSArray *)sectionArray;
+
+// Delegate for default
+- (id<UTableViewDefaultDelegate>)defaultDelegate;
+- (void)setDefaultDelegate:(id<UTableViewDefaultDelegate>)delegate;
 
 @end

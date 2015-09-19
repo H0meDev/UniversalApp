@@ -9,7 +9,7 @@
 #import "LastViewController.h"
 #import "NextViewController.h"
 
-@interface LastViewController ()
+@interface LastViewController () <UTableViewDefaultDelegate>
 
 @end
 
@@ -20,7 +20,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.countOfControllerToPop = 2;
+    self.countOfControllerToPop = 1;
     self.navigationBarView.title = @"Last";
     [self.navigationBarView.leftButton setTitle:@"Next"];
     
@@ -33,6 +33,7 @@
     
     UTableView *tableView = [[UTableView alloc]init];
     tableView.frame = rectMake(0, 0, screenWidth(), self.containerView.sizeHeight);
+    tableView.defaultDelegate = self;
     [self addSubview:tableView];
     
     NSMutableArray *sectionArray = [NSMutableArray array];
@@ -42,6 +43,15 @@
             UTableViewDataRow *row = [UTableViewDataRow row];
             row.cellHeight = -1;
             row.cellName = @"LastListItemCell";
+            
+            if (j == 0) {
+                row.cellData = @{@"title":@"这是一段短文本",@"content":@"这是一段短文本"};
+            } else if (j == 1) {
+                row.cellData = @{@"title":@"这是一段中文本",@"content":@"这是一段中文本，这是一段中文本,这是一段中文本，这是一段中文本，这是一段中文本，这是一段中文本"};
+            } else if (j == 2) {
+                row.cellData = @{@"title":@"这是一段长文本",@"content":@"这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本"};
+            }
+            
             [section addRow:row];
         }
         
@@ -77,6 +87,15 @@
 
 - (void)buttonAction
 {
+    NextViewController *next = [[NextViewController alloc]init];
+    [next.navigationBarView.leftButton setTitle:self.navigationBarView.title];
+    [self pushViewController:next];
+}
+
+- (void)tableView:(UTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
     NextViewController *next = [[NextViewController alloc]init];
     [next.navigationBarView.leftButton setTitle:self.navigationBarView.title];
     [self pushViewController:next];

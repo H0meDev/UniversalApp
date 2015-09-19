@@ -10,15 +10,12 @@
 
 @implementation UTableViewCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (void)setFrame:(CGRect)frame
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initalize
-        self.clipsToBounds = YES;
-    }
+    [super setFrame:frame];
     
-    return self;
+    // Extra initialization
+    self.clipsToBounds = YES;
 }
 
 - (void)awakeFromNib
