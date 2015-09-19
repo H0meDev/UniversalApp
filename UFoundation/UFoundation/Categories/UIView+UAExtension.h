@@ -20,12 +20,7 @@ typedef NS_ENUM(NSInteger, UIViewLayoutType)
     UIViewLayoutTypeVLinearResizeHeight,
     UIViewLayoutTypeVLinearResizeAll,
     
-    UIViewLayoutTypeGridResizeNone = 0x30,
-    UIViewLayoutTypeGridResizeWidth,
-    UIViewLayoutTypeGridResizeHeight,
-    UIViewLayoutTypeGridResizeAll,
-    
-    UIViewLayoutTypeCenterResizeNone = 0x40,
+    UIViewLayoutTypeCenterResizeNone = 0x30,
     UIViewLayoutTypeCenterResizeWidth,
     UIViewLayoutTypeCenterResizeHeight,
     UIViewLayoutTypeCenterResizeAll,

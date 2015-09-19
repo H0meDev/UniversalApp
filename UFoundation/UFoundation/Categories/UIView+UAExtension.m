@@ -267,12 +267,6 @@
             
         case 0x30:
         {
-            [self setGridLayout];
-        }
-            break;
-            
-        case 0x40:
-        {
             [self setCenterLayout];
         }
             break;
@@ -282,6 +276,7 @@
     }
 }
 
+// To be streamlined for this code
 - (void)setLinearHLayout
 {
     if (!self.layoutParam) {
@@ -321,6 +316,7 @@
     }
 }
 
+// To be streamlined for this code
 - (void)setLinearVLayout
 {
     if (!self.layoutParam) {
@@ -360,17 +356,17 @@
     }
 }
 
-- (void)setGridLayout
-{
-    if (!self.layoutParam) {
-        return;
-    }
-}
-
 - (void)setCenterLayout
 {
     if (!self.layoutParam) {
         return;
+    }
+    
+    for (UIView *view in self.layoutParam.layoutViews) {
+        [self addSubview:view];
+        
+        // Resize
+        view.center = pointMake(self.sizeWidth / 2., self.sizeHeight / 2.);
     }
 }
 
