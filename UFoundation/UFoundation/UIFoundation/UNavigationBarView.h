@@ -19,7 +19,13 @@
 @property (nonatomic, retain) UIImage *backgroundImage;
 @property (nonatomic, assign) BOOL bottomLineHidden;
 
+// Stand style
 @property (nonatomic, retain) UNavigationBarButton *leftButton;
 @property (nonatomic, retain) UNavigationBarButton *rightButton;
+
+// Custom style
+@property (nonatomic, retain) UIView *leftView;
+@property (nonatomic, retain) UIView *centerView;
+@property (nonatomic, retain) UIView *rightView;
 
 @end

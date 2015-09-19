@@ -21,9 +21,18 @@
     // Do any additional setup after loading the view.
     
     self.navigationBarView.title = @"Next";
-    self.statusBarView.backgroundColor = sysClearColor();
-    self.navigationBarView.backgroundColor = sysClearColor();
-    self.containerView.backgroundColor = sysYellowColor();
+//    self.statusBarView.backgroundColor = sysClearColor();
+//    self.navigationBarView.backgroundColor = sysClearColor();
+//    self.containerView.backgroundColor = sysYellowColor();
+    
+    UNavigationBarButton *rightButton = [UNavigationBarButton button];
+    rightButton.frame = rectMake(screenWidth() - 70, 0, 70, naviHeight() - naviBLineH());
+    [rightButton setHAlpha:0.3];
+    [rightButton setTitle:@"Option"];
+    [rightButton setTitleColor:sysWhiteColor()];
+    [rightButton setTitleFont:systemFont(16)];
+    [rightButton addTarget:self action:@selector(backAction)];
+    self.navigationBarView.rightButton = rightButton;
     
     CGFloat height = statusHeight() + naviHeight();
     UView *navigationView = [[UView alloc]init];

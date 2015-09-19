@@ -219,7 +219,9 @@
         }
     }
     
-    if (_leftButton) {
+    if (_leftView) {
+        _leftView.alpha = buttonAlpha;
+    } else if (_leftButton) {
         _leftButton.enabled = (xvalue > 0)?NO:YES;
         ULabel *titleLabel = [_leftButton valueForKey:@"titleLabel"];
         titleLabel.alpha = buttonAlpha;
@@ -231,7 +233,14 @@
         }
     }
     
-    if (_rightButton) {
+    if (_centerView) {
+        _centerView.alpha = buttonAlpha;
+        _centerView.centerX = _contentView.titleLabel.centerX;
+    }
+    
+    if (_rightView) {
+        _rightView.alpha = buttonAlpha;
+    } else if (_rightButton) {
         UILabel *titleLabel = [_rightButton valueForKey:@"titleLabel"];
         titleLabel.alpha = buttonAlpha;
     }
@@ -246,6 +255,10 @@
 
 - (void)setLeftButton:(UNavigationBarButton *)leftButton
 {
+    if (_leftView) {
+        return;
+    }
+    
     if (_leftButton) {
         [_leftButton removeFromSuperview];
     }
@@ -256,12 +269,59 @@
 
 - (void)setRightButton:(UNavigationBarButton *)rightButton
 {
+    if (_rightView) {
+        return;
+    }
+    
     if (_rightButton) {
         [_rightButton removeFromSuperview];
     }
     _rightButton = rightButton;
     
     [_contentView addSubview:rightButton];
+}
+
+- (void)setLeftView:(UIView *)leftView
+{
+    if (_leftView) {
+        [_leftView removeFromSuperview];
+    }
+    _leftView = leftView;
+    
+    if (_leftButton) {
+        [_leftButton removeFromSuperview];
+        _leftButton = nil;
+    }
+    
+    [_contentView addSubview:leftView];
+}
+
+- (void)setCenterView:(UIView *)centerView
+{
+    if (_centerView) {
+        [_centerView removeFromSuperview];
+    }
+    _centerView = centerView;
+    _contentView.titleLabel.text = @"";
+    
+    CGSize size = _contentView.size;
+    centerView.center = pointMake(size.width / 2., size.height / 2.);
+    [_contentView addSubview:centerView];
+}
+
+- (void)setRightView:(UIView *)rightView
+{
+    if (_rightView) {
+        [_rightView removeFromSuperview];
+    }
+    _rightView = rightView;
+    
+    if (_rightButton) {
+        [_rightButton removeFromSuperview];
+        _rightButton = nil;
+    }
+    
+    [_contentView addSubview:rightView];
 }
 
 - (void)stretch

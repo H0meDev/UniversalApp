@@ -320,29 +320,32 @@
 {
     [self repositionAllViewWithX:xvalue];
     
-    __weak UNavigationController *weakself = self;
-    [UIView animateWithDuration:animationDuration() animations:^{
-        [weakself repositionAllViewWithX:0];
-    } completion:^(BOOL finished) {
-        if (finished) {
-            // Remove shadow
-            [weakself.shadowView removeFromSuperview];
-            
-            // Refresh bar
-            [self refreshBarUserInterface];
-            
-            // If current is UTabBarController
-            UIViewController *currentController = [weakself.viewControllers lastObject];
-            if (checkClass(currentController, UTabBarController)) {
-                [currentController viewWillAppear:NO];
-            }
-            
-            // Callback
-            if (_viewController && [_viewController respondsToSelector:@selector(controllerDidMoveBack)]) {
-                [_viewController controllerDidMoveBack];
-            }
-        }
-    }];
+    [UIView animateWithDuration:animationDuration()
+                          delay:0
+                        options:UIViewAnimationOptionTransitionFlipFromRight
+                     animations:^{
+                         [self repositionAllViewWithX:0];
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             // Remove shadow
+                             [self.shadowView removeFromSuperview];
+                             
+                             // Refresh bar
+                             [self refreshBarUserInterface];
+                             
+                             // If current is UTabBarController
+                             UIViewController *currentController = [self.viewControllers lastObject];
+                             if (checkClass(currentController, UTabBarController)) {
+                                 [currentController viewWillAppear:NO];
+                             }
+                             
+                             // Callback
+                             if (_viewController && [_viewController respondsToSelector:@selector(controllerDidMoveBack)]) {
+                                 [_viewController controllerDidMoveBack];
+                             }
+                         }
+                     }];
     
     // Callback
     if (_viewController && [_viewController respondsToSelector:@selector(controllerWillMoveBack)]) {
@@ -357,29 +360,31 @@
     CGFloat delta = screenWidth() / 4.0;
     CGFloat duration = 0.4 * (screenWidth() - xvalue) / (screenWidth() - delta);
     duration = (duration < 0.25)?0.25:duration;
-    
-    __weak UNavigationController *weakself = self;
-    [UIView animateWithDuration:duration animations:^{
-        [self repositionAllViewWithX:screenWidth()];
-    } completion:^(BOOL finished) {
-        if (finished) {
-            // Remove shadow
-            [weakself.shadowView removeFromSuperview];
-            
-            // Pop controller
-            [weakself popViewControllerAnimated:NO];
-            
-            if (![_lastStatusBGView.backgroundColor isEqualToColor:_currentStatusBGView.backgroundColor]) {
-                _lastStatusBGView.alpha = 0;
-                _currentStatusBGView.alpha = 1.0 - _lastStatusBGView.alpha;
-            }
-            
-            if (![_lastNaviBGView.backgroundColor isEqualToColor:_currentNaviBGView.backgroundColor]) {
-                _lastNaviBGView.alpha = 0;
-                _currentNaviBGView.alpha = 1.0 - _lastNaviBGView.alpha;
-            }
-        }
-    }];
+    [UIView animateWithDuration:animationDuration()
+                          delay:0
+                        options:UIViewAnimationOptionTransitionFlipFromLeft
+                     animations:^{
+                         [self repositionAllViewWithX:screenWidth()];
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             // Remove shadow
+                             [self.shadowView removeFromSuperview];
+                             
+                             // Pop controller
+                             [self popViewControllerAnimated:NO];
+                             
+                             if (![_lastStatusBGView.backgroundColor isEqualToColor:_currentStatusBGView.backgroundColor]) {
+                                 _lastStatusBGView.alpha = 0;
+                                 _currentStatusBGView.alpha = 1.0 - _lastStatusBGView.alpha;
+                             }
+                             
+                             if (![_lastNaviBGView.backgroundColor isEqualToColor:_currentNaviBGView.backgroundColor]) {
+                                 _lastNaviBGView.alpha = 0;
+                                 _currentNaviBGView.alpha = 1.0 - _lastNaviBGView.alpha;
+                             }
+                         }
+                     }];
     
     // Callback
     if (_viewController && [_viewController respondsToSelector:@selector(controllerWillMovePop)]) {
@@ -456,35 +461,45 @@
 - (void)pushAnimation
 {
     [self repositionBarsWithX:screenWidth()];
-    [UIView animateWithDuration:animationDuration() animations:^{
-        [self repositionBarsWithX:0];
-    } completion:^(BOOL finished) {
-        if (finished) {
-            [self refreshBarUserInterface];
-        }
-    }];
+    
+    [UIView animateWithDuration:animationDuration()
+                          delay:0
+                        options:UIViewAnimationOptionTransitionFlipFromRight
+                     animations:^{
+                         [self repositionBarsWithX:0];
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             [self refreshBarUserInterface];
+                         }
+                     }];
 }
 
 - (void)popAnimation
 {
     [self repositionBarsWithX:0];
-    [UIView animateWithDuration:animationDuration() animations:^{
-        [self repositionBarsWithX:screenWidth()];
-    }completion:^(BOOL finished) {
-        if (finished) {
-            [self refreshBarUserInterface];
-            
-            if (![_lastStatusBGView.backgroundColor isEqualToColor:_currentStatusBGView.backgroundColor]) {
-                _lastStatusBGView.alpha = 0;
-                _currentStatusBGView.alpha = 1.0 - _lastStatusBGView.alpha;
-            }
-            
-            if (![_lastNaviBGView.backgroundColor isEqualToColor:_currentNaviBGView.backgroundColor]) {
-                _lastNaviBGView.alpha = 0;
-                _currentNaviBGView.alpha = 1.0 - _lastNaviBGView.alpha;
-            }
-        }
-    }];
+    
+    [UIView animateWithDuration:animationDuration()
+                          delay:0
+                        options:UIViewAnimationOptionTransitionFlipFromLeft
+                     animations:^{
+                         [self repositionBarsWithX:screenWidth()];
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             [self refreshBarUserInterface];
+                             
+                             if (![_lastStatusBGView.backgroundColor isEqualToColor:_currentStatusBGView.backgroundColor]) {
+                                 _lastStatusBGView.alpha = 0;
+                                 _currentStatusBGView.alpha = 1.0 - _lastStatusBGView.alpha;
+                             }
+                             
+                             if (![_lastNaviBGView.backgroundColor isEqualToColor:_currentNaviBGView.backgroundColor]) {
+                                 _lastNaviBGView.alpha = 0;
+                                 _currentNaviBGView.alpha = 1.0 - _lastNaviBGView.alpha;
+                             }
+                         }
+                     }];
 }
 
 #pragma mark - Override

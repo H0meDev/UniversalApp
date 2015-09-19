@@ -24,6 +24,26 @@
     self.navigationBarView.title = @"Last";
     [self.navigationBarView.leftButton setTitle:@"Next"];
     
+    UILabel *leftView = [[UILabel alloc]init];
+    leftView.frame = rectMake(8, 0, 60, naviHeight());
+    leftView.text = @"Left";
+    leftView.textColor = sysWhiteColor();
+    self.navigationBarView.leftView = leftView;
+    
+    UILabel *centerView = [[UILabel alloc]init];
+    centerView.frame = rectMake(0, 0, 100, naviHeight());
+    centerView.text = @"Center";
+    centerView.textColor = sysWhiteColor();
+    centerView.textAlignment = NSTextAlignmentCenter;
+    self.navigationBarView.centerView = centerView;
+    
+    UILabel *rightView = [[UILabel alloc]init];
+    rightView.frame = rectMake(screenWidth() - 68, 0, 60, naviHeight());
+    rightView.text = @"Right";
+    rightView.textColor = sysWhiteColor();
+    rightView.textAlignment = NSTextAlignmentRight;
+    self.navigationBarView.rightView = rightView;
+    
 //    UButton *button = [UButton button];
 //    button.frame = rectMake(0, 160, screenWidth(), 50);
 //    [button setTitle:@"Push"];

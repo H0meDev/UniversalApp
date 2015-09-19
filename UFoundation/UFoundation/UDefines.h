@@ -75,9 +75,7 @@ CG_INLINE CGRange CGRangeMake(CGFloat min, CGFloat max)
 #define tabBLineH()              0.5f
 
 // Animation
-#define animationFastDuration()  0.25f
 #define animationDuration()      0.30f
-#define animationSlowDuration()  0.35f
 
 // Font
 #define systemFont(size)      [UIFont systemFontOfSize:size]
