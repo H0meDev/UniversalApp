@@ -124,7 +124,7 @@
     _sectionArray = sectionArray;
     
     // Reload data
-    [self performOnMainThread:@selector(reloadData)];
+    [super performOnMainThread:@selector(reloadData)];
 }
 
 - (id<UTableViewDefaultDelegate>)defaultDelegate
@@ -171,6 +171,8 @@
     // Auto resize height
     UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
     if (cell) {
+        // Record cell height
+        rowItem.cellHeight = cell.sizeHeight;
         return cell.sizeHeight;
     }
     
