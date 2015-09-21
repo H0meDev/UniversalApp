@@ -40,22 +40,49 @@
 
 - (CGFloat)redValue
 {
-    return CGColorGetComponents(self.CGColor)[0];
+    size_t count = CGColorGetNumberOfComponents(self.CGColor);
+    if (count != 4) {
+        return CGColorGetComponents(self.CGColor)[0];
+    }
+    
+    CGFloat value = CGColorGetComponents(self.CGColor)[0];
+    value = (value > 1.0)?1.0:value;
+    value = (value < 0.0)?0.0:value;
+    
+    return value;
 }
 
 - (CGFloat)greenValue
 {
-    return CGColorGetComponents(self.CGColor)[1];
+    size_t count = CGColorGetNumberOfComponents(self.CGColor);
+    if (count != 4) {
+        return CGColorGetComponents(self.CGColor)[0];
+    }
+    
+    CGFloat value = CGColorGetComponents(self.CGColor)[1];
+    value = (value > 1.0)?1.0:value;
+    value = (value < 0.0)?0.0:value;
+    
+    return value;
 }
 
 - (CGFloat)blueValue
 {
-    return CGColorGetComponents(self.CGColor)[2];
+    size_t count = CGColorGetNumberOfComponents(self.CGColor);
+    if (count != 4) {
+        return CGColorGetComponents(self.CGColor)[0];
+    }
+    
+    CGFloat value = CGColorGetComponents(self.CGColor)[2];
+    value = (value > 1.0)?1.0:value;
+    value = (value < 0.0)?0.0:value;
+    
+    return value;
 }
 
 - (CGFloat)alphaValue
 {
-    return CGColorGetComponents(self.CGColor)[3];
+    return CGColorGetAlpha(self.CGColor);
 }
 
 - (BOOL)isEqualToColor:(UIColor *)color

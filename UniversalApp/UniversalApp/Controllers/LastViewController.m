@@ -26,20 +26,20 @@
     
     UILabel *leftView = [[UILabel alloc]init];
     leftView.frame = rectMake(8, 0, 60, naviHeight());
-    leftView.text = @"Left";
+    leftView.text = @"Next";
     leftView.textColor = sysWhiteColor();
     self.navigationBarView.leftView = leftView;
     
     UILabel *centerView = [[UILabel alloc]init];
     centerView.frame = rectMake(0, 0, 100, naviHeight());
-    centerView.text = @"Center";
+    centerView.text = @"Last";
     centerView.textColor = sysWhiteColor();
     centerView.textAlignment = NSTextAlignmentCenter;
     self.navigationBarView.centerView = centerView;
     
     UILabel *rightView = [[UILabel alloc]init];
     rightView.frame = rectMake(screenWidth() - 68, 0, 60, naviHeight());
-    rightView.text = @"Right";
+    rightView.text = @"Option";
     rightView.textColor = sysWhiteColor();
     rightView.textAlignment = NSTextAlignmentRight;
     self.navigationBarView.rightView = rightView;

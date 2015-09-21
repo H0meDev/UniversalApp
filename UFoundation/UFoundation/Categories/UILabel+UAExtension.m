@@ -17,12 +17,12 @@
 
 - (CGFloat)contentWidth
 {
-    return [self contentSizeWith:sizeMake(MAXFLOAT, self.frame.size.height)].width;
+    return [self contentSizeWith:sizeMake(MAXFLOAT, self.sizeHeight)].width;
 }
 
 - (CGFloat)contentHeight
 {
-    return [self contentSizeWith:sizeMake(self.frame.size.width, MAXFLOAT)].height;
+    return [self contentSizeWith:sizeMake(self.sizeWidth, MAXFLOAT)].height;
 }
 
 - (void)resizeToFitWidth
@@ -46,16 +46,7 @@
         return CGSizeZero;
     }
     
-    if (self.lineBreakMode == NSLineBreakByTruncatingTail) {
-        self.lineBreakMode = NSLineBreakByCharWrapping;
-    }
-    
-    __autoreleasing NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc]init];
-    style.lineBreakMode = self.lineBreakMode;
-    style.alignment = self.textAlignment;
-    NSDictionary *attributes = @{NSFontAttributeName:self.font, NSParagraphStyleAttributeName:style.copy};
-    
-    return [self.text contentSizeWithAttributes:attributes size:size];
+    return [self sizeThatFits:size];
 }
 
 @end

@@ -192,7 +192,7 @@
             }
             
             retsize = [self sizeWithFont:attributes[NSFontAttributeName]
-                                forWidth:size.width
+                       constrainedToSize:size
                            lineBreakMode:style.lineBreakMode];
         }
         

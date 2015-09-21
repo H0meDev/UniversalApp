@@ -212,6 +212,7 @@
     } else {
         CGFloat rxvalue = xvalue + screenWidth();
         _contentView.titleLabel.alpha = buttonAlpha;
+        
         if (buttonAlpha >= 0.01) {
             _contentView.titleLabel.originX = 24 + rxvalue * 0.35;
         } else {
@@ -223,6 +224,7 @@
         _leftView.alpha = buttonAlpha;
     } else if (_leftButton) {
         _leftButton.enabled = (xvalue > 0)?NO:YES;
+        
         ULabel *titleLabel = [_leftButton valueForKey:@"titleLabel"];
         titleLabel.alpha = buttonAlpha;
         titleLabel.originX = 24 + xvalue * 0.35;

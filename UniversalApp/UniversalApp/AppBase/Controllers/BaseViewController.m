@@ -68,8 +68,8 @@
     if (enable) {
         UNavigationBarButton *leftButton = [UNavigationBarButton button];
         leftButton.frame = rectMake(0, 0, 70, naviHeight() - naviBLineH());
-        [leftButton setImage:loadSkinImage(@"app_navi_back")];
         [leftButton setHAlpha:0.3];
+        [leftButton setBackImage:sysWhiteColor()];
         [leftButton setTitleColor:sysWhiteColor()];
         [leftButton setTitleFont:systemFont(16)];
         [leftButton addTarget:self action:@selector(backAction)];

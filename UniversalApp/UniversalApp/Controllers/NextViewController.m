@@ -31,7 +31,7 @@
     [rightButton setTitle:@"Option"];
     [rightButton setTitleColor:sysWhiteColor()];
     [rightButton setTitleFont:systemFont(16)];
-    [rightButton addTarget:self action:@selector(backAction)];
+    [rightButton addTarget:self action:@selector(buttonAction)];
     self.navigationBarView.rightButton = rightButton;
     
     CGFloat height = statusHeight() + naviHeight();

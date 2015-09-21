@@ -17,23 +17,12 @@
 
 - (CGFloat)contentWidth
 {
-    CGFloat delta = 16;
-    if (systemVersionFloat() >= 7.0) {
-        delta = self.textContainerInset.left + self.textContainerInset.right;
-        delta += self.textContainer.lineFragmentPadding * 2;
-    }
-    
-    return [self contentSizeWith:sizeMake(MAXFLOAT, self.frame.size.height)].width + delta; // left + right margin
+    return [self contentSizeWith:sizeMake(MAXFLOAT, self.sizeHeight)].width;
 }
 
 - (CGFloat)contentHeight
 {
-    CGFloat delta = 16;
-    if (systemVersionFloat() >= 7.0) {
-        delta = self.textContainerInset.top + self.textContainerInset.bottom;
-    }
-    
-    return [self contentSizeWith:sizeMake(self.frame.size.width, MAXFLOAT)].height + delta; // top + bottom margin
+    return [self contentSizeWith:sizeMake(self.sizeWidth, MAXFLOAT)].height;
 }
 
 - (void)resizeToFitWidth
@@ -57,16 +46,7 @@
         return CGSizeZero;
     }
     
-    __autoreleasing NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc]init];
-    if (systemVersionFloat() >= 7.0) {
-        style.lineBreakMode = self.textContainer.lineBreakMode;
-    } else {
-        style.lineBreakMode = NSLineBreakByWordWrapping;
-    }
-    
-    NSDictionary *attributes = @{NSFontAttributeName:self.font, NSParagraphStyleAttributeName:style.copy};
-    
-    return [self.text contentSizeWithAttributes:attributes size:size];
+    return [self sizeThatFits:size];
 }
 
 @end
