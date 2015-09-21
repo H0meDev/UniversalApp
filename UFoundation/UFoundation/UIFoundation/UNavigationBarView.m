@@ -44,9 +44,9 @@
     ULabel *titleLabel = [[ULabel alloc]init];
     titleLabel.frame = rectMake(0, 0, width, naviHeight());
     titleLabel.center = pointMake(screenWidth() / 2., naviHeight() / 2.);
-    titleLabel.font = systemFont(17);
-    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.font = boldSystemFont(16);
     titleLabel.textColor = sysBlackColor();
+    titleLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:titleLabel];
     _titleLabel = titleLabel;
     
@@ -211,7 +211,7 @@
         _contentView.titleLabel.originX = centerX + xvalue * 0.5;
     } else {
         CGFloat rxvalue = xvalue + screenWidth();
-        if (buttonAlpha >= 0.01) {
+        if (titleAlpha >= 0.01) {
             _contentView.titleLabel.alpha = titleAlpha;
             _contentView.titleLabel.originX = 24 + rxvalue * 0.35;
         } else {
