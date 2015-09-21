@@ -24,32 +24,32 @@
     self.navigationBarView.title = @"Last";
     [self.navigationBarView.leftButton setTitle:@"Next"];
     
-    UILabel *leftView = [[UILabel alloc]init];
-    leftView.frame = rectMake(8, 0, 60, naviHeight());
-    leftView.text = @"Next";
-    leftView.textColor = sysWhiteColor();
-    self.navigationBarView.leftView = leftView;
+//    UILabel *leftView = [[UILabel alloc]init];
+//    leftView.frame = rectMake(8, 0, 60, naviHeight());
+//    leftView.text = @"Next";
+//    leftView.textColor = sysWhiteColor();
+//    self.navigationBarView.leftView = leftView;
+//    
+//    UILabel *centerView = [[UILabel alloc]init];
+//    centerView.frame = rectMake(0, 0, 100, naviHeight());
+//    centerView.text = @"Last";
+//    centerView.textColor = sysWhiteColor();
+//    centerView.textAlignment = NSTextAlignmentCenter;
+//    self.navigationBarView.centerView = centerView;
+//    
+//    UILabel *rightView = [[UILabel alloc]init];
+//    rightView.frame = rectMake(screenWidth() - 68, 0, 60, naviHeight());
+//    rightView.text = @"Option";
+//    rightView.textColor = sysWhiteColor();
+//    rightView.textAlignment = NSTextAlignmentRight;
+//    self.navigationBarView.rightView = rightView;
     
-    UILabel *centerView = [[UILabel alloc]init];
-    centerView.frame = rectMake(0, 0, 100, naviHeight());
-    centerView.text = @"Last";
-    centerView.textColor = sysWhiteColor();
-    centerView.textAlignment = NSTextAlignmentCenter;
-    self.navigationBarView.centerView = centerView;
-    
-    UILabel *rightView = [[UILabel alloc]init];
-    rightView.frame = rectMake(screenWidth() - 68, 0, 60, naviHeight());
-    rightView.text = @"Option";
-    rightView.textColor = sysWhiteColor();
-    rightView.textAlignment = NSTextAlignmentRight;
-    self.navigationBarView.rightView = rightView;
-    
-//    UButton *button = [UButton button];
-//    button.frame = rectMake(0, 160, screenWidth(), 50);
-//    [button setTitle:@"Push"];
-//    button.backgroundColor = sysRedColor();
-//    [button addTarget:self action:@selector(buttonAction)];
-//    [self addSubview:button];
+    UButton *button = [UButton button];
+    button.frame = rectMake(0, 160, screenWidth(), 50);
+    [button setTitle:@"Push"];
+    button.backgroundColor = sysRedColor();
+    [button addTarget:self action:@selector(buttonAction)];
+    [self addSubview:button];
     
     UTableView *tableView = [[UTableView alloc]init];
     tableView.frame = rectMake(0, 0, screenWidth(), self.containerView.sizeHeight);
