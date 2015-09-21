@@ -207,15 +207,15 @@
     CGFloat buttonAlpha = powf(titleAlpha, 2.0);
     
     if (xvalue >= 0) {
-        _contentView.titleLabel.alpha = titleAlpha;
+        _contentView.titleLabel.alpha = buttonAlpha;
         _contentView.titleLabel.originX = centerX + xvalue * 0.5;
     } else {
         CGFloat rxvalue = xvalue + screenWidth();
-        _contentView.titleLabel.alpha = buttonAlpha;
-        
         if (buttonAlpha >= 0.01) {
+            _contentView.titleLabel.alpha = titleAlpha;
             _contentView.titleLabel.originX = 24 + rxvalue * 0.35;
         } else {
+            _contentView.titleLabel.alpha = 0;
             _contentView.titleLabel.originX = centerX + xvalue * 0.5;
         }
     }

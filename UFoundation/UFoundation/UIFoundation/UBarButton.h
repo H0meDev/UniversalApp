@@ -19,37 +19,37 @@
 // Custom text alignment, default is NSTextAlignmentCenter
 @property (nonatomic, assign) NSTextAlignment textAlignment;
 
-// Title
+// Title for UIControlState
 - (void)setTitle:(NSString *)title;
 - (void)setHTitle:(NSString *)title;
 - (void)setSTitle:(NSString *)title;
 - (void)setDTitle:(NSString *)title;
 
-// Color
+// Color for UIControlState
 - (void)setTitleColor:(UIColor *)color;
 - (void)setHTitleColor:(UIColor *)color;
 - (void)setSTitleColor:(UIColor *)color;
 - (void)setDTitleColor:(UIColor *)color;
 
-// Font
+// Font for UIControlState
 - (void)setTitleFont:(UIFont *)font;
 - (void)setHTitleFont:(UIFont *)font;
 - (void)setSTitleFont:(UIFont *)font;
 - (void)setDTitleFont:(UIFont *)font;
 
-// Image
+// Image for UIControlState
 - (void)setImage:(UIImage *)image;
 - (void)setHImage:(UIImage *)image;
 - (void)setSImage:(UIImage *)image;
 - (void)setDImage:(UIImage *)image;
 
-// Background image
+// Background image for UIControlState
 - (void)setBackgroundImage:(UIImage *)image;
 - (void)setHBackgroundImage:(UIImage *)image;
 - (void)setSBackgroundImage:(UIImage *)image;
 - (void)setDBackgroundImage:(UIImage *)image;
 
-// Alpha
+// Alpha for UIControlState
 - (void)setAlpha:(CGFloat)alpha;
 - (void)setHAlpha:(CGFloat)alpha;
 - (void)setSAlpha:(CGFloat)alpha;
@@ -61,10 +61,11 @@
 - (void)setSBackgroundAlpha:(CGFloat)alpha;
 - (void)setDBackgroundAlpha:(CGFloat)alpha;
 
-// Action
+// Add action
 - (void)addTarget:(id)target action:(SEL)action;
 - (void)addTouchDownTarget:(id)target action:(SEL)action;
 
+// Remove action
 - (void)removeTarget:(id)target action:(SEL)action;
 - (void)removeTouchDownTarget:(id)target action:(SEL)action;
 
