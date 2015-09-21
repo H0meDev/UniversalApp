@@ -165,6 +165,7 @@
     UTableViewDataRow *rowItem = (UTableViewDataRow *)sectionItem.rowArray[indexPath.row];
     
     if (rowItem.cellHeight != -1) {
+        NSLog(@"CELL HEIGHT: %.2f", rowItem.cellHeight);
         return rowItem.cellHeight;
     }
     

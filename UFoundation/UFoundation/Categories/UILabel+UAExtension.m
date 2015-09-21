@@ -46,6 +46,10 @@
         return CGSizeZero;
     }
     
+    if (self.lineBreakMode == NSLineBreakByTruncatingTail) {
+        self.lineBreakMode = NSLineBreakByCharWrapping;
+    }
+    
     __autoreleasing NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc]init];
     style.lineBreakMode = self.lineBreakMode;
     style.alignment = self.textAlignment;

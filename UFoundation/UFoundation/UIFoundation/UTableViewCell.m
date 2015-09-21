@@ -10,6 +10,24 @@
 
 @implementation UTableViewCell
 
++ (id)cellWithReuseIdentifier:(NSString *)identifier
+{
+    @autoreleasepool
+    {
+        return [[self.class alloc]initWithReuseIdentifier:identifier];
+    }
+}
+
+- (id)initWithReuseIdentifier:identifier
+{
+    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    if (self) {
+        //
+    }
+    
+    return self;
+}
+
 - (void)setFrame:(CGRect)frame
 {
     [super setFrame:frame];

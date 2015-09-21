@@ -12,4 +12,7 @@
 
 @property (nonatomic, assign) id cellData;
 
+- (id)initWithReuseIdentifier:(NSString *)identifier;
++ (id)cellWithReuseIdentifier:(NSString *)identifier;
+
 @end
