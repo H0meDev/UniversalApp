@@ -209,6 +209,12 @@
         controller = [self controllerWith:controller];
     }
     
+    // Remove older bars
+    [_lastStatusView removeFromSuperview];
+    [_lastNavigationView removeFromSuperview];
+    [_currentStatusView removeFromSuperview];
+    [_currentNavigationView removeFromSuperview];
+    
     // Last
     if (controller) {
         _lastStatusView = controller.statusBarView;
