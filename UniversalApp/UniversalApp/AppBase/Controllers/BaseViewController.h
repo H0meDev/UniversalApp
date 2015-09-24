@@ -10,7 +10,7 @@
 
 @interface BaseViewController : UViewController
 
-@property (nonatomic, weak, readonly) GlobalManager *globalManager;
+@property (nonatomic, retain, readonly) GlobalManager *globalManager;
 
 /*
  * Enable default navigation back button

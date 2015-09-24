@@ -130,13 +130,13 @@
     // Status bar background
     UImageView *lastStatusBGView = [[UImageView alloc]init];
     lastStatusBGView.frame = rectMake(0, 0, screenWidth(), statusHeight());
-    lastStatusBGView.backgroundColor = sysBlueColor();
+    lastStatusBGView.backgroundColor = rgbColor(239, 239, 239);
     [self.view addSubview:lastStatusBGView];
     _lastStatusBGView = lastStatusBGView;
     
     UImageView *currentStatusBGView = [[UImageView alloc]init];
     currentStatusBGView.frame = rectMake(0, 0, screenWidth(), statusHeight());
-    currentStatusBGView.backgroundColor = sysBlueColor();
+    currentStatusBGView.backgroundColor = rgbColor(239, 239, 239);
     [self.view addSubview:currentStatusBGView];
     _currentStatusBGView = currentStatusBGView;
     
@@ -186,23 +186,19 @@
 {
     UIViewController *controller = [self.viewControllers lastObject];
     UViewController *theController = [self controllerWith:controller];
-    [self refreshViewController:theController withPush:NO];
+    [self refreshViewController:theController fromPush:NO];
 }
 
-- (void)refreshViewController:(UViewController *)viewController withPush:(BOOL)push
+- (void)refreshViewController:(UViewController *)viewController fromPush:(BOOL)push
 {
     _viewController = viewController;
     
-    NSInteger count = 1;
-    if(!push) {
-        count = _viewController.countOfControllerToPop;
-    }
-    
     // Index
+    NSInteger count = (push)?1:_viewController.countOfControllerToPop;
     NSInteger index = self.viewControllers.count - count - 1;
     index = (index < 0)?0:index;
     
-    UIViewController *controller = self.viewControllers[index];
+    UViewController *controller = self.viewControllers[index];
     if (controller) {
         if (controller == viewController) {
             if (count >= 1) {
@@ -210,26 +206,24 @@
             }
         }
         
-        UViewController *theController = [self controllerWith:controller];
-        _lastStatusView = theController.statusBarView;
-        _lastNavigationView = theController.navigationBarView;
-        _lastStatusBGView.backgroundColor = theController.statusBarView.backgroundColor;
-        _lastNaviBGView.backgroundColor = theController.navigationBarView.backgroundColor;
+        controller = [self controllerWith:controller];
     }
     
-    _lastStatusView.hidden = YES;
-    _lastNavigationView.hidden = YES;
-    _currentStatusView.hidden = YES;
-    _currentNavigationView.hidden = YES;
+    // Last
+    if (controller) {
+        _lastStatusView = controller.statusBarView;
+        _lastNavigationView = controller.navigationBarView;
+        [_lastStatusView performWithName:@"setBackgroundView:" with:_lastStatusBGView];
+        [_lastNavigationView performWithName:@"setBackgroundView:" with:_lastNaviBGView];
+    }
     
+    // Current
     _currentStatusView = viewController.statusBarView;
     _currentNavigationView = viewController.navigationBarView;
-    _currentStatusBGView.backgroundColor = viewController.statusBarView.backgroundColor;
-    _currentNaviBGView.backgroundColor = viewController.navigationBarView.backgroundColor;
+    [_currentStatusView performWithName:@"setBackgroundView:" with:_currentStatusBGView];
+    [_currentNavigationView performWithName:@"setBackgroundView:" with:_currentNaviBGView];
     
-    _currentStatusView.hidden = NO;
-    _currentNavigationView.hidden = NO;
-    
+    // Bring current to front
     [self.contentView addSubview:_currentStatusView];
     [self.contentView addSubview:_currentNavigationView];
     [self.contentView bringSubviewToFront:_currentStatusView];
@@ -244,7 +238,7 @@
     return (point.x > 0 && point.x <= 40) && (point.y > naviHeight());
 }
 
-- (void)repositionAllViewWithX:(CGFloat)xvalue
+- (void)repositionAllViewWithX:(CGFloat)xvalue animated:(BOOL)animated
 {
     xvalue = (xvalue > screenWidth())?screenWidth():xvalue;
     xvalue = (xvalue < 0)?0:xvalue;
@@ -274,16 +268,16 @@
         [lastContentView addSubview:self.shadowView];
         
         // Bar animation
-        [self repositionBarsWithX:xvalue];
+        [self repositionBarsWithX:xvalue animated:animated];
         
         // Callback
-        if (_viewController && [_viewController respondsToSelector:@selector(controllerIsMovingWith:)]) {
+        if (checkAction(_viewController, @selector(controllerIsMovingWith:))) {
             [_viewController controllerIsMovingWith:progress];
         }
     }
 }
 
-- (void)repositionBarsWithX:(CGFloat)xvalue
+- (void)repositionBarsWithX:(CGFloat)xvalue animated:(BOOL)animated
 {
     if (_lastNavigationView) {
         _lastNavigationView.hidden = NO;
@@ -291,104 +285,50 @@
         [self.contentView insertSubview:_lastNavigationView belowSubview:_currentNavigationView];
         
         // Reposition last
-        [_lastNavigationView performWithName:@"repositionLastWith:" with:@(xvalue - screenWidth())];
+        if (!animated) {
+            [_lastNavigationView performWithName:@"repositionLastWith:" with:@(xvalue - screenWidth())];
+        } else {
+            [_lastNavigationView performWithName:@"repositionLastAnimationWith:" with:@(xvalue - screenWidth())];
+        }
     }
     
     if (!_lastNavigationView.leftButton) {
         // As last
-        [_currentNavigationView performWithName:@"repositionLastWith:" with:@(xvalue)];
+        if (!animated) {
+            [_currentNavigationView performWithName:@"repositionLastWith:" with:@(xvalue)];
+        } else {
+            [_currentNavigationView performWithName:@"repositionLastAnimationWith:" with:@(xvalue)];
+        }
     } else {
         // As current
-        [_currentNavigationView performWithName:@"repositionCurrentWith:" with:@(xvalue)];
+        if (!animated) {
+            [_currentNavigationView performWithName:@"repositionCurrentWith:" with:@(xvalue)];
+        } else {
+            [_currentNavigationView performWithName:@"repositionCurrentAnimationWith:" with:@(xvalue)];
+        }
     }
     
-    CGFloat alpha = xvalue / screenWidth();
     // Status background change
-    if (![_lastStatusBGView.backgroundColor isEqualToColor:_currentStatusBGView.backgroundColor]) {
+    CGFloat alpha = xvalue / screenWidth();
+    [self refreshAllBarColorWith:alpha];
+}
+
+- (void)refreshAllBarColorWith:(CGFloat)alpha
+{
+    if (![_lastStatusView.backgroundColor isEqualToColor:_currentStatusView.backgroundColor]) {
         _lastStatusBGView.alpha = alpha;
-        _currentStatusBGView.alpha = 1.0 - alpha;
+        _currentStatusBGView.alpha = 1.0 - _lastStatusBGView.alpha;
+        
+        _lastStatusBGView.backgroundColor = _lastStatusView.backgroundColor;
+        _currentStatusBGView.backgroundColor = _currentStatusView.backgroundColor;
     }
     
-    // Navigation background change
-    if (![_lastNaviBGView.backgroundColor isEqualToColor:_currentNaviBGView.backgroundColor]) {
+    if (![_lastNavigationView.backgroundColor isEqualToColor:_currentNavigationView.backgroundColor]) {
         _lastNaviBGView.alpha = alpha;
-        _currentNaviBGView.alpha = 1.0 - alpha;
-    }
-}
-
-- (void)rollbackAnimationWithX:(CGFloat)xvalue
-{
-    [self repositionAllViewWithX:xvalue];
-    
-    [UIView animateWithDuration:animationDuration()
-                          delay:0
-                        options:UIViewAnimationOptionTransitionFlipFromRight
-                     animations:^{
-                         [self repositionAllViewWithX:0];
-                     }
-                     completion:^(BOOL finished) {
-                         if (finished) {
-                             // Remove shadow
-                             [self.shadowView removeFromSuperview];
-                             
-                             // Refresh bar
-                             [self refreshBarUserInterface];
-                             
-                             // If current is UTabBarController
-                             UIViewController *currentController = [self.viewControllers lastObject];
-                             if (checkClass(currentController, UTabBarController)) {
-                                 [currentController viewWillAppear:NO];
-                             }
-                             
-                             // Callback
-                             if (_viewController && [_viewController respondsToSelector:@selector(controllerDidMoveBack)]) {
-                                 [_viewController controllerDidMoveBack];
-                             }
-                         }
-                     }];
-    
-    // Callback
-    if (_viewController && [_viewController respondsToSelector:@selector(controllerWillMoveBack)]) {
-        [_viewController controllerWillMoveBack];
-    }
-}
-
-- (void)popAnimationWithX:(CGFloat)xvalue
-{
-    [self repositionAllViewWithX:xvalue];
-    
-    CGFloat delta = screenWidth() / 4.0;
-    CGFloat duration = 0.4 * (screenWidth() - xvalue) / (screenWidth() - delta);
-    duration = (duration < 0.25)?0.25:duration;
-    [UIView animateWithDuration:animationDuration()
-                          delay:0
-                        options:UIViewAnimationOptionTransitionFlipFromLeft
-                     animations:^{
-                         [self repositionAllViewWithX:screenWidth()];
-                     }
-                     completion:^(BOOL finished) {
-                         if (finished) {
-                             // Remove shadow
-                             [self.shadowView removeFromSuperview];
-                             
-                             // Pop controller
-                             [self popViewControllerAnimated:NO];
-                             
-                             if (![_lastStatusBGView.backgroundColor isEqualToColor:_currentStatusBGView.backgroundColor]) {
-                                 _lastStatusBGView.alpha = 0;
-                                 _currentStatusBGView.alpha = 1.0 - _lastStatusBGView.alpha;
-                             }
-                             
-                             if (![_lastNaviBGView.backgroundColor isEqualToColor:_currentNaviBGView.backgroundColor]) {
-                                 _lastNaviBGView.alpha = 0;
-                                 _currentNaviBGView.alpha = 1.0 - _lastNaviBGView.alpha;
-                             }
-                         }
-                     }];
-    
-    // Callback
-    if (_viewController && [_viewController respondsToSelector:@selector(controllerWillMovePop)]) {
-        [_viewController controllerWillMovePop];
+        _currentNaviBGView.alpha = 1.0 - _lastNaviBGView.alpha;
+        
+        _lastNaviBGView.backgroundColor = _lastNavigationView.backgroundColor;
+        _currentNaviBGView.backgroundColor = _currentNavigationView.backgroundColor;
     }
 }
 
@@ -458,46 +398,100 @@
     }
 }
 
-- (void)pushAnimation
+#pragma mark - Animation
+
+- (void)rollbackAnimationWithX:(CGFloat)xvalue
 {
-    [self repositionBarsWithX:screenWidth()];
+    [self repositionAllViewWithX:xvalue animated:NO];
     
     [UIView animateWithDuration:animationDuration()
                           delay:0
                         options:UIViewAnimationOptionTransitionFlipFromRight
                      animations:^{
-                         [self repositionBarsWithX:0];
+                         [self repositionAllViewWithX:0 animated:YES];
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
-                             [self refreshBarUserInterface];
+                             // Remove shadow
+                             [self.shadowView removeFromSuperview];
+                             
+                             // If current is UTabBarController
+                             UIViewController *currentController = [self.viewControllers lastObject];
+                             if (checkClass(currentController, UTabBarController)) {
+                                 [currentController viewWillAppear:NO];
+                             }
+                             
+                             // Callback
+                             if (checkAction(_viewController, @selector(controllerDidMoveBack))) {
+                                 [_viewController controllerDidMoveBack];
+                             }
                          }
                      }];
+    
+    // Callback
+    if (checkAction(_viewController, @selector(controllerWillMoveBack))) {
+        [_viewController controllerWillMoveBack];
+    }
+}
+
+- (void)pushAnimation
+{
+    [self repositionBarsWithX:screenWidth() animated:NO];
+    
+    [UIView animateWithDuration:animationDuration()
+                          delay:0
+                        options:UIViewAnimationOptionTransitionFlipFromRight
+                     animations:^{
+                         [self repositionBarsWithX:0 animated:YES];
+                     }
+                     completion:NULL];
+}
+
+- (void)popAnimationWithX:(CGFloat)xvalue
+{
+    [self repositionAllViewWithX:xvalue animated:NO];
+    
+    CGFloat delta = screenWidth() / 4.0;
+    CGFloat duration = 0.4 * (screenWidth() - xvalue) / (screenWidth() - delta);
+    duration = (duration < 0.25)?0.25:duration;
+    [UIView animateWithDuration:animationDuration()
+                          delay:0
+                        options:UIViewAnimationOptionTransitionFlipFromLeft
+                     animations:^{
+                         [self repositionAllViewWithX:screenWidth() animated:YES];
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             // Remove shadow
+                             [self.shadowView removeFromSuperview];
+                             
+                             // Pop & reset
+                             [self popViewControllerAnimated:NO];
+                             [self refreshAllBarColorWith:0];
+                         }
+                     }];
+    
+    // Callback
+    if (checkAction(_viewController, @selector(controllerWillMovePop))) {
+        [_viewController controllerWillMovePop];
+    }
 }
 
 - (void)popAnimation
 {
-    [self repositionBarsWithX:0];
+    [self repositionBarsWithX:0 animated:NO];
     
     [UIView animateWithDuration:animationDuration()
                           delay:0
                         options:UIViewAnimationOptionTransitionFlipFromLeft
                      animations:^{
-                         [self repositionBarsWithX:screenWidth()];
+                         [self repositionBarsWithX:screenWidth() animated:YES];
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
+                             // Refresh bar
                              [self refreshBarUserInterface];
-                             
-                             if (![_lastStatusBGView.backgroundColor isEqualToColor:_currentStatusBGView.backgroundColor]) {
-                                 _lastStatusBGView.alpha = 0;
-                                 _currentStatusBGView.alpha = 1.0 - _lastStatusBGView.alpha;
-                             }
-                             
-                             if (![_lastNaviBGView.backgroundColor isEqualToColor:_currentNaviBGView.backgroundColor]) {
-                                 _lastNaviBGView.alpha = 0;
-                                 _currentNaviBGView.alpha = 1.0 - _lastNaviBGView.alpha;
-                             }
+                             [self refreshAllBarColorWith:0];
                          }
                      }];
 }
@@ -514,7 +508,7 @@
     
     // Reset bars
     UViewController *controller = [self controllerWith:viewController];
-    [self refreshViewController:controller withPush:YES];
+    [self refreshViewController:controller fromPush:YES];
     
     if (animated) {
         // Push animation
@@ -532,9 +526,15 @@
     NSInteger index = self.viewControllers.count - count - 1;
     if (index >= 0) {
         // Callback
-        if (_viewController && [_viewController respondsToSelector:@selector(controllerWillPop)]) {
+        if (checkAction(_viewController, @selector(controllerWillPop))) {
             [_viewController controllerWillPop];
         }
+        
+        // Clear all backgroundView
+        [_lastStatusView performWithName:@"setBackgroundView:" with:nil];
+        [_lastNavigationView performWithName:@"setBackgroundView:" with:nil];
+        [_currentStatusView performWithName:@"setBackgroundView:" with:nil];
+        [_currentNavigationView performWithName:@"setBackgroundView:" with:nil];
         
         UIViewController *controller = self.viewControllers[index];
         [super popToViewController:controller animated:animated];
@@ -543,9 +543,8 @@
             // Pop animation
             [self popAnimation];
         } else {
-            UIViewController *controller = [self.viewControllers lastObject];
-            UViewController *theController = [self controllerWith:controller];
-            [self refreshViewController:theController withPush:NO];
+            // Refresh
+            [self refreshViewController:[self controllerWith:controller] fromPush:NO];
         }
         
         return controller;
@@ -576,7 +575,7 @@
         _isGestureMoving = YES;
         
         // Callback
-        if (_viewController && [_viewController respondsToSelector:@selector(controllerWillMove)]) {
+        if (checkAction(_viewController, @selector(controllerWillMove))) {
             [_viewController controllerWillMove];
         }
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
@@ -586,7 +585,7 @@
     }
     
     if (_isGestureMoving) {
-        [self repositionAllViewWithX:offsetX];
+        [self repositionAllViewWithX:offsetX animated:NO];
     } else {
         if (offsetX > screenWidth() * 0.25) {
             [self popAnimationWithX:offsetX];

@@ -16,12 +16,13 @@
 
 @implementation BaseViewController
 
+@synthesize globalManager = _globalManager;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Initalize notification
-        _globalManager = [GlobalManager manager];
+        // Initialize
     }
     
     return self;
@@ -61,6 +62,17 @@
 
 #pragma mark - Properties
 
+- (GlobalManager *)globalManager
+{
+    if (_globalManager) {
+        return _globalManager;
+    }
+    
+    _globalManager = [GlobalManager manager];
+    
+    return _globalManager;
+}
+
 - (void)setEnableBackButton:(BOOL)enable
 {
     _enableBackButton = enable;
@@ -77,8 +89,8 @@
         
         // Resize
         leftButton.textAlignment = NSTextAlignmentLeft;
-        leftButton.imageFrame = rectMake(10, 0, 14, naviHeight() - naviBLineH());
-        leftButton.titleFrame = rectMake(24, 0, 54, naviHeight() - naviBLineH());
+        leftButton.imageFrame = rectMake(0, 0, 0, 0);
+        leftButton.titleFrame = rectMake(0, 0, 54, 0);
     } else {
         [self.navigationBarView.leftButton removeFromSuperview];
         self.navigationBarView.leftButton = nil;
@@ -107,22 +119,22 @@
 
 - (void)addNotification:(NSString *)name selector:(SEL)selector
 {
-    [_globalManager.localNotification addNotification:self selector:selector name:name];
+    [self.globalManager.localNotification addNotification:self selector:selector name:name];
 }
 
 - (void)addNotification:(NSString *)name selector:(SEL)selector object:(id)object
 {
-    [_globalManager.localNotification addNotification:self selector:selector name:name object:object];
+    [self.globalManager.localNotification addNotification:self selector:selector name:name object:object];
 }
 
 - (void)removeNotification:(NSString *)name
 {
-    [_globalManager.localNotification removeNotification:self name:name];
+    [self.globalManager.localNotification removeNotification:self name:name];
 }
 
 - (void)removeNotification:(NSString *)name object:object
 {
-    [_globalManager.localNotification removeNotification:self name:name object:object];
+    [self.globalManager.localNotification removeNotification:self name:name object:object];
 }
 
 #pragma mark - KVO
@@ -133,7 +145,7 @@
         return;
     }
     
-    [_globalManager.keyValueObserver addKeyValueObserver:self target:object keyPath:keyPath];
+    [self.globalManager.keyValueObserver addKeyValueObserver:self target:object keyPath:keyPath];
 }
 
 - (void)removeKeyValueObject:(id)object keyPath:(NSString *)keyPath
@@ -142,7 +154,7 @@
         return;
     }
     
-    [_globalManager.keyValueObserver removeKeyValueObserver:self target:object keyPath:keyPath];
+    [self.globalManager.keyValueObserver removeKeyValueObserver:self target:object keyPath:keyPath];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath

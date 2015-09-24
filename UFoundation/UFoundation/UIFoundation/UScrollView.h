@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIScrollView+UAExtension.h"
 
 @interface UScrollView : UIScrollView
 

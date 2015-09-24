@@ -10,6 +10,12 @@
 
 @implementation UScrollView
 
+- (void)dealloc
+{
+    [self removeHeaderView];
+    [self removeFooterView];
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

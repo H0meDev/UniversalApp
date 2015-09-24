@@ -10,6 +10,8 @@
 		F50E63151B7C6D8000E442E8 /* UNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F50E63141B7C6D8000E442E8 /* UNavigationController.m */; };
 		F50ED6071B79A1230027EC82 /* UImagePickerControllerController.h in Headers */ = {isa = PBXBuildFile; fileRef = F50ED6051B79A1230027EC82 /* UImagePickerControllerController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F50ED6081B79A1230027EC82 /* UImagePickerControllerController.m in Sources */ = {isa = PBXBuildFile; fileRef = F50ED6061B79A1230027EC82 /* UImagePickerControllerController.m */; };
+		F510A6B51BB0D82C000968AB /* URefreshView.h in Headers */ = {isa = PBXBuildFile; fileRef = F510A6B31BB0D82C000968AB /* URefreshView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F510A6B61BB0D82C000968AB /* URefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = F510A6B41BB0D82C000968AB /* URefreshView.m */; settings = {ASSET_TAGS = (); }; };
 		F511C1DA1B6F2A5400DBAECE /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F511C1D91B6F2A5400DBAECE /* Resource.bundle */; };
 		F5127BC41B7A38DC007952C7 /* UScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5127BC21B7A38DC007952C7 /* UScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F5127BC51B7A38DC007952C7 /* UScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5127BC31B7A38DC007952C7 /* UScrollView.m */; };
@@ -19,7 +21,7 @@
 		F51431CB1B89AE9300C2372E /* UTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F51431C91B89AE9300C2372E /* UTabBarButton.m */; };
 		F51431CE1B89AFFF00C2372E /* UBarButton.h in Headers */ = {isa = PBXBuildFile; fileRef = F51431CC1B89AFFF00C2372E /* UBarButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F51431CF1B89AFFF00C2372E /* UBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F51431CD1B89AFFF00C2372E /* UBarButton.m */; };
-		F515938B1BAC55440043FFE9 /* UIScrollView+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51593891BAC55440043FFE9 /* UIScrollView+UAExtension.h */; settings = {ASSET_TAGS = (); }; };
+		F515938B1BAC55440043FFE9 /* UIScrollView+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51593891BAC55440043FFE9 /* UIScrollView+UAExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F515938C1BAC55440043FFE9 /* UIScrollView+UAExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F515938A1BAC55440043FFE9 /* UIScrollView+UAExtension.m */; settings = {ASSET_TAGS = (); }; };
 		F51C11CF1B90630300F29C3F /* NSArray+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51C11991B90630300F29C3F /* NSArray+UAExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F51C11D01B90630300F29C3F /* NSArray+UAExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C119A1B90630300F29C3F /* NSArray+UAExtension.m */; };
@@ -69,6 +71,8 @@
 		F51C11FC1B90630300F29C3F /* UTimerBooster.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11CE1B90630300F29C3F /* UTimerBooster.m */; };
 		F51C11FF1B90633900F29C3F /* UIImageView+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51C11FD1B90633900F29C3F /* UIImageView+UAExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F51C12001B90633900F29C3F /* UIImageView+UAExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11FE1B90633900F29C3F /* UIImageView+UAExtension.m */; };
+		F52AD2BA1BB2AA630074DBA1 /* UProgressIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = F52AD2B81BB2AA630074DBA1 /* UProgressIndicatorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F52AD2BB1BB2AA630074DBA1 /* UProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F52AD2B91BB2AA630074DBA1 /* UProgressIndicatorView.m */; settings = {ASSET_TAGS = (); }; };
 		F5687D681B022E6B0073594C /* UFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = F5974D011B02051F004AA14F /* UFoundation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F5687D691B022E6B0073594C /* UDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = F5974D021B02057F004AA14F /* UDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F56C2CB51B04449400D5DF66 /* UNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = F56C2CAF1B04449400D5DF66 /* UNavigationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -100,7 +104,7 @@
 		F56C2CE81B0444D300D5DF66 /* UView.m in Sources */ = {isa = PBXBuildFile; fileRef = F56C2CD01B0444D300D5DF66 /* UView.m */; };
 		F56C2CE91B0444D300D5DF66 /* UWebView.h in Headers */ = {isa = PBXBuildFile; fileRef = F56C2CD11B0444D300D5DF66 /* UWebView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F56C2CEA1B0444D300D5DF66 /* UWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = F56C2CD21B0444D300D5DF66 /* UWebView.m */; };
-		F57848DE1BAD587B00E7121B /* UTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F57848DC1BAD587B00E7121B /* UTableViewController.h */; settings = {ASSET_TAGS = (); }; };
+		F57848DE1BAD587B00E7121B /* UTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F57848DC1BAD587B00E7121B /* UTableViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F57848DF1BAD587B00E7121B /* UTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F57848DD1BAD587B00E7121B /* UTableViewController.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
@@ -108,6 +112,8 @@
 		F50E63141B7C6D8000E442E8 /* UNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UNavigationController.m; path = UIFoundation/UNavigationController.m; sourceTree = "<group>"; };
 		F50ED6051B79A1230027EC82 /* UImagePickerControllerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UImagePickerControllerController.h; path = UIFoundation/UImagePickerControllerController.h; sourceTree = "<group>"; };
 		F50ED6061B79A1230027EC82 /* UImagePickerControllerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UImagePickerControllerController.m; path = UIFoundation/UImagePickerControllerController.m; sourceTree = "<group>"; };
+		F510A6B31BB0D82C000968AB /* URefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URefreshView.h; sourceTree = "<group>"; };
+		F510A6B41BB0D82C000968AB /* URefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URefreshView.m; sourceTree = "<group>"; };
 		F511C1D91B6F2A5400DBAECE /* Resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Resource.bundle; sourceTree = "<group>"; };
 		F5127BC21B7A38DC007952C7 /* UScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UScrollView.h; path = UIFoundation/UScrollView.h; sourceTree = "<group>"; };
 		F5127BC31B7A38DC007952C7 /* UScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UScrollView.m; path = UIFoundation/UScrollView.m; sourceTree = "<group>"; };
@@ -168,6 +174,8 @@
 		F51C11CE1B90630300F29C3F /* UTimerBooster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UTimerBooster.m; sourceTree = "<group>"; };
 		F51C11FD1B90633900F29C3F /* UIImageView+UAExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+UAExtension.h"; sourceTree = "<group>"; };
 		F51C11FE1B90633900F29C3F /* UIImageView+UAExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+UAExtension.m"; sourceTree = "<group>"; };
+		F52AD2B81BB2AA630074DBA1 /* UProgressIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UProgressIndicatorView.h; path = UIFoundation/UProgressIndicatorView.h; sourceTree = "<group>"; };
+		F52AD2B91BB2AA630074DBA1 /* UProgressIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UProgressIndicatorView.m; path = UIFoundation/UProgressIndicatorView.m; sourceTree = "<group>"; };
 		F56C2CAF1B04449400D5DF66 /* UNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UNavigationController.h; path = UIFoundation/UNavigationController.h; sourceTree = "<group>"; };
 		F56C2CB11B04449400D5DF66 /* UTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UTabBarController.h; path = UIFoundation/UTabBarController.h; sourceTree = "<group>"; };
 		F56C2CB21B04449400D5DF66 /* UTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UTabBarController.m; path = UIFoundation/UTabBarController.m; sourceTree = "<group>"; };
@@ -460,6 +468,10 @@
 				F51431C91B89AE9300C2372E /* UTabBarButton.m */,
 				F51431C41B89AE7800C2372E /* UNavigationBarButton.h */,
 				F51431C51B89AE7800C2372E /* UNavigationbarButton.m */,
+				F510A6B31BB0D82C000968AB /* URefreshView.h */,
+				F510A6B41BB0D82C000968AB /* URefreshView.m */,
+				F52AD2B81BB2AA630074DBA1 /* UProgressIndicatorView.h */,
+				F52AD2B91BB2AA630074DBA1 /* UProgressIndicatorView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -471,13 +483,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F52AD2BA1BB2AA630074DBA1 /* UProgressIndicatorView.h in Headers */,
+				F510A6B51BB0D82C000968AB /* URefreshView.h in Headers */,
+				F515938B1BAC55440043FFE9 /* UIScrollView+UAExtension.h in Headers */,
+				F57848DE1BAD587B00E7121B /* UTableViewController.h in Headers */,
 				F51C11EF1B90630300F29C3F /* UHTTPOperation.h in Headers */,
 				F51C11D51B90630300F29C3F /* NSDictionary+UAExtension.h in Headers */,
 				F51C11E51B90630300F29C3F /* UITableViewCell+UAExtension.h in Headers */,
 				F51C11F71B90630300F29C3F /* UProgressHUD.h in Headers */,
 				F51C11D11B90630300F29C3F /* NSData+UAExtension.h in Headers */,
 				F51C11E71B90630300F29C3F /* UITextField+UAExtension.h in Headers */,
-				F515938B1BAC55440043FFE9 /* UIScrollView+UAExtension.h in Headers */,
 				F51C11F51B90630300F29C3F /* UOperationQueue.h in Headers */,
 				F51C11DF1B90630300F29C3F /* UIImage+UAExtension.h in Headers */,
 				F51C11E11B90630300F29C3F /* UILabel+UAExtension.h in Headers */,
@@ -511,7 +526,6 @@
 				F56C2CDF1B0444D300D5DF66 /* UTableView.h in Headers */,
 				F56C2CB91B04449400D5DF66 /* UViewController.h in Headers */,
 				F56C2CD51B0444D300D5DF66 /* UImageView.h in Headers */,
-				F57848DE1BAD587B00E7121B /* UTableViewController.h in Headers */,
 				F56C2CD91B0444D300D5DF66 /* UNavigationBarView.h in Headers */,
 				F56C2CE31B0444D300D5DF66 /* UTextField.h in Headers */,
 				F56C2CDB1B0444D300D5DF66 /* UStatusBarView.h in Headers */,
@@ -605,11 +619,13 @@
 				F51C11FA1B90630300F29C3F /* UThreadPool.m in Sources */,
 				F51C11F21B90630300F29C3F /* UHTTPRequest.m in Sources */,
 				F50ED6081B79A1230027EC82 /* UImagePickerControllerController.m in Sources */,
+				F510A6B61BB0D82C000968AB /* URefreshView.m in Sources */,
 				F56C2CDC1B0444D300D5DF66 /* UStatusBarView.m in Sources */,
 				F51C11D81B90630300F29C3F /* NSObject+UAExtension.m in Sources */,
 				F57848DF1BAD587B00E7121B /* UTableViewController.m in Sources */,
 				F51C11EC1B90630300F29C3F /* UIView+UAExtension.m in Sources */,
 				F56C2CD41B0444D300D5DF66 /* UButton.m in Sources */,
+				F52AD2BB1BB2AA630074DBA1 /* UProgressIndicatorView.m in Sources */,
 				F56C2CBA1B04449400D5DF66 /* UViewController.m in Sources */,
 				F5127BC51B7A38DC007952C7 /* UScrollView.m in Sources */,
 				F51C11F41B90630300F29C3F /* UModel.m in Sources */,

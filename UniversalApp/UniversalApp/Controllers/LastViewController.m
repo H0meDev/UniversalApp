@@ -7,9 +7,12 @@
 //
 
 #import "LastViewController.h"
-#import "NextViewController.h"
+#import "CurrentViewController.h"
 
 @interface LastViewController () <UTableViewDefaultDelegate>
+{
+    UTableView *_tableView;
+}
 
 @end
 
@@ -23,6 +26,11 @@
     self.countOfControllerToPop = 1;
     self.navigationBarView.title = @"Last";
     [self.navigationBarView.leftButton setTitle:@"Next"];
+    self.statusBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
+    self.navigationBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
+    
+//    self.statusBarView.backgroundColor = sysClearColor();
+//    self.navigationBarView.backgroundColor = sysClearColor();
     
 //    UILabel *leftView = [[UILabel alloc]init];
 //    leftView.frame = rectMake(8, 0, 60, naviHeight());
@@ -52,9 +60,17 @@
     [self addSubview:button];
     
     UTableView *tableView = [[UTableView alloc]init];
-    tableView.frame = rectMake(0, 0, screenWidth(), self.containerView.sizeHeight);
+    tableView.frame = rectMake(0, - 64, screenWidth(), screenHeight());
+    tableView.contentInset = edgeMake(64, 0, 0, 0);
+    tableView.scrollIndicatorInsets = edgeMake(64, 0, 0, 0);
     tableView.defaultDelegate = self;
+    [tableView addHeaderTarget:self action:@selector(headerAction:)];
+    [tableView addFooterTarget:self action:@selector(footerAction:)];
     [self addSubview:tableView];
+    _tableView = tableView;
+    
+    // KVO
+    [self addKeyValueObject:_tableView keyPath:@"contentOffset"];
     
     NSMutableArray *sectionArray = [NSMutableArray array];
     for (int i = 0; i < 10; i ++) {
@@ -89,10 +105,39 @@
     tableView.sectionArray = sectionArray;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)receivedKVObserverValueForKayPath:(NSString *)keyPath
+                                 ofObject:(id)object
+                                   change:(NSDictionary *)change
+{
+    if ([keyPath isEqualToString:@"contentOffset"]) {
+        CGPoint offset = [change[@"new"] CGPointValue];
+        CGFloat alpha = fabs(offset.y / 320);
+        alpha = (alpha < 0)?0:alpha;
+        alpha = (alpha > 1)?1:alpha;
+        
+        dispatch_async(main_queue(), ^{
+            UIColor *color = rgbaColor(0, 255, 0, alpha);
+            self.statusBarView.backgroundColor = color;
+            self.navigationBarView.backgroundColor = color;
+        });
+    }
+}
+
+- (void)dealloc
+{
+    [_tableView removeHeaderView];
+    [_tableView removeFooterView];
 }
 
 /*
@@ -105,20 +150,30 @@
 }
 */
 
+- (void)headerAction:(UIScrollView *)scrollView
+{
+    [UTimerBooster addTarget:scrollView sel:@selector(finishHeaderRefresh) time:3.0];
+}
+
+- (void)footerAction:(UIScrollView *)scrollView
+{
+    [UTimerBooster addTarget:scrollView sel:@selector(finishFooterRefresh) time:3.0];
+}
+
 - (void)buttonAction
 {
-    NextViewController *next = [[NextViewController alloc]init];
-    [next.navigationBarView.leftButton setTitle:self.navigationBarView.title];
-    [self pushViewController:next];
+    CurrentViewController *current = [[CurrentViewController alloc]init];
+    [current.navigationBarView.leftButton setTitle:self.navigationBarView.title];
+    [self pushViewController:current];
 }
 
 - (void)tableView:(UTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    NextViewController *next = [[NextViewController alloc]init];
-    [next.navigationBarView.leftButton setTitle:self.navigationBarView.title];
-    [self pushViewController:next];
+    CurrentViewController *current = [[CurrentViewController alloc]init];
+    [current.navigationBarView.leftButton setTitle:self.navigationBarView.title];
+    [self pushViewController:current];
 }
 
 @end

@@ -121,6 +121,7 @@ CG_INLINE CGRange CGRangeMake(CGFloat min, CGFloat max)
 #define checkValidNSString(string)         ([string isKindOfClass:NSString.class] && ((NSString *)string).length > 0)
 #define checkValidNSArray(array)           ([array isKindOfClass:NSArray.class] && ((NSArray *)array).count > 0)
 #define checkValidNSDictionary(dict)       ([dict isKindOfClass:NSDictionary.class] && ((NSDictionary *)dict).count > 0)
+#define checkAction(target, selector)      (target && [target respondsToSelector:selector])
 
 // Data safety
 #define checkValidNSDataWith(data, size)       ([data isKindOfClass:NSData.class] && ((NSData *)data).length >= size)

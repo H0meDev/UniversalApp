@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "UTableViewCell.h"
+#import "UIScrollView+UAExtension.h"
 
 @interface UTableView : UITableView
 

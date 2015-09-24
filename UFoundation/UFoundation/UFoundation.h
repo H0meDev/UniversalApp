@@ -33,6 +33,8 @@
 #import "UBarButton.h"
 #import "UNavigationBarButton.h"
 #import "UTabBarButton.h"
+#import "URefreshView.h"
+#import "UProgressIndicatorView.h"
 
 // Categories
 #import "NSObject+UAExtension.h"
@@ -47,6 +49,7 @@
 #import "UILabel+UAExtension.h"
 #import "UITextView+UAExtension.h"
 #import "UITextField+UAExtension.h"
+#import "UIScrollView+UAExtension.h"
 #import "UIButton+UAExtension.h"
 #import "UITableView+UAExtension.h"
 #import "UITableViewCell+UAExtension.h"

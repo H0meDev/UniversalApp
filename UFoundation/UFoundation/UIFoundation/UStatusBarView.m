@@ -8,6 +8,7 @@
 
 #import "UStatusBarView.h"
 #import "UDefines.h"
+#import "UImageView.h"
 #import "UIColor+UAExtension.h"
 #import "UIView+UAExtension.h"
 #import "NSObject+UAExtension.h"
@@ -19,6 +20,7 @@
 }
 
 @property (nonatomic, retain) UIImageView *contentView;
+@property (nonatomic, weak) UImageView *backgroundView;
 
 @end
 
@@ -90,6 +92,16 @@
 - (void)setBackgroundColor:(UIColor *)color
 {
     _backgroundColor = color;
+    
+    if (self.backgroundView) {
+        self.backgroundView.backgroundColor = color;
+    }
+}
+
+- (void)setBackgroundView:(UImageView *)backgroundView
+{
+    _backgroundView = backgroundView;
+    _backgroundView.backgroundColor = _backgroundColor;
 }
 
 - (void)stretch

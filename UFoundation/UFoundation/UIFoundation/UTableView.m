@@ -22,6 +22,12 @@
 
 @implementation UTableView
 
+- (void)dealloc
+{
+    [self removeHeaderView];
+    [self removeFooterView];
+}
+
 @end
 
 @implementation UTableViewDataRow

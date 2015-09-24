@@ -35,10 +35,17 @@
 
 - (void)performWithName:(NSString *)selectorName with:(id)object
 {
+    if (!selectorName) {
+        return;
+    }
+    
     SEL selector = NSSelectorFromString(selectorName);
     IMP imp = [self methodForSelector:selector];
-    void (*execute)(id, SEL, id) = (void *)imp;
-    execute(self, selector, object);
+    
+    if (imp) {
+        void (*execute)(id, SEL, id) = (void *)imp;
+        execute(self, selector, object);
+    }
 }
 
 - (void)performOnMainThread:(SEL)selector

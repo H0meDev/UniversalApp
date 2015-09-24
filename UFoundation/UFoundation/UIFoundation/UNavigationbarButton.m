@@ -11,8 +11,9 @@
 #import "UIColor+UAExtension.h"
 
 @interface UNavigationBarButton ()
-
-@property (nonatomic, retain) UIView *filterView;
+{
+    BOOL _needsConstraint;
+}
 
 @end
 
@@ -23,16 +24,23 @@
     self = [super init];
     if (self) {
         // Initialize
-        [self filterView];
-        [self setImageFrame:rectMake(0, 0, 24, naviHeight())];
     }
     
     return self;
 }
 
+- (void)setImageFrame:(CGRect)imageFrame
+{
+    [super setImageFrame:rectMake(0, 0, 24, naviHeight())];
+    
+    _needsConstraint = YES;
+}
+
 - (void)setTitleFrame:(CGRect)frame
 {
-    [super setTitleFrame:rectMake(24, 0, frame.size.width, naviHeight())];
+    if (_needsConstraint) {
+        [super setTitleFrame:rectMake(24, 0, frame.size.width, naviHeight())];
+    }
 }
 
 /*
@@ -45,39 +53,26 @@
 
 #pragma mark - Properties
 
-- (UIView *)filterView
-{
-    if (_filterView) {
-        return _filterView;
-    }
-    
-    return _filterView;
-}
-
 #pragma mark - Method
 
 - (void)setBackImage:(UIColor *)color
 {
     [self setImage:[self imageWith:color]];
-    [self setImageFrame:rectMake(0, 0, 24, naviHeight())];
 }
 
 - (void)setHBackImage:(UIColor *)color
 {
     [self setHImage:[self imageWith:color]];
-    [self setImageFrame:rectMake(0, 0, 24, naviHeight())];
 }
 
 - (void)setSBackImage:(UIColor *)color
 {
     [self setSImage:[self imageWith:color]];
-    [self setImageFrame:rectMake(0, 0, 24, naviHeight())];
 }
 
 - (void)setDBackImage:(UIColor *)color
 {
     [self setDImage:[self imageWith:color]];
-    [self setImageFrame:rectMake(0, 0, 24, naviHeight())];
 }
 
 - (UIImage *)imageWith:(UIColor *)color
@@ -97,10 +92,10 @@
         // Draw arrow
         CGContextSetRGBStrokeColor(context, redValue, greenValue, blueValue, alphaValue);
         CGContextBeginPath(context);
-        CGContextMoveToPoint(context, 8, 46);
-        CGContextAddLineToPoint(context, 28, 24);
-        CGContextMoveToPoint(context, 8, 42);
-        CGContextAddLineToPoint(context, 28, 64);
+        CGContextMoveToPoint(context, 16, 46);
+        CGContextAddLineToPoint(context, 36, 24);
+        CGContextMoveToPoint(context, 16, 42);
+        CGContextAddLineToPoint(context, 36, 64);
         CGContextSetLineWidth(context, 6);
         CGContextSetLineJoin(context, kCGLineJoinBevel);
         CGContextStrokePath(context);

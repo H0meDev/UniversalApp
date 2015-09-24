@@ -79,6 +79,7 @@
 }
 
 @property (nonatomic, retain) UNavigationContentView *contentView;
+@property (nonatomic, weak) UImageView *backgroundView;
 
 @end
 
@@ -150,6 +151,10 @@
 - (void)setBackgroundColor:(UIColor *)color
 {
     _backgroundColor = color;
+    
+    if (self.backgroundView) {
+        self.backgroundView.backgroundColor = color;
+    }
 }
 
 - (void)setTitle:(NSString *)title
@@ -189,17 +194,33 @@
     _contentView.titleLabel.font = font;
 }
 
+- (void)setBackgroundView:(UImageView *)backgroundView
+{
+    _backgroundView = backgroundView;
+    _backgroundView.backgroundColor = _backgroundColor;
+}
+
 - (void)repositionLastWith:(NSNumber *)xvalue
 {
-    [self repositionWith:[xvalue floatValue] isLast:YES];
+    [self repositionWith:[xvalue floatValue] current:NO animated:NO];
+}
+
+- (void)repositionLastAnimationWith:(NSNumber *)xvalue
+{
+    [self repositionWith:[xvalue floatValue] current:NO animated:YES];
 }
 
 - (void)repositionCurrentWith:(NSNumber *)xvalue
 {
-    [self repositionWith:[xvalue floatValue] isLast:NO];
+    [self repositionWith:[xvalue floatValue] current:YES animated:NO];
 }
 
-- (void)repositionWith:(CGFloat)xvalue isLast:(BOOL)isLast
+- (void)repositionCurrentAnimationWith:(NSNumber *)xvalue
+{
+    [self repositionWith:[xvalue floatValue] current:YES animated:YES];
+}
+
+- (void)repositionWith:(CGFloat)xvalue current:(BOOL)current animated:(BOOL)animated
 {
     CGFloat centerX = (screenWidth() - _contentView.titleLabel.sizeWidth) / 2.0;
     CGFloat progress = (screenWidth() - fabs(xvalue)) / screenWidth();
@@ -229,14 +250,14 @@
         titleLabel.alpha = buttonAlpha;
         titleLabel.originX = 24 + xvalue * 0.35;
         
-        if (isLast) {
+        if (!current) {
             UImageView *imageView = [_leftButton valueForKey:@"imageView"];
             imageView.alpha = buttonAlpha;
         }
     }
     
     if (_centerView) {
-        _centerView.alpha = buttonAlpha;
+        _centerView.alpha = _contentView.titleLabel.alpha;
         _centerView.centerX = _contentView.titleLabel.centerX;
     }
     

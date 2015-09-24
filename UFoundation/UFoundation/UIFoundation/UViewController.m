@@ -126,14 +126,17 @@
     
     if (_statusBarView) {
         [_statusBarView removeFromSuperview];
+        _statusBarView = nil;
     }
     
     if (_navigationBarView) {
         [_navigationBarView removeFromSuperview];
+        _navigationBarView = nil;
     }
     
     if (_containerView) {
         [_containerView removeFromSuperview];
+        _containerView = nil;
     }
     
     NSLog(@"%@ dealloc", NSStringFromClass([self class]));

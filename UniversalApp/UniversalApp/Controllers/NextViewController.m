@@ -34,11 +34,11 @@
     [rightButton addTarget:self action:@selector(buttonAction)];
     self.navigationBarView.rightButton = rightButton;
     
-    CGFloat height = statusHeight() + naviHeight();
-    UView *navigationView = [[UView alloc]init];
-    navigationView.frame = rectMake(0, - height, screenWidth(), height);
-    navigationView.backgroundColor = sysYellowColor();
-    [self addSubview:navigationView];
+//    CGFloat height = statusHeight() + naviHeight();
+//    UView *navigationView = [[UView alloc]init];
+//    navigationView.frame = rectMake(0, - height, screenWidth(), height);
+//    navigationView.backgroundColor = sysYellowColor();
+//    [self addSubview:navigationView];
     
     UButton *button = [UButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);

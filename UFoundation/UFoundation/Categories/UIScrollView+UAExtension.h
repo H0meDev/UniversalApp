@@ -7,7 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "URefreshView.h"
 
 @interface UIScrollView (UAExtension)
+
+- (void)addHeaderTarget:(id)target action:(SEL)selector;
+- (void)addFooterTarget:(id)target action:(SEL)selector;
+
+- (void)startHeaderRefresh;
+- (void)startFooterRefresh;
+- (void)finishHeaderRefresh;
+- (void)finishFooterRefresh;
+
+// Must be called when header or footer not be used any more.
+- (void)removeHeaderView;
+- (void)removeFooterView;
 
 @end
