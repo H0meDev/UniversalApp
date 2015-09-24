@@ -26,6 +26,8 @@
 {
     [self removeHeaderView];
     [self removeFooterView];
+    
+    NSLog(@"%@ dealloc", NSStringFromClass(self.class));
 }
 
 @end

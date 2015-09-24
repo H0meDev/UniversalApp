@@ -248,10 +248,10 @@
     NSInteger index = self.viewControllers.count - count - 1;
     index = (index < 0)?0:index;
     
-    __weak UIView *lastContentView = [self contentViewWithIndex:index];
+    UIView *lastContentView = [self contentViewWithIndex:index];
     if (lastContentView) {
         // Reposition current
-        __weak UIView *currentContentView = _viewController.contentView;
+        UIView *currentContentView = _viewController.contentView;
         currentContentView.originX = xvalue;
         
         // Reposition last
@@ -310,25 +310,19 @@
     
     // Status background change
     CGFloat alpha = xvalue / screenWidth();
-    [self refreshAllBarColorWith:alpha];
+    [self refreshAllBarAlphaWith:alpha];
 }
 
-- (void)refreshAllBarColorWith:(CGFloat)alpha
+- (void)refreshAllBarAlphaWith:(CGFloat)alpha
 {
-    if (![_lastStatusView.backgroundColor isEqualToColor:_currentStatusView.backgroundColor]) {
+    if (![_lastStatusBGView.backgroundColor isEqualToColor:_currentStatusBGView.backgroundColor]) {
         _lastStatusBGView.alpha = alpha;
-        _currentStatusBGView.alpha = 1.0 - _lastStatusBGView.alpha;
-        
-        _lastStatusBGView.backgroundColor = _lastStatusView.backgroundColor;
-        _currentStatusBGView.backgroundColor = _currentStatusView.backgroundColor;
+        _currentStatusBGView.alpha = 1.0 - alpha;
     }
     
-    if (![_lastNavigationView.backgroundColor isEqualToColor:_currentNavigationView.backgroundColor]) {
+    if (![_lastNaviBGView.backgroundColor isEqualToColor:_currentNaviBGView.backgroundColor]) {
         _lastNaviBGView.alpha = alpha;
-        _currentNaviBGView.alpha = 1.0 - _lastNaviBGView.alpha;
-        
-        _lastNaviBGView.backgroundColor = _lastNavigationView.backgroundColor;
-        _currentNaviBGView.backgroundColor = _currentNavigationView.backgroundColor;
+        _currentNaviBGView.alpha = 1.0 - alpha;
     }
 }
 
@@ -467,7 +461,7 @@
                              
                              // Pop & reset
                              [self popViewControllerAnimated:NO];
-                             [self refreshAllBarColorWith:0];
+                             [self refreshAllBarAlphaWith:0];
                          }
                      }];
     
@@ -491,7 +485,7 @@
                          if (finished) {
                              // Refresh bar
                              [self refreshBarUserInterface];
-                             [self refreshAllBarColorWith:0];
+                             [self refreshAllBarAlphaWith:0];
                          }
                      }];
 }
@@ -603,11 +597,6 @@
     if ([self isValidateInPoint:point]) {
         NSInteger count = self.viewControllers.count;
         if (count == 1) {
-            return NO;
-        }
-        
-        NSString *className = NSStringFromClass(touch.view.class);
-        if ([className isEqualToString:@"UIButton"]) {
             return NO;
         }
 
