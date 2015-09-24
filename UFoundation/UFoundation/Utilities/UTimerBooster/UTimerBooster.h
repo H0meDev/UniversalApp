@@ -23,7 +23,7 @@ typedef void (^UTimerAction)(NSInteger remainder);
 
 // Set duration of timer
 // Before timer start
-+ (void)setTimeDuration:(NSTimeInterval)duration; // Default is 0.1s，more slower less CPU used.
++ (void)setTimeDuration:(NSTimeInterval)duration; // Default is 0.01s，more slower less CPU used.
 
 // Start timer
 + (void)start;

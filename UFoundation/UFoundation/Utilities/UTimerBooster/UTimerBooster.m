@@ -156,7 +156,7 @@ static UTimerBooster *sharedManager = nil;
         zone = nil;
         
         // Default duration
-        [self setTimeDuration:0.1];
+        [self setTimeDuration:0.01];
         
         return self;
     }

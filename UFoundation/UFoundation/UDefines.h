@@ -166,7 +166,7 @@ static classname *shared##classname = nil; \
 #define loadImageFile(file)                 [UIImage imageWithContentsOfFile:file]
 #define loadBundleImage(bundleName, image)  [UIImage imageWithContentsOfFile:resourcePathWith(bundleName, image)]
 
-// GCD
+// GCD queue
 #define global_queue()      dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 #define main_queue()        dispatch_get_main_queue()
 #define current_queue()     dispatch_get_current_queue()
