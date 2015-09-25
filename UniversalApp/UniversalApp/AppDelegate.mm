@@ -24,6 +24,14 @@
     self.window.backgroundColor = sysWhiteColor();
     [self.window makeKeyAndVisible];
     
+    [UHTTPRequest sendAsynCachedWith:@"GET" url:@"https://www.baidu.com" param:nil callback:^(UHTTPStatus *status, id data) {
+        if (status.code == UHTTPCodeLocalCached) {
+            NSLog(@"From cached:\n%@", data);
+        } else if (status.code == UHTTPCodeOK) {
+            NSLog(@"From request:\n%@", data);
+        }
+    }];
+    
     // Start timer
     [UTimerBooster start];
     

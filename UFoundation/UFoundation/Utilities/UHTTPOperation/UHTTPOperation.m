@@ -10,9 +10,92 @@
 #import "UOperationQueue.h"
 #import "UTimerBooster.h"
 #import "NSObject+UAExtension.h"
-
+#import "NSString+UAExtension.h"
 
 @implementation UHTTPStatus
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.code = UHTTPCodeOffline;
+        self.time = 0;
+        self.countOfRetry = 0;
+        self.url = nil;
+    }
+    
+    return self;
+}
+
+@end
+
+@interface UHTTPDataCache ()
+{
+    NSString *_filePath;
+    NSLock *_accessLock;
+}
+
+@property (atomic, strong) NSMutableDictionary *cachedData;
+
+@end
+
+@implementation UHTTPDataCache
+
+singletonImplementationWith(UHTTPDataCache, Cache);
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        _accessLock = [[NSLock alloc]init];
+        _filePath = cachePathWith(@"http_cached.dat");
+        
+        if (!checkFileExists(_filePath)) {
+            // Check directory
+            if (!checkCacheDirectoryExists()) {
+                createCacheDirectory();
+            }
+            
+            createFile(_filePath);
+        }
+        
+        _cachedData = [NSMutableDictionary dictionaryWithContentsOfFile:_filePath];
+        if (!_cachedData) {
+            _cachedData = [NSMutableDictionary dictionary];
+        }
+    }
+    
+    return self;
+}
+
+- (void)setValue:(id)value forKey:(NSString *)key
+{
+    if (!value || !checkValidNSString(key)) {
+        return;
+    }
+    
+    [_accessLock lock];
+    [_cachedData setObject:value forKey:key];
+    [_cachedData writeToFile:_filePath atomically:YES];
+    [_accessLock unlock];
+}
+
+- (id)objectForKey:(NSString *)key
+{
+    if (!checkValidNSString(key)) {
+        return nil;
+    }
+    
+    return [_cachedData objectForKey:key];
+}
+
+- (void)clearAllCache
+{
+    [_accessLock lock];
+    [_cachedData removeAllObjects];
+    [_cachedData writeToFile:_filePath atomically:YES];
+    [_accessLock unlock];
+}
 
 @end
 
@@ -23,7 +106,10 @@
     __block UHTTPReceivedDataCallback _received;
     __weak id<UHTTPRequestDelegate> _delegate;
     
-    time_t start_time;
+    BOOL _cacheRequired;
+    NSString *_cacheKey;
+    
+    time_t _startTime;
     NSInteger _timeout;
     NSInteger _countOfRetry;
     NSUInteger _timeInterval;
@@ -47,28 +133,54 @@
     return [self initWithRequest:request recevied:NULL callback:callback];
 }
 
-- (id)initWithRequest:(NSURLRequest *)request recevied:(UHTTPReceivedDataCallback)recevied callback:(UHTTPCallback)callback
+- (id)initWithRequest:(NSURLRequest *)request
+             recevied:(UHTTPReceivedDataCallback)recevied
+             callback:(UHTTPCallback)callback
 {
     return [self initWithRequest:request response:NULL recevied:recevied callback:callback];
 }
 
-- (id)initWithRequest:(NSURLRequest *)request response:(UHTTPReceivedResponseCallback)response recevied:(UHTTPReceivedDataCallback)recevied callback:(UHTTPCallback)callback
+- (id)initWithRequest:(NSURLRequest *)request
+             response:(UHTTPReceivedResponseCallback)response
+             recevied:(UHTTPReceivedDataCallback)recevied
+             callback:(UHTTPCallback)callback
+{
+    return [self initWithRequest:request cached:NO response:response recevied:recevied callback:callback];
+}
+
+- (id)initWithRequest:(NSURLRequest *)request
+                cached:(BOOL)cached
+             callback:(UHTTPCallback)callback
+{
+    return [self initWithRequest:request cached:cached recevied:NULL callback:callback];
+}
+
+- (id)initWithRequest:(NSURLRequest *)request
+                cached:(BOOL)cached
+             recevied:(UHTTPReceivedDataCallback)recevied
+             callback:(UHTTPCallback)callback
+{
+    return [self initWithRequest:request cached:cached response:NULL recevied:recevied callback:callback];
+}
+
+- (id)initWithRequest:(NSURLRequest *)request
+                cached:(BOOL)cached
+             response:(UHTTPReceivedResponseCallback)response
+             recevied:(UHTTPReceivedDataCallback)recevied
+             callback:(UHTTPCallback)callback
 {
     self = [super init];
     if (self) {
         // Initalize
         _connection = [[NSURLConnection alloc]initWithRequest:request delegate:self startImmediately:NO];
         
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-#pragma clang diagnostic ignored "-Wgnu"
-        _callback = [callback copy];
+        _callback = callback;
         if (response) {
-            _response = [response copy];
+            _response = response;
         }
         
         if (recevied) {
-            _received = [recevied copy];
+            _received = recevied;
         }
         
         // Default is 30
@@ -77,6 +189,27 @@
         _countOfRetry = 0;
         _timeInterval = 0;
         _request = request;
+        _cacheRequired = cached;
+        
+        if (_cacheRequired) {
+            // Get cached data
+            NSMutableURLRequest *mrequest = (NSMutableURLRequest *)request;
+            NSString *url = request.URL.absoluteString;
+            NSString *method = request.HTTPMethod;
+            NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
+            _cacheKey = [[NSString stringWithFormat:@"%@%@%@", url, method, body]MD5String];
+            
+            id data = [[UHTTPDataCache sharedCache]objectForKey:_cacheKey];
+            if (data) {
+                // Status for cache
+                UHTTPStatus *status = [[UHTTPStatus alloc]init];
+                status.code = UHTTPCodeLocalCached;
+                
+                if (_callback) {
+                    _callback(status, data);
+                }
+            }
+        }
         
 #if DEBUG
         NSMutableURLRequest *mrequest = (NSMutableURLRequest *)request;
@@ -121,7 +254,7 @@
 - (void)startConnection
 {
     // Start time
-    start_time = clock();
+    _startTime = clock();
     
     // Timeout setting
     [UTimerBooster addTarget:self sel:@selector(requestTimeout) time:_timeout];
@@ -201,6 +334,7 @@
             UHTTPStatus *status = [[UHTTPStatus alloc]init];
             status.code = UHTTPCodeRequestTimeout;
             status.time = _timeout;
+            status.countOfRetry = _countOfRetry;
             status.url = request.URL.absoluteString;
             
             if (_callback) {
@@ -261,8 +395,8 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSURLRequest *request = [connection originalRequest];
-    clock_t end_time = clock();
-    CGFloat usedTime = (CGFloat)(end_time - start_time)/CLOCKS_PER_SEC;
+    clock_t endTime = clock();
+    CGFloat usedTime = (CGFloat)(endTime - _startTime)/CLOCKS_PER_SEC;
     
 #if DEBUG
     NSString *status = @"OK";
@@ -283,12 +417,11 @@
                 }
             }
             
-            // Parse data
-            NSString *responseString = [[NSString alloc]initWithData:_receivedData encoding:stringEncoding];
-            
             _responseObject = nil;
             NSError *error = nil;
             
+            // Parse data
+            NSString *responseString = [[NSString alloc]initWithData:_receivedData encoding:stringEncoding];
             if (responseString && responseString.length > 1) {
                 // To JSON
                 NSData *data = [responseString dataUsingEncoding:NSUTF8StringEncoding];
@@ -324,6 +457,7 @@
         UHTTPStatus *status = [[UHTTPStatus alloc]init];
         status.code = _httpResponse.statusCode;
         status.time = usedTime;
+        status.countOfRetry = _countOfRetry;
         status.url = request.URL.absoluteString;
         
         if (_callback) {
@@ -334,6 +468,11 @@
             }
         }
         
+        // Cache data
+        if (_cacheRequired) {
+            [[UHTTPDataCache sharedCache]setValue:_responseObject forKey:_cacheKey];
+        }
+        
         [UOperationQueue removeOperation:self];
     }
 }
@@ -341,9 +480,10 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     NSURLRequest *request = [connection originalRequest];
-    clock_t end_time = clock();
-    CGFloat usedTime = (CGFloat)(end_time - start_time)/CLOCKS_PER_SEC;
-    NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: ERROR\nTIME: %fs\nURL: %@\nDESCRIPTION: \n%@\n*********************************",usedTime, request.URL.absoluteString, error.description);
+    clock_t endTime = clock();
+    CGFloat usedTime = (CGFloat)(endTime - _startTime)/CLOCKS_PER_SEC;
+    
+    NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: ERROR\nTIME: %fs\nURL: %@\nDESCRIPTION: \n%@\n*********************************", usedTime, request.URL.absoluteString, error.description);
     
     // Cancel timeout
     [UTimerBooster removeTarget:self];
@@ -360,6 +500,7 @@
         UHTTPStatus *status = [[UHTTPStatus alloc]init];
         status.code = _httpResponse.statusCode;
         status.time = usedTime;
+        status.countOfRetry = _countOfRetry;
         status.url = request.URL.absoluteString;
         
         if (_callback) {

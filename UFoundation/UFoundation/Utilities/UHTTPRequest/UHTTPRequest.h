@@ -11,20 +11,23 @@
 
 @interface UHTTPRequest : NSObject
 
-// Asynchronous request
-// Block style
-+ (void)sendAsynWith:(NSString *)verb
+/*
+ * Asynchronous request
+ */
+
+// Block style with no cache
++ (void)sendAsynWith:(NSString *)method
                  url:(NSString *)url
                param:(NSDictionary *)param
             callback:(UHTTPCallback)callback;
 
-+ (void)sendAsynWith:(NSString *)verb
++ (void)sendAsynWith:(NSString *)method
                  url:(NSString *)url
                param:(NSDictionary *)param
              timeout:(NSInteger)timeout
             callback:(UHTTPCallback)callback;
 
-+ (void)sendAsynWith:(NSString *)verb
++ (void)sendAsynWith:(NSString *)method
                  url:(NSString *)url
                param:(NSDictionary *)param
              timeout:(NSInteger)timeout
@@ -32,21 +35,41 @@
         timeInterval:(NSInteger)timeInterval
             callback:(UHTTPCallback)callback;
 
-// Delegate style
-+ (void)sendAsynWith:(NSString *)verb
+// Block style with cache
++ (void)sendAsynCachedWith:(NSString *)method
+                       url:(NSString *)url
+                     param:(NSDictionary *)param
+                  callback:(UHTTPCallback)callback;
+
++ (void)sendAsynCachedWith:(NSString *)method
+                       url:(NSString *)url
+                     param:(NSDictionary *)param
+                   timeout:(NSInteger)timeout
+                  callback:(UHTTPCallback)callback;
+
++ (void)sendAsynCachedWith:(NSString *)method
+                       url:(NSString *)url
+                     param:(NSDictionary *)param
+                   timeout:(NSInteger)timeout
+                     retry:(NSUInteger)times
+              timeInterval:(NSInteger)timeInterval
+                  callback:(UHTTPCallback)callback;
+
+// Delegate style with no cache
++ (void)sendAsynWith:(NSString *)method
                  url:(NSString *)url
                param:(NSDictionary *)param
             delegate:(id<UHTTPRequestDelegate>)delegate
                  tag:(int)tag;
 
-+ (void)sendAsynWith:(NSString *)verb
++ (void)sendAsynWith:(NSString *)method
                  url:(NSString *)url
                param:(NSDictionary *)param
             delegate:(id<UHTTPRequestDelegate>)delegate
              timeout:(NSInteger)timeout
                  tag:(int)tag;
 
-+ (void)sendAsynWith:(NSString *)verb
++ (void)sendAsynWith:(NSString *)method
                  url:(NSString *)url
                param:(NSDictionary *)param
             delegate:(id<UHTTPRequestDelegate>)delegate
@@ -55,7 +78,33 @@
         timeInterval:(NSInteger)timeInterval
                  tag:(int)tag;
 
-// Synchronous request
+// Delegate style with no cache
++ (void)sendAsynCachedWith:(NSString *)method
+                       url:(NSString *)url
+                     param:(NSDictionary *)param
+                  delegate:(id<UHTTPRequestDelegate>)delegate
+                       tag:(int)tag;
+
++ (void)sendAsynCachedWith:(NSString *)method
+                       url:(NSString *)url
+                     param:(NSDictionary *)param
+                  delegate:(id<UHTTPRequestDelegate>)delegate
+                   timeout:(NSInteger)timeout
+                       tag:(int)tag;
+
++ (void)sendAsynCachedWith:(NSString *)method
+                       url:(NSString *)url
+                     param:(NSDictionary *)param
+                  delegate:(id<UHTTPRequestDelegate>)delegate
+                   timeout:(NSInteger)timeout
+                     retry:(NSUInteger)times
+              timeInterval:(NSInteger)timeInterval
+                       tag:(int)tag;
+
+/*
+ * Synchronous request
+ */
+
 + (NSData *)sendSynWith:(NSString *)method
                     url:(NSString *)url
                   param:(NSDictionary *)param

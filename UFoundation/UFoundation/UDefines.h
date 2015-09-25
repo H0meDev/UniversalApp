@@ -75,7 +75,7 @@ CG_INLINE CGRange CGRangeMake(CGFloat min, CGFloat max)
 #define tabBLineH()              0.5f
 
 // Animation
-#define animationDuration()      0.30f
+#define animationDuration()      0.25f
 
 // Font
 #define systemFont(size)      [UIFont systemFontOfSize:size]
@@ -131,12 +131,19 @@ CG_INLINE CGRange CGRangeMake(CGFloat min, CGFloat max)
 
 // Singleton interface
 #define singletonInterface(classname) + (classname *)shared##classname
+#define singletonInterfaceWith(classname, method) + (classname *)shared##method
 
 // Singleton implementation
 #define singletonImplementation(classname) \
 static classname *shared##classname = nil; \
 + (classname *)shared##classname { @synchronized(self) { if (shared##classname == nil) { shared##classname = [[self alloc]init]; } } return shared##classname; } \
 + (id)allocWithZone:(NSZone *)zone { @synchronized(self) {  if (shared##classname == nil) { shared##classname = [super allocWithZone:zone]; return shared##classname; } } return nil; } \
+- (id)copyWithZone:(NSZone *)zone { return self; }
+
+#define singletonImplementationWith(classname, method) \
+static classname *shared##method = nil; \
++ (classname *)shared##method { @synchronized(self) { if (shared##method == nil) { shared##method = [[self alloc]init]; } } return shared##method; } \
++ (id)allocWithZone:(NSZone *)zone { @synchronized(self) {  if (shared##method == nil) { shared##method = [super allocWithZone:zone]; return shared##method; } } return nil; } \
 - (id)copyWithZone:(NSZone *)zone { return self; }
 
 /**
@@ -152,13 +159,19 @@ static classname *shared##classname = nil; \
 #define NotificationDefaultCenter    [NSNotificationCenter defaultCenter]
 
 // Path
-#define currentDocumentsPath()            NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]
+#define currentDocumentsPath()  NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]
 #define resourcePathWithName(name, type)  [[NSBundle mainBundle]pathForResource:name ofType:type]
 #define bundlePathWithName(name)          [[NSBundle mainBundle]pathForResource:name ofType:@"bundle"]
 #define resourcePathWith(bundle, name)    [NSString stringWithFormat:@"%@/%@", bundlePathWithName(bundle), name]
+#define cacheDirectoryPath()              [currentDocumentsPath() stringByAppendingPathComponent:@"CachesDirectory"]
+#define cachePathWith(name)               [cacheDirectoryPath() stringByAppendingPathComponent:name]
 
-// Cache path
-#define cacheDirectoryPath() [currentDocumentsPath() stringByAppendingPathComponent:@"CachesDirectory"];
+#define checkFileExists(path)         [[NSFileManager defaultManager]fileExistsAtPath:path]
+#define checkCacheDirectoryExists()   checkFileExists(cacheDirectoryPath())
+
+#define createCacheDirectory()            [[NSFileManager defaultManager]createDirectoryAtPath:cacheDirectoryPath()\
+withIntermediateDirectories:YES attributes:NULL error:NULL]
+#define createFile(name)                  [[NSFileManager defaultManager]createFileAtPath:name contents:nil attributes:nil]
 
 // Image
 #define loadImage(name)                     [UIImage imageNamed:name]

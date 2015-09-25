@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UDefines.h"
 
 // References http://httpstatus.es/
 typedef NS_ENUM(NSInteger, UHTTPCode)
 {
     UHTTPCodeOffline                          = 0,
+    UHTTPCodeLocalCached                      = 88888888,
     
     UHTTPCodeOK                               = 200,
     UHTTPCodeCreated                          = 201,
@@ -51,9 +53,23 @@ typedef NS_ENUM(NSInteger, UHTTPCode)
 
 @interface UHTTPStatus : NSObject
 
-@property (nonatomic, assign) UHTTPCode code; // Response code
-@property (nonatomic, assign) CGFloat time;   // Time of request used
-@property (nonatomic, strong) NSString *url;  // Original request url
+@property (nonatomic, assign) UHTTPCode code;         // Response code
+@property (nonatomic, assign) CGFloat time;           // Time of request used
+@property (nonatomic, strong) NSString *url;          // Original request url
+@property (nonatomic, assign) NSInteger countOfRetry; // Count of retry left
+
+@end
+
+@interface UHTTPDataCache : NSObject
+
+singletonInterfaceWith(UHTTPDataCache, Cache);
+
+// Write & read
+- (void)setValue:(id)value forKey:(NSString *)key;
+- (id)objectForKey:(NSString *)key;
+
+// Clear all cached data
+- (void)clearAllCache;
 
 @end
 
@@ -62,7 +78,6 @@ typedef NS_ENUM(NSInteger, UHTTPCode)
 @required
 - (void)requestFinishedCallback:(int)tag status:(UHTTPStatus *)status data:(id)data;
 
-// For download
 @optional
 - (void)requestDidReceviedResponseCallback:(UHTTPStatus *)status;
 - (void)requestDidReceviedDataCallback:(int)tag
@@ -78,23 +93,34 @@ typedef void (^UHTTPCallback)(UHTTPStatus *status, id data);
 
 @interface UHTTPOperation : NSOperation
 
-// Tag
 @property (nonatomic, readonly) int tag;
-
-// Target for downloader
 @property (nonatomic, readonly) id<UHTTPRequestDelegate> delegate;
-
-// Request of current
 @property (nonatomic, readonly) NSURLRequest *request;
 
-// Block style
+/*
+ * Block style with no cache
+ */
 - (id)initWithRequest:(NSURLRequest *)request callback:(UHTTPCallback)callback;
+- (id)initWithRequest:(NSURLRequest *)request
+             recevied:(UHTTPReceivedDataCallback)recevied
+             callback:(UHTTPCallback)callback;
+- (id)initWithRequest:(NSURLRequest *)request
+             response:(UHTTPReceivedResponseCallback)response
+             recevied:(UHTTPReceivedDataCallback)recevied
+             callback:(UHTTPCallback)callback;
 
-// Block style with recevied data
-- (id)initWithRequest:(NSURLRequest *)request recevied:(UHTTPReceivedDataCallback)recevied callback:(UHTTPCallback)callback;
-
-// Block style with recevied response & data
-- (id)initWithRequest:(NSURLRequest *)request response:(UHTTPReceivedResponseCallback)response recevied:(UHTTPReceivedDataCallback)recevied callback:(UHTTPCallback)callback;
+- (id)initWithRequest:(NSURLRequest *)request
+                cached:(BOOL)cached
+             callback:(UHTTPCallback)callback;
+- (id)initWithRequest:(NSURLRequest *)request
+                cached:(BOOL)cached
+             recevied:(UHTTPReceivedDataCallback)recevied
+             callback:(UHTTPCallback)callback;
+- (id)initWithRequest:(NSURLRequest *)request
+                cached:(BOOL)cached
+             response:(UHTTPReceivedResponseCallback)response
+             recevied:(UHTTPReceivedDataCallback)recevied
+             callback:(UHTTPCallback)callback;
 
 // Delegate
 - (id)initWithRequest:(NSURLRequest *)request delegate:(id<UHTTPRequestDelegate>)delegate tag:(int)tag;
