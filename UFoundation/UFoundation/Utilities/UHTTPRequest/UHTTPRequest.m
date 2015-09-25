@@ -57,136 +57,139 @@ static UHTTPRequest *sharedManager = nil;
 
 #pragma mark - Request
 
-+ (void)sendAsynWith:(NSString *)method
-                 url:(NSString *)url
++ (void)sendAsynWith:(NSString *)url
+              method:(NSString *)method
                param:(NSDictionary *)param
             callback:(UHTTPCallback)callback
 {
-    [[self sharedManager]requestWithMethod:method
-                                       url:url
-                                     param:param
-                                   timeout:30
-                                     retry:0
-                              timeInterval:0
-                                  callback:callback];
+    [[self sharedManager]requestWithURL:url
+                                 method:method
+                                  param:param
+                                timeout:30
+                                  retry:0
+                           timeInterval:0
+                               callback:callback];
 }
 
-+ (void)sendAsynWith:(NSString *)method
-                 url:(NSString *)url
++ (void)sendAsynWith:(NSString *)url
+              method:(NSString *)method
                param:(NSDictionary *)param
              timeout:(NSInteger)timeout
             callback:(UHTTPCallback)callback
 {
-    [[self sharedManager]requestWithMethod:method
-                                       url:url
-                                     param:param
-                                   timeout:timeout
-                                     retry:0
-                              timeInterval:0
-                                  callback:callback];
+    [[self sharedManager]requestWithURL:url
+                                 method:method
+                                  param:param
+                                timeout:timeout
+                                  retry:0
+                           timeInterval:0
+                               callback:callback];
 }
 
-+ (void)sendAsynWith:(NSString *)method
-                 url:(NSString *)url
++ (void)sendAsynWith:(NSString *)url
+              method:(NSString *)method
                param:(NSDictionary *)param
              timeout:(NSInteger)timeout
                retry:(NSUInteger)times
         timeInterval:(NSInteger)timeInterval
             callback:(UHTTPCallback)callback
 {
-    [[self sharedManager]requestWithMethod:method
-                                       url:url
-                                     param:param
-                                   timeout:timeout
-                                     retry:times
-                              timeInterval:timeInterval
-                                  callback:callback];
+    [[self sharedManager]requestWithURL:url
+                                 method:method
+                                  param:param
+                                timeout:timeout
+                                  retry:times
+                           timeInterval:timeInterval
+                               callback:callback];
 }
 
-+ (void)sendAsynCachedWith:(NSString *)method
-                       url:(NSString *)url
-                     param:(NSDictionary *)param
-                  callback:(UHTTPCallback)callback
++ (void)sendAsynWith:(NSString *)url
+              method:(NSString *)method
+               param:(NSDictionary *)param
+            callback:(UHTTPCallback)callback
+              cached:(BOOL)cached
 {
-    [[self sharedManager]requestWithMethod:method
-                                       url:url
-                                     param:param
-                                   timeout:30
-                                     retry:0
-                              timeInterval:0
-                                  callback:callback
-                                    cached:YES];
+    [[self sharedManager]requestWithURL:url
+                                 method:method
+                                  param:param
+                                timeout:30
+                                  retry:0
+                           timeInterval:0
+                               callback:callback
+                                 cached:cached];
 }
 
-+ (void)sendAsynCachedWith:(NSString *)method
-                       url:(NSString *)url
-                     param:(NSDictionary *)param
-                   timeout:(NSInteger)timeout
-                  callback:(UHTTPCallback)callback
++ (void)sendAsynWith:(NSString *)url
+              method:(NSString *)method
+               param:(NSDictionary *)param
+             timeout:(NSInteger)timeout
+            callback:(UHTTPCallback)callback
+              cached:(BOOL)cached
 {
-    [[self sharedManager]requestWithMethod:method
-                                       url:url
-                                     param:param
-                                   timeout:timeout
-                                     retry:0
-                              timeInterval:0
-                                  callback:callback
-                                    cached:YES];
+    [[self sharedManager]requestWithURL:url
+                                 method:method
+                                  param:param
+                                timeout:timeout
+                                  retry:0
+                           timeInterval:0
+                               callback:callback
+                                 cached:cached];
 }
 
-+ (void)sendAsynCachedWith:(NSString *)method
-                       url:(NSString *)url
-                     param:(NSDictionary *)param
-                   timeout:(NSInteger)timeout
-                     retry:(NSUInteger)times
-              timeInterval:(NSInteger)timeInterval
-                  callback:(UHTTPCallback)callback
++ (void)sendAsynWith:(NSString *)url
+              method:(NSString *)method
+               param:(NSDictionary *)param
+             timeout:(NSInteger)timeout
+               retry:(NSUInteger)times
+        timeInterval:(NSInteger)timeInterval
+            callback:(UHTTPCallback)callback
+              cached:(BOOL)cached
 {
-    [[self sharedManager]requestWithMethod:method
-                                       url:url
-                                     param:param
-                                   timeout:timeout
-                                     retry:times
-                              timeInterval:timeInterval
-                                  callback:callback
-                                    cached:YES];
+    [[self sharedManager]requestWithURL:url
+                                 method:method
+                                  param:param
+                                timeout:timeout
+                                  retry:times
+                           timeInterval:timeInterval
+                               callback:callback
+                                 cached:cached];
 }
 
-+ (void)sendAsynWith:(NSString *)method
-                 url:(NSString *)url
++ (void)sendAsynWith:(NSString *)url
+              method:(NSString *)method
                param:(NSDictionary *)param
             delegate:(id<UHTTPRequestDelegate>)delegate
                  tag:(int)tag
 {
-    [[self sharedManager]requestWithMethod:method
-                                       url:url
-                                     param:param
-                                   timeout:30
-                                     retry:0
-                              timeInterval:0
-                                  delegate:delegate
-                                       tag:tag];
+    [[self sharedManager]requestWithURL:url
+                                 method:method
+                                  param:param
+                                timeout:30
+                                  retry:0
+                           timeInterval:0
+                               delegate:delegate
+                                    tag:tag];
 }
 
-+ (void)sendAsynWith:(NSString *)method
-                 url:(NSString *)url
++ (void)sendAsynWith:(NSString *)url
+              method:(NSString *)method
                param:(NSDictionary *)param
             delegate:(id<UHTTPRequestDelegate>)delegate
              timeout:(NSInteger)timeout
                  tag:(int)tag
 {
-    [[self sharedManager]requestWithMethod:method
-                                       url:url
-                                     param:param
-                                   timeout:timeout
-                                     retry:0
-                              timeInterval:0
-                                  delegate:delegate
-                                       tag:tag];
+    [[self sharedManager]requestWithURL:url
+                                 method:method
+                                  param:param
+                                timeout:timeout
+                                  retry:0
+                           timeInterval:0
+                               delegate:delegate
+                                    tag:tag];
 }
 
-+ (void)sendAsynWith:(NSString *)method
-                 url:(NSString *)url
++ (void)sendAsynWith:(NSString *)url
+              method:(NSString *)method
                param:(NSDictionary *)param
             delegate:(id<UHTTPRequestDelegate>)delegate
              timeout:(NSInteger)timeout
@@ -194,80 +197,82 @@ static UHTTPRequest *sharedManager = nil;
         timeInterval:(NSInteger)timeInterval
                  tag:(int)tag
 {
-    [[self sharedManager]requestWithMethod:method
-                                       url:url
-                                     param:param
-                                   timeout:timeout
-                                     retry:times
-                              timeInterval:timeInterval
-                                  delegate:delegate
-                                       tag:tag];
+    [[self sharedManager]requestWithURL:url
+                                 method:method
+                                  param:param
+                                timeout:timeout
+                                  retry:times
+                           timeInterval:timeInterval
+                               delegate:delegate
+                                    tag:tag];
 }
 
-+ (void)sendAsynCachedWith:(NSString *)method
-                       url:(NSString *)url
-                     param:(NSDictionary *)param
-                  delegate:(id<UHTTPRequestDelegate>)delegate
-                       tag:(int)tag
++ (void)sendAsynWith:(NSString *)url
+              method:(NSString *)method
+               param:(NSDictionary *)param
+            delegate:(id<UHTTPRequestDelegate>)delegate
+                 tag:(int)tag
+              cached:(BOOL)cached
 {
-    [[self sharedManager]requestWithMethod:method
-                                       url:url
-                                     param:param
-                                   timeout:30
-                                     retry:0
-                              timeInterval:0
-                                  delegate:delegate
-                                       tag:tag
-                                    cached:YES];
+    [[self sharedManager]requestWithURL:url
+                                 method:method
+                                  param:param
+                                timeout:30
+                                  retry:0
+                           timeInterval:0
+                               delegate:delegate
+                                    tag:tag
+                                 cached:cached];
 }
 
-+ (void)sendAsynCachedWith:(NSString *)method
-                       url:(NSString *)url
-                     param:(NSDictionary *)param
-                  delegate:(id<UHTTPRequestDelegate>)delegate
-                   timeout:(NSInteger)timeout
-                       tag:(int)tag
++ (void)sendAsynWith:(NSString *)url
+              method:(NSString *)method
+               param:(NSDictionary *)param
+            delegate:(id<UHTTPRequestDelegate>)delegate
+             timeout:(NSInteger)timeout
+                 tag:(int)tag
+              cached:(BOOL)cached
 {
-    [[self sharedManager]requestWithMethod:method
-                                       url:url
-                                     param:param
-                                   timeout:timeout
-                                     retry:0
-                              timeInterval:0
-                                  delegate:delegate
-                                       tag:tag
-                                    cached:YES];
+    [[self sharedManager]requestWithURL:url
+                                 method:method
+                                  param:param
+                                timeout:timeout
+                                  retry:0
+                           timeInterval:0
+                               delegate:delegate
+                                    tag:tag
+                                 cached:cached];
 }
 
-+ (void)sendAsynCachedWith:(NSString *)method
-                       url:(NSString *)url
-                     param:(NSDictionary *)param
-                  delegate:(id<UHTTPRequestDelegate>)delegate
-                   timeout:(NSInteger)timeout
-                     retry:(NSUInteger)times
-              timeInterval:(NSInteger)timeInterval
-                       tag:(int)tag
++ (void)sendAsynWith:(NSString *)url
+              method:(NSString *)method
+               param:(NSDictionary *)param
+            delegate:(id<UHTTPRequestDelegate>)delegate
+             timeout:(NSInteger)timeout
+               retry:(NSUInteger)times
+        timeInterval:(NSInteger)timeInterval
+                 tag:(int)tag
+              cached:(BOOL)cached
 {
-    [[self sharedManager]requestWithMethod:method
-                                       url:url
-                                     param:param
-                                   timeout:timeout
-                                     retry:times
-                              timeInterval:timeInterval
-                                  delegate:delegate
-                                       tag:tag
-                                    cached:YES];
+    [[self sharedManager]requestWithURL:url
+                                 method:method
+                                  param:param
+                                timeout:timeout
+                                  retry:times
+                           timeInterval:timeInterval
+                               delegate:delegate
+                                    tag:tag
+                                 cached:cached];
 }
 
-+ (NSData *)sendSynWith:(NSString *)method
-                    url:(NSString *)url
++ (NSData *)sendSynWith:(NSString *)url
+                 method:(NSString *)method
                   param:(NSDictionary *)param
                response:(NSURLResponse **)response
                   error:(NSError **)error
 {
-    method = [method uppercaseString];
     NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
-    mutableRequest.HTTPMethod = method;
+    mutableRequest.HTTPMethod = [method uppercaseString];
     
     // Set content-type to support more data type
     NSString *contentType = @"application/json";
@@ -289,36 +294,35 @@ static UHTTPRequest *sharedManager = nil;
     return [NSURLConnection sendSynchronousRequest:mutableRequest returningResponse:response error:error];
 }
 
-- (void)requestWithMethod:(NSString *)method
-                      url:(NSString *)url
-                    param:(NSDictionary *)param
-                  timeout:(NSInteger)timeout
-                    retry:(NSUInteger)times
-             timeInterval:(NSInteger)timeInterval
-                 callback:(UHTTPCallback)callback
+- (void)requestWithURL:(NSString *)url
+                method:(NSString *)method
+                 param:(NSDictionary *)param
+               timeout:(NSInteger)timeout
+                 retry:(NSUInteger)times
+          timeInterval:(NSInteger)timeInterval
+              callback:(UHTTPCallback)callback
 {
-    [self requestWithMethod:method
-                        url:url
-                      param:param
-                    timeout:timeout
-                      retry:times
-               timeInterval:timeInterval
-                   callback:callback
-                     cached:NO];
+    [self requestWithURL:url
+                  method:method
+                   param:param
+                 timeout:timeout
+                   retry:times
+            timeInterval:timeInterval
+                callback:callback
+                  cached:NO];
 }
 
-- (void)requestWithMethod:(NSString *)method
-                      url:(NSString *)url
-                    param:(NSDictionary *)param
-                  timeout:(NSInteger)timeout
-                    retry:(NSUInteger)times
-             timeInterval:(NSInteger)timeInterval
-                 callback:(UHTTPCallback)callback
-                   cached:(BOOL)cached
+- (void)requestWithURL:(NSString *)url
+                method:(NSString *)method
+                 param:(NSDictionary *)param
+               timeout:(NSInteger)timeout
+                 retry:(NSUInteger)times
+          timeInterval:(NSInteger)timeInterval
+              callback:(UHTTPCallback)callback
+                cached:(BOOL)cached
 {
-    method = [method uppercaseString];
     NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
-    mutableRequest.HTTPMethod = method;
+    mutableRequest.HTTPMethod = [method uppercaseString];
     
     // Set content-type to support more data type
     NSString *contentType = @"application/json";
@@ -349,39 +353,38 @@ static UHTTPRequest *sharedManager = nil;
     [UOperationQueue addOperation:operation];
 }
 
-- (void)requestWithMethod:(NSString *)method
-                      url:(NSString *)url
-                    param:(NSDictionary *)param
-                  timeout:(NSInteger)timeout
-                    retry:(NSUInteger)times
-             timeInterval:(NSInteger)timeInterval
-                 delegate:(id<UHTTPRequestDelegate>)delegate
-                      tag:(int)tag
+- (void)requestWithURL:(NSString *)url
+                method:(NSString *)method
+                 param:(NSDictionary *)param
+               timeout:(NSInteger)timeout
+                 retry:(NSUInteger)times
+          timeInterval:(NSInteger)timeInterval
+              delegate:(id<UHTTPRequestDelegate>)delegate
+                   tag:(int)tag
 {
-    [self requestWithMethod:method
-                        url:url
-                      param:param
-                    timeout:timeout
-                      retry:times
-               timeInterval:timeInterval
-                   delegate:delegate
-                        tag:tag
-                     cached:NO];
+    [self requestWithURL:url
+                  method:method
+                   param:param
+                 timeout:timeout
+                   retry:times
+            timeInterval:timeInterval
+                delegate:delegate
+                     tag:tag
+                  cached:NO];
 }
 
-- (void)requestWithMethod:(NSString *)method
-                      url:(NSString *)url
-                    param:(NSDictionary *)param
-                  timeout:(NSInteger)timeout
-                    retry:(NSUInteger)times
-             timeInterval:(NSInteger)timeInterval
-                 delegate:(id<UHTTPRequestDelegate>)delegate
-                      tag:(int)tag
-                   cached:(BOOL)cached
+- (void)requestWithURL:(NSString *)url
+                method:(NSString *)method
+                 param:(NSDictionary *)param
+               timeout:(NSInteger)timeout
+                 retry:(NSUInteger)times
+          timeInterval:(NSInteger)timeInterval
+              delegate:(id<UHTTPRequestDelegate>)delegate
+                   tag:(int)tag
+                cached:(BOOL)cached
 {
-    method = [method uppercaseString];
     NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
-    mutableRequest.HTTPMethod = method;
+    mutableRequest.HTTPMethod = [method uppercaseString];
     
     // Set content-type to support more data type
     NSString *contentType = @"application/json";
