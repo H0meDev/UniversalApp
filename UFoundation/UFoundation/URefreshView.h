@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, URefreshState)
 #define URefreshViewHeaderIdleTitle        @"下拉刷新"
 #define URefreshViewHeaderReadyTitle       @"松开刷新"
 #define URefreshViewHeaderRefreshingTitle  @"正在刷新"
-#define URefreshViewHeaderDisableTitle     @"暂无刷新"
+#define URefreshViewHeaderDisableTitle     @"暂无更新"
 
 #define URefreshViewFooterIdleTitle        @"上拉加载"
 #define URefreshViewFooterReadyTitle       @"松开加载"

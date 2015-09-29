@@ -280,11 +280,14 @@
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
     insets.top = _insetValue + self.height;
+    CGPoint offset = self.scrollView.contentOffset;
+    offset.y = - self.height;
     
     [UIView animateWithDuration:animationDuration()
                           delay:0
                         options:UIViewAnimationOptionCurveLinear
                      animations:^{
+                         self.scrollView.contentOffset = offset;
                          self.scrollView.contentInset = insets;
                      }
                      completion:NULL];
