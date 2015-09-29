@@ -45,29 +45,33 @@
 //    centerView.textAlignment = NSTextAlignmentCenter;
 //    self.navigationBarView.centerView = centerView;
 //    
-//    UILabel *rightView = [[UILabel alloc]init];
-//    rightView.frame = rectMake(screenWidth() - 68, 0, 60, naviHeight());
-//    rightView.text = @"Option";
-//    rightView.textColor = sysWhiteColor();
-//    rightView.textAlignment = NSTextAlignmentRight;
-//    self.navigationBarView.rightView = rightView;
+    UButton *rightView = [UButton button];
+    rightView.selected = YES;
+    rightView.frame = rectMake(screenWidth() - 68, 0, 60, naviHeight());
+    [rightView setTitle:@"Option"];
+    [rightView setTitleFont:systemFont(16)];
+    [rightView addTarget:self action:@selector(buttonAction:)];
+    self.navigationBarView.rightView = rightView;
     
-    UButton *button = [UButton button];
-    button.frame = rectMake(0, 160, screenWidth(), 50);
-    [button setTitle:@"Push"];
-    button.backgroundColor = sysRedColor();
-    [button addTarget:self action:@selector(buttonAction)];
-    [self addSubview:button];
+//    UButton *button = [UButton button];
+//    button.frame = rectMake(0, 160, screenWidth(), 50);
+//    [button setTitle:@"Push"];
+//    button.backgroundColor = sysRedColor();
+//    [button addTarget:self action:@selector(buttonAction)];
+//    [self addSubview:button];
     
     UTableView *tableView = [[UTableView alloc]init];
-    tableView.frame = rectMake(0, - 64, screenWidth(), screenHeight());
-    tableView.contentInset = edgeMake(64, 0, 0, 0);
-    tableView.scrollIndicatorInsets = edgeMake(64, 0, 0, 0);
+    tableView.frame = rectMake(0, 0, screenWidth(), screenHeight() - 64);
+    tableView.contentInset = edgeMake(0, 0, 0, 0);
+    tableView.scrollIndicatorInsets = edgeMake(0, 0, 0, 0);
     tableView.defaultDelegate = self;
     [tableView addHeaderTarget:self action:@selector(headerAction:)];
     [tableView addFooterTarget:self action:@selector(footerAction:)];
     [self addSubview:tableView];
     _tableView = tableView;
+    
+    // Start refresh
+    [tableView startHeaderRefresh];
     
     // KVO
     [self addKeyValueObject:_tableView keyPath:@"contentOffset"];
@@ -152,6 +156,7 @@
 
 - (void)headerAction:(UIScrollView *)scrollView
 {
+//    scrollView.headerEnable = NO;
     [UTimerBooster addTarget:scrollView sel:@selector(finishHeaderRefresh) time:3.0];
 }
 
@@ -160,11 +165,12 @@
     [UTimerBooster addTarget:scrollView sel:@selector(finishFooterRefresh) time:3.0];
 }
 
-- (void)buttonAction
+- (void)buttonAction:(UIButton *)button
 {
-    CurrentViewController *current = [[CurrentViewController alloc]init];
-    [current.navigationBarView.leftButton setTitle:self.navigationBarView.title];
-    [self pushViewController:current];
+    button.selected = !button.selected;
+    
+    _tableView.headerEnable = button.selected;
+    _tableView.footerEnable = button.selected;
 }
 
 - (void)tableView:(UTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

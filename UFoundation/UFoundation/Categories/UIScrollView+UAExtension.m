@@ -94,6 +94,26 @@
     [self.footerView performOnMainThread:@selector(finishRefresh)];
 }
 
+- (BOOL)headerEnable
+{
+    return self.headerView.enable;
+}
+
+- (BOOL)footerEnable
+{
+    return self.footerView.enable;
+}
+
+- (void)setHeaderEnable:(BOOL)enable
+{
+    self.headerView.enable = enable;
+}
+
+- (void)setFooterEnable:(BOOL)enable
+{
+    self.footerView.enable = enable;
+}
+
 - (void)removeHeaderView
 {
     URefreshHeaderView *_headerView = objc_getAssociatedObject(self, "UIScrollViewHeader");

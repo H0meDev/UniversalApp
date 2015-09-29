@@ -19,6 +19,11 @@
 - (void)finishHeaderRefresh;
 - (void)finishFooterRefresh;
 
+- (BOOL)headerEnable;
+- (BOOL)footerEnable;
+- (void)setHeaderEnable:(BOOL)enable;
+- (void)setFooterEnable:(BOOL)enable;
+
 // Must be called when header or footer not be used any more.
 - (void)removeHeaderView;
 - (void)removeFooterView;

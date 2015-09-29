@@ -36,6 +36,11 @@
         self.state = URefreshStateIdle;
         
         [self indicatorView];
+        
+        [super addObserver:self
+                forKeyPath:@"state"
+                   options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                   context:NULL];
     }
     
     return self;
@@ -93,6 +98,15 @@
     return _indicatorView;
 }
 
+- (void)setEnable:(BOOL)enable
+{
+    // Finish current
+    [self finishRefresh];
+    
+    // Change state
+    self.state = enable?URefreshStateIdle:URefreshStateDisable;
+}
+
 - (void)addTarget:(id)target action:(SEL)action;
 {
     self.target = target;
@@ -116,13 +130,18 @@
     }
 }
 
+- (void)dealloc
+{
+    [self removeObserver:self forKeyPath:@"state" context:NULL];
+}
+
 @end
 
 #pragma mark - URefreshHeaderView
 
 @interface URefreshHeaderView ()
 {
-    //
+    CGFloat _insetValue;
 }
 
 @end
@@ -147,6 +166,8 @@
     
     // Add to scrollView & resize
     [scrollView addSubview:self];
+    
+    _insetValue = scrollView.contentInset.top;
     self.frame = rectMake(0, - self.height, scrollView.sizeWidth, self.height);
     
     // KVO
@@ -154,10 +175,13 @@
                       forKeyPath:@"contentOffset"
                          options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                          context:NULL];
-    [super addObserver:self
-            forKeyPath:@"state"
-               options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-               context:NULL];
+}
+
+- (void)setEnable:(BOOL)enable
+{
+    [super setEnable:enable];
+    
+    self.stateLabel.text = enable?URefreshViewHeaderIdleTitle:URefreshViewHeaderDisableTitle;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -166,8 +190,10 @@
                        context:(void *)context
 {
     if ([keyPath isEqualToString:@"contentOffset"]) {
-        // Unresponse to refreshing
-        if (self.state == URefreshStateRefreshing) {
+        // Unresponse to refreshing or disable
+        if (self.state == URefreshStateRefreshing ||
+            self.state == URefreshStateDisable)
+        {
             return;
         }
         
@@ -240,7 +266,9 @@
 
 - (void)startRefresh
 {
-    if (self.state == URefreshStateRefreshing) {
+    if (self.state == URefreshStateRefreshing ||
+        self.state == URefreshStateDisable)
+    {
         return;
     }
     self.state = URefreshStateRefreshing;
@@ -251,7 +279,7 @@
     
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
-    insets.top = insets.top + self.height;
+    insets.top = _insetValue + self.height;
     
     [UIView animateWithDuration:animationDuration()
                           delay:0
@@ -267,7 +295,9 @@
 
 - (void)finishRefresh
 {
-    if (self.state == URefreshStateIdle) {
+    if (self.state == URefreshStateIdle ||
+        self.state == URefreshStateDisable)
+    {
         return;
     }
     self.state = URefreshStateIdle;
@@ -278,7 +308,7 @@
     
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
-    insets.top = insets.top - self.height;
+    insets.top = _insetValue;
     
     [UIView animateWithDuration:animationDuration()
                           delay:0
@@ -297,8 +327,9 @@
 - (void)dealloc
 {
     // Remove KVO
-    [self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:NULL];
-    [self removeObserver:self forKeyPath:@"state" context:NULL];
+    if (super.scrollView) {
+        [super.scrollView removeObserver:self forKeyPath:@"contentOffset" context:NULL];
+    }
 }
 
 @end
@@ -307,7 +338,7 @@
 
 @interface URefreshFooterView ()
 {
-    //
+    CGFloat _insetValue;
 }
 
 @end
@@ -333,6 +364,8 @@
     // Add to scrollView
     [scrollView addSubview:self];
     
+    _insetValue = scrollView.contentInset.bottom;
+    
     // KVO
     [super.scrollView addObserver:self
                        forKeyPath:@"contentOffset"
@@ -342,10 +375,13 @@
                        forKeyPath:@"contentSize"
                           options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                           context:NULL];
-    [super addObserver:self
-            forKeyPath:@"state"
-               options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-               context:NULL];
+}
+
+- (void)setEnable:(BOOL)enable
+{
+    [super setEnable:enable];
+    
+    self.stateLabel.text = enable?URefreshViewFooterIdleTitle:URefreshViewFooterDisableTitle;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -354,8 +390,10 @@
                        context:(void *)context
 {
     if ([keyPath isEqualToString:@"contentOffset"]) {
-        // Unresponse to refreshing
-        if (self.state == URefreshStateRefreshing) {
+        // Unresponse to refreshing or disable
+        if (self.state == URefreshStateRefreshing ||
+            self.state == URefreshStateDisable)
+        {
             return;
         }
         
@@ -430,7 +468,9 @@
 
 - (void)startRefresh
 {
-    if (self.state == URefreshStateRefreshing) {
+    if (self.state == URefreshStateRefreshing ||
+        self.state == URefreshStateDisable)
+    {
         return;
     }
     self.state = URefreshStateRefreshing;
@@ -441,7 +481,7 @@
     
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
-    insets.bottom = insets.bottom + self.height;
+    insets.bottom = _insetValue + self.height;
     
     [UIView animateWithDuration:animationDuration()
                           delay:0
@@ -457,7 +497,9 @@
 
 - (void)finishRefresh
 {
-    if (self.state == URefreshStateIdle) {
+    if (self.state == URefreshStateIdle ||
+        self.state == URefreshStateDisable)
+    {
         return;
     }
     self.state = URefreshStateIdle;
@@ -468,7 +510,7 @@
     
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
-    insets.bottom = insets.bottom - self.height;
+    insets.bottom = _insetValue;
     
     [UIView animateWithDuration:animationDuration()
                           delay:0
@@ -487,9 +529,10 @@
 - (void)dealloc
 {
     // Remove KVO
-    [self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:NULL];
-    [self.scrollView removeObserver:self forKeyPath:@"contentSize" context:NULL];
-    [self removeObserver:self forKeyPath:@"state" context:NULL];
+    if (super.scrollView) {
+        [super.scrollView removeObserver:self forKeyPath:@"contentOffset" context:NULL];
+        [super.scrollView removeObserver:self forKeyPath:@"contentSize" context:NULL];
+    }
 }
 
 @end
