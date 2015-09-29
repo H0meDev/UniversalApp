@@ -18,10 +18,18 @@ typedef NS_ENUM(NSInteger, URefreshState)
 @class URefreshView;
 @protocol URefreshViewDelegate <NSObject>
 
-@required
+@optional
 - (void)refreshView:(URefreshView *)view progress:(CGFloat)progress; // Progress from 0 to 1.0
 
 @end
+
+#define URefreshViewHeaderIdleTitle        @"下拉刷新"
+#define URefreshViewHeaderReadyTitle       @"松开刷新"
+#define URefreshViewHeaderRefreshingTitle  @"正在刷新"
+
+#define URefreshViewFooterIdleTitle        @"上拉加载"
+#define URefreshViewFooterReadyTitle       @"松开加载"
+#define URefreshViewFooterRefreshingTitle  @"正在加载"
 
 @interface URefreshView : UView
 

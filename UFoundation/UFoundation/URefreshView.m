@@ -11,11 +11,12 @@
 
 #pragma mark - URefreshView
 
-@interface URefreshView ()
+@interface URefreshView () <URefreshViewDelegate>
 
 @property (nonatomic, weak) id target;
 @property (nonatomic, assign) SEL action;
 @property (nonatomic, assign) URefreshState state;
+@property (nonatomic, retain) ULabel *stateLabel;
 @property (nonatomic, retain) UIndicatorView *indicatorView;
 
 @end
@@ -29,6 +30,7 @@
         // Initialize
         self.backgroundColor = sysClearColor();
         self.clipsToBounds = YES;
+        self.delegate = self;
         
         self.height = 50.;
         self.state = URefreshStateIdle;
@@ -43,7 +45,8 @@
 {
     [super setFrame:frame];
     
-    if (!CGRectEqualToRect(frame, CGRectZero)) {
+    if (!CGRectEqualToRect(frame, CGRectZero) && self.state != URefreshStateRefreshing) {
+        self.stateLabel.center = pointMake(frame.size.width / 2., frame.size.height / 2.);
         self.indicatorView.center = pointMake(frame.size.width / 2., frame.size.height / 2.);
     }
 }
@@ -56,6 +59,23 @@
 }
 */
 
+- (ULabel *)stateLabel
+{
+    if (_stateLabel) {
+        return _stateLabel;
+    }
+    
+    ULabel *stateLabel = [[ULabel alloc]init];
+    stateLabel.frame = rectMake(0, 0, 168, 32);
+    stateLabel.font = systemFont(15);
+    stateLabel.textColor = sysLightGrayColor();
+    stateLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:stateLabel];
+    _stateLabel = stateLabel;
+    
+    return _stateLabel;
+}
+
 - (UIndicatorView *)indicatorView
 {
     if (_indicatorView) {
@@ -63,9 +83,10 @@
     }
     
     UIndicatorView *indicatorView = [[UIndicatorView alloc]init];
-    indicatorView.frame = rectMake(0, 0, 32, 32);
-    indicatorView.indicatorWidth = 2.5;
-    indicatorView.indicatorColor = sysGrayColor();
+    indicatorView.hidden = YES;
+    indicatorView.frame = rectMake(0, 0, 24, 24);
+    indicatorView.indicatorWidth = 1.5;
+    indicatorView.indicatorColor = sysDarkGrayColor();
     [self addSubview:indicatorView];
     _indicatorView = indicatorView;
     
@@ -133,6 +154,10 @@
                       forKeyPath:@"contentOffset"
                          options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                          context:NULL];
+    [super addObserver:self
+            forKeyPath:@"state"
+               options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+               context:NULL];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -171,6 +196,40 @@
             // Callback
             [self.delegate refreshView:self progress:progress];
         }
+    } else if ([keyPath isEqualToString:@"state"]) {
+        URefreshState state = [change[@"new"] integerValue];
+        switch (state) {
+            case URefreshStateIdle:
+            {
+                self.stateLabel.text = URefreshViewHeaderIdleTitle;
+                self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
+                self.stateLabel.center = pointMake(self.sizeWidth / 2., self.sizeHeight / 2.);
+            }
+                break;
+                
+            case URefreshStateReady:
+            {
+                self.stateLabel.text = URefreshViewHeaderReadyTitle;
+                self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
+                self.stateLabel.center = pointMake(self.sizeWidth / 2., self.sizeHeight / 2.);
+            }
+                break;
+                
+            case URefreshStateRefreshing:
+            {
+                self.stateLabel.text = URefreshViewHeaderRefreshingTitle;
+                self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
+                
+                CGFloat width = self.stateLabel.sizeWidth + self.indicatorView.sizeWidth;
+                CGFloat originX = (self.sizeWidth - width) / 2. - 8.;
+                self.indicatorView.originX = originX;
+                self.stateLabel.originX = self.indicatorView.paddingRight + 8.0;
+            }
+                break;
+                
+            default:
+                break;
+        }
     }
 }
 
@@ -186,6 +245,10 @@
     }
     self.state = URefreshStateRefreshing;
     
+    // Animation
+    self.indicatorView.hidden = NO;
+    [self.indicatorView startAnimation];
+    
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
     insets.top = insets.top + self.height;
@@ -196,11 +259,7 @@
                      animations:^{
                          self.scrollView.contentInset = insets;
                      }
-                     completion:^(BOOL finished) {
-                         if (finished) {
-                             [self.indicatorView startAnimation];
-                         }
-                     }];
+                     completion:NULL];
     
     // Perform action
     [UThreadPool addTarget:self sel:@selector(performAction)];
@@ -214,6 +273,7 @@
     self.state = URefreshStateIdle;
     
     // Stop indicator
+    self.indicatorView.hidden = YES;
     [self.indicatorView stopAnimation];
     
     // Resize
@@ -229,10 +289,16 @@
                      completion:NULL];
 }
 
+- (void)refreshView:(URefreshView *)view progress:(CGFloat)progress
+{
+    //
+}
+
 - (void)dealloc
 {
     // Remove KVO
     [self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:NULL];
+    [self removeObserver:self forKeyPath:@"state" context:NULL];
 }
 
 @end
@@ -276,6 +342,10 @@
                        forKeyPath:@"contentSize"
                           options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                           context:NULL];
+    [super addObserver:self
+            forKeyPath:@"state"
+               options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+               context:NULL];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -316,6 +386,40 @@
     } else if ([keyPath isEqualToString:@"contentSize"]) {
         CGSize size = [change[@"new"] CGSizeValue];
         self.frame = rectMake(0, size.height, self.scrollView.sizeWidth, self.height);
+    } else if ([keyPath isEqualToString:@"state"]) {
+        URefreshState state = [change[@"new"] integerValue];
+        switch (state) {
+            case URefreshStateIdle:
+            {
+                self.stateLabel.text = URefreshViewFooterIdleTitle;
+                self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
+                self.stateLabel.center = pointMake(self.sizeWidth / 2., self.sizeHeight / 2.);
+            }
+                break;
+                
+            case URefreshStateReady:
+            {
+                self.stateLabel.text = URefreshViewFooterReadyTitle;
+                self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
+                self.stateLabel.center = pointMake(self.sizeWidth / 2., self.sizeHeight / 2.);
+            }
+                break;
+                
+            case URefreshStateRefreshing:
+            {
+                self.stateLabel.text = URefreshViewFooterRefreshingTitle;
+                self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
+                
+                CGFloat width = self.stateLabel.sizeWidth + self.indicatorView.sizeWidth;
+                CGFloat originX = (self.sizeWidth - width) / 2. - 8.;
+                self.indicatorView.originX = originX;
+                self.stateLabel.originX = self.indicatorView.paddingRight + 8.0;
+            }
+                break;
+                
+            default:
+                break;
+        }
     }
 }
 
@@ -331,6 +435,10 @@
     }
     self.state = URefreshStateRefreshing;
     
+    // Animation
+    self.indicatorView.hidden = NO;
+    [self.indicatorView startAnimation];
+    
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
     insets.bottom = insets.bottom + self.height;
@@ -341,11 +449,7 @@
                      animations:^{
                          self.scrollView.contentInset = insets;
                      }
-                     completion:^(BOOL finished) {
-                         if (finished) {
-                             [self.indicatorView startAnimation];
-                         }
-                     }];
+                     completion:NULL];
     
     // Perform action
     [UThreadPool addTarget:self sel:@selector(performAction)];
@@ -359,6 +463,7 @@
     self.state = URefreshStateIdle;
     
     // Stop indicator
+    self.indicatorView.hidden = YES;
     [self.indicatorView stopAnimation];
     
     // Resize
@@ -374,11 +479,17 @@
                      completion:NULL];
 }
 
+- (void)refreshView:(URefreshView *)view progress:(CGFloat)progress
+{
+    //
+}
+
 - (void)dealloc
 {
     // Remove KVO
     [self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:NULL];
     [self.scrollView removeObserver:self forKeyPath:@"contentSize" context:NULL];
+    [self removeObserver:self forKeyPath:@"state" context:NULL];
 }
 
 @end

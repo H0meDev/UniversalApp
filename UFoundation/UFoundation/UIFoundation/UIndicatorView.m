@@ -58,6 +58,14 @@
     //
 }
 
+- (void)setTransform:(CGAffineTransform)transform
+{
+    [super setTransform:transform];
+    
+    // Keep drawing
+    [self setNeedsDisplay];
+}
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 
@@ -104,7 +112,7 @@
     _stageValue = 0;
     
     [UTimerBooster removeTarget:self];
-    [UTimerBooster addTarget:self sel:@selector(rotation) time:0.1 repeat:-1];
+    [UTimerBooster addTarget:self sel:@selector(rotationAnimation) time:0.1 repeat:-1];
 }
 
 - (void)stopAnimation
@@ -114,7 +122,7 @@
     [UTimerBooster removeTarget:self];
 }
 
-- (void)rotation
+- (void)rotationAnimation
 {
     [self performOnMainThread:@selector(setNeedsDisplay)];
     
