@@ -10,6 +10,9 @@
 #import "NextViewController.h"
 
 @interface LeftPageViewController ()
+{
+//    UIndicatorView *_indicator;
+}
 
 @end
 
@@ -22,6 +25,12 @@
     
     self.enableBackButton = NO;
     self.navigationBarView.title = @"Left";
+    
+//    _indicator = [[UIndicatorView alloc]init];
+//    _indicator.frame = rectMake(0, 0, 30, 30);
+//    _indicator.center = pointMake(screenWidth() / 2., 60);
+//    [_indicator startAnimation];
+//    [self addSubview:_indicator];
     
     UButton *button = [UButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);

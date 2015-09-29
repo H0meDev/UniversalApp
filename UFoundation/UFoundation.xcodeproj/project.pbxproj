@@ -71,8 +71,8 @@
 		F51C11FC1B90630300F29C3F /* UTimerBooster.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11CE1B90630300F29C3F /* UTimerBooster.m */; };
 		F51C11FF1B90633900F29C3F /* UIImageView+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51C11FD1B90633900F29C3F /* UIImageView+UAExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F51C12001B90633900F29C3F /* UIImageView+UAExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11FE1B90633900F29C3F /* UIImageView+UAExtension.m */; };
-		F52AD2BA1BB2AA630074DBA1 /* UProgressIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = F52AD2B81BB2AA630074DBA1 /* UProgressIndicatorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F52AD2BB1BB2AA630074DBA1 /* UProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F52AD2B91BB2AA630074DBA1 /* UProgressIndicatorView.m */; settings = {ASSET_TAGS = (); }; };
+		F52AD2BA1BB2AA630074DBA1 /* UIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = F52AD2B81BB2AA630074DBA1 /* UIndicatorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F52AD2BB1BB2AA630074DBA1 /* UIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F52AD2B91BB2AA630074DBA1 /* UIndicatorView.m */; settings = {ASSET_TAGS = (); }; };
 		F5687D681B022E6B0073594C /* UFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = F5974D011B02051F004AA14F /* UFoundation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F5687D691B022E6B0073594C /* UDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = F5974D021B02057F004AA14F /* UDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F56C2CB51B04449400D5DF66 /* UNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = F56C2CAF1B04449400D5DF66 /* UNavigationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -174,8 +174,8 @@
 		F51C11CE1B90630300F29C3F /* UTimerBooster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UTimerBooster.m; sourceTree = "<group>"; };
 		F51C11FD1B90633900F29C3F /* UIImageView+UAExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+UAExtension.h"; sourceTree = "<group>"; };
 		F51C11FE1B90633900F29C3F /* UIImageView+UAExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+UAExtension.m"; sourceTree = "<group>"; };
-		F52AD2B81BB2AA630074DBA1 /* UProgressIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UProgressIndicatorView.h; path = UIFoundation/UProgressIndicatorView.h; sourceTree = "<group>"; };
-		F52AD2B91BB2AA630074DBA1 /* UProgressIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UProgressIndicatorView.m; path = UIFoundation/UProgressIndicatorView.m; sourceTree = "<group>"; };
+		F52AD2B81BB2AA630074DBA1 /* UIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIndicatorView.h; path = UIFoundation/UIndicatorView.h; sourceTree = "<group>"; };
+		F52AD2B91BB2AA630074DBA1 /* UIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIndicatorView.m; path = UIFoundation/UIndicatorView.m; sourceTree = "<group>"; };
 		F56C2CAF1B04449400D5DF66 /* UNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UNavigationController.h; path = UIFoundation/UNavigationController.h; sourceTree = "<group>"; };
 		F56C2CB11B04449400D5DF66 /* UTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UTabBarController.h; path = UIFoundation/UTabBarController.h; sourceTree = "<group>"; };
 		F56C2CB21B04449400D5DF66 /* UTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UTabBarController.m; path = UIFoundation/UTabBarController.m; sourceTree = "<group>"; };
@@ -470,8 +470,8 @@
 				F51431C51B89AE7800C2372E /* UNavigationbarButton.m */,
 				F510A6B31BB0D82C000968AB /* URefreshView.h */,
 				F510A6B41BB0D82C000968AB /* URefreshView.m */,
-				F52AD2B81BB2AA630074DBA1 /* UProgressIndicatorView.h */,
-				F52AD2B91BB2AA630074DBA1 /* UProgressIndicatorView.m */,
+				F52AD2B81BB2AA630074DBA1 /* UIndicatorView.h */,
+				F52AD2B91BB2AA630074DBA1 /* UIndicatorView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -483,7 +483,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F52AD2BA1BB2AA630074DBA1 /* UProgressIndicatorView.h in Headers */,
+				F52AD2BA1BB2AA630074DBA1 /* UIndicatorView.h in Headers */,
 				F510A6B51BB0D82C000968AB /* URefreshView.h in Headers */,
 				F515938B1BAC55440043FFE9 /* UIScrollView+UAExtension.h in Headers */,
 				F57848DE1BAD587B00E7121B /* UTableViewController.h in Headers */,
@@ -625,7 +625,7 @@
 				F57848DF1BAD587B00E7121B /* UTableViewController.m in Sources */,
 				F51C11EC1B90630300F29C3F /* UIView+UAExtension.m in Sources */,
 				F56C2CD41B0444D300D5DF66 /* UButton.m in Sources */,
-				F52AD2BB1BB2AA630074DBA1 /* UProgressIndicatorView.m in Sources */,
+				F52AD2BB1BB2AA630074DBA1 /* UIndicatorView.m in Sources */,
 				F56C2CBA1B04449400D5DF66 /* UViewController.m in Sources */,
 				F5127BC51B7A38DC007952C7 /* UScrollView.m in Sources */,
 				F51C11F41B90630300F29C3F /* UModel.m in Sources */,

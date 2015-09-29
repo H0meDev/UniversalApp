@@ -34,7 +34,7 @@
 #import "UNavigationBarButton.h"
 #import "UTabBarButton.h"
 #import "URefreshView.h"
-#import "UProgressIndicatorView.h"
+#import "UIndicatorView.h"
 
 // Categories
 #import "NSObject+UAExtension.h"

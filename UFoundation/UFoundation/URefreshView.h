@@ -10,15 +10,24 @@
 
 typedef NS_ENUM(NSInteger, URefreshState)
 {
-    URefreshStateNone = 0,
-    URefreshStateHeaderRefreshing,
-    URefreshStateFooterRefreshing,
+    URefreshStateIdle = 0,
+    URefreshStateReady,
+    URefreshStateRefreshing,
 };
+
+@class URefreshView;
+@protocol URefreshViewDelegate <NSObject>
+
+@required
+- (void)refreshView:(URefreshView *)view progress:(CGFloat)progress; // Progress from 0 to 1.0
+
+@end
 
 @interface URefreshView : UView
 
+@property (nonatomic, weak) id<URefreshViewDelegate> delegate;
 @property (nonatomic, retain) UIScrollView *scrollView;
-@property (nonatomic, assign) URefreshState state;
+@property (nonatomic, assign) CGFloat height; //  Default is 50.
 
 - (void)addTarget:(id)target action:(SEL)action;
 
