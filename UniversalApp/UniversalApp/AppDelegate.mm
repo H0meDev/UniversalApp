@@ -16,7 +16,6 @@
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
@@ -25,15 +24,16 @@
     [self.window makeKeyAndVisible];
     
     [UHTTPRequest sendAsynWithURL:@"https://www.baidu.com"
+                           header:nil
                            method:@"GET"
                             param:nil
                          callback:^(UHTTPStatus *status, id data)
      {
-        if (status.code == UHTTPCodeLocalCached) {
-            NSLog(@"From cached:\n%@", data);
-        } else if (status.code == UHTTPCodeOK) {
-            NSLog(@"From request:\n%@", data);
-        }
+         if (status.code == UHTTPCodeLocalCached) {
+             NSLog(@"From cached:\n%@", data);
+         } else if (status.code == UHTTPCodeOK) {
+             NSLog(@"From request:\n%@", data);
+         }
     } cached:YES];
     
     // Start timer

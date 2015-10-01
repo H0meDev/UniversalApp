@@ -316,4 +316,9 @@
     return YES;
 }
 
+- (NSString *)replaceSubString:(NSString *)string with:(NSString *)place
+{
+    return [self stringByReplacingOccurrencesOfString:string withString:place];
+}
+
 @end

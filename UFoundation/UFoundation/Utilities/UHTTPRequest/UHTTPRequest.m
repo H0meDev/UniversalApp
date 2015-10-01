@@ -58,11 +58,13 @@ static UHTTPRequest *sharedManager = nil;
 #pragma mark - Request
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                callback:(UHTTPCallback)callback
 {
     [[self sharedManager]requestWithURL:url
+                                 header:header
                                  method:method
                                   param:param
                                 timeout:30
@@ -72,12 +74,14 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                 timeout:(NSInteger)timeout
                callback:(UHTTPCallback)callback
 {
     [[self sharedManager]requestWithURL:url
+                                 header:header
                                  method:method
                                   param:param
                                 timeout:timeout
@@ -87,6 +91,7 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                 timeout:(NSInteger)timeout
@@ -95,6 +100,7 @@ static UHTTPRequest *sharedManager = nil;
                callback:(UHTTPCallback)callback
 {
     [[self sharedManager]requestWithURL:url
+                                 header:header
                                  method:method
                                   param:param
                                 timeout:timeout
@@ -104,12 +110,14 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                callback:(UHTTPCallback)callback
                  cached:(BOOL)cached
 {
     [[self sharedManager]requestWithURL:url
+                                 header:header
                                  method:method
                                   param:param
                                 timeout:30
@@ -120,6 +128,7 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                 timeout:(NSInteger)timeout
@@ -127,6 +136,7 @@ static UHTTPRequest *sharedManager = nil;
                  cached:(BOOL)cached
 {
     [[self sharedManager]requestWithURL:url
+                                 header:header
                                  method:method
                                   param:param
                                 timeout:timeout
@@ -137,6 +147,7 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                 timeout:(NSInteger)timeout
@@ -146,6 +157,7 @@ static UHTTPRequest *sharedManager = nil;
                  cached:(BOOL)cached
 {
     [[self sharedManager]requestWithURL:url
+                                 header:header
                                  method:method
                                   param:param
                                 timeout:timeout
@@ -156,12 +168,14 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                delegate:(id<UHTTPRequestDelegate>)delegate
                     tag:(int)tag
 {
     [[self sharedManager]requestWithURL:url
+                                 header:header
                                  method:method
                                   param:param
                                 timeout:30
@@ -172,6 +186,7 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                delegate:(id<UHTTPRequestDelegate>)delegate
@@ -179,6 +194,7 @@ static UHTTPRequest *sharedManager = nil;
                     tag:(int)tag
 {
     [[self sharedManager]requestWithURL:url
+                                 header:header
                                  method:method
                                   param:param
                                 timeout:timeout
@@ -189,6 +205,7 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                delegate:(id<UHTTPRequestDelegate>)delegate
@@ -198,6 +215,7 @@ static UHTTPRequest *sharedManager = nil;
                     tag:(int)tag
 {
     [[self sharedManager]requestWithURL:url
+                                 header:header
                                  method:method
                                   param:param
                                 timeout:timeout
@@ -208,6 +226,7 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                delegate:(id<UHTTPRequestDelegate>)delegate
@@ -215,6 +234,7 @@ static UHTTPRequest *sharedManager = nil;
                  cached:(BOOL)cached
 {
     [[self sharedManager]requestWithURL:url
+                                 header:header
                                  method:method
                                   param:param
                                 timeout:30
@@ -226,6 +246,7 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                delegate:(id<UHTTPRequestDelegate>)delegate
@@ -234,6 +255,7 @@ static UHTTPRequest *sharedManager = nil;
                  cached:(BOOL)cached
 {
     [[self sharedManager]requestWithURL:url
+                                 header:header
                                  method:method
                                   param:param
                                 timeout:timeout
@@ -245,6 +267,7 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                delegate:(id<UHTTPRequestDelegate>)delegate
@@ -255,6 +278,7 @@ static UHTTPRequest *sharedManager = nil;
                  cached:(BOOL)cached
 {
     [[self sharedManager]requestWithURL:url
+                                 header:header
                                  method:method
                                   param:param
                                 timeout:timeout
@@ -266,6 +290,7 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 - (void)requestWithURL:(NSString *)url
+                header:(NSDictionary *)header
                 method:(NSString *)method
                  param:(NSDictionary *)param
                timeout:(NSInteger)timeout
@@ -274,6 +299,7 @@ static UHTTPRequest *sharedManager = nil;
               callback:(UHTTPCallback)callback
 {
     [self requestWithURL:url
+                  header:header
                   method:method
                    param:param
                  timeout:timeout
@@ -284,6 +310,7 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 - (void)requestWithURL:(NSString *)url
+                header:(NSDictionary *)header
                 method:(NSString *)method
                  param:(NSDictionary *)param
                timeout:(NSInteger)timeout
@@ -293,6 +320,7 @@ static UHTTPRequest *sharedManager = nil;
                    tag:(int)tag
 {
     [self requestWithURL:url
+                  header:header
                   method:method
                    param:param
                  timeout:timeout
@@ -304,6 +332,7 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 - (void)requestWithURL:(NSString *)url
+                header:(NSDictionary *)header
                 method:(NSString *)method
                  param:(NSDictionary *)param
                timeout:(NSInteger)timeout
@@ -313,18 +342,20 @@ static UHTTPRequest *sharedManager = nil;
                 cached:(BOOL)cached
 {
     [self requestWithURL:url
+                  header:header
                   method:method
                    param:param
                  timeout:timeout
                    retry:times
             timeInterval:timeInterval
-                callback:NULL
+                callback:callback
                 delegate:nil
                      tag:0
                   cached:cached];
 }
 
 - (void)requestWithURL:(NSString *)url
+                header:(NSDictionary *)header
                 method:(NSString *)method
                  param:(NSDictionary *)param
                timeout:(NSInteger)timeout
@@ -335,6 +366,7 @@ static UHTTPRequest *sharedManager = nil;
                 cached:(BOOL)cached
 {
     [self requestWithURL:url
+                  header:header
                   method:method
                    param:param
                  timeout:timeout
@@ -347,6 +379,7 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 - (void)requestWithURL:(NSString *)url
+                header:(NSDictionary *)header
                 method:(NSString *)method
                  param:(NSDictionary *)param
                timeout:(NSInteger)timeout
@@ -360,9 +393,11 @@ static UHTTPRequest *sharedManager = nil;
     NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
     mutableRequest.HTTPMethod = [method uppercaseString];
     
-    // Set content-type to support more data type
-    NSString *contentType = @"application/json";
-    [mutableRequest setValue:contentType forHTTPHeaderField:@"Content-type"];
+    // Set http header
+    for (NSString *field in header) {
+        NSString *value = header[field];
+        [mutableRequest setValue:value forHTTPHeaderField:field];
+    }
     
     NSString *body = nil;
     if ([param isKindOfClass:[NSDictionary class]]) {
@@ -381,7 +416,9 @@ static UHTTPRequest *sharedManager = nil;
     if (callback) {
         operation = [[UHTTPOperation alloc]initWithRequest:mutableRequest
                                                   callback:callback];
-    } else {
+    }
+    
+    if (delegate) {
         operation = [[UHTTPOperation alloc]initWithRequest:mutableRequest
                                                   delegate:delegate
                                                        tag:tag];
@@ -397,6 +434,7 @@ static UHTTPRequest *sharedManager = nil;
 }
 
 + (NSData *)sendSyncWithURL:(NSString *)url
+                     header:(NSDictionary *)header
                      method:(NSString *)method
                       param:(NSDictionary *)param
                    response:(NSURLResponse **)response

@@ -17,17 +17,20 @@
 
 // Block style with no cache
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                callback:(UHTTPCallback)callback;
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                 timeout:(NSInteger)timeout
                callback:(UHTTPCallback)callback;
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                 timeout:(NSInteger)timeout
@@ -37,12 +40,14 @@
 
 // Block style with specified cache
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                callback:(UHTTPCallback)callback
                  cached:(BOOL)cached;
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                 timeout:(NSInteger)timeout
@@ -50,6 +55,7 @@
                  cached:(BOOL)cached;
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                 timeout:(NSInteger)timeout
@@ -60,12 +66,14 @@
 
 // Delegate style with no cache
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                delegate:(id<UHTTPRequestDelegate>)delegate
                     tag:(int)tag;
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                delegate:(id<UHTTPRequestDelegate>)delegate
@@ -73,6 +81,7 @@
                     tag:(int)tag;
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                delegate:(id<UHTTPRequestDelegate>)delegate
@@ -83,6 +92,7 @@
 
 // Delegate style with specified cache
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                delegate:(id<UHTTPRequestDelegate>)delegate
@@ -90,6 +100,7 @@
                  cached:(BOOL)cached;
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                delegate:(id<UHTTPRequestDelegate>)delegate
@@ -98,6 +109,7 @@
                  cached:(BOOL)cached;
 
 + (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
                delegate:(id<UHTTPRequestDelegate>)delegate
@@ -112,6 +124,7 @@
  */
 
 + (NSData *)sendSyncWithURL:(NSString *)url
+                     header:(NSDictionary *)header
                      method:(NSString *)method
                       param:(NSDictionary *)param
                    response:(NSURLResponse **)response

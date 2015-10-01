@@ -228,34 +228,27 @@
             case URefreshStateIdle:
             {
                 self.stateLabel.text = URefreshViewHeaderIdleTitle;
-                self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
-                self.stateLabel.center = pointMake(self.sizeWidth / 2., self.sizeHeight / 2.);
             }
                 break;
                 
             case URefreshStateReady:
             {
                 self.stateLabel.text = URefreshViewHeaderReadyTitle;
-                self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
-                self.stateLabel.center = pointMake(self.sizeWidth / 2., self.sizeHeight / 2.);
             }
                 break;
                 
             case URefreshStateRefreshing:
             {
                 self.stateLabel.text = URefreshViewHeaderRefreshingTitle;
-                self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
-                
-                CGFloat width = self.stateLabel.sizeWidth + self.indicatorView.sizeWidth;
-                CGFloat originX = (self.sizeWidth - width) / 2. - 8.;
-                self.indicatorView.originX = originX;
-                self.stateLabel.originX = self.indicatorView.paddingRight + 8.0;
             }
                 break;
                 
             default:
                 break;
         }
+        
+        self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
+        self.stateLabel.center = pointMake(self.sizeWidth / 2., self.sizeHeight / 2.);
     }
 }
 
@@ -273,27 +266,33 @@
     }
     self.state = URefreshStateRefreshing;
     
-    // Animation
-    self.indicatorView.hidden = NO;
-    [self.indicatorView startAnimation];
-    
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
     insets.top = _insetValue + self.height;
     CGPoint offset = self.scrollView.contentOffset;
     offset.y = - self.height;
     
-    [UIView animateWithDuration:animationDuration()
+    [UIView animateWithDuration:animationDuration() - 0.5
                           delay:0
-                        options:UIViewAnimationOptionCurveLinear
+                        options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         self.scrollView.contentOffset = offset;
                          self.scrollView.contentInset = insets;
+                         self.scrollView.contentOffset = offset;
+                         
+                         CGFloat width = self.stateLabel.sizeWidth + self.indicatorView.sizeWidth;
+                         CGFloat originX = (self.sizeWidth - width) / 2. - 4.;
+                         self.indicatorView.originX = originX;
+                         self.stateLabel.originX = self.indicatorView.paddingRight + 4.0;
                      }
-                     completion:NULL];
-    
-    // Perform action
-    [UThreadPool addTarget:self sel:@selector(performAction)];
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             self.indicatorView.hidden = NO;
+                             [self.indicatorView startAnimation];
+                             
+                             // Perform action
+                             [UThreadPool addTarget:self sel:@selector(performAction)];
+                         }
+                     }];
 }
 
 - (void)finishRefresh
@@ -305,21 +304,25 @@
     }
     self.state = URefreshStateIdle;
     
-    // Stop indicator
     self.indicatorView.hidden = YES;
     [self.indicatorView stopAnimation];
+    self.scrollView.scrollEnabled = NO;
     
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
     insets.top = _insetValue;
     
-    [UIView animateWithDuration:animationDuration()
+    [UIView animateWithDuration:animationDuration() - 0.5
                           delay:0
-                        options:UIViewAnimationOptionCurveLinear
+                        options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          self.scrollView.contentInset = insets;
                      }
-                     completion:NULL];
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             self.scrollView.scrollEnabled = YES;
+                         }
+                     }];
 }
 
 - (void)refreshView:(URefreshView *)view progress:(CGFloat)progress
@@ -433,34 +436,27 @@
             case URefreshStateIdle:
             {
                 self.stateLabel.text = URefreshViewFooterIdleTitle;
-                self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
-                self.stateLabel.center = pointMake(self.sizeWidth / 2., self.sizeHeight / 2.);
             }
                 break;
                 
             case URefreshStateReady:
             {
                 self.stateLabel.text = URefreshViewFooterReadyTitle;
-                self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
-                self.stateLabel.center = pointMake(self.sizeWidth / 2., self.sizeHeight / 2.);
             }
                 break;
                 
             case URefreshStateRefreshing:
             {
                 self.stateLabel.text = URefreshViewFooterRefreshingTitle;
-                self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
-                
-                CGFloat width = self.stateLabel.sizeWidth + self.indicatorView.sizeWidth;
-                CGFloat originX = (self.sizeWidth - width) / 2. - 8.;
-                self.indicatorView.originX = originX;
-                self.stateLabel.originX = self.indicatorView.paddingRight + 8.0;
             }
                 break;
                 
             default:
                 break;
         }
+        
+        self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
+        self.stateLabel.center = pointMake(self.sizeWidth / 2., self.sizeHeight / 2.);
     }
 }
 
@@ -478,24 +474,30 @@
     }
     self.state = URefreshStateRefreshing;
     
-    // Animation
-    self.indicatorView.hidden = NO;
-    [self.indicatorView startAnimation];
-    
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
     insets.bottom = _insetValue + self.height;
     
-    [UIView animateWithDuration:animationDuration()
+    [UIView animateWithDuration:animationDuration() - 0.5
                           delay:0
-                        options:UIViewAnimationOptionCurveLinear
+                        options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          self.scrollView.contentInset = insets;
+                         
+                         CGFloat width = self.stateLabel.sizeWidth + self.indicatorView.sizeWidth;
+                         CGFloat originX = (self.sizeWidth - width) / 2. - 4.;
+                         self.indicatorView.originX = originX;
+                         self.stateLabel.originX = self.indicatorView.paddingRight + 4.0;
                      }
-                     completion:NULL];
-    
-    // Perform action
-    [UThreadPool addTarget:self sel:@selector(performAction)];
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             self.indicatorView.hidden = NO;
+                             [self.indicatorView startAnimation];
+                             
+                             // Perform action
+                             [UThreadPool addTarget:self sel:@selector(performAction)];
+                         }
+                     }];
 }
 
 - (void)finishRefresh
@@ -507,21 +509,25 @@
     }
     self.state = URefreshStateIdle;
     
-    // Stop indicator
     self.indicatorView.hidden = YES;
     [self.indicatorView stopAnimation];
+    self.scrollView.scrollEnabled = NO;
     
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
     insets.bottom = _insetValue;
     
-    [UIView animateWithDuration:animationDuration()
+    [UIView animateWithDuration:animationDuration() - 0.5
                           delay:0
-                        options:UIViewAnimationOptionCurveLinear
+                        options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          self.scrollView.contentInset = insets;
                      }
-                     completion:NULL];
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             self.scrollView.scrollEnabled = YES;
+                         }
+                     }];
 }
 
 - (void)refreshView:(URefreshView *)view progress:(CGFloat)progress

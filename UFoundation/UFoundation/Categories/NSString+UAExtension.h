@@ -76,5 +76,10 @@
  */
 - (BOOL)isNumberFormat;
 
+/*
+ * Replace, for short
+ */
+- (NSString *)replaceSubString:(NSString *)string with:(NSString *)place;
+
 
 @end

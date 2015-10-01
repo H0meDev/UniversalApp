@@ -86,6 +86,14 @@
 {
     [super setFrame:frame];
     
+    if (CGRectEqualToRect(self.titleLabel.frame, CGRectZero)) {
+        self.titleLabel.frame = rectMake(0, 0, frame.size.width, frame.size.height);
+    }
+    
+    if (CGRectEqualToRect(self.titleLabel.frame, CGRectZero)) {
+        self.imageView.frame = rectMake(0, 0, frame.size.width, frame.size.height);
+    }
+    
     self.backgroundView.frame = rectMake(0, 0, frame.size.width, frame.size.height);
 }
 
@@ -101,13 +109,7 @@
 
 - (void)didMoveToWindow
 {
-    if (!_titleLabel.text || !_imageView.image) {
-        if (_titleLabel.text) {
-            _titleLabel.frame = rectMake(0, 0, self.sizeWidth, self.sizeHeight);
-        } else {
-            _imageView.frame = rectMake(0, 0, self.sizeWidth, self.sizeHeight);
-        }
-    }
+    //
 }
 
 /*
@@ -387,11 +389,15 @@
 
 - (void)setImageFrame:(CGRect)frame
 {
+    _imageFrame = frame;
+    
     self.imageView.frame = frame;
 }
 
 - (void)setTitleFrame:(CGRect)frame
 {
+    _titleFrame = frame;
+    
     self.titleLabel.frame = frame;
 }
 
