@@ -306,7 +306,6 @@
     
     self.indicatorView.hidden = YES;
     [self.indicatorView stopAnimation];
-    self.scrollView.scrollEnabled = NO;
     
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
@@ -320,7 +319,7 @@
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
-                             self.scrollView.scrollEnabled = YES;
+                             //
                          }
                      }];
 }
@@ -511,7 +510,6 @@
     
     self.indicatorView.hidden = YES;
     [self.indicatorView stopAnimation];
-    self.scrollView.scrollEnabled = NO;
     
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
@@ -525,7 +523,7 @@
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
-                             self.scrollView.scrollEnabled = YES;
+                             //
                          }
                      }];
 }
