@@ -16,10 +16,16 @@
 // Init
 + (id)model;
 
+// Init with model
++ (id)modelWithModel:(UModel *)model;
+
 // Init with dictionary
 + (id)modelWith:(NSDictionary *)dict;
 
 // Model to NSDictionary
 - (NSDictionary *)dictionary;
+
+// Model to NSDictionary with UModel key
+- (NSDictionary *)dictionaryWithModelKey;
 
 @end

@@ -9,12 +9,28 @@
 #import "UModel.h"
 #import <objc/runtime.h>
 #import "NSObject+UAExtension.h"
+#import "NSString+UAExtension.h"
+
+@interface UModel ()
+
+- (NSArray *)properties;
+- (id)initWithModel:(UModel *)model;
+
+@end
 
 @implementation UModel
 
 + (id)model
 {
     return [self instance];
+}
+
++ (id)modelWithModel:(UModel *)model
+{
+    @autoreleasepool
+    {
+        return [[self alloc]initWithModel:model];
+    }
 }
 
 + (id)modelWith:(NSDictionary *)dict
@@ -47,17 +63,12 @@
                     
                     // Check model
                     class = NSClassFromString(className);
-                    if (![class isSubclassOfClass:[UModel class]]) {
-                        class = NULL;
-                    }
                 }
                 
                 id value = [dict objectForKey:rname];
                 if (value) {
-                    if (class) {
-                        // To model again
-                        value = [class modelWith:value];
-                    }
+                    // To model again
+                    value = [self modelWithValue:value class:class];
                     
                     // Set value for model
                     [model setValue:value forKey:name];
@@ -72,7 +83,116 @@
     }
 }
 
++ (id)modelWithValue:(id)value class:(Class)class
+{
+    if (!class) {
+        return value;
+    }
+    
+    if ([class isSubclassOfClass:[NSDictionary class]]) {
+        value = [class modelWith:value];
+    } else if ([class isSubclassOfClass:[UModel class]]) {
+        if ([value isKindOfClass:[NSDictionary class]]) {
+            value = [class modelWith:value];
+        } else if ([value isKindOfClass:[NSString class]]) {
+            NSDictionary *dict = [value JSONValue];
+            if (dict) {
+                value = [class modelWith:dict];
+            }
+        }
+    } else if ([class isSubclassOfClass:[NSArray class]]) {
+        NSMutableArray *marray = [NSMutableArray array];
+        for (NSDictionary *item in value) {
+            NSString *className = item[@"UModelClassNameKey"];
+            if ([className isKindOfClass:[NSString class]] && className.length > 0) {
+                id model = [self modelWithValue:item class:NSClassFromString(className)];
+                if (model) {
+                    [marray addObject:model];
+                } else {
+                    [marray addObject:item];
+                }
+            } else {
+                [marray addObject:item];
+            }
+        }
+        
+        value = marray;
+    }
+    
+    return value;
+}
+
+- (id)initWithModel:(UModel *)model
+{
+    self = [super init];
+    if (self) {
+        // Deep copy from model
+        [self copyValuesWithModel:model];
+    }
+    
+    return self;
+}
+
+- (void)copyValuesWithModel:(UModel *)model
+{
+    NSArray *properties = [model properties];
+    for (NSDictionary *item in properties) {
+        NSString *name = item[@"name"];
+        NSString *type = item[@"type"];
+        
+        if ([type hasPrefix:@"@\""]) {
+            // NSObject
+            [self valueWithObject:[model valueForKey:name] key:name];
+        } else {
+            [self setValue:[model valueForKey:name] forKey:name];
+        }
+    }
+}
+
+- (id)valueWithObject:(id)object key:(NSString *)keyName
+{
+    id value = nil;
+    if ([object isKindOfClass:[NSArray class]]) { // NSArray
+        NSMutableArray *marray = [NSMutableArray array];
+        for (id item in object) {
+            id retValue = [self valueWithObject:item key:keyName];
+            if (retValue) {
+                [marray addObject:retValue];
+            }
+        }
+        // Set array value
+        [self setValue:marray forKey:keyName];
+    } else if ([object isKindOfClass:[UModel class]]) { // Model
+        value = [[object class] modelWithModel:object];
+        [self setValue:value forKey:keyName];
+    } else if ([object isKindOfClass:[NSString class]]) { // NSString
+        value = [NSString stringWithFormat:@"%@", object];
+        [self setValue:value forKey:keyName];
+    } else if ([object isKindOfClass:[NSDictionary class]]) { // NSDictionary
+        value = [NSDictionary dictionaryWithDictionary:object];
+        [self setValue:value forKey:keyName];
+    } else if ([object isKindOfClass:[NSData class]]) { // NSData
+        value = [NSData dataWithData:object];
+        [self setValue:value forKey:keyName];
+    } else if ([object isKindOfClass:[NSValue class]]) { // NSValue
+        value = [NSValue valueWithNonretainedObject:object];
+        [self setValue:value forKey:keyName];
+    }
+    
+    return value;
+}
+
 - (NSDictionary *)dictionary
+{
+    return [self dictionaryWithModelKey:NO];
+}
+
+- (NSDictionary *)dictionaryWithModelKey
+{
+    return [self dictionaryWithModelKey:YES];
+}
+
+- (NSDictionary *)dictionaryWithModelKey:(BOOL)contains
 {
     @autoreleasepool
     {
@@ -95,14 +215,14 @@
                     
                     // Check model
                     class = NSClassFromString(className);
-                    if (![class isSubclassOfClass:[UModel class]]) {
-                        class = NULL;
-                    }
                 }
                 
                 // Get value object
                 id value = [self valueForKey:name];
-                value = (value)?value:@"";
+                if (!value) {
+                    __autoreleasing id object = [[class alloc]init];
+                    value = object;
+                }
                 
                 // For illegal name
                 if ([name hasSuffix:@"_"] && name.length > 0) {
@@ -112,8 +232,7 @@
                 if (value) {
                     if (class) {
                         // To NSDictionary again
-                        UModel *model = (UModel *)value;
-                        value = [model dictionary];
+                        value = [self dictionaryWithValue:value contains:contains];
                     }
                     
                     // Set value for NSDictionary
@@ -127,6 +246,27 @@
         
         return mdict;
     }
+}
+
+- (id)dictionaryWithValue:(id)value contains:(BOOL)contains
+{
+    if ([value isKindOfClass:[UModel class]]) {
+        UModel *model = (UModel *)value;
+        if (model) {
+            NSMutableDictionary *mdict = [NSMutableDictionary dictionaryWithDictionary:[model dictionary]];
+            [mdict setValue:NSStringFromClass([model class]) forKey:@"UModelClassNameKey"];
+            value = mdict;
+        }
+    } else if ([value isKindOfClass:[NSArray class]]) {
+        NSMutableArray *marray = [NSMutableArray array];
+        for (id item in value) {
+            [marray addObject:[self dictionaryWithValue:item contains:contains]];
+        }
+        
+        value = marray;
+    }
+    
+    return value;
 }
 
 - (NSArray *)properties

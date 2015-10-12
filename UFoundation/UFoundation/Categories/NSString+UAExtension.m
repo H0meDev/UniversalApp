@@ -7,8 +7,6 @@
 //
 
 #import "NSString+UAExtension.h"
-#import "NSObject+UAExtension.h"
-#import "NSData+UAExtension.h"
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonCryptor.h>
 #import "UDefines.h"
@@ -61,111 +59,6 @@
     return [self stringOf3DESWithkey:key vector:vector encryption:operation];
 }
 
-- (NSString *)stringOfDESWithkey:(NSString *)key operation:(CCOperation)operation
-{
-    char keyPtr[kCCKeySizeAES256 + 1];
-    bzero(keyPtr, sizeof(keyPtr));
-    
-    [key getCString:keyPtr maxLength:sizeof(keyPtr) encoding:NSUTF8StringEncoding];
-    
-    NSData *data = [self dataUsingEncoding:NSUTF8StringEncoding];
-    NSUInteger dataLength = [data length];
-    
-    size_t bufferSize = dataLength + kCCBlockSizeAES128;
-    void *buffer = malloc(bufferSize);
-    memset((void*)buffer,0x0, bufferSize);
-    
-    size_t numOfBytes = 0;
-    CCCryptorStatus cryptStatus = CCCrypt(operation,
-                                          kCCAlgorithmDES,
-                                          kCCOptionPKCS7Padding | kCCOptionECBMode,
-                                          keyPtr,
-                                          kCCBlockSizeDES,
-                                          NULL,
-                                          [data bytes],
-                                          dataLength,
-                                          buffer,
-                                          bufferSize,
-                                          &numOfBytes);
-    
-    __autoreleasing NSString *retString = nil;
-    if (cryptStatus == kCCSuccess) {
-        if (operation == kCCEncrypt) {
-            NSData *retData = [NSData dataWithBytesNoCopy:buffer length:numOfBytes];
-            retString = [[retData base64String]URLEncodedString];
-        } else {
-            NSData *retData = [NSData dataWithBytesNoCopy:buffer length:numOfBytes];
-            retString = [[NSString alloc]initWithData:retData encoding:NSUTF8StringEncoding];
-        }
-    }
-    
-    free(buffer);
-    buffer = NULL;
-    
-    return retString;
-}
-
-- (NSString *)stringOf3DESWithkey:(NSString *)key vector:(NSString *)vector operation:(CCOperation)operation
-{
-    const void * vplainText;
-    size_t plainTextBufferSize;
-    
-    if (operation== kCCDecrypt) {
-        NSData * encryptData = [NSData dataWithBase64String:self];
-        plainTextBufferSize = [encryptData length];
-        vplainText = [encryptData bytes];
-    } else {
-        NSData * tempData = [self dataUsingEncoding:NSUTF8StringEncoding];
-        plainTextBufferSize= [tempData length];
-        vplainText = [tempData bytes];
-        
-    }
-    
-    CCCryptorStatus ccStatus;
-    uint8_t * bufferPtr = NULL;
-    size_t bufferPtrSize = 0;
-    size_t movedBytes = 0;
-    
-    bufferPtrSize = (plainTextBufferSize + kCCBlockSize3DES)&~(kCCBlockSize3DES- 1);
-    
-    bufferPtr = malloc(bufferPtrSize * sizeof(uint8_t));
-    memset((void*)bufferPtr,0x0, bufferPtrSize);
-    
-    const void * vkey= (const void *)[key UTF8String];
-    const void * vinitVec= (const void *)[vector UTF8String];
-    
-    uint8_t iv[kCCBlockSize3DES];
-    memset((void*) iv,0x0, (size_t)sizeof(iv));
-    
-    ccStatus = CCCrypt(operation,
-                       kCCAlgorithm3DES,
-                       kCCOptionPKCS7Padding,
-                       vkey,               // 密钥
-                       kCCKeySize3DES,
-                       vinitVec,           // 初始向量
-                       vplainText,         // 明文
-                       plainTextBufferSize,
-                       (void*)bufferPtr,
-                       bufferPtrSize,
-                       &movedBytes);
-    
-    __autoreleasing NSString * result = nil;
-    if (ccStatus == kCCSuccess) {
-        if (operation== kCCDecrypt) {
-            NSData * retData = [NSData dataWithBytes:(const void *)bufferPtr length:(NSUInteger)movedBytes];
-            result = [[NSString alloc]initWithData:retData encoding:NSUTF8StringEncoding];
-        } else {
-            NSData * retData =[NSData dataWithBytes:(const void *)bufferPtr length:(NSUInteger)movedBytes];
-            result = [retData base64String];
-        }
-    }
-    
-    free(bufferPtr);
-    bufferPtr = NULL;
-    
-    return result;
-}
-
 - (CGSize)contentSizeWithFont:(UIFont *)font size:(CGSize)size
 {
     __autoreleasing NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc]init];
@@ -211,19 +104,20 @@
     
     @try
     {
-        NSData *responseData = [self dataUsingEncoding:NSUTF8StringEncoding];
+        __weak typeof(self) weakself = self;
+        NSString *jsonData = [NSString stringWithFormat:@"%@", weakself];
+        NSData *responseData = [jsonData dataUsingEncoding:NSUTF8StringEncoding];
         json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
     }
     @catch (NSException *exception)
     {
-        OutputCurrentDebugInfo();
-        NSLog(@"NSDictionay -> NSString exception:%@",exception.description);
+        NSLog(@"JSONValue exception:%@", exception.description);
+        json = nil;
     }
     @finally
     {
         if (error) {
-            OutputCurrentDebugInfo();
-            NSLog(@"NSDictionay -> NSString error:%@",error.description);
+            NSLog(@"JSONValue error:%@", error.description);
         }
         
         return json;
@@ -243,7 +137,7 @@
 
 - (UIColor *)colorValue
 {
-    NSString *hexColor = self.weakself;
+    NSString *hexColor = self;
     if (hexColor.length > 0) {
         if ([hexColor rangeOfString:@"#"].location == 0) {
             hexColor = [hexColor substringFromIndex:1];

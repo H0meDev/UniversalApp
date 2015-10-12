@@ -27,16 +27,6 @@
 - (NSString *)MD5String;
 
 /*
- * DES Encryption & decryption
- */
--(NSString*)stringOfDESWithkey:(NSString*)key encryption:(BOOL)encryption;
-
-/*
- * 3DES Encryption & decryption
- */
--(NSString*)stringOf3DESWithkey:(NSString*)key vector:(NSString*)vector encryption:(BOOL)encryption;
-
-/*
  * Size of content
  */
 - (CGSize)contentSizeWithFont:(UIFont *)font size:(CGSize)size;
@@ -75,11 +65,6 @@
  * Check is deceimal number or not
  */
 - (BOOL)isNumberFormat;
-
-/*
- * Replace, for short
- */
-- (NSString *)replaceSubString:(NSString *)string with:(NSString *)place;
 
 
 @end
