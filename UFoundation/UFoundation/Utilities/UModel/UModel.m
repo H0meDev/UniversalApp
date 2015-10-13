@@ -13,7 +13,7 @@
 
 @interface UModel ()
 
-- (NSArray *)properties;
++ (NSArray *)properties;
 - (id)initWithModel:(UModel *)model;
 
 @end
@@ -42,7 +42,7 @@
             return model;
         }
         
-        NSArray *properties = [model properties];
+        NSArray *properties = [[model class] properties];
         for (NSDictionary *item in properties) {
             @try
             {
@@ -68,9 +68,43 @@
                 id value = [dict objectForKey:rname];
                 if (value) {
                     // To model again
-                    value = [self modelWithValue:value class:class];
+                    if (![class isSubclassOfClass:[NSArray class]]) {
+                        value = [self valueWithValue:value class:class];
+                    } else {
+                        // For NSArray
+                        NSMutableArray *marray = [NSMutableArray array];
+                        for (id item in value) {
+                            NSString *className = nil;
+                            if ([item isKindOfClass:[NSDictionary class]]) {
+                                className = item[@"UModelClassNameKey"];
+                                if ([className isKindOfClass:[NSString class]] && className.length > 0) {
+                                    id model = [self valueWithValue:item class:NSClassFromString(className)];
+                                    if (model) {
+                                        [marray addObject:model];
+                                    } else {
+                                        [marray addObject:item];
+                                    }
+                                } else {
+                                    className = nil;
+                                }
+                            }
+                            
+                            if (!className) {
+                                NSString *suffix = [NSString stringWithFormat:@"%@Item", rname];
+                                className = NSStringFromClass([self class]);
+                                className = [className stringByAppendingString:suffix];
+                                class = NSClassFromString(className);
+                                
+                                value = [class modelWith:item];
+                                value = (!value)?item:value;
+                                [marray addObject:value];
+                            }
+                        }
+                        
+                        value = marray;
+                    }
                     
-                    // Set value for model
+                    // Final value
                     [model setValue:value forKey:name];
                 }
             }
@@ -83,7 +117,7 @@
     }
 }
 
-+ (id)modelWithValue:(id)value class:(Class)class
++ (id)valueWithValue:(id)value class:(Class)class
 {
     if (!class) {
         return value;
@@ -100,23 +134,6 @@
                 value = [class modelWith:dict];
             }
         }
-    } else if ([class isSubclassOfClass:[NSArray class]]) {
-        NSMutableArray *marray = [NSMutableArray array];
-        for (NSDictionary *item in value) {
-            NSString *className = item[@"UModelClassNameKey"];
-            if ([className isKindOfClass:[NSString class]] && className.length > 0) {
-                id model = [self modelWithValue:item class:NSClassFromString(className)];
-                if (model) {
-                    [marray addObject:model];
-                } else {
-                    [marray addObject:item];
-                }
-            } else {
-                [marray addObject:item];
-            }
-        }
-        
-        value = marray;
     }
     
     return value;
@@ -135,7 +152,7 @@
 
 - (void)copyValuesWithModel:(UModel *)model
 {
-    NSArray *properties = [model properties];
+    NSArray *properties = [[model class] properties];
     for (NSDictionary *item in properties) {
         NSString *name = item[@"name"];
         NSString *type = item[@"type"];
@@ -197,7 +214,7 @@
     @autoreleasepool
     {
         // Get current properties
-        NSArray *properties = [self properties];
+        NSArray *properties = [[self class] properties];
         NSMutableDictionary *mdict = [NSMutableDictionary dictionary];
         
         // Set value
@@ -253,9 +270,13 @@
     if ([value isKindOfClass:[UModel class]]) {
         UModel *model = (UModel *)value;
         if (model) {
-            NSMutableDictionary *mdict = [NSMutableDictionary dictionaryWithDictionary:[model dictionary]];
-            [mdict setValue:NSStringFromClass([model class]) forKey:@"UModelClassNameKey"];
-            value = mdict;
+            NSDictionary *dict = [model dictionaryWithModelKey:contains];
+            if (contains) {
+                NSMutableDictionary *mdict = [NSMutableDictionary dictionaryWithDictionary:dict];
+                [mdict setValue:NSStringFromClass([model class]) forKey:@"UModelClassNameKey"];
+                dict = mdict;
+            }
+            value = dict;
         }
     } else if ([value isKindOfClass:[NSArray class]]) {
         NSMutableArray *marray = [NSMutableArray array];
@@ -269,7 +290,7 @@
     return value;
 }
 
-- (NSArray *)properties
++ (NSArray *)properties
 {
     @autoreleasepool
     {
