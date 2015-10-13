@@ -64,6 +64,18 @@
                callback:(UHTTPCallback)callback
                  cached:(BOOL)cached;
 
+// Block style when not json format
++ (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
+                 method:(NSString *)method
+                  param:(NSDictionary *)param
+                   json:(BOOL)json
+                timeout:(NSInteger)timeout
+                  retry:(NSUInteger)times
+           timeInterval:(NSInteger)timeInterval
+               callback:(UHTTPCallback)callback
+                 cached:(BOOL)cached;
+
 // Delegate style with no cache
 + (void)sendAsynWithURL:(NSString *)url
                  header:(NSDictionary *)header
@@ -119,6 +131,7 @@
                     tag:(int)tag
                  cached:(BOOL)cached;
 
+// Delegate style when not json format
 + (void)sendAsynWithURL:(NSString *)url
                  header:(NSDictionary *)header
                  method:(NSString *)method

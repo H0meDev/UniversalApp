@@ -171,6 +171,30 @@ static UHTTPRequest *sharedManager = nil;
                  header:(NSDictionary *)header
                  method:(NSString *)method
                   param:(NSDictionary *)param
+                   json:(BOOL)json
+                timeout:(NSInteger)timeout
+                  retry:(NSUInteger)times
+           timeInterval:(NSInteger)timeInterval
+               callback:(UHTTPCallback)callback
+                 cached:(BOOL)cached
+{
+    [[self sharedManager]requestWithURL:url header:header
+                                 method:method
+                                  param:param
+                                   json:json
+                                timeout:timeout
+                                  retry:times
+                           timeInterval:timeInterval
+                               callback:callback
+                               delegate:nil
+                                    tag:0
+                                 cached:cached];
+}
+
++ (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
+                 method:(NSString *)method
+                  param:(NSDictionary *)param
                delegate:(id<UHTTPRequestDelegate>)delegate
                     tag:(int)tag
 {
