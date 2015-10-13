@@ -96,7 +96,7 @@
                                 class = NSClassFromString(className);
                                 
                                 value = [class modelWith:item];
-                                value = (!value)?item:value;
+                                value = value?value:item;
                                 [marray addObject:value];
                             }
                         }
