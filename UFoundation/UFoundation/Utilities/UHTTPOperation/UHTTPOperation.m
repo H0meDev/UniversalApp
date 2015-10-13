@@ -526,14 +526,17 @@ singletonImplementationWith(UHTTPDataCache, Cache);
 
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
 {
-    return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
+    NSString *method = protectionSpace.authenticationMethod;
+    return [method isEqualToString:NSURLAuthenticationMethodServerTrust];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
-    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
-    {
-        NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+    NSString *method = challenge.protectionSpace.authenticationMethod;
+    if ([method isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+        SecTrustRef trust = challenge.protectionSpace.serverTrust;
+        NSURLCredential *credential = [NSURLCredential credentialForTrust:trust];
+        
         [[challenge sender]useCredential:credential forAuthenticationChallenge:challenge];
         [[challenge sender]continueWithoutCredentialForAuthenticationChallenge:challenge];
     }

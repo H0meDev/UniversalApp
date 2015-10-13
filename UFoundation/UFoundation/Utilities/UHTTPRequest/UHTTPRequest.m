@@ -390,36 +390,49 @@ static UHTTPRequest *sharedManager = nil;
                    tag:(int)tag
                 cached:(BOOL)cached
 {
-    NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
-    mutableRequest.HTTPMethod = [method uppercaseString];
+    method = [method uppercaseString];
+    
+    // Body
+    NSString *body = nil;
+    if ([param isKindOfClass:[NSDictionary class]]) {
+        if ([method isEqualToString:@"GET"]) {
+            url = [url stringByAppendingString:@"?"];
+            for (NSString *key in param) {
+                url = [url stringByAppendingFormat:@"%@=%@&", key, param[key]];
+            }
+            
+            // GET style url
+            url = [url substringToIndex:url.length - 1];
+        } else {
+            @try {
+                NSData *json = [NSJSONSerialization dataWithJSONObject:param options:NSJSONWritingPrettyPrinted error:nil];
+                body = [[NSString alloc]initWithData:json encoding:NSUTF8StringEncoding];
+            }
+            @catch (NSException *exception) {
+                NSLog(@"UHTTPRequest Exception:\n%@",exception);
+                body = nil;
+            }
+        }
+    }
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
+    request.HTTPMethod = method;
+    request.HTTPBody = (body)?[body dataUsingEncoding:NSUTF8StringEncoding]:nil;
     
     // Set http header
     for (NSString *field in header) {
         NSString *value = header[field];
-        [mutableRequest setValue:value forHTTPHeaderField:field];
-    }
-    
-    NSString *body = nil;
-    if ([param isKindOfClass:[NSDictionary class]]) {
-        @try {
-            NSData *json = [NSJSONSerialization dataWithJSONObject:param options:NSJSONWritingPrettyPrinted error:nil];
-            body = [[NSString alloc]initWithData:json encoding:NSUTF8StringEncoding];
-            mutableRequest.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
-        }
-        @catch (NSException *exception) {
-            NSLog(@"UHTTPRequest Exception:\n%@",exception);
-            body = nil;
-        }
+        [request setValue:value forHTTPHeaderField:field];
     }
     
     UHTTPOperation *operation = nil;
     if (callback) {
-        operation = [[UHTTPOperation alloc]initWithRequest:mutableRequest
+        operation = [[UHTTPOperation alloc]initWithRequest:request
                                                   callback:callback];
     }
     
     if (delegate) {
-        operation = [[UHTTPOperation alloc]initWithRequest:mutableRequest
+        operation = [[UHTTPOperation alloc]initWithRequest:request
                                                   delegate:delegate
                                                        tag:tag];
     }

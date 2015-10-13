@@ -72,8 +72,8 @@
     
     ULabel *stateLabel = [[ULabel alloc]init];
     stateLabel.frame = rectMake(0, 0, 168, 32);
-    stateLabel.font = systemFont(15);
-    stateLabel.textColor = sysLightGrayColor();
+    stateLabel.font = systemFont(16);
+    stateLabel.textColor = sysDarkGrayColor();
     stateLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:stateLabel];
     _stateLabel = stateLabel;
@@ -89,8 +89,8 @@
     
     UIndicatorView *indicatorView = [[UIndicatorView alloc]init];
     indicatorView.hidden = YES;
-    indicatorView.frame = rectMake(0, 0, 24, 24);
-    indicatorView.indicatorWidth = 1.5;
+    indicatorView.frame = rectMake(0, 0, 26, 26);
+    indicatorView.indicatorWidth = 2.;
     indicatorView.indicatorColor = sysDarkGrayColor();
     [self addSubview:indicatorView];
     _indicatorView = indicatorView;
@@ -278,14 +278,12 @@
                      animations:^{
                          self.scrollView.contentInset = insets;
                          self.scrollView.contentOffset = offset;
-                         
-                         CGFloat width = self.stateLabel.sizeWidth + self.indicatorView.sizeWidth;
-                         CGFloat originX = (self.sizeWidth - width) / 2. - 4.;
-                         self.indicatorView.originX = originX;
-                         self.stateLabel.originX = self.indicatorView.paddingRight + 4.0;
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
+                             CGFloat width = self.indicatorView.sizeWidth;
+                             self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
+                             self.indicatorView.originX = self.stateLabel.paddingLeft - width - 6;
                              self.indicatorView.hidden = NO;
                              [self.indicatorView startAnimation];
                              
@@ -482,14 +480,12 @@
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          self.scrollView.contentInset = insets;
-                         
-                         CGFloat width = self.stateLabel.sizeWidth + self.indicatorView.sizeWidth;
-                         CGFloat originX = (self.sizeWidth - width) / 2. - 4.;
-                         self.indicatorView.originX = originX;
-                         self.stateLabel.originX = self.indicatorView.paddingRight + 4.0;
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
+                             CGFloat width = self.indicatorView.sizeWidth;
+                             self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
+                             self.indicatorView.originX = self.stateLabel.paddingLeft - width - 6;
                              self.indicatorView.hidden = NO;
                              [self.indicatorView startAnimation];
                              

@@ -7,12 +7,13 @@
 //
 
 #import "UIndicatorView.h"
-#import "UTimerBooster.h"
 
 @interface UIndicatorView ()
 {
     UIndicatorStyle _style;
-    int _stageValue;
+    NSInteger _stageValue;
+    NSInteger _countOfLeaf;
+    NSTimer *_refreshTimer;
 }
 
 @end
@@ -27,6 +28,7 @@
         super.backgroundColor = sysClearColor();
         
         _stageValue = 0;
+        _countOfLeaf = 14;
         _indicatorWidth = 2.0;
         _style = UIndicatorStylePetal;
         _indicatorColor = sysBlackColor();
@@ -76,13 +78,14 @@
     CGContextSetLineWidth(context, _indicatorWidth);
     CGContextSetLineCap(context, kCGLineCapRound);
     
-    for (int i = 0 ; i < 12; i ++) {
+    for (int i = 0 ; i < _countOfLeaf; i ++) {
         CGPoint point = [self pointWith:i + _stageValue start:YES];
         CGContextMoveToPoint(context, point.x, point.y);
         point = [self pointWith:i + _stageValue start:NO];
         CGContextAddLineToPoint(context, point.x, point.y);
         
-        UIColor *lineColor = [_indicatorColor colorWithAlphaComponent:i / 12.];
+        CGFloat alpha = i / (_countOfLeaf + 2.);
+        UIColor *lineColor = [_indicatorColor colorWithAlphaComponent:alpha];
         CGContextSetStrokeColorWithColor(context, lineColor.CGColor);
         CGContextStrokePath(context);
     }
@@ -93,7 +96,7 @@
     CGFloat radius = 0;
     CGFloat xvalue = 0;
     CGFloat yvalue = 0;
-    CGFloat angle = progress * M_PI / 6.;
+    CGFloat angle = progress * M_PI * 2 / _countOfLeaf;
     
     if (start) {
         radius = self.sizeWidth / 2. - _indicatorWidth;
@@ -109,25 +112,34 @@
 
 - (void)startAnimation
 {
-    _stageValue = 0;
+    if (_refreshTimer) {
+        return;
+    }
     
-    [UTimerBooster removeTarget:self];
-    [UTimerBooster addTarget:self sel:@selector(rotationAnimation) time:0.1 repeat:-1];
+    _refreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
+                                                     target:self
+                                                   selector:@selector(rotationAnimation)
+                                                   userInfo:nil
+                                                    repeats:YES];
+    [[NSRunLoop mainRunLoop]addTimer:_refreshTimer forMode:NSRunLoopCommonModes];
 }
 
 - (void)stopAnimation
 {
-    _stageValue = 0;
-    
-    [UTimerBooster removeTarget:self];
+    if (_refreshTimer) {
+        [_refreshTimer invalidate];
+    }
+    _refreshTimer = nil;
 }
 
 - (void)rotationAnimation
 {
-    [self performOnMainThread:@selector(setNeedsDisplay)];
-    
-    _stageValue ++;
-    _stageValue = _stageValue % 12;
+    dispatch_async(main_queue(), ^{
+        _stageValue ++;
+        _stageValue = _stageValue % _countOfLeaf;
+        
+        [self setNeedsDisplay];
+    });
 }
 
 @end
