@@ -107,11 +107,6 @@
     self.backgroundView.backgroundColor = backgroundColor;
 }
 
-- (void)didMoveToWindow
-{
-    //
-}
-
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
