@@ -119,6 +119,18 @@
                     tag:(int)tag
                  cached:(BOOL)cached;
 
++ (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
+                 method:(NSString *)method
+                  param:(NSDictionary *)param
+                   json:(BOOL)json // JSON format when not GET, default is YES
+               delegate:(id<UHTTPRequestDelegate>)delegate
+                timeout:(NSInteger)timeout
+                  retry:(NSUInteger)times
+           timeInterval:(NSInteger)timeInterval
+                    tag:(int)tag
+                 cached:(BOOL)cached;
+
 /*
  * Synchronous request
  */
@@ -127,6 +139,7 @@
                      header:(NSDictionary *)header
                      method:(NSString *)method
                       param:(NSDictionary *)param
+                       json:(BOOL)json
                    response:(NSURLResponse **)response
                       error:(NSError **)error;
 

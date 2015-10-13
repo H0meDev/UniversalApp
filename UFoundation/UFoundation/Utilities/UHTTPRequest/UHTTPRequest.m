@@ -289,6 +289,31 @@ static UHTTPRequest *sharedManager = nil;
                                  cached:cached];
 }
 
++ (void)sendAsynWithURL:(NSString *)url
+                 header:(NSDictionary *)header
+                 method:(NSString *)method
+                  param:(NSDictionary *)param
+                   json:(BOOL)json
+               delegate:(id<UHTTPRequestDelegate>)delegate
+                timeout:(NSInteger)timeout
+                  retry:(NSUInteger)times
+           timeInterval:(NSInteger)timeInterval
+                    tag:(int)tag
+                 cached:(BOOL)cached
+{
+    [[self sharedManager]requestWithURL:url header:header
+                                 method:method
+                                  param:param
+                                   json:json
+                                timeout:timeout
+                                  retry:times
+                           timeInterval:timeInterval
+                               callback:NULL
+                               delegate:delegate
+                                    tag:tag
+                                 cached:cached];
+}
+
 - (void)requestWithURL:(NSString *)url
                 header:(NSDictionary *)header
                 method:(NSString *)method
@@ -345,6 +370,7 @@ static UHTTPRequest *sharedManager = nil;
                   header:header
                   method:method
                    param:param
+                    json:YES
                  timeout:timeout
                    retry:times
             timeInterval:timeInterval
@@ -369,6 +395,7 @@ static UHTTPRequest *sharedManager = nil;
                   header:header
                   method:method
                    param:param
+                    json:YES
                  timeout:timeout
                    retry:times
             timeInterval:timeInterval
@@ -382,6 +409,7 @@ static UHTTPRequest *sharedManager = nil;
                 header:(NSDictionary *)header
                 method:(NSString *)method
                  param:(NSDictionary *)param
+                  json:(BOOL)json
                timeout:(NSInteger)timeout
                  retry:(NSUInteger)times
           timeInterval:(NSInteger)timeInterval
@@ -405,8 +433,18 @@ static UHTTPRequest *sharedManager = nil;
             url = [url substringToIndex:url.length - 1];
         } else {
             @try {
-                NSData *json = [NSJSONSerialization dataWithJSONObject:param options:NSJSONWritingPrettyPrinted error:nil];
-                body = [[NSString alloc]initWithData:json encoding:NSUTF8StringEncoding];
+                if (json) {
+                    NSData *json = [NSJSONSerialization dataWithJSONObject:param
+                                                                   options:NSJSONWritingPrettyPrinted
+                                                                     error:nil];
+                    body = [[NSString alloc]initWithData:json encoding:NSUTF8StringEncoding];
+                } else {
+                    NSString *bodyValue = @"";
+                    for (NSString *key in param) {
+                        bodyValue = [bodyValue stringByAppendingFormat:@"%@=%@&", key, param[key]];
+                    }
+                    body = [bodyValue substringToIndex:url.length - 1];
+                }
             }
             @catch (NSException *exception) {
                 NSLog(@"UHTTPRequest Exception:\n%@",exception);
@@ -417,7 +455,7 @@ static UHTTPRequest *sharedManager = nil;
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
     request.HTTPMethod = method;
-    request.HTTPBody = (body)?[body dataUsingEncoding:NSUTF8StringEncoding]:nil;
+    request.HTTPBody = (checkValidNSString(body))?[body dataUsingEncoding:NSUTF8StringEncoding]:nil;
     
     // Set http header
     for (NSString *field in header) {
@@ -450,30 +488,54 @@ static UHTTPRequest *sharedManager = nil;
                      header:(NSDictionary *)header
                      method:(NSString *)method
                       param:(NSDictionary *)param
+                       json:(BOOL)json
                    response:(NSURLResponse **)response
                       error:(NSError **)error
 {
-    NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
-    mutableRequest.HTTPMethod = [method uppercaseString];
-    
-    // Set content-type to support more data type
-    NSString *contentType = @"application/json";
-    [mutableRequest setValue:contentType forHTTPHeaderField:@"Content-type"];
-    
+    // Body
     NSString *body = nil;
     if ([param isKindOfClass:[NSDictionary class]]) {
-        @try {
-            NSData *json = [NSJSONSerialization dataWithJSONObject:param options:NSJSONWritingPrettyPrinted error:nil];
-            body = [[NSString alloc]initWithData:json encoding:NSUTF8StringEncoding];
-            mutableRequest.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
-        }
-        @catch (NSException *exception) {
-            NSLog(@"UHTTPRequest Exception:\n%@",exception);
-            body = nil;
+        if ([method isEqualToString:@"GET"]) {
+            url = [url stringByAppendingString:@"?"];
+            for (NSString *key in param) {
+                url = [url stringByAppendingFormat:@"%@=%@&", key, param[key]];
+            }
+            
+            // GET style url
+            url = [url substringToIndex:url.length - 1];
+        } else {
+            @try {
+                if (json) {
+                    NSData *json = [NSJSONSerialization dataWithJSONObject:param
+                                                                   options:NSJSONWritingPrettyPrinted
+                                                                     error:nil];
+                    body = [[NSString alloc]initWithData:json encoding:NSUTF8StringEncoding];
+                } else {
+                    NSString *bodyValue = @"";
+                    for (NSString *key in param) {
+                        bodyValue = [bodyValue stringByAppendingFormat:@"%@=%@&", key, param[key]];
+                    }
+                    body = [bodyValue substringToIndex:url.length - 1];
+                }
+            }
+            @catch (NSException *exception) {
+                NSLog(@"UHTTPRequest Exception:\n%@",exception);
+                body = nil;
+            }
         }
     }
     
-    return [NSURLConnection sendSynchronousRequest:mutableRequest returningResponse:response error:error];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
+    request.HTTPMethod = method;
+    request.HTTPBody = (checkValidNSString(body))?[body dataUsingEncoding:NSUTF8StringEncoding]:nil;
+    
+    // Set http header
+    for (NSString *field in header) {
+        NSString *value = header[field];
+        [request setValue:value forHTTPHeaderField:field];
+    }
+    
+    return [NSURLConnection sendSynchronousRequest:request returningResponse:response error:error];
 }
 
 @end
