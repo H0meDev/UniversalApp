@@ -10,6 +10,7 @@
 #import <objc/runtime.h>
 #import "NSObject+UAExtension.h"
 #import "NSString+UAExtension.h"
+#import "NSDictionary+UAExtension.h"
 
 @interface UModel ()
 
@@ -19,6 +20,69 @@
 @end
 
 @implementation UModel
+
++ (NSArray *)properties
+{
+    @autoreleasepool
+    {
+        NSMutableArray *mArray = [NSMutableArray array];
+        Class current = [self class];
+        
+        while (1) {
+            @try
+            {
+                NSString *className = NSStringFromClass(current);
+                if ([className isEqualToString:@"NSObject"]) { // Get all properties
+                    break;
+                }
+                
+                Class class = objc_getClass([className UTF8String]);
+                unsigned int propert_count = 0;
+                unsigned int ivar_count = 0;
+                objc_property_t *properties = class_copyPropertyList(class, &propert_count);
+                Ivar *ivars = class_copyIvarList(class, &ivar_count);
+                
+                // Keep safe
+                int count = (propert_count >= ivar_count)?ivar_count:propert_count;
+                for (int i = 0; i < count; i++) {
+                    const char *type_name = ivar_getTypeEncoding(ivars[i]);
+                    if (!type_name || strlen(type_name) < 1) {
+                        i ++;
+                        continue;
+                    }
+                    
+                    // Get property name
+                    objc_property_t property = properties[i];
+                    const char *property_name = property_getName(property);
+                    
+                    // Record property type & name
+                    NSString *name = [[NSString alloc]initWithCString:property_name encoding:NSUTF8StringEncoding];
+                    NSString *type = [[NSString alloc]initWithCString:type_name encoding:NSUTF8StringEncoding];
+                    [mArray addObject:@{@"name":name, @"type":type}];
+                }
+                
+                // Clear ivar
+                free(ivars);
+                ivars = NULL;
+                
+                // Clear properties
+                free(properties);
+                properties = NULL;
+            }
+            @catch (NSException *exception)
+            {
+                NSLog(@"%@",exception);
+            }
+            @finally
+            {
+                // Next class level
+                current = [current superclass];
+            }
+        }
+        
+        return mArray;
+    }
+}
 
 + (id)model
 {
@@ -33,7 +97,12 @@
     }
 }
 
-+ (id)modelWith:(NSDictionary *)dict
++ (id)modelWithJSONString:(NSString *)string
+{
+    return [[self class]modelWithDictionary:[string JSONValue]];
+}
+
++ (id)modelWithDictionary:(NSDictionary *)dict
 {
     @autoreleasepool
     {
@@ -90,12 +159,22 @@
                             }
                             
                             if (!className) {
-                                NSString *suffix = [NSString stringWithFormat:@"%@Item", rname];
+                                NSString *fieldName = @"";
+                                NSArray *compents = [rname componentsSeparatedByString:@"_"];
+                                for (int i = 0; i < compents.count; i ++) {
+                                    NSString *compent = compents[i];
+                                    NSString *firstAlpha = [[compent substringToIndex:1]uppercaseString];
+                                    NSString *otherCompent = [compent substringFromIndex:1];
+                                    compent = [firstAlpha stringByAppendingString:otherCompent];
+                                    fieldName = [fieldName stringByAppendingString:compent];
+                                }
+                                
+                                NSString *suffix = [NSString stringWithFormat:@"%@Item", fieldName];
                                 className = NSStringFromClass([self class]);
                                 className = [className stringByAppendingString:suffix];
                                 class = NSClassFromString(className);
                                 
-                                value = [class modelWith:item];
+                                value = [class modelWithDictionary:item];
                                 value = value?value:item;
                                 [marray addObject:value];
                             }
@@ -124,19 +203,24 @@
     }
     
     if ([class isSubclassOfClass:[NSDictionary class]]) {
-        value = [class modelWith:value];
+        value = [class modelWithDictionary:value];
     } else if ([class isSubclassOfClass:[UModel class]]) {
         if ([value isKindOfClass:[NSDictionary class]]) {
-            value = [class modelWith:value];
+            value = [class modelWithDictionary:value];
         } else if ([value isKindOfClass:[NSString class]]) {
             NSDictionary *dict = [value JSONValue];
             if (dict) {
-                value = [class modelWith:dict];
+                value = [class modelWithDictionary:dict];
             }
         }
     }
     
     return value;
+}
+
++ (id)modelWithArray:(NSArray *)array
+{
+    return nil;
 }
 
 - (id)initWithModel:(UModel *)model
@@ -261,7 +345,7 @@
             }
         }
         
-        return mdict;
+        return [mdict copy];
     }
 }
 
@@ -290,67 +374,16 @@
     return value;
 }
 
-+ (NSArray *)properties
+- (BOOL)isEuqualToModel:(UModel *)model
 {
-    @autoreleasepool
-    {
-        NSMutableArray *mArray = [NSMutableArray array];
-        Class current = [self class];
-        
-        while (1) {
-            @try
-            {
-                NSString *className = NSStringFromClass(current);
-                if ([className isEqualToString:@"NSObject"]) { // Get all properties
-                    break;
-                }
-                
-                Class class = objc_getClass([className UTF8String]);
-                unsigned int propert_count = 0;
-                unsigned int ivar_count = 0;
-                objc_property_t *properties = class_copyPropertyList(class, &propert_count);
-                Ivar *ivars = class_copyIvarList(class, &ivar_count);
-                
-                // Keep safe
-                int count = (propert_count >= ivar_count)?ivar_count:propert_count;
-                for (int i = 0; i < count; i++) {
-                    const char *type_name = ivar_getTypeEncoding(ivars[i]);
-                    if (!type_name || strlen(type_name) < 1) {
-                        i ++;
-                        continue;
-                    }
-                    
-                    // Get property name
-                    objc_property_t property = properties[i];
-                    const char *property_name = property_getName(property);
-                    
-                    // Record property type & name
-                    NSString *name = [[NSString alloc]initWithCString:property_name encoding:NSUTF8StringEncoding];
-                    NSString *type = [[NSString alloc]initWithCString:type_name encoding:NSUTF8StringEncoding];
-                    [mArray addObject:@{@"name":name, @"type":type}];
-                }
-                
-                // Clear ivar
-                free(ivars);
-                ivars = NULL;
-                
-                // Clear properties
-                free(properties);
-                properties = NULL;
-            }
-            @catch (NSException *exception)
-            {
-                NSLog(@"%@",exception);
-            }
-            @finally
-            {
-                // Next class level
-                current = [current superclass];
-            }
-        }
-        
-        return mArray;
+    NSString *selfJSON = [[self dictionaryWithModelKey]JSONString];
+    NSString *theJSON = [[self dictionaryWithModelKey]JSONString];
+    
+    if (!selfJSON || !theJSON) {
+        return NO;
     }
+    
+    return [selfJSON isEqualToString:theJSON];
 }
 
 - (void)dealloc

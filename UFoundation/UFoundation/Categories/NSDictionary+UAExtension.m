@@ -14,23 +14,30 @@
 - (NSString *)JSONString
 {
     NSError *error = nil;
-    NSData *data = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingPrettyPrinted error:&error];
-    if (error) {
-        return nil;
+    NSDictionary *JSONObject = [NSDictionary dictionaryWithDictionary:self];
+    if ([NSJSONSerialization isValidJSONObject:JSONObject]) {
+        NSData *data = [NSJSONSerialization dataWithJSONObject:JSONObject
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+        if (error) {
+            return nil;
+        }
+        
+        NSString *json = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        json = [json stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        
+        return json;
     }
     
-    NSString *json = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-    json = [json stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-    
-    return json;
+    return nil;
 }
 
-- (NSDictionary *)setValue:(id)value forKey:(NSString *)key
+- (NSDictionary *)setValue:(id)value withKey:(NSString *)key
 {
     NSMutableDictionary *mdict = [NSMutableDictionary dictionaryWithDictionary:self];
     [mdict setValue:value forKey:key];
     
-    return mdict;
+    return [mdict copy];
 }
 
 @end

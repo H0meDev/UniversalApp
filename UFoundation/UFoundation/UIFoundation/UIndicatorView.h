@@ -10,21 +10,20 @@
 
 typedef NS_ENUM(NSInteger, UIndicatorStyle)
 {
-    UIndicatorStylePetal  = 0, // Default
-    UIndicatorStyleRing,
+    UIndicatorStyleCircle, // Default
+    UIndicatorStyleProgressCircle,
 };
 
 @interface UIndicatorView : UView
 
-@property (nonatomic, copy) UIColor *indicatorColor;  // Default is black color
-@property (nonatomic, assign) CGFloat indicatorWidth; // Default is 2.0f
+@property (nonatomic, assign) UIndicatorStyle style;
+@property (nonatomic, copy) UIColor *indicatorColor;
+@property (nonatomic, assign) CGFloat indicatorWidth; // Default is 1.0f
 
 // Titles
 @property (nonatomic, copy) NSString *titleOfReady;
 @property (nonatomic, copy) NSString *titleOfRefreshing;
 @property (nonatomic, copy) NSString *titleOfFinish;
-
-- (id)initWithStyle:(UIndicatorStyle)style;
 
 - (void)startAnimation;
 - (void)stopAnimation;

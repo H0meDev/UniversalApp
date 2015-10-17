@@ -8,6 +8,7 @@
 
 #import "UHTTPRequest.h"
 #import "NSDictionary+UAExtension.h"
+#import "NSString+UAExtension.h"
 #import "UOperationQueue.h"
 
 @interface UHTTPRequest ()
@@ -448,13 +449,15 @@ static UHTTPRequest *sharedManager = nil;
     NSString *body = nil;
     if ([param isKindOfClass:[NSDictionary class]]) {
         if ([method isEqualToString:@"GET"]) {
-            url = [url stringByAppendingString:@"?"];
+            NSString *paramValue = @"?";
             for (NSString *key in param) {
-                url = [url stringByAppendingFormat:@"%@=%@&", key, param[key]];
+                NSString *value = [[NSString stringWithFormat:@"%@", param[key]]URLEncodedString];
+                paramValue = [paramValue stringByAppendingFormat:@"%@=%@&", key, value];
             }
             
             // GET style url
-            url = [url substringToIndex:url.length - 1];
+            paramValue = [paramValue substringToIndex:paramValue.length - 1];
+            url = [url stringByAppendingString:paramValue];
         } else {
             @try {
                 if (json) {

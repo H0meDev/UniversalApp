@@ -32,7 +32,7 @@
         self.clipsToBounds = YES;
         self.delegate = self;
         
-        self.height = 50.;
+        self.height = 60.;
         self.state = URefreshStateIdle;
         
         [self indicatorView];
@@ -89,8 +89,8 @@
     
     UIndicatorView *indicatorView = [[UIndicatorView alloc]init];
     indicatorView.hidden = YES;
-    indicatorView.frame = rectMake(0, 0, 26, 26);
-    indicatorView.indicatorWidth = 2.;
+    indicatorView.frame = rectMake(0, 0, 26., 26.);
+    indicatorView.style = UIndicatorStyleCircle;
     indicatorView.indicatorColor = sysDarkGrayColor();
     [self addSubview:indicatorView];
     _indicatorView = indicatorView;

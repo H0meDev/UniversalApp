@@ -23,8 +23,8 @@
     self.countOfControllerToPop = 1;
     self.navigationBarView.title = @"Curren";
     [self.navigationBarView.leftButton setTitle:@"Last"];
-    self.statusBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
-    self.navigationBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
+//    self.statusBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
+//    self.navigationBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
     
     UButton *button = [UButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);

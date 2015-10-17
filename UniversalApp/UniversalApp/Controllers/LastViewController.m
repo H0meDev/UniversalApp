@@ -26,8 +26,8 @@
     self.countOfControllerToPop = 1;
     self.navigationBarView.title = @"Last";
     [self.navigationBarView.leftButton setTitle:@"Next"];
-    self.statusBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
-    self.navigationBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
+//    self.statusBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
+//    self.navigationBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
     
 //    self.statusBarView.backgroundColor = sysClearColor();
 //    self.navigationBarView.backgroundColor = sysClearColor();
@@ -130,11 +130,11 @@
         alpha = (alpha < 0)?0:alpha;
         alpha = (alpha > 1)?1:alpha;
         
-        dispatch_async(main_queue(), ^{
-            UIColor *color = rgbaColor(0, 255, 0, alpha);
-            self.statusBarView.backgroundColor = color;
-            self.navigationBarView.backgroundColor = color;
-        });
+//        dispatch_async(main_queue(), ^{
+//            UIColor *color = rgbaColor(0, 255, 0, alpha);
+//            self.statusBarView.backgroundColor = color;
+//            self.navigationBarView.backgroundColor = color;
+//        });
     }
 }
 
@@ -142,6 +142,20 @@
 {
     [_tableView removeHeaderView];
     [_tableView removeFooterView];
+}
+
+- (void)controllerWillMove
+{
+    [_tableView finishHeaderRefresh];
+    [_tableView finishFooterRefresh];
+}
+
+- (void)backAction
+{
+    [super backAction];
+    
+    [_tableView finishHeaderRefresh];
+    [_tableView finishFooterRefresh];
 }
 
 /*

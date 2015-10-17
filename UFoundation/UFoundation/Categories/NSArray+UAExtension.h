@@ -11,11 +11,11 @@
 @interface NSArray (UAExtension)
 
 // For convenient
-- (NSArray *)addObject:(id)object;
-- (NSArray *)insertObject:(id)object atIndex:(NSUInteger)index;
+- (NSArray *)addWithObject:(id)object;
+- (NSArray *)insertWithObject:(id)object atIndex:(NSUInteger)index;
 - (NSArray *)removeLastObject;
-- (NSArray *)removeObjectAtIndex:(NSUInteger)index;
-- (NSArray *)replaceObjectAtIndex:(NSUInteger)index withObject:(id)object;
-- (NSArray *)appendArray:(NSArray *)array; // Append to last
+- (NSArray *)removeObjectWithIndex:(NSUInteger)index;
+- (NSArray *)replaceObjectWithIndex:(NSUInteger)index withObject:(id)object;
+- (NSArray *)appendWithArray:(NSArray *)array; // Append to last
 
 @end

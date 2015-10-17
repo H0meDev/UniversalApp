@@ -11,20 +11,20 @@
 
 @implementation NSArray (UAExtension)
 
-- (NSArray *)addObject:(id)object
+- (NSArray *)addWithObject:(id)object
 {
     NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
     [marray addObject:object];
     
-    return marray;
+    return [marray copy];
 }
 
-- (NSArray *)insertObject:(id)object atIndex:(NSUInteger)index
+- (NSArray *)insertWithObject:(id)object atIndex:(NSUInteger)index
 {
     NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
     [marray insertObject:object atIndex:index];
     
-    return marray;
+    return [marray copy];
 }
 
 - (NSArray *)removeLastObject
@@ -32,31 +32,31 @@
     NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
     [marray removeLastObject];
     
-    return marray;
+    return [marray copy];
 }
 
-- (NSArray *)removeObjectAtIndex:(NSUInteger)index
+- (NSArray *)removeObjectWithIndex:(NSUInteger)index
 {
     NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
     [marray removeObjectAtIndex:index];
     
-    return marray;
+    return [marray copy];
 }
 
-- (NSArray *)replaceObjectAtIndex:(NSUInteger)index withObject:(id)object
+- (NSArray *)replaceObjectWithIndex:(NSUInteger)index withObject:(id)object
 {
     NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
     [marray replaceObjectAtIndex:index withObject:object];
     
-    return marray;
+    return [marray copy];
 }
 
-- (NSArray *)appendArray:(NSArray *)array
+- (NSArray *)appendWithArray:(NSArray *)array
 {
     NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
     [marray arrayByAddingObjectsFromArray:array];
     
-    return marray;
+    return [marray copy];
 }
 
 @end

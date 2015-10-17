@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger, URefreshState)
 
 @property (nonatomic, weak) id<URefreshViewDelegate> delegate;
 @property (nonatomic, retain) UIScrollView *scrollView;
-@property (nonatomic, assign) CGFloat height; //  Default is 50.
+@property (nonatomic, assign) CGFloat height; //  Default is 60.
 @property (nonatomic, assign) BOOL enable;    //  Default is YES
 
 - (void)addTarget:(id)target action:(SEL)action;

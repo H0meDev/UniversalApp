@@ -10,4 +10,13 @@
 
 @interface NetworkModel : BaseModel
 
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSArray *content_fields;
+
+@end
+
+@interface NetworkModelContentFieldsItem : BaseModel
+
+@property (nonatomic, strong) NSString *time;
+
 @end

@@ -11,10 +11,10 @@
 @interface UIndicatorView ()
 {
     UIndicatorStyle _style;
-    NSInteger _stageValue;
-    NSInteger _countOfLeaf;
-    NSTimer *_refreshTimer;
+    BOOL _isAnimating;
 }
+
+@property (nonatomic, retain) CALayer *animationLayer;
 
 @end
 
@@ -27,21 +27,10 @@
         // Initailize
         super.backgroundColor = sysClearColor();
         
-        _stageValue = 0;
-        _countOfLeaf = 14;
-        _indicatorWidth = 2.0;
-        _style = UIndicatorStylePetal;
-        _indicatorColor = sysBlackColor();
-    }
-    
-    return self;
-}
-
-- (id)initWithStyle:(UIndicatorStyle)style
-{
-    self = [super initWithFrame:CGRectZero];
-    if (self) {
-        _style = style;
+        // Default
+        _indicatorWidth = 1.0;
+        _style = UIndicatorStyleCircle;
+        _indicatorColor = sysLightGrayColor();
     }
     
     return self;
@@ -53,6 +42,8 @@
     width = (width > frame.size.height)?frame.size.height:width;
     
     [super setFrame:rectMake(frame.origin.x, frame.origin.y, width, width)];
+    
+    self.animationLayer.frame = rectMake(0, 0, width, width);
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
@@ -60,86 +51,92 @@
     //
 }
 
-- (void)setTransform:(CGAffineTransform)transform
+- (void)willMoveToWindow:(UIWindow *)newWindow
 {
-    [super setTransform:transform];
-    
-    // Keep drawing
-    [self setNeedsDisplay];
-}
-
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(context, _indicatorWidth);
-    CGContextSetLineCap(context, kCGLineCapRound);
-    
-    for (int i = 0 ; i < _countOfLeaf; i ++) {
-        CGPoint point = [self pointWith:i + _stageValue start:YES];
-        CGContextMoveToPoint(context, point.x, point.y);
-        point = [self pointWith:i + _stageValue start:NO];
-        CGContextAddLineToPoint(context, point.x, point.y);
+    if (_isAnimating) {
+        [self.animationLayer removeAllAnimations];
         
-        CGFloat alpha = i / (_countOfLeaf + 2.);
-        UIColor *lineColor = [_indicatorColor colorWithAlphaComponent:alpha];
-        CGContextSetStrokeColorWithColor(context, lineColor.CGColor);
-        CGContextStrokePath(context);
+        // Restart animation
+        [self startAnimation];
     }
 }
 
-- (CGPoint)pointWith:(NSInteger)progress start:(BOOL)start
+#pragma mark - Properties
+
+- (CALayer *)animationLayer
 {
-    CGFloat radius = 0;
-    CGFloat xvalue = 0;
-    CGFloat yvalue = 0;
-    CGFloat angle = progress * M_PI * 2 / _countOfLeaf;
-    
-    if (start) {
-        radius = self.sizeWidth / 2. - _indicatorWidth;
-    } else {
-        radius = self.sizeWidth / 4.;
+    if (_animationLayer) {
+        return _animationLayer;
     }
     
-    xvalue = self.sizeWidth / 2. + radius * cos(angle);
-    yvalue = self.sizeWidth / 2. + radius * sin(angle);
+    CALayer *animationLayer = [[CALayer alloc]init];
+    animationLayer.backgroundColor = sysClearColor().CGColor;
+    [self.layer addSublayer:animationLayer];
+    _animationLayer = animationLayer;
     
-    return pointMake(xvalue, yvalue);
+    return _animationLayer;
+}
+
+#pragma mark - Methods
+
+- (void)fillIndicatorWith:(UIndicatorStyle)style
+{
+    // Remove last
+    [self.animationLayer.sublayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
+    
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    shapeLayer.fillColor = nil;
+    shapeLayer.strokeColor = _indicatorColor.CGColor;
+    shapeLayer.lineWidth = _indicatorWidth;
+    shapeLayer.lineCap = kCALineCapRound;
+    [self.animationLayer addSublayer:shapeLayer];
+    
+    switch (style) {
+        case UIndicatorStyleCircle:
+        {
+            CGFloat radius = self.sizeWidth / 2. - _indicatorWidth / 2. - 2.;
+            CGPoint center = pointMake(self.sizeWidth / 2., self.sizeWidth / 2.);
+            UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center
+                                                                radius:radius
+                                                            startAngle:0
+                                                              endAngle:M_PI * 1.8
+                                                             clockwise:YES];
+            shapeLayer.path = path.CGPath;
+        }
+            break;
+            
+        case UIndicatorStyleProgressCircle:
+        {
+            //
+        }
+            
+        default:
+            break;
+    }
 }
 
 - (void)startAnimation
 {
-    if (_refreshTimer) {
-        return;
-    }
+    [self fillIndicatorWith:_style];
     
-    _refreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
-                                                     target:self
-                                                   selector:@selector(rotationAnimation)
-                                                   userInfo:nil
-                                                    repeats:YES];
-    [[NSRunLoop mainRunLoop]addTimer:_refreshTimer forMode:NSRunLoopCommonModes];
+    _isAnimating = YES;
+    
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    animation.fromValue = [NSNumber numberWithFloat:0];
+    animation.toValue = [NSNumber numberWithFloat:2 * M_PI];
+    animation.duration = 1.0;
+    animation.autoreverses = NO;
+    animation.repeatCount = MAXFLOAT;
+    
+    self.animationLayer.anchorPoint = CGPointMake(0.5, 0.5);
+    [self.animationLayer addAnimation:animation forKey:@"AnimationRotation"];
 }
 
 - (void)stopAnimation
 {
-    if (_refreshTimer) {
-        [_refreshTimer invalidate];
-    }
-    _refreshTimer = nil;
-}
-
-- (void)rotationAnimation
-{
-    dispatch_async(main_queue(), ^{
-        _stageValue ++;
-        _stageValue = _stageValue % _countOfLeaf;
-        
-        [self setNeedsDisplay];
-    });
+    _isAnimating = NO;
+    
+    [self.animationLayer removeAllAnimations];
 }
 
 @end

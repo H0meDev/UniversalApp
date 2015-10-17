@@ -271,9 +271,9 @@
                     
                     if ([urlString isEqualToString:lastRecord[@"url"]]) {
                         NSInteger index = _accessRecords.count - 1;
-                        _accessRecords = [_accessRecords replaceObjectAtIndex:index withObject:record];
+                        _accessRecords = [_accessRecords replaceObjectWithIndex:index withObject:record];
                     } else {
-                        _accessRecords = [_accessRecords addObject:record];
+                        _accessRecords = [_accessRecords addWithObject:record];
                     }
                 }
             }

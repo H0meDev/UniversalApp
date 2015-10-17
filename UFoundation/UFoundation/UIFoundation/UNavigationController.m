@@ -209,12 +209,6 @@
         controller = [self controllerWith:controller];
     }
     
-    // Remove older bars
-    [_lastStatusView removeFromSuperview];
-    [_lastNavigationView removeFromSuperview];
-    [_currentStatusView removeFromSuperview];
-    [_currentNavigationView removeFromSuperview];
-    
     // Last
     if (controller) {
         _lastStatusView = controller.statusBarView;
@@ -292,29 +286,20 @@
         
         // Reposition last
         if (!animated) {
-            [_lastNavigationView performWithName:@"repositionLastWith:" with:@(xvalue - screenWidth())];
+            [_lastNavigationView performWithName:@"repositionWith:" with:@(xvalue - screenWidth())];
         } else {
-            [_lastNavigationView performWithName:@"repositionLastAnimationWith:" with:@(xvalue - screenWidth())];
+            [_lastNavigationView performWithName:@"repositionAnimationWith:" with:@(xvalue - screenWidth())];
         }
     }
     
-    if (!_lastNavigationView.leftButton) {
-        // As last
-        if (!animated) {
-            [_currentNavigationView performWithName:@"repositionLastWith:" with:@(xvalue)];
-        } else {
-            [_currentNavigationView performWithName:@"repositionLastAnimationWith:" with:@(xvalue)];
-        }
+    // Reposition current
+    if (!animated) {
+        [_currentNavigationView performWithName:@"repositionWith:" with:@(xvalue)];
     } else {
-        // As current
-        if (!animated) {
-            [_currentNavigationView performWithName:@"repositionCurrentWith:" with:@(xvalue)];
-        } else {
-            [_currentNavigationView performWithName:@"repositionCurrentAnimationWith:" with:@(xvalue)];
-        }
+        [_currentNavigationView performWithName:@"repositionAnimationWith:" with:@(xvalue)];
     }
     
-    // Status background change
+    // Background change
     CGFloat alpha = xvalue / screenWidth();
     [self refreshAllBarAlphaWith:alpha];
 }
@@ -481,7 +466,7 @@
 {
     [self repositionBarsWithX:0 animated:NO];
     
-    [UIView animateWithDuration:animationDuration()
+    [UIView animateWithDuration:animationDuration() + 0.05
                           delay:0
                         options:UIViewAnimationOptionTransitionFlipFromLeft
                      animations:^{

@@ -14,6 +14,6 @@
 - (NSString *)JSONString;
 
 // For convenient
-- (NSDictionary *)setValue:(id)value forKey:(NSString *)key;
+- (NSDictionary *)setValue:(id)value withKey:(NSString *)key;
 
 @end
