@@ -20,8 +20,9 @@
 @interface UNavigationController () <UIGestureRecognizerDelegate>
 {
     CGPoint _startPoint;
-    BOOL _isGestureMoving;
     CGFloat _transformRate;
+    BOOL _isGestureMoving;
+    BOOL _isAnimating;
     
     UImageView *_lastStatusBGView;
     UImageView *_currentStatusBGView;
@@ -424,7 +425,7 @@
     [self repositionBarsWithX:screenWidth() animated:NO];
     
     [UIView animateWithDuration:animationDuration()
-                          delay:0
+                          delay:0.05
                         options:UIViewAnimationOptionTransitionFlipFromRight
                      animations:^{
                          [self repositionBarsWithX:0 animated:YES];
@@ -467,7 +468,7 @@
     [self repositionBarsWithX:0 animated:NO];
     
     [UIView animateWithDuration:animationDuration()
-                          delay:0
+                          delay:0.05
                         options:UIViewAnimationOptionTransitionFlipFromLeft
                      animations:^{
                          [self repositionBarsWithX:screenWidth() animated:YES];
@@ -477,6 +478,8 @@
                              // Refresh bar
                              [self refreshBarUserInterface];
                              [self refreshAllBarAlphaWith:0];
+                             
+                             _isAnimating = NO;
                          }
                      }];
 }
@@ -524,7 +527,9 @@
         UIViewController *controller = self.viewControllers[index];
         [super popToViewController:controller animated:animated];
         
-        if (animated) {
+        if (animated && !_isAnimating) {
+            _isAnimating = YES;
+            
             // Pop animation
             [self popAnimation];
         } else {
