@@ -43,7 +43,7 @@
     // Goto home
     [self gotoHomePage];
     
-    NSDictionary *dict = @{@"name":@"cailiang", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]};
+    NSDictionary *dict = @{@"name":@"cailiang", @"content_fields":@[@{@"time":@"12:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}, @{@"time":@"00:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}]};
     NetworkModel *model = [NetworkModel modelWithDictionary:dict];
     dict = [model dictionaryWithModelKey];
     NSString *JSONString = [dict JSONString];

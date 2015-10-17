@@ -18,5 +18,12 @@
 @interface NetworkModelContentFieldsItem : BaseModel
 
 @property (nonatomic, strong) NSString *time;
+@property (nonatomic, strong) NSArray *content_fields;
+
+@end
+
+@interface NetworkModelContentFieldsItemContentFieldsItem : BaseModel
+
+@property (nonatomic, strong) NSString *time;
 
 @end

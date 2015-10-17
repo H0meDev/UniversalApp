@@ -26,7 +26,7 @@
 + (id)modelWithDictionary:(NSDictionary *)dict;
 
 // Init with NSArray
-+ (id)modelWithArray:(NSArray *)array;
++ (id)modelsWithArray:(NSArray *)array;
 
 // Model to NSDictionary
 - (NSDictionary *)dictionary;

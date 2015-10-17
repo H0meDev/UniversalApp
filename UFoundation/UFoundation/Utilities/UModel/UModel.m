@@ -141,46 +141,22 @@
                         value = [self valueWithValue:value class:class];
                     } else {
                         // For NSArray
-                        NSMutableArray *marray = [NSMutableArray array];
-                        for (id item in value) {
-                            NSString *className = nil;
-                            if ([item isKindOfClass:[NSDictionary class]]) {
-                                className = item[@"UModelClassNameKey"];
-                                if ([className isKindOfClass:[NSString class]] && className.length > 0) {
-                                    id model = [self valueWithValue:item class:NSClassFromString(className)];
-                                    if (model) {
-                                        [marray addObject:model];
-                                    } else {
-                                        [marray addObject:item];
-                                    }
-                                } else {
-                                    className = nil;
-                                }
-                            }
-                            
-                            if (!className) {
-                                NSString *fieldName = @"";
-                                NSArray *compents = [rname componentsSeparatedByString:@"_"];
-                                for (int i = 0; i < compents.count; i ++) {
-                                    NSString *compent = compents[i];
-                                    NSString *firstAlpha = [[compent substringToIndex:1]uppercaseString];
-                                    NSString *otherCompent = [compent substringFromIndex:1];
-                                    compent = [firstAlpha stringByAppendingString:otherCompent];
-                                    fieldName = [fieldName stringByAppendingString:compent];
-                                }
-                                
-                                NSString *suffix = [NSString stringWithFormat:@"%@Item", fieldName];
-                                className = NSStringFromClass([self class]);
-                                className = [className stringByAppendingString:suffix];
-                                class = NSClassFromString(className);
-                                
-                                value = [class modelWithDictionary:item];
-                                value = value?value:item;
-                                [marray addObject:value];
-                            }
+                        NSString *fieldName = @"";
+                        NSArray *compents = [rname componentsSeparatedByString:@"_"];
+                        for (int i = 0; i < compents.count; i ++) {
+                            NSString *compent = compents[i];
+                            NSString *firstAlpha = [[compent substringToIndex:1]uppercaseString];
+                            NSString *otherCompent = [compent substringFromIndex:1];
+                            compent = [firstAlpha stringByAppendingString:otherCompent];
+                            fieldName = [fieldName stringByAppendingString:compent];
                         }
                         
-                        value = marray;
+                        NSString *suffix = [NSString stringWithFormat:@"%@Item", fieldName];
+                        NSString *className = NSStringFromClass([self class]);
+                        className = [className stringByAppendingString:suffix];
+                        class = NSClassFromString(className);
+                        
+                        value = [self valuesWithArray:value class:class];
                     }
                     
                     // Final value
@@ -194,6 +170,11 @@
         
         return model;
     }
+}
+
++ (id)modelsWithArray:(NSArray *)array
+{
+    return [[self class]valuesWithArray:array class:[self class]];
 }
 
 + (id)valueWithValue:(id)value class:(Class)class
@@ -218,9 +199,33 @@
     return value;
 }
 
-+ (id)modelWithArray:(NSArray *)array
++ (id)valuesWithArray:(NSArray *)array class:(Class)class
 {
-    return nil;
+    NSMutableArray *marray = [NSMutableArray array];
+    for (id item in array) {
+        NSString *className = nil;
+        if (!class) {
+            if ([item isKindOfClass:[NSDictionary class]]) {
+                className = item[@"UModelClassNameKey"];
+                if ([className isKindOfClass:[NSString class]] && className.length > 0) {
+                    id model = [self valueWithValue:item class:NSClassFromString(className)];
+                    if (model) {
+                        [marray addObject:model];
+                    } else {
+                        [marray addObject:item];
+                    }
+                } else {
+                    className = nil;
+                }
+            }
+        } else {
+            array = [class modelWithDictionary:item];
+            array = array?array:item;
+            [marray addObject:array];
+        }
+    }
+    
+    return [marray copy];
 }
 
 - (id)initWithModel:(UModel *)model
@@ -262,7 +267,7 @@
             }
         }
         // Set array value
-        [self setValue:marray forKey:keyName];
+        [self setValue:[marray copy] forKey:keyName];
     } else if ([object isKindOfClass:[UModel class]]) { // Model
         value = [[object class] modelWithModel:object];
         [self setValue:value forKey:keyName];
@@ -358,7 +363,7 @@
             if (contains) {
                 NSMutableDictionary *mdict = [NSMutableDictionary dictionaryWithDictionary:dict];
                 [mdict setValue:NSStringFromClass([model class]) forKey:@"UModelClassNameKey"];
-                dict = mdict;
+                dict = [mdict copy];
             }
             value = dict;
         }
@@ -368,7 +373,7 @@
             [marray addObject:[self dictionaryWithValue:item contains:contains]];
         }
         
-        value = marray;
+        value = [marray copy];
     }
     
     return value;

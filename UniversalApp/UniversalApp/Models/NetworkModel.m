@@ -15,3 +15,7 @@
 @implementation NetworkModelContentFieldsItem
 
 @end
+
+@implementation NetworkModelContentFieldsItemContentFieldsItem
+
+@end
