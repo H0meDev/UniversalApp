@@ -492,6 +492,26 @@ textEncodingName:(NSString *)textEncodingName
     return self.webView.pageCount;
 }
 
+- (void)setAllowsPictureInPictureMediaPlayback:(BOOL)allows
+{
+    self.webView.allowsPictureInPictureMediaPlayback = allows;
+}
+
+- (BOOL)allowsPictureInPictureMediaPlayback
+{
+    return self.webView.allowsPictureInPictureMediaPlayback;
+}
+
+- (void)setAllowsLinkPreview:(BOOL)allows
+{
+    self.webView.allowsLinkPreview = allows;
+}
+
+- (BOOL)allowsLinkPreview
+{
+    return self.webView.allowsLinkPreview;
+}
+
 #pragma mark - UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType

@@ -70,5 +70,7 @@ textEncodingName:(NSString *)textEncodingName
 @property (nonatomic) CGFloat pageLength NS_AVAILABLE_IOS(7_0);
 @property (nonatomic) CGFloat gapBetweenPages NS_AVAILABLE_IOS(7_0);
 @property (nonatomic, readonly) NSUInteger pageCount NS_AVAILABLE_IOS(7_0);
+@property (nonatomic) BOOL allowsPictureInPictureMediaPlayback NS_AVAILABLE_IOS(9_0);
+@property (nonatomic) BOOL allowsLinkPreview NS_AVAILABLE_IOS(9_0); // default is NO
 
 @end

@@ -24,18 +24,18 @@
     self.window.backgroundColor = sysWhiteColor();
     [self.window makeKeyAndVisible];
     
-    [UHTTPRequest sendAsynWithURL:@"https://www.baidu.com"
-                           header:nil
-                           method:@"GET"
-                            param:nil
-                         callback:^(UHTTPStatus *status, id data)
-     {
-         if (status.code == UHTTPCodeLocalCached) {
-             NSLog(@"From cached:\n%@", data);
-         } else if (status.code == UHTTPCodeOK) {
-             NSLog(@"From request:\n%@", data);
-         }
-    } cached:YES];
+//    [UHTTPRequest sendAsynWithURL:@"https://www.baidu.com"
+//                           header:nil
+//                           method:@"GET"
+//                            param:nil
+//                         callback:^(UHTTPStatus *status, id data)
+//     {
+//         if (status.code == UHTTPCodeLocalCached) {
+//             NSLog(@"From cached:\n%@", data);
+//         } else if (status.code == UHTTPCodeOK) {
+//             NSLog(@"From request:\n%@", data);
+//         }
+//    } cached:YES];
     
     // Start timer
     [UTimerBooster start];
@@ -43,11 +43,16 @@
     // Goto home
     [self gotoHomePage];
     
-    NSDictionary *dict = @{@"name":@"cailiang", @"content_fields":@[@{@"time":@"12:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}, @{@"time":@"00:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}]};
-    NetworkModel *model = [NetworkModel modelWithDictionary:dict];
-    dict = [model dictionaryWithModelKey];
-    NSString *JSONString = [dict JSONString];
-    NSLog(@"%@", JSONString);
+//    NSDictionary *dict = @{@"name":@"cailiang", @"content_fields":@[@{@"time":@"12:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}, @{@"time":@"00:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}]};
+//    NetworkModel *model = [NetworkModel modelWithDictionary:dict];
+//    dict = [model dictionaryWithModelKey];
+//    model = [NetworkModel modelWithDictionary:dict];
+//    NSString *JSONString = [dict JSONString];
+//    model = [NetworkModel modelWithJSONString:JSONString];
+//    NSLog(@"%@", JSONString);
+//    
+//    NSArray *array = @[@{@"time":@"12:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}, @{@"time":@"00:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}];
+//    NetworkModelContentFieldsItem *item = [NetworkModelContentFieldsItem modelsWithArray:array];
     
     return YES;
 }
