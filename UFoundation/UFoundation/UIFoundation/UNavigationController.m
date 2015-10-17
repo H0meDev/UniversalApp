@@ -425,7 +425,7 @@
     [self repositionBarsWithX:screenWidth() animated:NO];
     
     [UIView animateWithDuration:animationDuration()
-                          delay:0.05
+                          delay:0.04
                         options:UIViewAnimationOptionTransitionFlipFromRight
                      animations:^{
                          [self repositionBarsWithX:0 animated:YES];
@@ -468,7 +468,7 @@
     [self repositionBarsWithX:0 animated:NO];
     
     [UIView animateWithDuration:animationDuration()
-                          delay:0.05
+                          delay:0.04
                         options:UIViewAnimationOptionTransitionFlipFromLeft
                      animations:^{
                          [self repositionBarsWithX:screenWidth() animated:YES];
