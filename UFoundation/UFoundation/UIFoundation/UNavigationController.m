@@ -183,6 +183,16 @@
 
 #pragma mark - Methods
 
+- (void)refreshNavigationBarsUserInterface
+{
+    [_lastStatusBGView removeFromSuperview];
+    [_lastNavigationView removeFromSuperview];
+    [_currentStatusView removeFromSuperview];
+    [_currentNavigationView removeFromSuperview];
+    
+    [self refreshBarUserInterface];
+}
+
 - (void)refreshBarUserInterface
 {
     UIViewController *controller = [self.viewControllers lastObject];

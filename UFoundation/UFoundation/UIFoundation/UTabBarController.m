@@ -96,7 +96,7 @@
     
     if (checkClass(self.navigationController, UNavigationController)) {
         UNavigationController *controller = (UNavigationController *)self.navigationController;
-        [controller performWithName:@"refreshBarUserInterface"];
+        [controller performWithName:@"refreshNavigationBarsUserInterface"];
     }
 }
 
