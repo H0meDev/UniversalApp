@@ -466,7 +466,7 @@
 {
     [self repositionBarsWithX:0 animated:NO];
     
-    [UIView animateWithDuration:animationDuration() + 0.05
+    [UIView animateWithDuration:animationDuration()
                           delay:0
                         options:UIViewAnimationOptionTransitionFlipFromLeft
                      animations:^{
