@@ -232,35 +232,35 @@
 
 - (void)setScaleOriginX:(CGFloat)value
 {
-    self.originX = value * screenWidthScale();
+    self.originX = value * screenWScale();
 }
 
 - (void)setScaleOriginY:(CGFloat)value
 {
-    self.originY = value * screenWidthScale();
+    self.originY = value * screenWScale();
 }
 
 - (void)setScaleSizeWidth:(CGFloat)value
 {
-    self.sizeWidth = value * screenWidthScale();
+    self.sizeWidth = value * screenWScale();
 }
 
 - (void)setScaleSizeHeight:(CGFloat)value
 {
-    self.sizeHeight = value * screenWidthScale();
+    self.sizeHeight = value * screenWScale();
 }
 
 - (void)setScaleSize:(CGSize)size
 {
-    self.size = sizeMake(size.width * screenWidthScale(), size.height * screenWidthScale());
+    self.size = sizeMake(size.width * screenWScale(), size.height * screenWScale());
 }
 
 - (void)setScaleFrame:(CGRect)frame
 {
-    self.frame = rectMake(frame.origin.x * screenWidthScale(),
-                          frame.origin.y * screenWidthScale(),
-                          frame.size.width * screenWidthScale(),
-                          frame.size.height * screenWidthScale());
+    self.frame = rectMake(frame.origin.x * screenWScale(),
+                          frame.origin.y * screenWScale(),
+                          frame.size.width * screenWScale(),
+                          frame.size.height * screenWScale());
 }
 
 - (UIViewLayoutParam *)layoutParam
