@@ -19,6 +19,9 @@
 // Init with model, deep copy
 + (id)modelWithModel:(UModel *)model;
 
+// Init with NSData
++ (id)modelWithJSONData:(NSData *)data;
+
 // Init with NSString
 + (id)modelWithJSONString:(NSString *)string;
 

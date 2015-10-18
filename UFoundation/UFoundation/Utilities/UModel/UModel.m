@@ -97,6 +97,23 @@
     }
 }
 
++ (id)modelWithJSONData:(NSData *)data
+{
+    if (!data || ![data isKindOfClass:[NSData class]] || data.length == 0) {
+        return [[self class]model];
+    }
+    
+    NSError *error = nil;
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
+                                                         options:NSJSONReadingAllowFragments
+                                                           error:&error];
+    if (error) {
+        return [[self class]model];
+    }
+    
+    return [[self class]modelWithDictionary:dict];
+}
+
 + (id)modelWithJSONString:(NSString *)string
 {
     return [[self class]modelWithDictionary:[string JSONValue]];
