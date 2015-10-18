@@ -89,14 +89,6 @@
     return [self instance];
 }
 
-+ (id)modelWithModel:(UModel *)model
-{
-    @autoreleasepool
-    {
-        return [[self alloc]initWithModel:model];
-    }
-}
-
 + (id)modelWithJSONData:(NSData *)data
 {
     if (!data || ![data isKindOfClass:[NSData class]] || data.length == 0) {
@@ -191,7 +183,18 @@
 
 + (id)modelsWithArray:(NSArray *)array
 {
-    return [[self class]valuesWithArray:array class:[self class]];
+    @autoreleasepool
+    {
+        return [[self class]valuesWithArray:array class:[self class]];
+    }
+}
+
++ (id)modelWithModel:(UModel *)model
+{
+    @autoreleasepool
+    {
+        return [[self alloc]initWithModel:model];
+    }
 }
 
 + (id)valueWithValue:(id)value class:(Class)class

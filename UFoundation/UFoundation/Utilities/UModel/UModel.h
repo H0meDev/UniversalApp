@@ -16,9 +16,6 @@
 // Init
 + (id)model;
 
-// Init with model, deep copy
-+ (id)modelWithModel:(UModel *)model;
-
 // Init with NSData
 + (id)modelWithJSONData:(NSData *)data;
 
@@ -30,6 +27,9 @@
 
 // Init with NSArray
 + (id)modelsWithArray:(NSArray *)array;
+
+// Init with model, deep copy
++ (id)modelWithModel:(UModel *)model;
 
 // Model to NSDictionary
 - (NSDictionary *)dictionary;
