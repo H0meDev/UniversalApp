@@ -22,7 +22,6 @@
     CGPoint _startPoint;
     CGFloat _transformRate;
     BOOL _isGestureMoving;
-    BOOL _isAnimating;
     
     UImageView *_lastStatusBGView;
     UImageView *_currentStatusBGView;
@@ -240,6 +239,9 @@
     [self.contentView bringSubviewToFront:_currentStatusView];
     [self.contentView bringSubviewToFront:_currentNavigationView];
     
+    _lastNavigationView.enable = NO;
+    _currentNavigationView.enable = NO;
+    
     // Refresh status bar style
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -421,6 +423,9 @@
                              if (checkAction(_viewController, @selector(controllerDidMoveBack))) {
                                  [_viewController controllerDidMoveBack];
                              }
+                             
+                             _lastNavigationView.enable = YES;
+                             _currentNavigationView.enable = YES;
                          }
                      }];
     
@@ -440,7 +445,12 @@
                      animations:^{
                          [self repositionBarsWithX:0 animated:YES];
                      }
-                     completion:NULL];
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             _lastNavigationView.enable = YES;
+                             _currentNavigationView.enable = YES;
+                         }
+                     }];
 }
 
 - (void)popAnimationWithX:(CGFloat)xvalue
@@ -464,6 +474,9 @@
                              // Pop & reset
                              [self popViewControllerAnimated:NO];
                              [self refreshAllBarAlphaWith:0];
+                             
+                             _lastNavigationView.enable = YES;
+                             _currentNavigationView.enable = YES;
                          }
                      }];
     
@@ -489,7 +502,8 @@
                              [self refreshBarUserInterface];
                              [self refreshAllBarAlphaWith:0];
                              
-                             _isAnimating = NO;
+                             _lastNavigationView.enable = YES;
+                             _currentNavigationView.enable = YES;
                          }
                      }];
 }
@@ -537,9 +551,7 @@
         UIViewController *controller = self.viewControllers[index];
         [super popToViewController:controller animated:animated];
         
-        if (animated && !_isAnimating) {
-            _isAnimating = YES;
-            
+        if (animated) {
             // Pop animation
             [self popAnimation];
         } else {

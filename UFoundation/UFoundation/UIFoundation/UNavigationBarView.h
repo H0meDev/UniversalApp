@@ -18,6 +18,7 @@
 @property (nonatomic, copy) UIColor *bottomLineColor;
 @property (nonatomic, retain) UIImage *backgroundImage;
 @property (nonatomic, assign) BOOL bottomLineHidden;
+@property (nonatomic, assign) BOOL enable;
 
 // Stand style
 @property (nonatomic, retain) UNavigationBarButton *leftButton;

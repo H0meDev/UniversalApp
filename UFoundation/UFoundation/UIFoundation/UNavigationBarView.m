@@ -264,6 +264,18 @@
     _contentView.bottomLineView.hidden = hidden;
 }
 
+- (void)setEnable:(BOOL)enable
+{
+    _enable = enable;
+    
+    for (UIView *view in _contentView.subviews) {
+        if (checkClass(view, UIControl)) {
+            UIControl *control = (UIControl *)view;
+            control.enabled = enable;
+        }
+    }
+}
+
 - (void)setLeftButton:(UNavigationBarButton *)leftButton
 {
     if (_leftView) {
