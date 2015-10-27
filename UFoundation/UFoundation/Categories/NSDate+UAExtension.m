@@ -35,42 +35,6 @@
     }
 }
 
-// Time gap day
-- (NSInteger)numberOfDaysFromDate:(NSDate *)date
-{
-    NSTimeInterval now = [self timeIntervalSince1970];
-    NSTimeInterval time = [date timeIntervalSince1970];
-    
-    return (NSInteger)floorf((time - now)/(3600*24.0));
-}
-
-// Time gap hours
-- (NSInteger)numberOfHoursFromDate:(NSDate *)date
-{
-    NSTimeInterval now = [self timeIntervalSince1970];
-    NSTimeInterval time = [date timeIntervalSince1970];
-    
-    return floorf((time - now)/3600.0);
-}
-
-// Time gap minute
-- (NSInteger)numberOfMinutesFromDate:(NSDate *)date
-{
-    NSTimeInterval now = [self timeIntervalSince1970];
-    NSTimeInterval time = [date timeIntervalSince1970];
-    
-    return floorf((time - now)/60.0);
-}
-
-// Time gap seconds
-- (NSInteger)numberOfSecondsFromDate:(NSDate *)date
-{
-    NSTimeInterval now = [self timeIntervalSince1970];
-    NSTimeInterval time = [date timeIntervalSince1970];
-    
-    return floorf(time - now);
-}
-
 - (NSString *)stringWithFormat:(NSString *)format
 {
     @autoreleasepool
@@ -82,19 +46,33 @@
     }
 }
 
-- (NSDate *)dateWithTimeInterval:(NSTimeInterval)time
+- (NSDate *)dateWithYears:(NSInteger)years months:(NSInteger)months days:(NSInteger)days
 {
-    return [self dateByAddingTimeInterval:time];
+    @autoreleasepool
+    {
+        NSCalendar *calendar = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+        NSDateComponents *components = [[NSDateComponents alloc]init];
+        
+        [components setYear:years];
+        [components setMonth:months];
+        [components setDay:days];
+        
+        return [calendar dateByAddingComponents:components toDate:self options:NSCalendarWrapComponents];
+    }
 }
 
-+ (NSString *)currentWithFormat:(NSString *)format
+- (NSDate *)dateWithHours:(NSInteger)hours minutes:(NSInteger)minutes seconds:(NSInteger)seconds
 {
-    @autoreleasepool {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
-        [dateFormatter setDateFormat:format];
-        NSDate *date = [NSDate date];
+    @autoreleasepool
+    {
+        NSCalendar *calendar = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+        NSDateComponents *components = [[NSDateComponents alloc]init];
         
-        return [dateFormatter stringFromDate:date];
+        [components setHour:hours];
+        [components setMinute:minutes];
+        [components setSecond:seconds];
+        
+        return [calendar dateByAddingComponents:components toDate:self options:NSCalendarWrapComponents];
     }
 }
 

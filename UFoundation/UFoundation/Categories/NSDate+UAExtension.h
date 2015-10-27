@@ -13,28 +13,16 @@
 // Get timeinterval since 1970
 + (NSTimeInterval)timeInterval;
 
-// Date with format
+// NSDate with format
 + (NSDate *)dateWithFormat:(NSString *)format;
 
-// Time gap day
-- (NSInteger)numberOfDaysFromDate:(NSDate *)date;
-
-// Time gap hours
-- (NSInteger)numberOfHoursFromDate:(NSDate *)date;
-
-// Time gap minute
-- (NSInteger)numberOfMinutesFromDate:(NSDate *)date;
-
-// Time gap seconds
-- (NSInteger)numberOfSecondsFromDate:(NSDate *)date;
-
-// NSString
+// NSString value with format
 - (NSString *)stringWithFormat:(NSString *)format;
 
-// Time < 0: the day after, else the day before
-- (NSDate *)dateWithTimeInterval:(NSTimeInterval)time;
+// NSDate with years、months、days to current
+- (NSDate *)dateWithYears:(NSInteger)years months:(NSInteger)months days:(NSInteger)days;
 
-// NSString
-+ (NSString *)currentWithFormat:(NSString *)format;
+// NSDate with hours、minutes、seconds to current
+- (NSDate *)dateWithHours:(NSInteger)hours minutes:(NSInteger)minutes seconds:(NSInteger)seconds;
 
 @end
