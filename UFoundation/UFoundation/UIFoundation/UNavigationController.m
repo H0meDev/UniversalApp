@@ -299,17 +299,26 @@
         
         // Reposition last
         if (!animated) {
-            [_lastNavigationView performWithName:@"repositionWith:" with:@(xvalue - screenWidth())];
+            [_lastNavigationView performWithName:@"repositionLastWith:" with:@(xvalue - screenWidth())];
         } else {
-            [_lastNavigationView performWithName:@"repositionAnimationWith:" with:@(xvalue - screenWidth())];
+            [_lastNavigationView performWithName:@"repositionLastAnimationWith:" with:@(xvalue - screenWidth())];
         }
     }
     
-    // Reposition current
-    if (!animated) {
-        [_currentNavigationView performWithName:@"repositionWith:" with:@(xvalue)];
+    if (!_lastNavigationView.leftButton) {
+        // As last
+        if (!animated) {
+            [_currentNavigationView performWithName:@"repositionLastWith:" with:@(xvalue)];
+        } else {
+            [_currentNavigationView performWithName:@"repositionLastAnimationWith:" with:@(xvalue)];
+        }
     } else {
-        [_currentNavigationView performWithName:@"repositionAnimationWith:" with:@(xvalue)];
+        // As current
+        if (!animated) {
+            [_currentNavigationView performWithName:@"repositionCurrentWith:" with:@(xvalue)];
+        } else {
+            [_currentNavigationView performWithName:@"repositionCurrentAnimationWith:" with:@(xvalue)];
+        }
     }
     
     // Background change

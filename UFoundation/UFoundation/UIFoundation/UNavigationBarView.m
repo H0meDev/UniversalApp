@@ -250,7 +250,7 @@
         titleLabel.alpha = buttonAlpha;
         titleLabel.originX = 24 + xvalue * 0.35;
         
-        if (current) {
+        if (!current) {
             UImageView *imageView = [_leftButton valueForKey:@"imageView"];
             imageView.alpha = buttonAlpha;
         }
