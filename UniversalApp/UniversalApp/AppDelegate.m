@@ -43,6 +43,7 @@
     // Goto home
     [self gotoHomePage];
     
+    // UModel examples
     NSDictionary *dict = @{@"name":@"cailiang", @"content_fields":@[@{@"time":@"12:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}, @{@"time":@"00:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}]};
     NetworkModel *model = [NetworkModel modelWithDictionary:dict];
     dict = [model dictionaryWithModelKey];
