@@ -11,7 +11,7 @@
 		F50ED6071B79A1230027EC82 /* UImagePickerControllerController.h in Headers */ = {isa = PBXBuildFile; fileRef = F50ED6051B79A1230027EC82 /* UImagePickerControllerController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F50ED6081B79A1230027EC82 /* UImagePickerControllerController.m in Sources */ = {isa = PBXBuildFile; fileRef = F50ED6061B79A1230027EC82 /* UImagePickerControllerController.m */; };
 		F510A6B51BB0D82C000968AB /* URefreshView.h in Headers */ = {isa = PBXBuildFile; fileRef = F510A6B31BB0D82C000968AB /* URefreshView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F510A6B61BB0D82C000968AB /* URefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = F510A6B41BB0D82C000968AB /* URefreshView.m */; settings = {ASSET_TAGS = (); }; };
+		F510A6B61BB0D82C000968AB /* URefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = F510A6B41BB0D82C000968AB /* URefreshView.m */; };
 		F511C1DA1B6F2A5400DBAECE /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F511C1D91B6F2A5400DBAECE /* Resource.bundle */; };
 		F5127BC41B7A38DC007952C7 /* UScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5127BC21B7A38DC007952C7 /* UScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F5127BC51B7A38DC007952C7 /* UScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5127BC31B7A38DC007952C7 /* UScrollView.m */; };
@@ -22,7 +22,7 @@
 		F51431CE1B89AFFF00C2372E /* UBarButton.h in Headers */ = {isa = PBXBuildFile; fileRef = F51431CC1B89AFFF00C2372E /* UBarButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F51431CF1B89AFFF00C2372E /* UBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F51431CD1B89AFFF00C2372E /* UBarButton.m */; };
 		F515938B1BAC55440043FFE9 /* UIScrollView+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51593891BAC55440043FFE9 /* UIScrollView+UAExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F515938C1BAC55440043FFE9 /* UIScrollView+UAExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F515938A1BAC55440043FFE9 /* UIScrollView+UAExtension.m */; settings = {ASSET_TAGS = (); }; };
+		F515938C1BAC55440043FFE9 /* UIScrollView+UAExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F515938A1BAC55440043FFE9 /* UIScrollView+UAExtension.m */; };
 		F51C11CF1B90630300F29C3F /* NSArray+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51C11991B90630300F29C3F /* NSArray+UAExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F51C11D01B90630300F29C3F /* NSArray+UAExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C119A1B90630300F29C3F /* NSArray+UAExtension.m */; };
 		F51C11D11B90630300F29C3F /* NSData+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51C119B1B90630300F29C3F /* NSData+UAExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -72,7 +72,7 @@
 		F51C11FF1B90633900F29C3F /* UIImageView+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51C11FD1B90633900F29C3F /* UIImageView+UAExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F51C12001B90633900F29C3F /* UIImageView+UAExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11FE1B90633900F29C3F /* UIImageView+UAExtension.m */; };
 		F52AD2BA1BB2AA630074DBA1 /* UIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = F52AD2B81BB2AA630074DBA1 /* UIndicatorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F52AD2BB1BB2AA630074DBA1 /* UIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F52AD2B91BB2AA630074DBA1 /* UIndicatorView.m */; settings = {ASSET_TAGS = (); }; };
+		F52AD2BB1BB2AA630074DBA1 /* UIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F52AD2B91BB2AA630074DBA1 /* UIndicatorView.m */; };
 		F5687D681B022E6B0073594C /* UFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = F5974D011B02051F004AA14F /* UFoundation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F5687D691B022E6B0073594C /* UDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = F5974D021B02057F004AA14F /* UDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F56C2CB51B04449400D5DF66 /* UNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = F56C2CAF1B04449400D5DF66 /* UNavigationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -105,7 +105,7 @@
 		F56C2CE91B0444D300D5DF66 /* UWebView.h in Headers */ = {isa = PBXBuildFile; fileRef = F56C2CD11B0444D300D5DF66 /* UWebView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F56C2CEA1B0444D300D5DF66 /* UWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = F56C2CD21B0444D300D5DF66 /* UWebView.m */; };
 		F57848DE1BAD587B00E7121B /* UTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F57848DC1BAD587B00E7121B /* UTableViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F57848DF1BAD587B00E7121B /* UTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F57848DD1BAD587B00E7121B /* UTableViewController.m */; settings = {ASSET_TAGS = (); }; };
+		F57848DF1BAD587B00E7121B /* UTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F57848DD1BAD587B00E7121B /* UTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -255,10 +255,10 @@
 				F51C11A21B90630300F29C3F /* NSObject+UAExtension.m */,
 				F51C11A31B90630300F29C3F /* NSString+UAExtension.h */,
 				F51C11A41B90630300F29C3F /* NSString+UAExtension.m */,
-				F51C11A51B90630300F29C3F /* UIButton+UAExtension.h */,
-				F51C11A61B90630300F29C3F /* UIButton+UAExtension.m */,
 				F51C11A71B90630300F29C3F /* UIColor+UAExtension.h */,
 				F51C11A81B90630300F29C3F /* UIColor+UAExtension.m */,
+				F51C11A51B90630300F29C3F /* UIButton+UAExtension.h */,
+				F51C11A61B90630300F29C3F /* UIButton+UAExtension.m */,
 				F51C11A91B90630300F29C3F /* UIImage+UAExtension.h */,
 				F51C11AA1B90630300F29C3F /* UIImage+UAExtension.m */,
 				F51C11FD1B90633900F29C3F /* UIImageView+UAExtension.h */,

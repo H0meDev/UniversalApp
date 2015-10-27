@@ -26,10 +26,16 @@
 + (id)modelWithDictionary:(NSDictionary *)dict;
 
 // Init with NSArray
-+ (id)modelsWithArray:(NSArray *)array;
++ (NSArray *)modelsWithArray:(NSArray *)array;
 
 // Init with model, deep copy
 + (id)modelWithModel:(UModel *)model;
+
+// Model array to JSON (NSDictionary) array
++ (NSArray *)arrayWithModels:(NSArray *)array;
+
+// Model array to JSON (NSDictionary) array with UModel key
++ (NSArray *)arrayAndKeysWithModels:(NSArray *)array;
 
 // Model to NSDictionary
 - (NSDictionary *)dictionary;

@@ -200,17 +200,27 @@
     _backgroundView.backgroundColor = _backgroundColor;
 }
 
-- (void)repositionWith:(NSNumber *)xvalue
+- (void)repositionCurrentWith:(NSNumber *)xvalue
 {
-    [self repositionWith:[xvalue floatValue] animated:NO];
+    [self repositionWith:[xvalue floatValue] current:YES animated:NO];
 }
 
-- (void)repositionAnimationWith:(NSNumber *)xvalue
+- (void)repositionLastWith:(NSNumber *)xvalue
 {
-    [self repositionWith:[xvalue floatValue] animated:YES];
+    [self repositionWith:[xvalue floatValue] current:NO animated:NO];
 }
 
-- (void)repositionWith:(CGFloat)xvalue animated:(BOOL)animated
+- (void)repositionCurrentAnimationWith:(NSNumber *)xvalue
+{
+    [self repositionWith:[xvalue floatValue] current:YES animated:YES];
+}
+
+- (void)repositionLastAnimationWith:(NSNumber *)xvalue
+{
+    [self repositionWith:[xvalue floatValue] current:NO animated:YES];
+}
+
+- (void)repositionWith:(CGFloat)xvalue current:(BOOL)current animated:(BOOL)animated
 {
     CGFloat centerX = (screenWidth() - _contentView.titleLabel.sizeWidth) / 2.0;
     CGFloat progress = (screenWidth() - fabs(xvalue)) / screenWidth();
@@ -240,8 +250,10 @@
         titleLabel.alpha = buttonAlpha;
         titleLabel.originX = 24 + xvalue * 0.35;
         
-        UImageView *imageView = [_leftButton valueForKey:@"imageView"];
-        imageView.alpha = buttonAlpha;
+        if (current) {
+            UImageView *imageView = [_leftButton valueForKey:@"imageView"];
+            imageView.alpha = buttonAlpha;
+        }
     }
     
     if (_centerView) {

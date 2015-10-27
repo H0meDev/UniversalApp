@@ -115,9 +115,18 @@
 {
     @autoreleasepool
     {
-        UModel *model = [self model];
-        if (![dict isKindOfClass:[NSDictionary class]]) {
-            return model;
+        if (!dict || ![dict isKindOfClass:[NSDictionary class]]) {
+            return [self model];
+        }
+        
+        NSString *keyName = dict[@"UModelClassNameKey"];
+        UModel *model = nil;
+        if (keyName) {
+            model = [NSClassFromString(keyName) model];
+        }
+        
+        if (!model) {
+            model = [self model];
         }
         
         NSArray *properties = [[model class] properties];
@@ -147,7 +156,7 @@
                 if (value) {
                     // To model again
                     if (![class isSubclassOfClass:[NSArray class]]) {
-                        value = [self valueWithValue:value class:class];
+                        value = [[self class]valueWithValue:value class:class];
                     } else {
                         // For NSArray
                         NSString *fieldName = @"";
@@ -165,7 +174,12 @@
                         className = [className stringByAppendingString:suffix];
                         class = NSClassFromString(className);
                         
-                        value = [self valuesWithArray:value class:class];
+                        value = [[self class]valuesWithArray:value class:class];
+                    }
+                    
+                    if (class && [value isKindOfClass:[NSNull class]]) {
+                        __autoreleasing id object = [[class alloc]init];
+                        value = object;
                     }
                     
                     // Final value
@@ -181,7 +195,7 @@
     }
 }
 
-+ (id)modelsWithArray:(NSArray *)array
++ (NSArray *)modelsWithArray:(NSArray *)array
 {
     @autoreleasepool
     {
@@ -194,6 +208,38 @@
     @autoreleasepool
     {
         return [[self alloc]initWithModel:model];
+    }
+}
+
++ (NSArray *)arrayWithModels:(NSArray *)array
+{
+    return [[self class]arrayWithModels:array withKey:NO];
+}
+
++ (NSArray *)arrayAndKeysWithModels:(NSArray *)array
+{
+    return [[self class]arrayWithModels:array withKey:YES];
+}
+
++ (NSArray *)arrayWithModels:(NSArray *)array withKey:(BOOL)withKey
+{
+    @autoreleasepool
+    {
+        if (array && [array isKindOfClass:[NSArray class]]) {
+            NSMutableArray *marray = [NSMutableArray array];
+            for (UModel *model in array) {
+                if ([model isKindOfClass:[UModel class]]) {
+                    NSDictionary *dict = [model dictionaryWithModelKey:withKey];
+                    if (dict) {
+                        [marray addObject:dict];
+                    }
+                }
+            }
+            
+            return [marray copy];
+        }
+        
+        return nil;
     }
 }
 
@@ -228,7 +274,7 @@
             if ([item isKindOfClass:[NSDictionary class]]) {
                 className = item[@"UModelClassNameKey"];
                 if ([className isKindOfClass:[NSString class]] && className.length > 0) {
-                    id model = [self valueWithValue:item class:NSClassFromString(className)];
+                    id model = [[self class]valueWithValue:item class:NSClassFromString(className)];
                     if (model) {
                         [marray addObject:model];
                     } else {
@@ -368,6 +414,11 @@
             @catch (NSException *exception) {
                 NSLog(@"%@", exception.description);
             }
+        }
+        
+        if (contains) {
+            NSString *className = NSStringFromClass([self class]);
+            [mdict setObject:className forKey:@"UModelClassNameKey"];
         }
         
         return [mdict copy];

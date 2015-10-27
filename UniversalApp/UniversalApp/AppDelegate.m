@@ -43,16 +43,18 @@
     // Goto home
     [self gotoHomePage];
     
-//    NSDictionary *dict = @{@"name":@"cailiang", @"content_fields":@[@{@"time":@"12:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}, @{@"time":@"00:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}]};
-//    NetworkModel *model = [NetworkModel modelWithDictionary:dict];
-//    dict = [model dictionaryWithModelKey];
-//    model = [NetworkModel modelWithDictionary:dict];
-//    NSString *JSONString = [dict JSONString];
-//    model = [NetworkModel modelWithJSONString:JSONString];
-//    NSLog(@"%@", JSONString);
-//    
-//    NSArray *array = @[@{@"time":@"12:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}, @{@"time":@"00:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}];
-//    NetworkModelContentFieldsItem *item = [NetworkModelContentFieldsItem modelsWithArray:array];
+    NSDictionary *dict = @{@"name":@"cailiang", @"content_fields":@[@{@"time":@"12:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}, @{@"time":@"00:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}]};
+    NetworkModel *model = [NetworkModel modelWithDictionary:dict];
+    dict = [model dictionaryWithModelKey];
+    model = [NetworkModel modelWithDictionary:dict];
+    NSString *JSONString = [dict JSONString];
+    model = [NetworkModel modelWithJSONString:JSONString];
+    model = [UModel modelWithJSONString:JSONString];
+    NSLog(@"%@", JSONString);
+    
+    NSArray *array = @[@{@"time":@"12:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}, @{@"time":@"00:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}];
+    NSArray *items = [NetworkModelContentFieldsItem modelsWithArray:array];
+    NSLog(@"%@", [NetworkModelContentFieldsItem arrayWithModels:items]);
     
     return YES;
 }
