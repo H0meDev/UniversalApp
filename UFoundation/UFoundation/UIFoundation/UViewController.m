@@ -75,6 +75,10 @@
 {
     [super viewDidAppear:animated];
     
+    if (_navigationBarView) {
+        _navigationBarView.enable = YES;
+    }
+    
     for (UIView *view in _attachedViews) {
         if ([view respondsToSelector:@selector(viewDidAppear)]) {
             [view performOnMainThread:@selector(viewDidAppear)];
@@ -85,6 +89,10 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    if (_navigationBarView) {
+        _navigationBarView.enable = NO;
+    }
     
     for (UIView *view in _attachedViews) {
         if ([view respondsToSelector:@selector(viewWillDisappear)]) {

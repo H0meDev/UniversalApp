@@ -239,9 +239,6 @@
     [self.contentView bringSubviewToFront:_currentStatusView];
     [self.contentView bringSubviewToFront:_currentNavigationView];
     
-    _lastNavigationView.enable = NO;
-    _currentNavigationView.enable = NO;
-    
     // Refresh status bar style
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -456,8 +453,7 @@
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
-                             _lastNavigationView.enable = YES;
-                             _currentNavigationView.enable = YES;
+                             //
                          }
                      }];
 }
@@ -483,9 +479,6 @@
                              // Pop & reset
                              [self popViewControllerAnimated:NO];
                              [self refreshAllBarAlphaWith:0];
-                             
-                             _lastNavigationView.enable = YES;
-                             _currentNavigationView.enable = YES;
                          }
                      }];
     
@@ -510,9 +503,6 @@
                              // Refresh bar
                              [self refreshBarUserInterface];
                              [self refreshAllBarAlphaWith:0];
-                             
-                             _lastNavigationView.enable = YES;
-                             _currentNavigationView.enable = YES;
                          }
                      }];
 }
@@ -614,6 +604,9 @@
             [self rollbackAnimationWithX:offsetX];
         }
     }
+    
+    _lastNavigationView.enable = NO;
+    _currentNavigationView.enable = NO;
 }
 
 #pragma mark - UIGestureRecognizerDelegate

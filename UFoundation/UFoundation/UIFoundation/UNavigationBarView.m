@@ -244,8 +244,6 @@
     if (_leftView) {
         _leftView.alpha = buttonAlpha;
     } else if (_leftButton) {
-        _leftButton.enabled = (xvalue > 0)?NO:YES;
-        
         ULabel *titleLabel = [_leftButton valueForKey:@"titleLabel"];
         titleLabel.alpha = buttonAlpha;
         titleLabel.originX = 24 + xvalue * 0.35;
