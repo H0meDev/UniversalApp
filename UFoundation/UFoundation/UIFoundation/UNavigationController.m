@@ -65,7 +65,7 @@
     self.view.backgroundColor = sysClearColor();
     
     _startPoint = CGPointZero;
-    _transformRate = (systemVersionFloat() >= 7.0)?animationDuration() - 0.05:1.0;
+    _transformRate = (systemVersionFloat() >= 7.0)?naviAnimtaionDuration() - 0.05:1.0;
     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]init];
     panGesture.maximumNumberOfTouches = 1;
@@ -408,9 +408,9 @@
 {
     [self repositionAllViewWithX:xvalue animated:NO];
     
-    [UIView animateWithDuration:animationDuration()
+    [UIView animateWithDuration:naviAnimtaionDuration()
                           delay:0
-                        options:UIViewAnimationOptionTransitionFlipFromRight
+                        options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          [self repositionAllViewWithX:0 animated:YES];
                      }
@@ -445,9 +445,9 @@
 {
     [self repositionBarsWithX:screenWidth() animated:NO];
     
-    [UIView animateWithDuration:animationDuration()
-                          delay:0.03
-                        options:UIViewAnimationOptionTransitionFlipFromRight
+    [UIView animateWithDuration:naviAnimtaionDuration()
+                          delay:0.02
+                        options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          [self repositionBarsWithX:0 animated:YES];
                      }
@@ -465,9 +465,9 @@
     CGFloat delta = screenWidth() / 4.0;
     CGFloat duration = 0.4 * (screenWidth() - xvalue) / (screenWidth() - delta);
     duration = (duration < 0.25)?0.25:duration;
-    [UIView animateWithDuration:animationDuration()
+    [UIView animateWithDuration:naviAnimtaionDuration()
                           delay:0
-                        options:UIViewAnimationOptionTransitionFlipFromLeft
+                        options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          [self repositionAllViewWithX:screenWidth() animated:YES];
                      }
@@ -492,9 +492,9 @@
 {
     [self repositionBarsWithX:0 animated:NO];
     
-    [UIView animateWithDuration:animationDuration()
+    [UIView animateWithDuration:naviAnimtaionDuration()
                           delay:0
-                        options:UIViewAnimationOptionTransitionFlipFromLeft
+                        options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          [self repositionBarsWithX:screenWidth() animated:YES];
                      }
