@@ -270,8 +270,11 @@
         progress = xvalue / screenWidth();
         alpha = powf(1. - progress, 3.);
         progress = powf(progress, 1.5);
-        CGFloat centerX = leftItemView.sizeWidth / 2. + 24.;
-        leftItemView.centerX = centerX + (screenWidth() * 0.5 - centerX) * progress;
+        
+        if (_leftButton) {
+            CGFloat centerX = leftItemView.sizeWidth / 2. + 24.;
+            leftItemView.centerX = centerX + (screenWidth() * 0.5 - centerX) * progress;
+        }
     } else {
         // Last contentView
         CGFloat progress = (screenWidth() + xvalue) / screenWidth(); // 1 -> 0
@@ -284,7 +287,9 @@
         _contentView.titleLabel.originX = originX;
         _contentView.bottomLineView.alpha = alpha;
         
-        leftItemView.originX = 24 - (1 - progress) * leftItemView.sizeWidth;
+        if (_leftButton) {
+            leftItemView.originX = 24 - (1 - progress) * leftItemView.sizeWidth;
+        }
     }
     
     leftItemView.alpha = alpha;
