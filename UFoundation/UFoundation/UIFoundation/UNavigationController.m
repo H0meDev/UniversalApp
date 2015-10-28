@@ -289,6 +289,11 @@
 
 - (void)repositionBarsWithX:(CGFloat)xvalue animated:(BOOL)animated
 {
+    [self repositionBarsWithX:xvalue animated:animated before:NO];
+}
+
+- (void)repositionBarsWithX:(CGFloat)xvalue animated:(BOOL)animated before:(BOOL)before
+{
     if (_lastNavigationView) {
         _lastNavigationView.hidden = NO;
         [self.contentView addSubview:_lastNavigationView];
@@ -296,7 +301,11 @@
         
         // Reposition last
         if (!animated) {
-            [_lastNavigationView performWithName:@"repositionLastWith:" with:@(xvalue - screenWidth())];
+            if (before) {
+                [_lastNavigationView performWithName:@"repositionLastBeforeAnimationWith:" with:@(xvalue - screenWidth())];
+            } else {
+                [_lastNavigationView performWithName:@"repositionLastWith:" with:@(xvalue - screenWidth())];
+            }
         } else {
             [_lastNavigationView performWithName:@"repositionLastAnimationWith:" with:@(xvalue - screenWidth())];
         }
@@ -305,14 +314,22 @@
     if (!_lastNavigationView.leftButton) {
         // As last
         if (!animated) {
-            [_currentNavigationView performWithName:@"repositionLastWith:" with:@(xvalue)];
+            if (before) {
+                [_currentNavigationView performWithName:@"repositionLastBeforeAnimationWith:" with:@(xvalue)];
+            } else {
+                [_currentNavigationView performWithName:@"repositionLastWith:" with:@(xvalue)];
+            }
         } else {
             [_currentNavigationView performWithName:@"repositionLastAnimationWith:" with:@(xvalue)];
         }
     } else {
         // As current
         if (!animated) {
-            [_currentNavigationView performWithName:@"repositionCurrentWith:" with:@(xvalue)];
+            if (before) {
+                [_currentNavigationView performWithName:@"repositionCurrentBeforeAnimationWith:" with:@(xvalue)];
+            } else {
+                [_currentNavigationView performWithName:@"repositionCurrentWith:" with:@(xvalue)];
+            }
         } else {
             [_currentNavigationView performWithName:@"repositionCurrentAnimationWith:" with:@(xvalue)];
         }
@@ -441,10 +458,18 @@
     }
 }
 
+- (void)resetAllBarsWith:(BOOL)isPush
+{
+    if (isPush) {
+        [self repositionBarsWithX:screenWidth() animated:NO before:YES];
+    } else {
+        [self repositionBarsWithX:0 animated:NO before:YES];
+    }
+}
+
 - (void)pushAnimation
 {
-    [self repositionBarsWithX:screenWidth() animated:NO];
-    
+    [self resetAllBarsWith:YES];
     [UIView animateWithDuration:naviAnimtaionDuration()
                           delay:0.02
                         options:UIViewAnimationOptionCurveEaseInOut
@@ -490,8 +515,7 @@
 
 - (void)popAnimation
 {
-    [self repositionBarsWithX:0 animated:NO];
-    
+    [self resetAllBarsWith:NO];
     [UIView animateWithDuration:naviAnimtaionDuration()
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut

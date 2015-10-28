@@ -20,7 +20,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.navigationBarView.title = @"Next";
+    self.navigationBarView.title = @"Next view controller";
 //    self.statusBarView.backgroundColor = sysClearColor();
 //    self.navigationBarView.backgroundColor = sysClearColor();
 //    self.containerView.backgroundColor = sysYellowColor();

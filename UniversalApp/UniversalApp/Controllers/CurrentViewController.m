@@ -21,7 +21,7 @@
     // Do any additional setup after loading the view.
     
     self.countOfControllerToPop = 1;
-    self.navigationBarView.title = @"Curren";
+    self.navigationBarView.title = @"Current";
     [self.navigationBarView.leftButton setTitle:@"Last"];
 //    self.statusBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
 //    self.navigationBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);

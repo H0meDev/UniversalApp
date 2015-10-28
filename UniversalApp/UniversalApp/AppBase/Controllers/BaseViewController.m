@@ -79,7 +79,7 @@
     
     if (enable) {
         UNavigationBarButton *leftButton = [UNavigationBarButton button];
-        leftButton.frame = rectMake(0, 0, 70, naviHeight() - naviBLineH());
+        leftButton.frame = rectMake(0, 0, 80, naviHeight() - naviBLineH());
         [leftButton setHAlpha:0.3];
         [leftButton setBackImage:sysWhiteColor()];
         [leftButton setTitleColor:sysWhiteColor()];
@@ -90,7 +90,7 @@
         // Resize
         leftButton.textAlignment = NSTextAlignmentLeft;
         leftButton.imageFrame = rectMake(0, 0, 0, 0);
-        leftButton.titleFrame = rectMake(0, 0, 54, 0);
+        leftButton.titleFrame = rectMake(0, 0, 64, 0);
     } else {
         [self.navigationBarView.leftButton removeFromSuperview];
         self.navigationBarView.leftButton = nil;

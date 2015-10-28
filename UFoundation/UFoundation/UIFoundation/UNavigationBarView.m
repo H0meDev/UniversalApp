@@ -46,7 +46,9 @@
     titleLabel.center = pointMake(screenWidth() / 2., naviHeight() / 2.);
     titleLabel.font = boldSystemFont(16);
     titleLabel.textColor = sysBlackColor();
+    titleLabel.numberOfLines = 1;
     titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [self addSubview:titleLabel];
     _titleLabel = titleLabel;
     
@@ -162,7 +164,12 @@
     _title = title;
     
     _contentView.titleLabel.text = title;
-    [_contentView.titleLabel resizeToFitWidth];
+    
+    CGFloat sizeWidth = _contentView.titleLabel.contentWidth;
+    CGFloat maxWidth = screenWidth() * 0.5;
+    sizeWidth = (sizeWidth > maxWidth)?maxWidth:sizeWidth;
+    
+    _contentView.titleLabel.sizeWidth = sizeWidth;
     _contentView.titleLabel.centerX = screenWidth() / 2.;
 }
 
@@ -202,68 +209,98 @@
 
 - (void)repositionCurrentWith:(NSNumber *)xvalue
 {
-    [self repositionWith:[xvalue floatValue] current:YES animated:NO];
+    [self repositionWith:[xvalue floatValue] current:YES animated:NO before:NO];
 }
 
 - (void)repositionLastWith:(NSNumber *)xvalue
 {
-    [self repositionWith:[xvalue floatValue] current:NO animated:NO];
+    [self repositionWith:[xvalue floatValue] current:NO animated:NO before:NO];
 }
 
 - (void)repositionCurrentAnimationWith:(NSNumber *)xvalue
 {
-    [self repositionWith:[xvalue floatValue] current:YES animated:YES];
+    [self repositionWith:[xvalue floatValue] current:YES animated:YES before:NO];
+}
+
+- (void)repositionCurrentBeforeAnimationWith:(NSNumber *)xvalue
+{
+    [self repositionWith:[xvalue floatValue] current:YES animated:YES before:YES];
 }
 
 - (void)repositionLastAnimationWith:(NSNumber *)xvalue
 {
-    [self repositionWith:[xvalue floatValue] current:NO animated:YES];
+    [self repositionWith:[xvalue floatValue] current:NO animated:YES before:NO];
 }
 
-- (void)repositionWith:(CGFloat)xvalue current:(BOOL)current animated:(BOOL)animated
+- (void)repositionLastBeforeAnimationWith:(NSNumber *)xvalue
 {
-    CGFloat centerX = (screenWidth() - _contentView.titleLabel.sizeWidth) / 2.0;
-    CGFloat progress = (screenWidth() - fabs(xvalue)) / screenWidth();
-    CGFloat titleAlpha = powf(progress, 2.0);
-    CGFloat buttonAlpha = powf(titleAlpha, 2.0);
+    [self repositionWith:[xvalue floatValue] current:NO animated:YES before:YES];
+}
+
+- (void)repositionWith:(CGFloat)xvalue
+               current:(BOOL)current
+              animated:(BOOL)animated
+                before:(BOOL)before
+{
+    CGFloat leftValue = (screenWidth() - _contentView.titleLabel.sizeWidth) / 2.0;
     
+    CGFloat alpha = 0;
     if (xvalue >= 0) {
-        _contentView.titleLabel.alpha = buttonAlpha;
-        _contentView.titleLabel.originX = centerX + xvalue * 0.5;
-    } else {
-        CGFloat rxvalue = xvalue + screenWidth();
-        if (titleAlpha >= 0.01) {
-            _contentView.titleLabel.alpha = titleAlpha;
-            _contentView.titleLabel.originX = 24 + rxvalue * 0.35;
+        // Current contentView
+        CGFloat progress = (screenWidth() - xvalue) / screenWidth(); // 1 -> 0
+        alpha = powf(progress, 2.);
+        progress = powf((1 - progress), 2.);
+        
+        CGFloat originX = 0;
+        if (animated) {
+            originX = (leftValue - 24.) * progress + leftValue;
         } else {
-            _contentView.titleLabel.alpha = 0;
-            _contentView.titleLabel.originX = centerX + xvalue * 0.5;
+            if (before) {
+                originX = leftValue * 2 - 24.;
+            } else {
+                originX = (screenWidth() - 24. - leftValue) * progress + leftValue;
+            }
         }
+        
+        _contentView.titleLabel.alpha = alpha;
+        _contentView.titleLabel.originX = originX;
+        
+        NSLog(@"CURRENT: %@", _contentView.titleLabel.text);
+    } else {
+        // Last contentView
+        CGFloat progress = (screenWidth() + xvalue) / screenWidth(); // 1 -> 0
+        alpha = powf(progress, 3.);
+        
+        CGFloat originX = progress * (leftValue - 24) + 24;
+        
+        _contentView.titleLabel.alpha = alpha;
+        _contentView.titleLabel.originX = originX;
+        
+        NSLog(@"LAST: %@", _contentView.titleLabel.text);
     }
     
     if (_leftView) {
-        _leftView.alpha = buttonAlpha;
+        _leftView.alpha = alpha;
     } else if (_leftButton) {
         ULabel *titleLabel = [_leftButton valueForKey:@"titleLabel"];
-        titleLabel.alpha = buttonAlpha;
-        titleLabel.originX = 24 + xvalue * 0.35;
+        titleLabel.alpha = alpha;
         
         if (!current) {
             UImageView *imageView = [_leftButton valueForKey:@"imageView"];
-            imageView.alpha = buttonAlpha;
+            imageView.alpha = alpha;
         }
     }
-    
+
     if (_centerView) {
         _centerView.alpha = _contentView.titleLabel.alpha;
         _centerView.centerX = _contentView.titleLabel.centerX;
     }
     
     if (_rightView) {
-        _rightView.alpha = buttonAlpha;
+        _rightView.alpha = alpha;
     } else if (_rightButton) {
         UILabel *titleLabel = [_rightButton valueForKey:@"titleLabel"];
-        titleLabel.alpha = buttonAlpha;
+        titleLabel.alpha = alpha;
     }
 }
 

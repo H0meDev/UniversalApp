@@ -7,6 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UDefines.h"
+#import "ULabel.h"
+#import "UImageView.h"
+#import "UIView+UAExtension.h"
+#import "UILabel+UAExtension.h"
 
 @interface UBarButton : UIControl
 
@@ -15,9 +20,13 @@
 // Custom inner frame for imageView & titleLabel
 @property (nonatomic, assign) CGRect imageFrame;
 @property (nonatomic, assign) CGRect titleFrame;
+@property (nonatomic, assign) BOOL needsAutoResize; // Default NO
+@property (nonatomic, assign) BOOL showMaskWhenHighlighted; // Default YES
 
 // Custom text alignment, default is NSTextAlignmentCenter
 @property (nonatomic, assign) NSTextAlignment textAlignment;
+// Background mask color when highlighted, set showMaskWhenHighlighted NO to close
+@property (nonatomic, copy) UIColor *backgroundMaskHColor;
 
 // Title for UIControlState
 - (void)setTitle:(NSString *)title;

@@ -7,10 +7,6 @@
 //
 
 #import "UBarButton.h"
-#import "UDefines.h"
-#import "ULabel.h"
-#import "UImageView.h"
-#import "UIView+UAExtension.h"
 
 @interface UBarButtonItem : NSObject
 
@@ -22,7 +18,7 @@
 @property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImage *backgroundImage;
-@property (nonatomic, assign) CGFloat alpha;
+@property (nonatomic, assign) CGFloat contentAlpha;
 @property (nonatomic, assign) CGFloat backgroundAlpha;
 
 + (id)item;
@@ -43,7 +39,7 @@
     self = [super init];
     if (self) {
         // Initalize
-        self.alpha = 1.0;
+        self.contentAlpha = 1.0;
         self.backgroundAlpha = 1.0;
     }
     
@@ -54,6 +50,8 @@
 
 @interface UBarButton ()
 {
+    UIView *_backgroundMaskView;
+    
     NSMutableArray *_stateItems;
     BOOL _isSelected;
 }
@@ -73,6 +71,8 @@
         // Initalize
         _stateItems = [NSMutableArray array];
         _textAlignment = NSTextAlignmentCenter;
+        _showMaskWhenHighlighted = YES;
+        _backgroundMaskHColor = rgbaColor(0, 0, 0, 0.3);
         
         // Default
         [self setTitleColor:sysBlackColor()];
@@ -95,6 +95,7 @@
     }
     
     self.backgroundView.frame = rectMake(0, 0, frame.size.width, frame.size.height);
+    _backgroundMaskView.frame = self.backgroundView.bounds;
 }
 
 - (UIColor *)backgroundColor
@@ -126,7 +127,8 @@
     ULabel *titleLabel = [[ULabel alloc]init];
     titleLabel.backgroundColor = sysClearColor();
     titleLabel.textColor = sysBlackColor();
-    titleLabel.numberOfLines = 0;
+    titleLabel.numberOfLines = 1;
+    titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.backgroundView addSubview:titleLabel];
     _titleLabel = titleLabel;
@@ -159,6 +161,11 @@
     backgroundView.backgroundColor = sysClearColor();
     [self addSubview:backgroundView];
     _backgroundView = backgroundView;
+    
+    UIView *backgroundMaskView = [[UIView alloc]init];
+    backgroundMaskView.backgroundColor = sysClearColor();
+    _backgroundMaskView = backgroundMaskView;
+    [backgroundView addSubview:_backgroundMaskView];
     
     return _backgroundView;
 }
@@ -213,6 +220,18 @@
 
 #pragma mark -  Inner Methods
 
+- (void)autoresizeWithTitle
+{
+    if (_titleLabel) {
+        CGFloat sizeWidth = _titleLabel.contentWidth;
+        CGFloat maxWidth = screenWidth() * 0.25;
+        
+        sizeWidth = (sizeWidth > maxWidth)?maxWidth:sizeWidth;
+        _titleLabel.sizeWidth = sizeWidth;
+        self.sizeWidth = _titleLabel.paddingRight;
+    }
+}
+
 - (void)setTitle:(NSString *)title forState:(UIControlState)state
 {
     UBarButtonItem *buttonItem = [self itemWith:state];
@@ -227,6 +246,10 @@
     
     if (UIControlStateNormal == state) {
         self.titleLabel.text = title;
+        
+        if (_needsAutoResize) {
+            [self autoresizeWithTitle];
+        }
     }
 }
 
@@ -302,11 +325,11 @@
 {
     UBarButtonItem *buttonItem = [self itemWith:state];
     if (buttonItem) {
-        buttonItem.alpha = alpha;
+        buttonItem.contentAlpha = alpha;
     } else {
         buttonItem = [UBarButtonItem item];
         buttonItem.state = state;
-        buttonItem.alpha = alpha;
+        buttonItem.contentAlpha = alpha;
         [_stateItems addObject:buttonItem];
     }
     
@@ -355,11 +378,15 @@
         
         if (item.backgroundImage) {
             self.backgroundView.image = item.backgroundImage;
+        } else if (UIControlStateHighlighted == state && _showMaskWhenHighlighted) {
+            _backgroundMaskView.backgroundColor = _backgroundMaskHColor;
+        } else {
+            _backgroundMaskView.backgroundColor = sysClearColor();
         }
         
         // Alpha
-        self.titleLabel.alpha = item.alpha;
-        self.imageView.alpha = item.alpha;
+        self.titleLabel.alpha = item.contentAlpha;
+        self.imageView.alpha = item.contentAlpha;
         self.backgroundView.alpha = item.backgroundAlpha;
     }
 }

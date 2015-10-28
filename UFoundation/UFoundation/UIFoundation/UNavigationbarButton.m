@@ -7,7 +7,6 @@
 //
 
 #import "UNavigationBarButton.h"
-#import "UDefines.h"
 #import "UIColor+UAExtension.h"
 
 @interface UNavigationBarButton ()
@@ -24,6 +23,9 @@
     self = [super init];
     if (self) {
         // Initialize
+        self.needsAutoResize = YES;
+        self.showMaskWhenHighlighted = NO;
+        self.backgroundMaskHColor = nil;
     }
     
     return self;
@@ -54,6 +56,26 @@
 #pragma mark - Properties
 
 #pragma mark - Method
+
+- (void)setTitle:(NSString *)title
+{
+    [super setTitle:title];
+}
+
+- (void)setHTitle:(NSString *)title
+{
+    [super setHTitle:title];
+}
+
+- (void)setSTitle:(NSString *)title
+{
+    [super setSTitle:title];
+}
+
+- (void)setDTitle:(NSString *)title
+{
+    [super setDTitle:title];
+}
 
 - (void)setBackImage:(UIColor *)color
 {
