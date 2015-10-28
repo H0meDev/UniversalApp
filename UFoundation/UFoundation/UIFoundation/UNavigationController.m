@@ -64,8 +64,8 @@
     self.navigationBarHidden = YES;
     self.view.backgroundColor = sysClearColor();
     
+    _transformRate = 0.35;
     _startPoint = CGPointZero;
-    _transformRate = (systemVersionFloat() >= 7.0)?naviAnimtaionDuration() - 0.05:1.0;
     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]init];
     panGesture.maximumNumberOfTouches = 1;

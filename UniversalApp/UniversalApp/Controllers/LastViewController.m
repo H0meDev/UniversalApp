@@ -49,6 +49,7 @@
     rightView.selected = YES;
     rightView.frame = rectMake(screenWidth() - 68, 0, 60, naviHeight());
     [rightView setTitle:@"Option"];
+    [rightView setTitleColor:sysBlackColor()];
     [rightView setTitleFont:systemFont(16)];
     [rightView addTarget:self action:@selector(buttonAction:)];
     self.navigationBarView.rightView = rightView;
