@@ -20,10 +20,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.navigationBarView.title = @"Next view controller";
-//    self.statusBarView.backgroundColor = sysClearColor();
-//    self.navigationBarView.backgroundColor = sysClearColor();
-//    self.containerView.backgroundColor = sysYellowColor();
+    self.navigationBarView.title = @"Next";
+    self.statusBarView.backgroundColor = sysClearColor();
+    self.navigationBarView.backgroundColor = sysClearColor();
+    self.containerView.backgroundColor = sysLightGrayColor();
     
 //    UNavigationBarButton *rightButton = [UNavigationBarButton button];
 //    rightButton.frame = rectMake(screenWidth() - 70, 0, 70, naviHeight() - naviBLineH());
@@ -34,11 +34,11 @@
 //    [rightButton addTarget:self action:@selector(buttonAction)];
 //    self.navigationBarView.rightButton = rightButton;
     
-//    CGFloat height = statusHeight() + naviHeight();
-//    UView *navigationView = [[UView alloc]init];
-//    navigationView.frame = rectMake(0, - height, screenWidth(), height);
-//    navigationView.backgroundColor = sysYellowColor();
-//    [self addSubview:navigationView];
+    CGFloat height = statusHeight() + naviHeight();
+    UView *navigationView = [[UView alloc]init];
+    navigationView.frame = rectMake(0, - height, screenWidth(), height);
+    navigationView.backgroundColor = sysLightGrayColor();
+    [self addSubview:navigationView];
     
     UButton *button = [UButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);

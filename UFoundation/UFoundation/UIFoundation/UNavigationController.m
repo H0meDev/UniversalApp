@@ -184,7 +184,7 @@
 
 - (void)refreshNavigationBarsUserInterface
 {
-    [_lastStatusBGView removeFromSuperview];
+    [_lastStatusView removeFromSuperview];
     [_lastNavigationView removeFromSuperview];
     [_currentStatusView removeFromSuperview];
     [_currentNavigationView removeFromSuperview];
@@ -196,6 +196,7 @@
 {
     UIViewController *controller = [self.viewControllers lastObject];
     UViewController *theController = [self controllerWith:controller];
+    
     [self refreshViewController:theController fromPush:NO];
 }
 
@@ -471,7 +472,7 @@
 {
     [self resetAllBarsWith:YES];
     [UIView animateWithDuration:naviAnimtaionDuration()
-                          delay:0.02
+                          delay:0.03
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          [self repositionBarsWithX:0 animated:YES];
@@ -517,7 +518,7 @@
 {
     [self resetAllBarsWith:NO];
     [UIView animateWithDuration:naviAnimtaionDuration()
-                          delay:0
+                          delay:0.03
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          [self repositionBarsWithX:screenWidth() animated:YES];

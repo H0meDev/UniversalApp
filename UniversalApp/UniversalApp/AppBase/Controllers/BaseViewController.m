@@ -34,9 +34,9 @@
     
     // UI Configure
     self.containerView.backgroundColor = rgbColor(239, 239, 239);
-    self.statusBarView.backgroundColor = rgbColor(231, 68, 113);
-    self.navigationBarView.backgroundColor = rgbColor(231, 68, 113);
-    self.navigationBarView.titleColor = sysWhiteColor();
+//    self.statusBarView.backgroundColor = rgbColor(250, 250, 250);
+//    self.navigationBarView.backgroundColor = rgbColor(250, 250, 250);
+    self.navigationBarView.titleColor = sysBlackColor();
     self.contentView.backgroundColor = rgbColor(239, 239, 239);
     
     // Resize container view
@@ -49,7 +49,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return UIStatusBarStyleDefault;
 }
 
 - (void)dealloc
@@ -81,8 +81,8 @@
         UNavigationBarButton *leftButton = [UNavigationBarButton button];
         leftButton.frame = rectMake(0, 0, 80, naviHeight() - naviBLineH());
         [leftButton setHAlpha:0.3];
-        [leftButton setBackImage:sysWhiteColor()];
-        [leftButton setTitleColor:sysWhiteColor()];
+        [leftButton setBackImageWithColor:rgbColor(0, 131, 241)];
+        [leftButton setTitleColor:rgbColor(0, 131, 241)];
         [leftButton setTitleFont:systemFont(16)];
         [leftButton addTarget:self action:@selector(backAction)];
         self.navigationBarView.leftButton = leftButton;

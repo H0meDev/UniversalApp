@@ -22,6 +22,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initalize
+        self.backgroundColor = rgbColor(250, 250, 250);
+        
         [self topLineView];
     }
     
@@ -37,7 +39,7 @@
     UIImageView *topLineView = [[UIImageView alloc]init];
     topLineView.frame = rectMake(0, 0, screenWidth(), tabBLineH());
     topLineView.alpha = 0.3;
-    topLineView.backgroundColor = sysLightGrayColor();
+    topLineView.backgroundColor = sysDarkGrayColor();
     [self addSubview:topLineView];
     _topLineView = topLineView;
     

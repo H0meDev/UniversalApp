@@ -76,7 +76,7 @@ CG_INLINE CGRange CGRangeMake(CGFloat min, CGFloat max)
 
 // Animation
 #define animationDuration()      0.25f
-#define naviAnimtaionDuration()  0.28f
+#define naviAnimtaionDuration()  0.25f
 
 // Font
 #define systemFont(size)      [UIFont systemFontOfSize:size]

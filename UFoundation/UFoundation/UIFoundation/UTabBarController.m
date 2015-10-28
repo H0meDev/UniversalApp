@@ -61,7 +61,6 @@
     
     UTabBarView *tabBarView = [[UTabBarView alloc]init];
     tabBarView.userInteractionEnabled = YES;
-    tabBarView.backgroundColor = sysWhiteColor();
     _tabBarView = tabBarView;
     
     // Customize tabBarView layout

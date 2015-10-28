@@ -63,8 +63,7 @@
     
     UImageView *bottomLineView = [[UImageView alloc]init];
     bottomLineView.frame = rectMake(0, naviHeight() - naviBLineH(), screenWidth(), naviBLineH());
-    bottomLineView.alpha = 0.3;
-    bottomLineView.backgroundColor = sysLightGrayColor();
+    bottomLineView.backgroundColor = [sysDarkGrayColor() colorWithAlphaComponent:0.3];
     [self addSubview:bottomLineView];
     _bottomLineView = bottomLineView;
     
@@ -94,7 +93,7 @@
         // Initalize
         self.userInteractionEnabled = YES;
         super.backgroundColor = sysClearColor();
-        self.backgroundColor = sysClearColor();
+        self.backgroundColor = rgbColor(250, 250, 250);
         
         [self contentView];
     }
@@ -266,6 +265,7 @@
         
         _contentView.titleLabel.alpha = alpha;
         _contentView.titleLabel.originX = originX;
+        _contentView.bottomLineView.alpha = alpha;
         
         progress = xvalue / screenWidth();
         alpha = powf(1. - progress, 3.);
@@ -282,6 +282,7 @@
         
         _contentView.titleLabel.alpha = alpha;
         _contentView.titleLabel.originX = originX;
+        _contentView.bottomLineView.alpha = alpha;
         
         leftItemView.originX = 24 - (1 - progress) * leftItemView.sizeWidth;
     }

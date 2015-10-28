@@ -77,22 +77,22 @@
     [super setDTitle:title];
 }
 
-- (void)setBackImage:(UIColor *)color
+- (void)setBackImageWithColor:(UIColor *)color
 {
     [self setImage:[self imageWith:color]];
 }
 
-- (void)setHBackImage:(UIColor *)color
+- (void)setHBackImageWithColor:(UIColor *)color
 {
     [self setHImage:[self imageWith:color]];
 }
 
-- (void)setSBackImage:(UIColor *)color
+- (void)setSBackImageWithColor:(UIColor *)color
 {
     [self setSImage:[self imageWith:color]];
 }
 
-- (void)setDBackImage:(UIColor *)color
+- (void)setDBackImageWithColor:(UIColor *)color
 {
     [self setDImage:[self imageWith:color]];
 }

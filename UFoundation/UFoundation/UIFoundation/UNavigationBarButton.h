@@ -11,9 +11,9 @@
 @interface UNavigationBarButton : UBarButton
 
 // Back image
-- (void)setBackImage:(UIColor *)color;
-- (void)setHBackImage:(UIColor *)color;
-- (void)setSBackImage:(UIColor *)color;
-- (void)setDBackImage:(UIColor *)color;
+- (void)setBackImageWithColor:(UIColor *)color;
+- (void)setHBackImageWithColor:(UIColor *)color;
+- (void)setSBackImageWithColor:(UIColor *)color;
+- (void)setDBackImageWithColor:(UIColor *)color;
 
 @end
