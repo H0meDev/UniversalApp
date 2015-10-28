@@ -93,7 +93,7 @@
         // Initalize
         self.userInteractionEnabled = YES;
         super.backgroundColor = sysClearColor();
-        self.backgroundColor = rgbColor(250, 250, 250);
+        self.backgroundColor = rgbColor(249., 249., 249.);
         
         [self contentView];
     }

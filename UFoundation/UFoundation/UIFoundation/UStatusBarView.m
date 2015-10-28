@@ -31,7 +31,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.userInteractionEnabled = YES;
-        self.backgroundColor = rgbColor(250, 250, 250);
+        self.backgroundColor = rgbColor(249., 249., 249.);
         
         _needsStretch = NO;
         
