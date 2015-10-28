@@ -255,7 +255,6 @@
         
         CGFloat originX = 0;
         if (animated) {
-//            originX = (leftValue - 24.) * progress + leftValue;
             originX = (screenWidth() - 24. - leftValue) * progress + leftValue;
         } else {
             if (before) {
