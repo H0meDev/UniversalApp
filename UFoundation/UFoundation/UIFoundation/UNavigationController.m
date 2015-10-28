@@ -429,7 +429,7 @@
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         [self repositionAllViewWithX:0 animated:YES];
+                         [self repositionAllViewWithX:0 animated:NO];
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
@@ -494,7 +494,7 @@
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         [self repositionAllViewWithX:screenWidth() animated:YES];
+                         [self repositionAllViewWithX:screenWidth() animated:NO];
                      }
                      completion:^(BOOL finished) {
                          if (finished) {

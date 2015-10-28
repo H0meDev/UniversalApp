@@ -243,6 +243,8 @@
                 before:(BOOL)before
 {
     CGFloat leftValue = (screenWidth() - _contentView.titleLabel.sizeWidth) / 2.0;
+    UIView *leftItemView = _leftView?_leftView:[_leftButton valueForKey:@"titleLabel"];
+    UIView *rightItemView = _rightView?_rightView:[_rightButton valueForKey:@"titleLabel"];
     
     CGFloat alpha = 0;
     if (xvalue >= 0) {
@@ -253,7 +255,8 @@
         
         CGFloat originX = 0;
         if (animated) {
-            originX = (leftValue - 24.) * progress + leftValue;
+//            originX = (leftValue - 24.) * progress + leftValue;
+            originX = (screenWidth() - 24. - leftValue) * progress + leftValue;
         } else {
             if (before) {
                 originX = leftValue * 2 - 24.;
@@ -265,42 +268,36 @@
         _contentView.titleLabel.alpha = alpha;
         _contentView.titleLabel.originX = originX;
         
-        NSLog(@"CURRENT: %@", _contentView.titleLabel.text);
+        progress = xvalue / screenWidth();
+        alpha = powf(1. - progress, 3.);
+        progress = powf(progress, 1.5);
+        CGFloat centerX = leftItemView.sizeWidth / 2. + 24.;
+        leftItemView.centerX = centerX + (screenWidth() * 0.5 - centerX) * progress;
     } else {
         // Last contentView
         CGFloat progress = (screenWidth() + xvalue) / screenWidth(); // 1 -> 0
         alpha = powf(progress, 3.);
+        progress = powf(progress, 1.5);
         
         CGFloat originX = progress * (leftValue - 24) + 24;
         
         _contentView.titleLabel.alpha = alpha;
         _contentView.titleLabel.originX = originX;
         
-        NSLog(@"LAST: %@", _contentView.titleLabel.text);
+        leftItemView.originX = 24 - (1 - progress) * leftItemView.sizeWidth;
     }
     
-    if (_leftView) {
-        _leftView.alpha = alpha;
-    } else if (_leftButton) {
-        ULabel *titleLabel = [_leftButton valueForKey:@"titleLabel"];
-        titleLabel.alpha = alpha;
-        
-        if (!current) {
-            UImageView *imageView = [_leftButton valueForKey:@"imageView"];
-            imageView.alpha = alpha;
-        }
+    leftItemView.alpha = alpha;
+    rightItemView.alpha = alpha;
+    
+    if (!current && _leftButton) {
+        UImageView *imageView = [_leftButton valueForKey:@"imageView"];
+        imageView.alpha = alpha;
     }
 
     if (_centerView) {
         _centerView.alpha = _contentView.titleLabel.alpha;
         _centerView.centerX = _contentView.titleLabel.centerX;
-    }
-    
-    if (_rightView) {
-        _rightView.alpha = alpha;
-    } else if (_rightButton) {
-        UILabel *titleLabel = [_rightButton valueForKey:@"titleLabel"];
-        titleLabel.alpha = alpha;
     }
 }
 
