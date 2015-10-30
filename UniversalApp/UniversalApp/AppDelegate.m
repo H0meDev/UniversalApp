@@ -43,6 +43,9 @@
     // Goto home
     [self gotoHomePage];
     
+    NSDate *date = [NSDate dateFromString:@"2015-10-30" format:@"yyyy-MM-dd"];
+    NSLog(@"%@", [date stringWithFormat:@"yyyy-MM-dd HH:mm:ss:SSS"]);
+    
     // UModel examples
     NSDictionary *dict = @{@"name":@"cailiang", @"content_fields":@[@{@"time":@"12:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}, @{@"time":@"00:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}]};
     NetworkModel *model = [NetworkModel modelWithDictionary:dict];

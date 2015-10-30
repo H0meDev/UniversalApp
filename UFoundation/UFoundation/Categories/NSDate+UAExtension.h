@@ -10,11 +10,17 @@
 
 @interface NSDate (UAExtension)
 
-// Get timeinterval since 1970 (Asia/Shanghai)
+// Timeinterval since 1970
 + (NSTimeInterval)timeInterval;
 
-// NSDate with format
+// Timeinterval since 1970 (Asia/Shanghai)
++ (NSTimeInterval)timeIntervalOfChina;
+
+// Now date with format
 + (NSDate *)dateWithFormat:(NSString *)format;
+
+// NSDate with NSString value and format
++ (NSDate *)dateFromString:(NSString *)string format:(NSString *)format;
 
 // NSString value with format
 - (NSString *)stringWithFormat:(NSString *)format;

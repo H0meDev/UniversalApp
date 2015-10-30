@@ -111,17 +111,17 @@ typedef NS_ENUM(NSInteger, UIViewLayoutType)
 // Set sizeHeight, can not be used in setFrame method
 - (void)setSizeHeight:(CGFloat)height;
 
-// Left padding
-- (CGFloat)paddingLeft;
+// Left value to left side of superView
+- (CGFloat)left;
 
-// Top padding
-- (CGFloat)paddingTop;
+// Top value to top side of superView
+- (CGFloat)top;
 
-// Right padding
-- (CGFloat)paddingRight;
+// Right value to left side of superView
+- (CGFloat)right;
 
-// Bottom padding
-- (CGFloat)paddingBottom;
+// Bottom value to top side of superView
+- (CGFloat)bottom;
 
 // Autolayout scale of originX
 - (void)setScaleOriginX:(CGFloat)value;

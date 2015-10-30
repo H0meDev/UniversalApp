@@ -283,7 +283,7 @@
                          if (finished) {
                              CGFloat width = self.indicatorView.sizeWidth;
                              self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
-                             self.indicatorView.originX = self.stateLabel.paddingLeft - width - 6;
+                             self.indicatorView.originX = self.stateLabel.left - width - 6;
                              self.indicatorView.hidden = NO;
                              [self.indicatorView startAnimation];
                              
@@ -485,7 +485,7 @@
                          if (finished) {
                              CGFloat width = self.indicatorView.sizeWidth;
                              self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
-                             self.indicatorView.originX = self.stateLabel.paddingLeft - width - 6;
+                             self.indicatorView.originX = self.stateLabel.left - width - 6;
                              self.indicatorView.hidden = NO;
                              [self.indicatorView startAnimation];
                              

@@ -210,22 +210,22 @@
     self.frame = frame;
 }
 
-- (CGFloat)paddingLeft
+- (CGFloat)left
 {
     return self.originX;
 }
 
-- (CGFloat)paddingTop
+- (CGFloat)top
 {
     return self.originY;
 }
 
-- (CGFloat)paddingRight
+- (CGFloat)right
 {
     return self.originX + self.sizeWidth;
 }
 
-- (CGFloat)paddingBottom
+- (CGFloat)bottom
 {
     return self.originY + self.sizeHeight;
 }

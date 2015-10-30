@@ -228,7 +228,7 @@
         
         sizeWidth = (sizeWidth > maxWidth)?maxWidth:sizeWidth;
         _titleLabel.sizeWidth = sizeWidth;
-        self.sizeWidth = _titleLabel.paddingRight;
+        self.sizeWidth = _titleLabel.right;
     }
 }
 

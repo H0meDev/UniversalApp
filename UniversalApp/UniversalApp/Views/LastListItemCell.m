@@ -39,7 +39,7 @@
         
         CGFloat height = self.labelContent.contentHeight;
         self.labelContent.sizeHeight = height;
-        self.sizeHeight = self.labelContent.paddingBottom + 8;
+        self.sizeHeight = self.labelContent.bottom + 8;
     }
 }
 

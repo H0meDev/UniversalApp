@@ -11,15 +11,20 @@
 
 + (NSTimeInterval)timeInterval
 {
+    return [[NSDate date]timeIntervalSince1970];
+}
+
++ (NSTimeInterval)timeIntervalOfChina
+{
     @autoreleasepool
     {
         NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"Asia/Shanghai"];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
-        [dateFormatter setDateFormat:@"yyyyMMddHHmmssSSS"];
-        [dateFormatter setTimeZone:timeZone];
-        NSString *timestamp = [dateFormatter stringFromDate:[NSDate date]];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        [formatter setTimeZone:timeZone];
+        [formatter setDateFormat:@"yyyyMMddHHmmssSSS"];
+        NSString *timestamp = [formatter stringFromDate:[NSDate date]];
         
-        return [[dateFormatter dateFromString:timestamp]timeIntervalSince1970];
+        return [[formatter dateFromString:timestamp]timeIntervalSince1970];
     }
 }
 
@@ -27,11 +32,24 @@
 {
     @autoreleasepool
     {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
-        [dateFormatter setDateFormat:format];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        [formatter setTimeZone:[NSTimeZone localTimeZone]];
+        [formatter setDateFormat:format];
         NSDate *date = [NSDate date];
     
-        return [dateFormatter dateFromString:[dateFormatter stringFromDate:date]];
+        return [formatter dateFromString:[formatter stringFromDate:date]];
+    }
+}
+
++ (NSDate *)dateFromString:(NSString *)string format:(NSString *)format
+{
+    @autoreleasepool
+    {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        [formatter setTimeZone:[NSTimeZone localTimeZone]];
+        [formatter setDateFormat:format];
+        
+        return [formatter dateFromString:string];
     }
 }
 
@@ -40,6 +58,7 @@
     @autoreleasepool
     {
         NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        [formatter setTimeZone:[NSTimeZone localTimeZone]];
         [formatter setDateFormat:format];
         
         return [formatter stringFromDate:self];
