@@ -46,6 +46,7 @@
     titleLabel.center = pointMake(screenWidth() / 2., naviHeight() / 2.);
     titleLabel.font = boldSystemFont(16);
     titleLabel.textColor = sysBlackColor();
+    titleLabel.backgroundColor = sysClearColor();
     titleLabel.numberOfLines = 1;
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -90,7 +91,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initalize
+        // Initialize
         self.userInteractionEnabled = YES;
         super.backgroundColor = sysClearColor();
         self.backgroundColor = rgbColor(249., 249., 249.);

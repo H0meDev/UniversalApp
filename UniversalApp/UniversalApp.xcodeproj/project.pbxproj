@@ -12,8 +12,8 @@
 		F515080C1B92F60D00C12A87 /* LeftPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F515080B1B92F60D00C12A87 /* LeftPageViewController.m */; };
 		F51508101B92F61E00C12A87 /* MiddlePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F515080F1B92F61E00C12A87 /* MiddlePageViewController.m */; };
 		F51508131B92F62D00C12A87 /* RightPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51508121B92F62D00C12A87 /* RightPageViewController.m */; };
-		F51593901BAC5A900043FFE9 /* LastListItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F515938E1BAC5A900043FFE9 /* LastListItemCell.m */; settings = {ASSET_TAGS = (); }; };
-		F51593911BAC5A900043FFE9 /* LastListItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F515938F1BAC5A900043FFE9 /* LastListItemCell.xib */; settings = {ASSET_TAGS = (); }; };
+		F51593901BAC5A900043FFE9 /* LastListItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F515938E1BAC5A900043FFE9 /* LastListItemCell.m */; };
+		F51593911BAC5A900043FFE9 /* LastListItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F515938F1BAC5A900043FFE9 /* LastListItemCell.xib */; };
 		F51C116E1B905B6900F29C3F /* HomeTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11561B905B6900F29C3F /* HomeTabViewController.m */; };
 		F51C116F1B905B6900F29C3F /* LastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11581B905B6900F29C3F /* LastViewController.m */; };
 		F51C11701B905B6900F29C3F /* NextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C115A1B905B6900F29C3F /* NextViewController.m */; };
@@ -37,7 +37,7 @@
 		F5687D3D1B022B640073594C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5687D3C1B022B640073594C /* Images.xcassets */; };
 		F5687D651B022D510073594C /* UFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5687D641B022D510073594C /* UFoundation.framework */; };
 		F5859F471B70B0BC004EC7D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F5859F491B70B0BC004EC7D2 /* InfoPlist.strings */; };
-		F5C5E5B31BB3C0EB00AC039F /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5C5E5B21BB3C0EB00AC039F /* CurrentViewController.m */; settings = {ASSET_TAGS = (); }; };
+		F5C5E5B31BB3C0EB00AC039F /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5C5E5B21BB3C0EB00AC039F /* CurrentViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -594,7 +594,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/../UFoundation/UFoundation/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fenjin.aozzolamp;
@@ -623,7 +623,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/../UFoundation/UFoundation/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fenjin.aozzolamp;

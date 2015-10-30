@@ -51,6 +51,11 @@
 @property (nonatomic, assign) NSUInteger countOfControllerToPop;
 
 /*
+ * Preferred style
+ */
+- (UIStatusBarStyle)preferredStatusBarStyle;
+
+/*
  * If enableGuesture is YES, these methods will work
  */
 - (void)controllerWillMove;

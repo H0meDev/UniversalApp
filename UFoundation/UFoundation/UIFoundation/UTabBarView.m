@@ -21,7 +21,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initalize
+        // Initialize
         self.backgroundColor = rgbColor(249., 249., 249.);
         
         [self topLineView];

@@ -30,8 +30,14 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        // Initialize
         self.userInteractionEnabled = YES;
-        self.backgroundColor = rgbColor(249., 249., 249.);
+        
+        if (systemVersionFloat() < 7.0) {
+            self.backgroundColor = sysBlackColor();
+        } else {
+            self.backgroundColor = rgbColor(249., 249., 249.);
+        }
         
         _needsStretch = NO;
         

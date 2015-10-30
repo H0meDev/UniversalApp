@@ -38,7 +38,7 @@
 {
     self = [super init];
     if (self) {
-        // Initalize
+        // Initialize
         self.contentAlpha = 1.0;
         self.backgroundAlpha = 1.0;
     }
@@ -68,7 +68,7 @@
 {
     self = [super init];
     if (self) {
-        // Initalize
+        // Initialize
         _stateItems = [NSMutableArray array];
         _textAlignment = NSTextAlignmentCenter;
         _showMaskWhenHighlighted = YES;

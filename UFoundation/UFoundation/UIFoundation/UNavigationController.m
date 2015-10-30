@@ -51,7 +51,7 @@
 {
     self = [super initWithRootViewController:rootViewController];
     if (self) {
-        // Initalize
+        // Initialize
     }
     
     return self;
@@ -64,8 +64,8 @@
     self.navigationBarHidden = YES;
     self.view.backgroundColor = sysClearColor();
     
-    _transformRate = 0.35;
     _startPoint = CGPointZero;
+    _transformRate = (systemVersionFloat() >= 7.0)?0.35:1.0;
     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]init];
     panGesture.maximumNumberOfTouches = 1;
@@ -241,7 +241,11 @@
     [self.contentView bringSubviewToFront:_currentNavigationView];
     
     // Refresh status bar style
-    [self setNeedsStatusBarAppearanceUpdate];
+    if (systemVersionFloat() >= 7.0) {
+        [self setNeedsStatusBarAppearanceUpdate];
+    } else {
+        [[UIApplication sharedApplication]setStatusBarStyle:[viewController preferredStatusBarStyle]];
+    }
 }
 
 - (BOOL)isValidateInPoint:(CGPoint)point
@@ -361,6 +365,8 @@
     }
     
     CGFloat originY = screenHeight() - tabHeight();
+    originY = (systemVersionFloat() >= 7.0)?originY:originY - statusHeight();
+    
     UIView *contentView = nil;
     UIViewController *theController = self.viewControllers[index];
     

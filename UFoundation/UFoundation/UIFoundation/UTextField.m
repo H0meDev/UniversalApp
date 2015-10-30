@@ -17,7 +17,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initalize
+        // Initialize
         _textInsets = edgeMake(0, 0, 0, 0);
         
         [self backgroundView];

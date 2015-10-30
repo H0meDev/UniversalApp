@@ -37,7 +37,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initalize
+        // Initialize
         self.backgroundColor = sysClearColor();
         _maxAutoloadProgress = 98;
         

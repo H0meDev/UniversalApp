@@ -171,7 +171,7 @@ singletonImplementationWith(UHTTPDataCache, Cache);
 {
     self = [super init];
     if (self) {
-        // Initalize
+        // Initialize
         _connection = [[NSURLConnection alloc]initWithRequest:request delegate:self startImmediately:NO];
         
         _callback = callback;
@@ -225,7 +225,7 @@ singletonImplementationWith(UHTTPDataCache, Cache);
 {
     self = [super init];
     if (self) {
-        // Initalize
+        // Initialize
         _connection = [[NSURLConnection alloc]initWithRequest:request delegate:self startImmediately:NO];
         _delegate = delegate;
         _tag = tag;
