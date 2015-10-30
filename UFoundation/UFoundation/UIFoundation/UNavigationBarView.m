@@ -249,26 +249,25 @@
     CGFloat alpha = 0;
     if (xvalue >= 0) {
         // Current contentView
-        CGFloat progress = (screenWidth() - xvalue) / screenWidth(); // 1 -> 0
-        _contentView.alpha = progress;
-        
-        alpha = powf(progress, 2.);
-        progress = powf((1 - progress), 2.);
-        
+        CGFloat progress = 1. - (screenWidth() - xvalue) / screenWidth(); // 0 -> 1
         CGFloat originX = 0;
+        
+        alpha = powf(1. - progress, 4.);
+        
         if (animated) {
-            originX = (leftValue - 24.) * progress + leftValue;
+            originX = (screenWidth() - leftValue) * progress + leftValue;
         } else {
             if (before) {
-                originX = leftValue * 2 - 24.;
+                originX = leftValue * 2.;
             } else {
-                originX = (screenWidth() - 24. - leftValue) * progress + leftValue;
+                originX = (screenWidth() - leftValue) * progress + leftValue;
             }
         }
         
+        _contentView.alpha = animated?alpha:1.;
         _contentView.titleLabel.alpha = alpha;
-        _contentView.titleLabel.originX = originX;
         _contentView.bottomLineView.alpha = alpha;
+        _contentView.titleLabel.originX = originX;
 
         if (_leftButton) {
             CGFloat centerX = leftItemView.sizeWidth / 2. + 24.;
@@ -277,16 +276,14 @@
     } else {
         // Last contentView
         CGFloat progress = (screenWidth() + xvalue) / screenWidth(); // 1 -> 0
-        _contentView.alpha = progress;
-        
-        progress = powf(progress, 2.);
-        alpha = progress;
-        
         CGFloat originX = progress * (leftValue - 24) + 24;
+
+        alpha = powf(progress, 4.);
         
+        _contentView.alpha = animated?alpha:1.;
         _contentView.titleLabel.alpha = alpha;
-        _contentView.titleLabel.originX = originX;
         _contentView.bottomLineView.alpha = alpha;
+        _contentView.titleLabel.originX = originX;
         
         if (_leftButton) {
             leftItemView.originX = 24 - (1 - progress) * leftItemView.sizeWidth;
