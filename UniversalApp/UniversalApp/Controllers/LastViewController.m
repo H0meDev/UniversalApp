@@ -72,7 +72,7 @@
     _tableView = tableView;
     
     // Start refresh
-    [tableView startHeaderRefresh];
+//    [tableView startHeaderRefresh];
     
     // KVO
     [self addKeyValueObject:_tableView keyPath:@"contentOffset"];

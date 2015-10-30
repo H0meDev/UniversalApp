@@ -20,9 +20,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.navigationBarView.title = @"Next";
-    self.statusBarView.backgroundColor = sysClearColor();
-    self.navigationBarView.backgroundColor = sysClearColor();
+    self.navigationBarView.title = @"Next Page";
+//    self.statusBarView.backgroundColor = sysClearColor();
+//    self.navigationBarView.backgroundColor = sysClearColor();
     self.containerView.backgroundColor = sysLightGrayColor();
     
 //    UNavigationBarButton *rightButton = [UNavigationBarButton button];
