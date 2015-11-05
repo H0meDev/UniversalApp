@@ -91,6 +91,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[UHTTPOperation connectionDidFinishLoading:]:UHTTPOperation.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_timeout">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[UNavigationController refreshAllBarColorWith:]:UNavigationController.m">
          <PersistentStrings>
             <PersistentString
@@ -162,6 +170,14 @@
             </PersistentString>
             <PersistentString
                value = "_lastNavigationView.enable">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[UHTTPOperation main]:UHTTPOperation.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_timeout">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -350,6 +366,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_currentStatusBGView.backgroundColor">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__45-[UMessageBox showInController:type:message:]_block_invoke:UMessageBox.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.window">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

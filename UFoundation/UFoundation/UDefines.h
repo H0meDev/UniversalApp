@@ -133,7 +133,7 @@ CG_INLINE CGRange CGRangeMake(CGFloat min, CGFloat max)
 
 // Singleton interface
 #define singletonInterface(classname) + (classname *)shared##classname
-#define singletonInterfaceWith(classname, method) + (classname *)shared##method
+#define singletonInterfaceWith(classname, method) + (classname *)method
 
 // Singleton implementation
 #define singletonImplementation(classname) \
@@ -144,7 +144,7 @@ static classname *shared##classname = nil; \
 
 #define singletonImplementationWith(classname, method) \
 static classname *shared##method = nil; \
-+ (classname *)shared##method { @synchronized(self) { if (shared##method == nil) { shared##method = [[self alloc]init]; } } return shared##method; } \
++ (classname *)method { @synchronized(self) { if (shared##method == nil) { shared##method = [[self alloc]init]; } } return shared##method; } \
 + (id)allocWithZone:(NSZone *)zone { @synchronized(self) {  if (shared##method == nil) { shared##method = [super allocWithZone:zone]; return shared##method; } } return nil; } \
 - (id)copyWithZone:(NSZone *)zone { return self; }
 

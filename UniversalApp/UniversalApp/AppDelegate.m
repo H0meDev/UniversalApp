@@ -24,18 +24,23 @@
     self.window.backgroundColor = sysWhiteColor();
     [self.window makeKeyAndVisible];
     
-//    [UHTTPRequest sendAsynWithURL:@"https://www.baidu.com"
-//                           header:nil
-//                           method:@"GET"
-//                            param:nil
-//                         callback:^(UHTTPStatus *status, id data)
-//     {
-//         if (status.code == UHTTPCodeLocalCached) {
-//             NSLog(@"From cached:\n%@", data);
-//         } else if (status.code == UHTTPCodeOK) {
-//             NSLog(@"From request:\n%@", data);
-//         }
-//    } cached:YES];
+    UHTTPRequestParam *param = [UHTTPRequestParam param];
+    param.url = @"https://www.baidu.com";
+    param.method = @"GET";
+    param.timeout = 20;
+    param.cached = YES;
+    
+    UHTTPOperation *operation = [UHTTPRequest sendAsynWith:(UHTTPRequestParam *)param
+                                                  callback:^(UHTTPStatus *status, id data)
+    {
+         if (status.code == UHTTPCodeLocalCached) {
+             NSLog(@"From cached:\n%@", data);
+         } else if (status.code == UHTTPCodeOK) {
+             NSLog(@"From request:\n%@", data);
+         }
+    }];
+    
+    [operation cancel];
     
     // Start timer
     [UTimerBooster start];

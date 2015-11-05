@@ -39,9 +39,34 @@
 
 @end
 
+@implementation UHTTPOperationParam
+
++ (id)param
+{
+    @autoreleasepool
+    {
+        return [[UHTTPOperationParam alloc]init];
+    }
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        // Initialize
+        _timeout = 30;
+        _retry = 0;
+        _retryInterval = 0;
+    }
+    
+    return self;
+}
+
+@end
+
 @implementation UHTTPDataCache
 
-singletonImplementationWith(UHTTPDataCache, Cache);
+singletonImplementationWith(UHTTPDataCache, cache);
 
 - (id)init
 {
@@ -128,119 +153,109 @@ singletonImplementationWith(UHTTPDataCache, Cache);
 
 #pragma mark - Life Circle
 
-- (id)initWithRequest:(NSURLRequest *)request callback:(UHTTPCallback)callback
+- (id)initWith:(UHTTPOperationParam *)param
+      callback:(UHTTPCallback)callback
 {
-    return [self initWithRequest:request recevied:NULL callback:callback];
+    return [self initWith:param recevied:NULL callback:callback];
 }
 
-- (id)initWithRequest:(NSURLRequest *)request
-             recevied:(UHTTPReceivedDataCallback)recevied
-             callback:(UHTTPCallback)callback
+- (id)initWith:(UHTTPOperationParam *)param
+      recevied:(UHTTPReceivedDataCallback)recevied
+      callback:(UHTTPCallback)callback
 {
-    return [self initWithRequest:request response:NULL recevied:recevied callback:callback];
+    return [self initWith:param response:NULL recevied:recevied callback:callback];
 }
 
-- (id)initWithRequest:(NSURLRequest *)request
-             response:(UHTTPReceivedResponseCallback)response
-             recevied:(UHTTPReceivedDataCallback)recevied
-             callback:(UHTTPCallback)callback
-{
-    return [self initWithRequest:request cached:NO response:response recevied:recevied callback:callback];
-}
-
-- (id)initWithRequest:(NSURLRequest *)request
-                cached:(BOOL)cached
-             callback:(UHTTPCallback)callback
-{
-    return [self initWithRequest:request cached:cached recevied:NULL callback:callback];
-}
-
-- (id)initWithRequest:(NSURLRequest *)request
-                cached:(BOOL)cached
-             recevied:(UHTTPReceivedDataCallback)recevied
-             callback:(UHTTPCallback)callback
-{
-    return [self initWithRequest:request cached:cached response:NULL recevied:recevied callback:callback];
-}
-
-- (id)initWithRequest:(NSURLRequest *)request
-                cached:(BOOL)cached
-             response:(UHTTPReceivedResponseCallback)response
-             recevied:(UHTTPReceivedDataCallback)recevied
-             callback:(UHTTPCallback)callback
+- (id)initWith:(UHTTPOperationParam *)param
+      response:(UHTTPReceivedResponseCallback)response
+      recevied:(UHTTPReceivedDataCallback)recevied
+      callback:(UHTTPCallback)callback
 {
     self = [super init];
     if (self) {
         // Initialize
-        _connection = [[NSURLConnection alloc]initWithRequest:request delegate:self startImmediately:NO];
-        
-        _callback = callback;
-        if (response) {
-            _response = response;
-        }
-        
-        if (recevied) {
-            _received = recevied;
-        }
-        
-        // Default is 30
-        [self setTimeOut:30];
-        _receivedLength = 0;
-        _countOfRetry = 0;
-        _timeInterval = 0;
-        _request = request;
-        _cacheRequired = cached;
-        
-        if (_cacheRequired) {
-            // Get cached data
-            NSMutableURLRequest *mrequest = (NSMutableURLRequest *)request;
-            NSString *url = request.URL.absoluteString;
-            NSString *method = request.HTTPMethod;
-            NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
-            _cacheKey = [[NSString stringWithFormat:@"%@%@%@", url, method, body]MD5String];
+        if (checkClass(param, UHTTPOperationParam)) {
+            _connection = [[NSURLConnection alloc]initWithRequest:param.request delegate:self startImmediately:NO];
             
-            id data = [[UHTTPDataCache sharedCache]objectForKey:_cacheKey];
-            if (data) {
-                // Status for cache
-                UHTTPStatus *status = [[UHTTPStatus alloc]init];
-                status.code = UHTTPCodeLocalCached;
+            _callback = callback;
+            if (response) {
+                _response = response;
+            }
+            
+            if (recevied) {
+                _received = recevied;
+            }
+            
+            // Default is 30
+            [self setTimeOut:param.timeout];
+            _receivedLength = 0;
+            _request = param.request;
+            _countOfRetry = param.retry;
+            _timeInterval = param.retryInterval;
+            _cacheRequired = param.cached;
+            
+            if (_cacheRequired) {
+                // Get cached data
+                NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
+                NSString *url = param.request.URL.absoluteString;
+                NSString *method = param.request.HTTPMethod;
+                NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
+                _cacheKey = [[NSString stringWithFormat:@"%@%@%@", url, method, body]MD5String];
                 
-                if (_callback) {
-                    _callback(status, data);
+                id data = [[UHTTPDataCache cache]objectForKey:_cacheKey];
+                if (data) {
+                    // Status for cache
+                    UHTTPStatus *status = [[UHTTPStatus alloc]init];
+                    status.code = UHTTPCodeLocalCached;
+                    
+                    if (_callback) {
+                        _callback(status, data);
+                    }
                 }
             }
-        }
-        
+            
+            // Add to UOperationQueue
+            [UOperationQueue addOperation:self];
+            
 #if DEBUG
-        NSMutableURLRequest *mrequest = (NSMutableURLRequest *)request;
-        NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
-        NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nBODY: %@\n*********************************",mrequest.URL.absoluteString,mrequest.HTTPMethod,body);
+            NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
+            NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
+            NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nBODY: %@\n*********************************",mrequest.URL.absoluteString,mrequest.HTTPMethod,body);
 #endif
+        }
     }
     
     return self;
 }
 
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id<UHTTPRequestDelegate>)delegate tag:(int)tag
+- (id)initWith:(UHTTPOperationParam *)param
+      delegate:(id<UHTTPRequestDelegate>)delegate
+           tag:(int)tag
 {
     self = [super init];
     if (self) {
         // Initialize
-        _connection = [[NSURLConnection alloc]initWithRequest:request delegate:self startImmediately:NO];
-        _delegate = delegate;
-        _tag = tag;
-        
-        // Default is 30
-        [self setTimeOut:30];
-        _receivedLength = 0;
-        _countOfRetry = 0;
-        _timeInterval = 0;
-        _request = request;
-        
+        if (checkClass(param, UHTTPOperationParam)) {
+            _connection = [[NSURLConnection alloc]initWithRequest:param.request delegate:self startImmediately:NO];
+            _delegate = delegate;
+            _tag = tag;
+            
+            // Default is 30
+            [self setTimeOut:param.timeout];
+            _receivedLength = 0;
+            _request = param.request;
+            _countOfRetry = param.retry;
+            _timeInterval = param.retryInterval;
+            _cacheRequired = param.cached;
+            
+            // Add to UOperationQueue
+            [UOperationQueue addOperation:self];
+            
 #if DEBUG
-        NSMutableURLRequest *mrequest = (NSMutableURLRequest *)request;
-        NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nBODY: %@\n*********************************",mrequest.URL.absoluteString,mrequest.HTTPMethod,mrequest.HTTPBody);
+            NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
+            NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nBODY: %@\n*********************************",mrequest.URL.absoluteString,mrequest.HTTPMethod,mrequest.HTTPBody);
 #endif
+        }
     }
     return self;
 }
@@ -292,25 +307,21 @@ singletonImplementationWith(UHTTPDataCache, Cache);
     [UTimerBooster start];
 }
 
-- (void)setRetryTimes:(NSUInteger)times
-{
-    _countOfRetry = times;
-}
-
-- (void)setRetryTimeInterval:(NSUInteger)timeInterval
-{
-    _timeInterval = timeInterval;
-}
-
 - (void)cancel
 {
     // Cancel connection
     [_connection cancel];
     
-    // Remove from cache
+    // Remove timeout & operation
+    [UTimerBooster removeTarget:self];
     [UOperationQueue removeOperation:self];
     
     [super cancel];
+  
+#if DEBUG
+    NSURLRequest *request = _connection.originalRequest;
+    NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: CANCELD\nURL: %@\n*********************************", request.URL.absoluteString);
+#endif
 }
 
 - (void)requestTimeout
@@ -470,7 +481,7 @@ singletonImplementationWith(UHTTPDataCache, Cache);
         
         // Cache data
         if (_cacheRequired) {
-            [[UHTTPDataCache sharedCache]setValue:_responseObject forKey:_cacheKey];
+            [[UHTTPDataCache cache]setValue:_responseObject forKey:_cacheKey];
         }
         
         [UOperationQueue removeOperation:self];

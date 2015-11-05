@@ -60,9 +60,21 @@ typedef NS_ENUM(NSInteger, UHTTPCode)
 
 @end
 
+@interface UHTTPOperationParam : NSObject
+
+@property (nonatomic, strong) NSURLRequest *request;
+@property (nonatomic, assign) BOOL cached;
+@property (nonatomic, assign) CGFloat timeout;
+@property (nonatomic, assign) NSInteger retry;
+@property (nonatomic, assign) CGFloat retryInterval;
+
++ (id)param;
+
+@end
+
 @interface UHTTPDataCache : NSObject
 
-singletonInterfaceWith(UHTTPDataCache, Cache);
+singletonInterfaceWith(UHTTPDataCache, cache);
 
 // Write & read
 - (void)setValue:(id)value forKey:(NSString *)key;
@@ -98,45 +110,22 @@ typedef void (^UHTTPCallback)(UHTTPStatus *status, id data);
 @property (nonatomic, readonly) NSURLRequest *request;
 
 /*
- * Block style with no cache
+ * Block style
  */
-- (id)initWithRequest:(NSURLRequest *)request callback:(UHTTPCallback)callback;
-- (id)initWithRequest:(NSURLRequest *)request
-             recevied:(UHTTPReceivedDataCallback)recevied
-             callback:(UHTTPCallback)callback;
-- (id)initWithRequest:(NSURLRequest *)request
-             response:(UHTTPReceivedResponseCallback)response
-             recevied:(UHTTPReceivedDataCallback)recevied
-             callback:(UHTTPCallback)callback;
+- (id)initWith:(UHTTPOperationParam *)param
+      callback:(UHTTPCallback)callback;
 
-- (id)initWithRequest:(NSURLRequest *)request
-                cached:(BOOL)cached
-             callback:(UHTTPCallback)callback;
-- (id)initWithRequest:(NSURLRequest *)request
-                cached:(BOOL)cached
-             recevied:(UHTTPReceivedDataCallback)recevied
-             callback:(UHTTPCallback)callback;
-- (id)initWithRequest:(NSURLRequest *)request
-                cached:(BOOL)cached
-             response:(UHTTPReceivedResponseCallback)response
-             recevied:(UHTTPReceivedDataCallback)recevied
-             callback:(UHTTPCallback)callback;
+- (id)initWith:(UHTTPOperationParam *)param
+      recevied:(UHTTPReceivedDataCallback)recevied
+      callback:(UHTTPCallback)callback;
+
+- (id)initWith:(UHTTPOperationParam *)param
+      response:(UHTTPReceivedResponseCallback)response
+      recevied:(UHTTPReceivedDataCallback)recevied
+      callback:(UHTTPCallback)callback;
 
 // Delegate
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id<UHTTPRequestDelegate>)delegate tag:(int)tag;
-
-// Set timeout, seconds should not less than 1s
-// Seconds default is 30s
-- (void)setTimeOut:(NSInteger)seconds;
-
-// Set times of retry
-// times default is 0
-// If your request is no need to retry, you`d better not use it.
-// For that, the operation may stay long in memory.
-- (void)setRetryTimes:(NSUInteger)times;
-
-// Time interval of retry, default is 5s
-- (void)setRetryTimeInterval:(NSUInteger)timeInterval;
+- (id)initWith:(UHTTPOperationParam *)param delegate:(id<UHTTPRequestDelegate>)delegate tag:(int)tag;
 
 // Cancel request operation
 - (void)cancel;

@@ -35,6 +35,7 @@
 #import "UTabBarButton.h"
 #import "URefreshView.h"
 #import "UIndicatorView.h"
+#import "UMessageBox.h"
 
 // Categories
 #import "NSObject+UAExtension.h"

@@ -388,6 +388,10 @@
         self.titleLabel.alpha = item.contentAlpha;
         self.imageView.alpha = item.contentAlpha;
         self.backgroundView.alpha = item.backgroundAlpha;
+    } else if (UIControlStateHighlighted == state && _showMaskWhenHighlighted) {
+        _backgroundMaskView.backgroundColor = _backgroundMaskHColor;
+    } else {
+        _backgroundMaskView.backgroundColor = sysClearColor();
     }
 }
 

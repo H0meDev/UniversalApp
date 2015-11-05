@@ -73,6 +73,10 @@
 		F51C12001B90633900F29C3F /* UIImageView+UAExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11FE1B90633900F29C3F /* UIImageView+UAExtension.m */; };
 		F52AD2BA1BB2AA630074DBA1 /* UIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = F52AD2B81BB2AA630074DBA1 /* UIndicatorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F52AD2BB1BB2AA630074DBA1 /* UIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F52AD2B91BB2AA630074DBA1 /* UIndicatorView.m */; };
+		F52BE99C1BE9E91700BF1243 /* UMessageBox.h in Headers */ = {isa = PBXBuildFile; fileRef = F52BE99A1BE9E91700BF1243 /* UMessageBox.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F52BE99D1BE9E91700BF1243 /* UMessageBox.m in Sources */ = {isa = PBXBuildFile; fileRef = F52BE99B1BE9E91700BF1243 /* UMessageBox.m */; };
+		F54EBDCE1BEB1BA7000ABF3C /* UReuseablePool.h in Headers */ = {isa = PBXBuildFile; fileRef = F54EBDCC1BEB1BA7000ABF3C /* UReuseablePool.h */; };
+		F54EBDCF1BEB1BA8000ABF3C /* UReuseablePool.m in Sources */ = {isa = PBXBuildFile; fileRef = F54EBDCD1BEB1BA7000ABF3C /* UReuseablePool.m */; };
 		F5687D681B022E6B0073594C /* UFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = F5974D011B02051F004AA14F /* UFoundation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F5687D691B022E6B0073594C /* UDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = F5974D021B02057F004AA14F /* UDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F56C2CB51B04449400D5DF66 /* UNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = F56C2CAF1B04449400D5DF66 /* UNavigationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -176,6 +180,10 @@
 		F51C11FE1B90633900F29C3F /* UIImageView+UAExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+UAExtension.m"; sourceTree = "<group>"; };
 		F52AD2B81BB2AA630074DBA1 /* UIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIndicatorView.h; path = UIFoundation/UIndicatorView.h; sourceTree = "<group>"; };
 		F52AD2B91BB2AA630074DBA1 /* UIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIndicatorView.m; path = UIFoundation/UIndicatorView.m; sourceTree = "<group>"; };
+		F52BE99A1BE9E91700BF1243 /* UMessageBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMessageBox.h; sourceTree = "<group>"; };
+		F52BE99B1BE9E91700BF1243 /* UMessageBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMessageBox.m; sourceTree = "<group>"; };
+		F54EBDCC1BEB1BA7000ABF3C /* UReuseablePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UReuseablePool.h; sourceTree = "<group>"; };
+		F54EBDCD1BEB1BA7000ABF3C /* UReuseablePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UReuseablePool.m; sourceTree = "<group>"; };
 		F56C2CAF1B04449400D5DF66 /* UNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UNavigationController.h; path = UIFoundation/UNavigationController.h; sourceTree = "<group>"; };
 		F56C2CB11B04449400D5DF66 /* UTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UTabBarController.h; path = UIFoundation/UTabBarController.h; sourceTree = "<group>"; };
 		F56C2CB21B04449400D5DF66 /* UTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UTabBarController.m; path = UIFoundation/UTabBarController.m; sourceTree = "<group>"; };
@@ -293,6 +301,8 @@
 				F51C11C61B90630300F29C3F /* UProgressHUD */,
 				F51C11C91B90630300F29C3F /* UThreadPool */,
 				F51C11CC1B90630300F29C3F /* UTimerBooster */,
+				F54EBDCB1BEB1B81000ABF3C /* UReuseablePool */,
+				F52BE9991BE9E91700BF1243 /* UMessageBox */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -360,11 +370,29 @@
 			path = UTimerBooster;
 			sourceTree = "<group>";
 		};
+		F52BE9991BE9E91700BF1243 /* UMessageBox */ = {
+			isa = PBXGroup;
+			children = (
+				F52BE99A1BE9E91700BF1243 /* UMessageBox.h */,
+				F52BE99B1BE9E91700BF1243 /* UMessageBox.m */,
+			);
+			path = UMessageBox;
+			sourceTree = "<group>";
+		};
 		F53867381B41589C0024EA4F /* Models */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		F54EBDCB1BEB1B81000ABF3C /* UReuseablePool */ = {
+			isa = PBXGroup;
+			children = (
+				F54EBDCC1BEB1BA7000ABF3C /* UReuseablePool.h */,
+				F54EBDCD1BEB1BA7000ABF3C /* UReuseablePool.m */,
+			);
+			path = UReuseablePool;
 			sourceTree = "<group>";
 		};
 		F5974CBA1B01FA0D004AA14F = {
@@ -483,6 +511,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F52BE99C1BE9E91700BF1243 /* UMessageBox.h in Headers */,
 				F52AD2BA1BB2AA630074DBA1 /* UIndicatorView.h in Headers */,
 				F510A6B51BB0D82C000968AB /* URefreshView.h in Headers */,
 				F515938B1BAC55440043FFE9 /* UIScrollView+UAExtension.h in Headers */,
@@ -503,6 +532,7 @@
 				F51C11D31B90630300F29C3F /* NSDate+UAExtension.h in Headers */,
 				F51C11F31B90630300F29C3F /* UModel.h in Headers */,
 				F51C11ED1B90630300F29C3F /* UIViewController+UAExtension.h in Headers */,
+				F54EBDCE1BEB1BA7000ABF3C /* UReuseablePool.h in Headers */,
 				F51C11DB1B90630300F29C3F /* UIButton+UAExtension.h in Headers */,
 				F51C11EB1B90630300F29C3F /* UIView+UAExtension.h in Headers */,
 				F51C11D71B90630300F29C3F /* NSObject+UAExtension.h in Headers */,
@@ -610,6 +640,7 @@
 				F51C11D41B90630300F29C3F /* NSDate+UAExtension.m in Sources */,
 				F56C2CEA1B0444D300D5DF66 /* UWebView.m in Sources */,
 				F56C2CB81B04449400D5DF66 /* UTabBarController.m in Sources */,
+				F54EBDCF1BEB1BA8000ABF3C /* UReuseablePool.m in Sources */,
 				F51C11EA1B90630300F29C3F /* UITextView+UAExtension.m in Sources */,
 				F56C2CD81B0444D300D5DF66 /* ULabel.m in Sources */,
 				F51C11E61B90630300F29C3F /* UITableViewCell+UAExtension.m in Sources */,
@@ -617,6 +648,7 @@
 				F51C11E81B90630300F29C3F /* UITextField+UAExtension.m in Sources */,
 				F56C2CD61B0444D300D5DF66 /* UImageView.m in Sources */,
 				F51C11FA1B90630300F29C3F /* UThreadPool.m in Sources */,
+				F52BE99D1BE9E91700BF1243 /* UMessageBox.m in Sources */,
 				F51C11F21B90630300F29C3F /* UHTTPRequest.m in Sources */,
 				F50ED6081B79A1230027EC82 /* UImagePickerControllerController.m in Sources */,
 				F510A6B61BB0D82C000968AB /* URefreshView.m in Sources */,
