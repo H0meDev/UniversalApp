@@ -33,7 +33,7 @@
         self.delegate = self;
         
         self.height = 60.;
-        self.state = URefreshStateIdle;
+        self.state = URefreshStateNone;
         
         [self indicatorView];
         
@@ -50,9 +50,9 @@
 {
     [super setFrame:frame];
     
-    if (!CGRectEqualToRect(frame, CGRectZero) && self.state != URefreshStateRefreshing) {
-        self.stateLabel.center = pointMake(frame.size.width / 2., frame.size.height / 2.);
-        self.indicatorView.center = pointMake(frame.size.width / 2., frame.size.height / 2.);
+    if (!CGRectEqualToRect(frame, CGRectZero) && self.state != URefreshStateLoading) {
+        self.stateLabel.centerY = frame.size.height / 2.;
+        self.indicatorView.centerY = frame.size.height / 2.;
     }
 }
 
@@ -70,8 +70,9 @@
         return _stateLabel;
     }
     
+    CGFloat originX = 70 * screenWScale();
     ULabel *stateLabel = [[ULabel alloc]init];
-    stateLabel.frame = rectMake(0, 0, 168, 32);
+    stateLabel.frame = rectMake(originX, 0, screenWidth() - originX * 2, 40);
     stateLabel.font = systemFont(16);
     stateLabel.textColor = sysDarkGrayColor();
     stateLabel.textAlignment = NSTextAlignmentCenter;
@@ -88,10 +89,10 @@
     }
     
     UIndicatorView *indicatorView = [[UIndicatorView alloc]init];
-    indicatorView.hidden = YES;
-    indicatorView.frame = rectMake(0, 0, 26., 26.);
-    indicatorView.style = UIndicatorStyleCircle;
+    indicatorView.frame = rectMake(40 * screenWScale(), 0, 30., 30.);
+    indicatorView.style = UIndicatorStyleProgressCircle;
     indicatorView.indicatorColor = sysDarkGrayColor();
+    indicatorView.indicatorGapAngle = M_PI * 0.2;
     [self addSubview:indicatorView];
     _indicatorView = indicatorView;
     
@@ -148,6 +149,20 @@
 
 @implementation URefreshHeaderView
 
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialize
+        self.titleOfIdle = URefreshViewHeaderIdleTitle;
+        self.titleOfReady = URefreshViewHeaderReadyTitle;
+        self.titleOfLoading = URefreshViewHeaderLoadingTitle;
+        self.titleOfDisable = URefreshViewHeaderDisableTitle;
+    }
+    
+    return self;
+}
+
 /*
  // Only override drawRect: if you perform custom drawing.
  // An empty implementation adversely affects performance during animation.
@@ -191,7 +206,7 @@
 {
     if ([keyPath isEqualToString:@"contentOffset"]) {
         // Unresponse to refreshing or disable
-        if (self.state == URefreshStateRefreshing ||
+        if (self.state == URefreshStateLoading ||
             self.state == URefreshStateDisable)
         {
             return;
@@ -227,28 +242,25 @@
         switch (state) {
             case URefreshStateIdle:
             {
-                self.stateLabel.text = URefreshViewHeaderIdleTitle;
+                self.stateLabel.text = self.titleOfIdle;
             }
                 break;
                 
             case URefreshStateReady:
             {
-                self.stateLabel.text = URefreshViewHeaderReadyTitle;
+                self.stateLabel.text = self.titleOfReady;
             }
                 break;
                 
-            case URefreshStateRefreshing:
+            case URefreshStateLoading:
             {
-                self.stateLabel.text = URefreshViewHeaderRefreshingTitle;
+                self.stateLabel.text = self.titleOfLoading;
             }
                 break;
                 
             default:
                 break;
         }
-        
-        self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
-        self.stateLabel.center = pointMake(self.sizeWidth / 2., self.sizeHeight / 2.);
     }
 }
 
@@ -259,12 +271,12 @@
 
 - (void)startRefresh
 {
-    if (self.state == URefreshStateRefreshing ||
+    if (self.state == URefreshStateLoading ||
         self.state == URefreshStateDisable)
     {
         return;
     }
-    self.state = URefreshStateRefreshing;
+    self.state = URefreshStateLoading;
     
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
@@ -281,10 +293,7 @@
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
-                             CGFloat width = self.indicatorView.sizeWidth;
-                             self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
-                             self.indicatorView.originX = self.stateLabel.left - width - 6;
-                             self.indicatorView.hidden = NO;
+                             // Start animation
                              [self.indicatorView startAnimation];
                              
                              // Perform action
@@ -302,7 +311,6 @@
     }
     self.state = URefreshStateIdle;
     
-    self.indicatorView.hidden = YES;
     [self.indicatorView stopAnimation];
     
     // Resize
@@ -324,7 +332,7 @@
 
 - (void)refreshView:(URefreshView *)view progress:(CGFloat)progress
 {
-    //
+    self.indicatorView.progress = progress;
 }
 
 - (void)dealloc
@@ -347,6 +355,20 @@
 @end
 
 @implementation URefreshFooterView
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialize
+        self.titleOfIdle = URefreshViewFooterIdleTitle;
+        self.titleOfReady = URefreshViewFooterReadyTitle;
+        self.titleOfLoading = URefreshViewFooterLoadingTitle;
+        self.titleOfDisable = URefreshViewFooterDisableTitle;
+    }
+    
+    return self;
+}
 
 /*
  // Only override drawRect: if you perform custom drawing.
@@ -394,7 +416,7 @@
 {
     if ([keyPath isEqualToString:@"contentOffset"]) {
         // Unresponse to refreshing or disable
-        if (self.state == URefreshStateRefreshing ||
+        if (self.state == URefreshStateLoading ||
             self.state == URefreshStateDisable)
         {
             return;
@@ -432,28 +454,25 @@
         switch (state) {
             case URefreshStateIdle:
             {
-                self.stateLabel.text = URefreshViewFooterIdleTitle;
+                self.stateLabel.text = self.titleOfIdle;
             }
                 break;
                 
             case URefreshStateReady:
             {
-                self.stateLabel.text = URefreshViewFooterReadyTitle;
+                self.stateLabel.text = self.titleOfReady;
             }
                 break;
                 
-            case URefreshStateRefreshing:
+            case URefreshStateLoading:
             {
-                self.stateLabel.text = URefreshViewFooterRefreshingTitle;
+                self.stateLabel.text = self.titleOfLoading;
             }
                 break;
                 
             default:
                 break;
         }
-        
-        self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
-        self.stateLabel.center = pointMake(self.sizeWidth / 2., self.sizeHeight / 2.);
     }
 }
 
@@ -464,12 +483,12 @@
 
 - (void)startRefresh
 {
-    if (self.state == URefreshStateRefreshing ||
+    if (self.state == URefreshStateLoading ||
         self.state == URefreshStateDisable)
     {
         return;
     }
-    self.state = URefreshStateRefreshing;
+    self.state = URefreshStateLoading;
     
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
@@ -483,10 +502,7 @@
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
-                             CGFloat width = self.indicatorView.sizeWidth;
-                             self.stateLabel.sizeWidth = self.stateLabel.contentWidth;
-                             self.indicatorView.originX = self.stateLabel.left - width - 6;
-                             self.indicatorView.hidden = NO;
+                             // Start animation
                              [self.indicatorView startAnimation];
                              
                              // Perform action
@@ -504,7 +520,6 @@
     }
     self.state = URefreshStateIdle;
     
-    self.indicatorView.hidden = YES;
     [self.indicatorView stopAnimation];
     
     // Resize
@@ -526,7 +541,7 @@
 
 - (void)refreshView:(URefreshView *)view progress:(CGFloat)progress
 {
-    //
+    self.indicatorView.progress = progress;
 }
 
 - (void)dealloc

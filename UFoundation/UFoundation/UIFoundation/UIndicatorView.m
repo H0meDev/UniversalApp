@@ -10,6 +10,7 @@
 
 @interface UIndicatorView ()
 {
+    CAShapeLayer *_shapeLayer;
     UIndicatorStyle _style;
     BOOL _isAnimating;
 }
@@ -28,9 +29,11 @@
         super.backgroundColor = sysClearColor();
         
         // Default
+        _progress = 100;
         _indicatorWidth = 1.0;
         _style = UIndicatorStyleCircle;
         _indicatorColor = sysLightGrayColor();
+        _indicatorGapAngle = 0.2 * M_PI;
     }
     
     return self;
@@ -79,64 +82,94 @@
 
 #pragma mark - Methods
 
-- (void)fillIndicatorWith:(UIndicatorStyle)style
+- (void)fillIndicatorWith:(UIndicatorStyle)style progress:(CGFloat)progress
 {
-    // Remove last
-    [self.animationLayer.sublayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
-    
-    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-    shapeLayer.fillColor = nil;
-    shapeLayer.strokeColor = _indicatorColor.CGColor;
-    shapeLayer.lineWidth = _indicatorWidth;
-    shapeLayer.lineCap = kCALineCapRound;
-    [self.animationLayer addSublayer:shapeLayer];
+    if (!_shapeLayer) {
+        _shapeLayer = [CAShapeLayer layer];
+        [self.animationLayer addSublayer:_shapeLayer];
+    }
+
+    _shapeLayer.fillColor = nil;
+    _shapeLayer.strokeColor = _indicatorColor.CGColor;
+    _shapeLayer.lineWidth = _indicatorWidth;
+    _shapeLayer.lineCap = kCALineCapRound;
     
     switch (style) {
         case UIndicatorStyleCircle:
         {
             CGFloat radius = self.sizeWidth / 2. - _indicatorWidth / 2. - 2.;
             CGPoint center = pointMake(self.sizeWidth / 2., self.sizeWidth / 2.);
+            CGFloat startAngle = - M_PI_2 + _indicatorGapAngle / 2.;
+            CGFloat endAngle = M_PI * 2. - _indicatorGapAngle + startAngle;
             UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center
                                                                 radius:radius
-                                                            startAngle:0
-                                                              endAngle:M_PI * 1.8
+                                                            startAngle:startAngle
+                                                              endAngle:endAngle
                                                              clockwise:YES];
-            shapeLayer.path = path.CGPath;
+            _shapeLayer.path = path.CGPath;
         }
             break;
             
         case UIndicatorStyleProgressCircle:
         {
-            //
+            CGFloat radius = self.sizeWidth / 2. - _indicatorWidth / 2. - 2.;
+            CGPoint center = pointMake(self.sizeWidth / 2., self.sizeWidth / 2.);
+            CGFloat startAngle = - M_PI_2 + _indicatorGapAngle / 2.;
+            CGFloat endAngle = (M_PI * 2. - _indicatorGapAngle) * progress + startAngle;
+            UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center
+                                                                radius:radius
+                                                            startAngle:startAngle
+                                                              endAngle:endAngle
+                                                             clockwise:YES];
+            _shapeLayer.path = path.CGPath;
         }
+            break;
             
         default:
             break;
     }
 }
 
+- (void)setProgress:(CGFloat)progress
+{
+    if (_style == UIndicatorStyleProgressCircle) {
+        progress = (progress < 0)?0:progress;
+        progress = (progress > 1)?1:progress;
+        
+        _progress = progress;
+        
+        dispatch_async(main_queue(), ^{
+            [self fillIndicatorWith:_style progress:progress];
+        });
+    }
+}
+
 - (void)startAnimation
 {
-    [self fillIndicatorWith:_style];
-    
-    _isAnimating = YES;
-    
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-    animation.fromValue = [NSNumber numberWithFloat:0];
-    animation.toValue = [NSNumber numberWithFloat:2 * M_PI];
-    animation.duration = 1.0;
-    animation.autoreverses = NO;
-    animation.repeatCount = MAXFLOAT;
-    
-    self.animationLayer.anchorPoint = CGPointMake(0.5, 0.5);
-    [self.animationLayer addAnimation:animation forKey:@"AnimationRotation"];
+    dispatch_async(main_queue(), ^{
+        [self fillIndicatorWith:_style progress:_progress];
+        
+        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+        animation.fromValue = [NSNumber numberWithFloat:0];
+        animation.toValue = [NSNumber numberWithFloat:2 * M_PI];
+        animation.duration = 0.75;
+        animation.autoreverses = NO;
+        animation.repeatCount = MAXFLOAT;
+        
+        self.animationLayer.anchorPoint = CGPointMake(0.5, 0.5);
+        [self.animationLayer addAnimation:animation forKey:@"AnimationRotation"];
+        
+        _isAnimating = YES;
+    });
 }
 
 - (void)stopAnimation
 {
-    _isAnimating = NO;
-    
-    [self.animationLayer removeAllAnimations];
+    dispatch_async(main_queue(), ^{
+        [self.animationLayer removeAllAnimations];
+        
+        _isAnimating = NO;
+    });
 }
 
 @end

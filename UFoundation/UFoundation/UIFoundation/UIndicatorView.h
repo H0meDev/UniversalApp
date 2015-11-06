@@ -19,11 +19,15 @@ typedef NS_ENUM(NSInteger, UIndicatorStyle)
 @property (nonatomic, assign) UIndicatorStyle style;
 @property (nonatomic, copy) UIColor *indicatorColor;
 @property (nonatomic, assign) CGFloat indicatorWidth; // Default is 1.0f
+@property (nonatomic, assign) CGFloat indicatorGapAngle; // Default is 0.2 * M_PI
 
 // Titles
 @property (nonatomic, copy) NSString *titleOfReady;
 @property (nonatomic, copy) NSString *titleOfRefreshing;
 @property (nonatomic, copy) NSString *titleOfFinish;
+
+// Progress when style is UIndicatorStyleProgressCircle
+@property (nonatomic, assign) CGFloat progress; // 0 - 1.0
 
 - (void)startAnimation;
 - (void)stopAnimation;

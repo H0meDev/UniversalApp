@@ -10,9 +10,10 @@
 
 typedef NS_ENUM(NSInteger, URefreshState)
 {
-    URefreshStateIdle = 0,
+    URefreshStateNone = -1,
+    URefreshStateIdle,
     URefreshStateReady,
-    URefreshStateRefreshing,
+    URefreshStateLoading,
     URefreshStateDisable,
 };
 
@@ -24,14 +25,15 @@ typedef NS_ENUM(NSInteger, URefreshState)
 
 @end
 
-#define URefreshViewHeaderIdleTitle        @"下拉刷新"
-#define URefreshViewHeaderReadyTitle       @"松开刷新"
-#define URefreshViewHeaderRefreshingTitle  @"正在刷新"
+// Default titles
+#define URefreshViewHeaderIdleTitle        @"下拉准备刷新"
+#define URefreshViewHeaderReadyTitle       @"松开立即刷新"
+#define URefreshViewHeaderLoadingTitle     @"正在请求刷新"
 #define URefreshViewHeaderDisableTitle     @"暂无更新"
 
-#define URefreshViewFooterIdleTitle        @"上拉加载"
-#define URefreshViewFooterReadyTitle       @"松开加载"
-#define URefreshViewFooterRefreshingTitle  @"正在加载"
+#define URefreshViewFooterIdleTitle        @"上拉准备加载"
+#define URefreshViewFooterReadyTitle       @"松开立即加载"
+#define URefreshViewFooterLoadingTitle     @"正在请求加载"
 #define URefreshViewFooterDisableTitle     @"没有数据"
 
 @interface URefreshView : UView
@@ -40,6 +42,11 @@ typedef NS_ENUM(NSInteger, URefreshState)
 @property (nonatomic, retain) UIScrollView *scrollView;
 @property (nonatomic, assign) CGFloat height; //  Default is 60.
 @property (nonatomic, assign) BOOL enable;    //  Default is YES
+
+@property (nonatomic, copy) NSString *titleOfIdle;
+@property (nonatomic, copy) NSString *titleOfReady;
+@property (nonatomic, copy) NSString *titleOfLoading;
+@property (nonatomic, copy) NSString *titleOfDisable;
 
 - (void)addTarget:(id)target action:(SEL)action;
 
