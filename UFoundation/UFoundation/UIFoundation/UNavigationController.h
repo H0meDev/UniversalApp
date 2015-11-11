@@ -14,19 +14,17 @@
 @interface UNavigationController : UINavigationController
 
 /*
- * Status bar view
- * The status bar view can be costumized as you like
+ * Status bar
  */
 @property (nonatomic, weak, readonly) UStatusBarView *statusBarView;
 
 /*
- * Navigation bar view
- * The navigation bar view can be costumized as you like
+ * Navigation bar
  */
 @property (nonatomic, weak, readonly) UNavigationBarView *navigationBarView;
 
 /*
- * Controller of current rootViewController
+ * Controller of current visiable UViewController
  */
 @property (nonatomic, weak, readonly) UViewController *viewController;
 
