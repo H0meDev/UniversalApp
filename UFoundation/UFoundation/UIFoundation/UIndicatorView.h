@@ -32,4 +32,7 @@ typedef NS_ENUM(NSInteger, UIndicatorStyle)
 - (void)startAnimation;
 - (void)stopAnimation;
 
+// Progress when style is UIndicatorStyleProgressCircle
+- (void)setProgress:(CGFloat)progress animated:(BOOL)animated;
+
 @end

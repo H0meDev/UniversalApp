@@ -29,7 +29,7 @@
         super.backgroundColor = sysClearColor();
         
         // Default
-        _progress = 100;
+        _progress = 1.0;
         _indicatorWidth = 1.0;
         _style = UIndicatorStyleCircle;
         _indicatorColor = sysLightGrayColor();
@@ -82,12 +82,15 @@
 
 #pragma mark - Methods
 
-- (void)fillIndicatorWith:(UIndicatorStyle)style progress:(CGFloat)progress
+- (void)fillIndicatorWith:(UIndicatorStyle)style progress:(CGFloat)progress animated:(BOOL)animated
 {
     if (!_shapeLayer) {
         _shapeLayer = [CAShapeLayer layer];
         [self.animationLayer addSublayer:_shapeLayer];
     }
+    
+    // Remove all animations
+    [_shapeLayer removeAllAnimations];
 
     _shapeLayer.fillColor = nil;
     _shapeLayer.strokeColor = _indicatorColor.CGColor;
@@ -132,14 +135,19 @@
 
 - (void)setProgress:(CGFloat)progress
 {
-    if (_style == UIndicatorStyleProgressCircle) {
+    [self setProgress:progress animated:NO];
+}
+
+- (void)setProgress:(CGFloat)progress animated:(BOOL)animated
+{
+    if (UIndicatorStyleProgressCircle == _style && _progress != progress) {
         progress = (progress < 0)?0:progress;
         progress = (progress > 1)?1:progress;
         
         _progress = progress;
         
         dispatch_async(main_queue(), ^{
-            [self fillIndicatorWith:_style progress:progress];
+            [self fillIndicatorWith:_style progress:progress animated:animated];
         });
     }
 }
@@ -147,7 +155,8 @@
 - (void)startAnimation
 {
     dispatch_async(main_queue(), ^{
-        [self fillIndicatorWith:_style progress:_progress];
+        // Fill progress
+        [self fillIndicatorWith:_style progress:_progress animated:NO];
         
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
         animation.fromValue = [NSNumber numberWithFloat:0];

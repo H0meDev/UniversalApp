@@ -26,8 +26,8 @@
     self.countOfControllerToPop = 1;
     self.navigationBarView.title = @"Last";
     [self.navigationBarView.leftButton setTitle:@"Next"];
-//    self.statusBarView.backgroundColor = sysClearColor();
-//    self.navigationBarView.backgroundColor = sysClearColor();
+    self.statusBarView.backgroundColor = sysClearColor();
+    self.navigationBarView.backgroundColor = sysClearColor();
 
 //    self.statusBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
 //    self.navigationBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
@@ -65,9 +65,9 @@
 //    [self addSubview:button];
     
     UTableView *tableView = [[UTableView alloc]init];
-    tableView.frame = rectMake(0, 0, screenWidth(), screenHeight() - 64);
-    tableView.contentInset = edgeMake(0, 0, 0, 0);
-    tableView.scrollIndicatorInsets = edgeMake(0, 0, 0, 0);
+    tableView.frame = rectMake(0, - 64, screenWidth(), screenHeight());
+    tableView.contentInset = edgeMake(64, 0, 0, 0);
+    tableView.scrollIndicatorInsets = edgeMake(64, 0, 0, 0);
     tableView.defaultDelegate = self;
     [tableView addHeaderTarget:self action:@selector(headerAction:)];
     [tableView addFooterTarget:self action:@selector(footerAction:)];

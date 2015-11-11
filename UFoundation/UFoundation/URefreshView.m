@@ -281,15 +281,12 @@
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
     insets.top = _insetValue + self.height;
-    CGPoint offset = self.scrollView.contentOffset;
-    offset.y = - self.height;
     
     [UIView animateWithDuration:animationDuration() - 0.5
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          self.scrollView.contentInset = insets;
-                         self.scrollView.contentOffset = offset;
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
@@ -332,7 +329,12 @@
 
 - (void)refreshView:(URefreshView *)view progress:(CGFloat)progress
 {
-    self.indicatorView.progress = progress;
+    CGFloat delta = self.indicatorView.progress - progress;
+    if (fabs(delta) <= 0.1) {
+        self.indicatorView.progress = progress;
+    } else {
+        [self.indicatorView setProgress:progress animated:YES];
+    }
 }
 
 - (void)dealloc
@@ -541,7 +543,12 @@
 
 - (void)refreshView:(URefreshView *)view progress:(CGFloat)progress
 {
-    self.indicatorView.progress = progress;
+    CGFloat delta = self.indicatorView.progress - progress;
+    if (fabs(delta) <= 0.1) {
+        self.indicatorView.progress = progress;
+    } else {
+        [self.indicatorView setProgress:progress animated:YES];
+    }
 }
 
 - (void)dealloc
