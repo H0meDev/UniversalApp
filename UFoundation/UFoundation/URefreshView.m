@@ -105,6 +105,7 @@
     [self finishRefresh];
     
     // Change state
+    self.indicatorView.progress = 0;
     self.state = enable?URefreshStateIdle:URefreshStateDisable;
 }
 
