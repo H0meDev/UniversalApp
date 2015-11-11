@@ -131,6 +131,8 @@
         default:
             break;
     }
+    
+    _progress = progress;
 }
 
 - (void)setProgress:(CGFloat)progress
@@ -143,8 +145,6 @@
     if (UIndicatorStyleProgressCircle == _style && _progress != progress) {
         progress = (progress < 0)?0:progress;
         progress = (progress > 1)?1:progress;
-        
-        _progress = progress;
         
         dispatch_async(main_queue(), ^{
             [self fillIndicatorWith:_style progress:progress animated:animated];

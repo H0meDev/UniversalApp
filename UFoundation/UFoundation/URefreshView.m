@@ -15,6 +15,7 @@
 
 @property (nonatomic, weak) id target;
 @property (nonatomic, assign) SEL action;
+@property (nonatomic, assign) CGFloat progress;
 @property (nonatomic, assign) URefreshState state;
 @property (nonatomic, retain) ULabel *stateLabel;
 @property (nonatomic, retain) UIndicatorView *indicatorView;
@@ -33,6 +34,7 @@
         self.delegate = self;
         
         self.height = 60.;
+        self.progress = 0;
         self.state = URefreshStateNone;
         
         [self indicatorView];
@@ -236,7 +238,10 @@
             [self performOnMainThread:@selector(startRefresh)];
         } else if (checkAction(self.delegate, @selector(refreshView:progress:))) {
             // Callback
-            [self.delegate refreshView:self progress:progress];
+            if (self.progress != progress) {
+                [self.delegate refreshView:self progress:progress];
+                self.progress = progress;
+            }
         }
     } else if ([keyPath isEqualToString:@"state"]) {
         URefreshState state = [change[@"new"] integerValue];
@@ -447,7 +452,10 @@
             [self performOnMainThread:@selector(startRefresh)];
         } else if (checkAction(self.delegate, @selector(refreshView:progress:))) {
             // Callback
-            [self.delegate refreshView:self progress:progress];
+            if (self.progress != progress) {
+                [self.delegate refreshView:self progress:progress];
+                self.progress = progress;
+            }
         }
     } else if ([keyPath isEqualToString:@"contentSize"]) {
         CGSize size = [change[@"new"] CGSizeValue];
