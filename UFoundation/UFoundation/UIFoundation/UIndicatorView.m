@@ -29,7 +29,7 @@
         super.backgroundColor = sysClearColor();
         
         // Default
-        _progress = 1.0;
+        _progress = 0;
         _indicatorWidth = 1.0;
         _style = UIndicatorStyleCircle;
         _indicatorColor = sysLightGrayColor();
@@ -88,14 +88,13 @@
         _shapeLayer = [CAShapeLayer layer];
         [self.animationLayer addSublayer:_shapeLayer];
     }
-    
-    // Remove all animations
-    [_shapeLayer removeAllAnimations];
 
-    _shapeLayer.fillColor = nil;
+    _shapeLayer.strokeEnd = 1.0;
+    _shapeLayer.fillColor = NULL;
     _shapeLayer.strokeColor = _indicatorColor.CGColor;
     _shapeLayer.lineWidth = _indicatorWidth;
     _shapeLayer.lineCap = kCALineCapRound;
+    [_shapeLayer removeAllAnimations];
     
     switch (style) {
         case UIndicatorStyleCircle:
@@ -115,16 +114,29 @@
             
         case UIndicatorStyleProgressCircle:
         {
-            CGFloat radius = self.sizeWidth / 2. - _indicatorWidth / 2. - 2.;
-            CGPoint center = pointMake(self.sizeWidth / 2., self.sizeWidth / 2.);
-            CGFloat startAngle = - M_PI_2 + _indicatorGapAngle / 2.;
-            CGFloat endAngle = (M_PI * 2. - _indicatorGapAngle) * progress + startAngle;
-            UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center
-                                                                radius:radius
-                                                            startAngle:startAngle
-                                                              endAngle:endAngle
-                                                             clockwise:YES];
-            _shapeLayer.path = path.CGPath;
+            if (animated && _progress != progress) {
+                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+                animation.delegate = self;
+                animation.removedOnCompletion = NO;
+                animation.fillMode = kCAFillModeForwards;
+                animation.duration = animationDuration();
+                animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                animation.fromValue = [NSNumber numberWithFloat:1.0];
+                animation.toValue = [NSNumber numberWithFloat:0.0];
+                
+                [_shapeLayer addAnimation:animation forKey:@"strokeEndAnimation"];
+            } else {
+                CGFloat radius = self.sizeWidth / 2. - _indicatorWidth / 2. - 2.;
+                CGPoint center = pointMake(self.sizeWidth / 2., self.sizeWidth / 2.);
+                CGFloat startAngle = - M_PI_2 + _indicatorGapAngle / 2.;
+                CGFloat endAngle = (M_PI * 2. - _indicatorGapAngle) * progress + startAngle;
+                UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center
+                                                                    radius:radius
+                                                                startAngle:startAngle
+                                                                  endAngle:endAngle
+                                                                 clockwise:YES];
+                _shapeLayer.path = path.CGPath;
+            }
         }
             break;
             
@@ -142,7 +154,7 @@
 
 - (void)setProgress:(CGFloat)progress animated:(BOOL)animated
 {
-    if (UIndicatorStyleProgressCircle == _style && _progress != progress) {
+    if (UIndicatorStyleProgressCircle == _style) {
         progress = (progress < 0)?0:progress;
         progress = (progress > 1)?1:progress;
         
@@ -156,7 +168,7 @@
 {
     dispatch_async(main_queue(), ^{
         // Fill progress
-        [self fillIndicatorWith:_style progress:_progress animated:NO];
+        [self fillIndicatorWith:_style progress:1.0 animated:NO];
         
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
         animation.fromValue = [NSNumber numberWithFloat:0];
@@ -179,6 +191,13 @@
         
         _isAnimating = NO;
     });
+}
+
+#pragma mark - Animation delegate
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    [self setProgress:_progress animated:NO];
 }
 
 @end
