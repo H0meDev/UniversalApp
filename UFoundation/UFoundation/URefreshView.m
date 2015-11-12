@@ -328,7 +328,7 @@
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
-                             //
+                             self.indicatorView.progress = 0;
                          }
                      }];
 }
@@ -545,7 +545,7 @@
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
-                             //
+                             self.indicatorView.progress = 0;
                          }
                      }];
 }
