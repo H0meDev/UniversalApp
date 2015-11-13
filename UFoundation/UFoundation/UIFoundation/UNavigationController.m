@@ -47,6 +47,14 @@
 @synthesize statusBarView = _statusBarView;
 @synthesize navigationBarView = _navigationBarView;
 
++ (id)controllerWithRoot:(UIViewController *)rootViewController
+{
+    @autoreleasepool
+    {
+        return [[[self class] alloc]initWithRootViewController:rootViewController];
+    }
+}
+
 - (id)initWithRootViewController:(UIViewController *)rootViewController
 {
     self = [super initWithRootViewController:rootViewController];

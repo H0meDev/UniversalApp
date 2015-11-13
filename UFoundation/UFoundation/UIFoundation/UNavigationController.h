@@ -28,4 +28,7 @@
  */
 @property (nonatomic, weak, readonly) UViewController *viewController;
 
+// Init with root view controller
++ (id)controllerWithRoot:(UIViewController *)rootViewController;
+
 @end

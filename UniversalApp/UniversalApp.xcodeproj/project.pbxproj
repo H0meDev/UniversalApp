@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F50233311B70E3AA00DB94EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F50233331B70E3AA00DB94EB /* Localizable.strings */; };
 		F511C1DC1B6F2A5F00DBAECE /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F511C1DB1B6F2A5F00DBAECE /* Resource.bundle */; };
+		F514CC8A1BF59D5B001B8906 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F514CC891BF59D5B001B8906 /* Launch Screen.storyboard */; };
 		F515080C1B92F60D00C12A87 /* LeftPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F515080B1B92F60D00C12A87 /* LeftPageViewController.m */; };
 		F51508101B92F61E00C12A87 /* MiddlePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F515080F1B92F61E00C12A87 /* MiddlePageViewController.m */; };
 		F51508131B92F62D00C12A87 /* RightPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51508121B92F62D00C12A87 /* RightPageViewController.m */; };
@@ -55,6 +56,7 @@
 		F50233341B70E3AC00DB94EB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		F502DA191B709D0D00AC5B52 /* UniversalApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UniversalApp-Prefix.pch"; sourceTree = "<group>"; };
 		F511C1DB1B6F2A5F00DBAECE /* Resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Resource.bundle; path = ../UFoundation/Resource.bundle; sourceTree = "<group>"; };
+		F514CC891BF59D5B001B8906 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		F515080A1B92F60D00C12A87 /* LeftPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftPageViewController.h; sourceTree = "<group>"; };
 		F515080B1B92F60D00C12A87 /* LeftPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftPageViewController.m; sourceTree = "<group>"; };
 		F515080E1B92F61E00C12A87 /* MiddlePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiddlePageViewController.h; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 				F56C2CF71B0446B100D5DF66 /* AppBase */,
 				F5687D331B022B640073594C /* AppDelegate.h */,
 				F5687D341B022B640073594C /* AppDelegate.m */,
+				F514CC891BF59D5B001B8906 /* Launch Screen.storyboard */,
 				F5687D3C1B022B640073594C /* Images.xcassets */,
 				F5687D2F1B022B640073594C /* Supporting Files */,
 			);
@@ -418,6 +421,7 @@
 				F5859F471B70B0BC004EC7D2 /* InfoPlist.strings in Resources */,
 				F511C1DC1B6F2A5F00DBAECE /* Resource.bundle in Resources */,
 				F51C11791B905B6900F29C3F /* default_skin.plist in Resources */,
+				F514CC8A1BF59D5B001B8906 /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -110,7 +110,7 @@
 - (void)gotoHomePage
 {
     HomeTabViewController *home = [[HomeTabViewController alloc]init];
-    BaseNavigationController *root = [[BaseNavigationController alloc]initWithRootViewController:home];
+    BaseNavigationController *root = [BaseNavigationController controllerWithRoot:home];
     self.window.rootViewController = root;
 }
 
