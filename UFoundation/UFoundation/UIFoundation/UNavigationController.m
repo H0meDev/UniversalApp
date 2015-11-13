@@ -422,14 +422,16 @@
 - (UViewController *)controllerWith:(UIViewController *)viewController
 {
     while (1) {
-        if (checkClass(viewController, UViewController)) {
-            return (UViewController *)viewController;
-        } else if (checkClass(viewController, UTabBarController)) {
+        if (checkClass(viewController, UTabBarController)) {
             UTabBarController *tabController = (UTabBarController *)viewController;
             viewController = tabController.selectedViewController;
         } else if (checkClass(viewController, UNavigationController)) {
             UNavigationController *navController = (UNavigationController *)viewController;
             viewController = navController.visibleViewController;
+        } else if (checkClass(viewController, UViewController)) {
+            return (UViewController *)viewController;
+        } else if (checkClass(viewController, UIViewController)) {
+            return nil;
         }
     }
 }
