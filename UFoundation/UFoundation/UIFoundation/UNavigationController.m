@@ -486,7 +486,7 @@
 {
     [self resetAllBarsWith:YES];
     [UIView animateWithDuration:naviAnimtaionDuration()
-                          delay:0.03
+                          delay:0.02
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          [self repositionBarsWithX:0 animated:YES];
@@ -532,7 +532,7 @@
 {
     [self resetAllBarsWith:NO];
     [UIView animateWithDuration:naviAnimtaionDuration()
-                          delay:0.03
+                          delay:0.02
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          [self repositionBarsWithX:screenWidth() animated:YES];

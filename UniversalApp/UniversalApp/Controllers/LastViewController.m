@@ -26,8 +26,8 @@
     self.countOfControllerToPop = 1;
     self.navigationBarView.title = @"Last";
     [self.navigationBarView.leftButton setTitle:@"Next"];
-    self.statusBarView.backgroundColor = sysClearColor();
-    self.navigationBarView.backgroundColor = sysClearColor();
+    self.statusBarView.backgroundColor = [sysBlueColor() colorWithAlphaComponent:0.3];
+    self.navigationBarView.backgroundColor = [sysBlueColor() colorWithAlphaComponent:0.3];
 
 //    self.statusBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
 //    self.navigationBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
