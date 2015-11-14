@@ -194,8 +194,8 @@
     
     if (!CGRectEqualToRect(CGRectZero, frame)) {
         if (_enableProgress) {
-            self.webView.frame = rectMake(0, 2.4, frame.size.width, frame.size.height - 2.4);
-            self.progressView.frame = rectMake(0, 0, frame.size.width, 2.4);
+            self.webView.frame = rectMake(0, 2.0, frame.size.width, frame.size.height - 2.0);
+            self.progressView.frame = rectMake(0, 0, frame.size.width, 2.0);
         } else {
             self.webView.frame = rectMake(0, 0, frame.size.width, frame.size.height);
         }
