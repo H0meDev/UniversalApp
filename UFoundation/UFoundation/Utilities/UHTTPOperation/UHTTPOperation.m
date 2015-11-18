@@ -380,9 +380,6 @@ singletonImplementationWith(UHTTPDataCache, cache);
             [_delegate requestDidReceviedResponseCallback:status];
         }
     }
-    
-    // Cancel timeout
-    [UTimerBooster removeTarget:self];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
@@ -405,6 +402,9 @@ singletonImplementationWith(UHTTPDataCache, cache);
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    // Cancel timeout
+    [UTimerBooster removeTarget:self];
+    
     NSURLRequest *request = [connection originalRequest];
     clock_t endTime = clock();
     CGFloat usedTime = (CGFloat)(endTime - _startTime)/CLOCKS_PER_SEC;
@@ -490,14 +490,14 @@ singletonImplementationWith(UHTTPDataCache, cache);
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    // Cancel timeout
+    [UTimerBooster removeTarget:self];
+    
     NSURLRequest *request = [connection originalRequest];
     clock_t endTime = clock();
     CGFloat usedTime = (CGFloat)(endTime - _startTime)/CLOCKS_PER_SEC;
     
     NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: ERROR\nTIME: %fs\nURL: %@\nDESCRIPTION: \n%@\n*********************************", usedTime, request.URL.absoluteString, error.description);
-    
-    // Cancel timeout
-    [UTimerBooster removeTarget:self];
     
     if (_countOfRetry > 1) {
         _countOfRetry --;
