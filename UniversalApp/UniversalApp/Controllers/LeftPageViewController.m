@@ -9,9 +9,9 @@
 #import "LeftPageViewController.h"
 #import "NextViewController.h"
 
-@interface LeftPageViewController ()
+@interface LeftPageViewController () <UListViewDataSource, UListViewDelegate>
 {
-//    UIndicatorView *_indicator;
+    UListView *_listView;
 }
 
 @end
@@ -26,40 +26,12 @@
     self.enableBackButton = NO;
     self.navigationBarView.title = @"Left";
     
-//    _indicator = [[UIndicatorView alloc]init];
-//    _indicator.frame = rectMake(0, 0, 30, 30);
-//    _indicator.center = pointMake(screenWidth() / 2., 60);
-//    [_indicator startAnimation];
-//    [self addSubview:_indicator];
+    _listView = [[UListView alloc]initWithStyle:UListViewStyleHorizontal];
+    _listView.frame = rectMake(0, 0, screenWidth(), 300);
+    _listView.dataSource = self;
+    _listView.delegate = self;
+    [self addSubview:_listView];
     
-    UButton *button = [UButton button];
-    button.frame = rectMake(0, 160, screenWidth(), 50);
-    [button setTitle:@"Push"];
-    button.backgroundColor = sysRedColor();
-    [button addTarget:self action:@selector(buttonAction)];
-    [self addSubview:button];
-    
-//    UIView *layoutView = [[UIView alloc]init];
-//    layoutView.frame = rectMake(0, 0, self.containerView.sizeWidth, self.containerView.sizeHeight - tabHeight());
-//    layoutView.backgroundColor = sysRedColor();
-//    [self addSubview:layoutView];
-//    
-//    UIViewLayoutParam *param = [UIViewLayoutParam param];
-//    param.layoutType = UIViewLayoutTypeHLinearResizeAll;
-//    param.edgeInsets = edgeMake(10, 10, 10, 10);
-//    param.spacingHorizontal = 10;
-//    param.spacingVertical = 10;
-//    
-//    NSMutableArray *marray = [NSMutableArray array];
-//    for (int i = 0; i < 4; i ++) {
-//        UIView *view = [[UIView alloc]init];
-//        view.size = sizeMake(80, 80);
-//        view.backgroundColor = sysYellowColor();
-//        [marray addObject:view];
-//    }
-//    
-//    param.layoutViews = marray;
-//    layoutView.layoutParam = param;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -83,11 +55,27 @@
 }
 */
 
-- (void)buttonAction
+#pragma mark -  UListViewDataSource & UListViewDelegate
+
+- (NSInteger)numberOfRowInListView:(UListView *)listView
 {
-    NextViewController *next = [[NextViewController alloc]init];
-    [next.navigationBarView.leftButton setTitle:self.navigationBarView.title];
-    [self pushViewController:next];
+    return 100;
+}
+
+- (CGFloat)listView:(UListView *)listView heightForIndex:(NSInteger)index
+{
+    return 100;
+}
+
+- (UListViewCell *)listView:(UListView *)listView cellAtIndex:(NSInteger)index
+{
+    UListViewCell *cell = [listView dequeueReusableCellWithIdentifier:@"UListViewCell"];
+    if (!cell) {
+        cell = [UListViewCell cell];
+        [listView reuseCell:cell forIdentifier:@"UListViewCell"];
+    }
+    
+    return cell;
 }
 
 @end

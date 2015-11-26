@@ -37,6 +37,7 @@
         self.view.backgroundColor = sysWhiteColor();
         
         if (systemVersionFloat() >= 7.0) {
+            self.edgesForExtendedLayout = UIRectEdgeNone;
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
     }

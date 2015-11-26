@@ -72,6 +72,11 @@
     self.navigationBarHidden = YES;
     self.view.backgroundColor = sysClearColor();
     
+    if (systemVersionFloat() >= 7.0) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
+    
     _startPoint = CGPointZero;
     _transformRate = (systemVersionFloat() >= 7.0)?0.35:1.0;
     

@@ -25,6 +25,11 @@
     // Do any additional setup after loading the view.
     
     self.view.backgroundColor = sysClearColor();
+    
+    if (systemVersionFloat() >= 7.0) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

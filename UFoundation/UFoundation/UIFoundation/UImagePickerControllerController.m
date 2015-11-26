@@ -106,6 +106,7 @@
     // Do any additional setup after loading the view.
     
     if (systemVersionFloat() >= 7.0) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
@@ -329,6 +330,7 @@
     // Do any additional setup after loading the view.
     
     if (systemVersionFloat() >= 7.0) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
