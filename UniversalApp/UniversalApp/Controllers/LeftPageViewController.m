@@ -62,7 +62,7 @@
     return 100;
 }
 
-- (CGFloat)listView:(UListView *)listView heightForIndex:(NSInteger)index
+- (CGFloat)listView:(UListView *)listView heightOrWidthForIndex:(NSInteger)index
 {
     return 100;
 }
