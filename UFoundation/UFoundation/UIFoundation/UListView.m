@@ -110,14 +110,14 @@
     // Resize scrollView
     self.scrollView.frame = rectMake(0, 0, frame.size.width, frame.size.height);
     
-    if (_style == UListViewStyleHorizontal) {
-        self.scrollView.showsVerticalScrollIndicator = YES;
-        self.scrollView.showsHorizontalScrollIndicator = YES;
-        self.scrollView.contentSize = sizeMake(frame.size.width + 0.5, 0);
-    } else if (_style == UListViewStyleVertical) {
+    if (_style == UListViewStyleVertical) {
         self.scrollView.showsVerticalScrollIndicator = YES;
         self.scrollView.showsHorizontalScrollIndicator = NO;
         self.scrollView.contentSize = sizeMake(0, frame.size.height + 0.5);
+    } else if (_style == UListViewStyleHorizontal) {
+        self.scrollView.showsVerticalScrollIndicator = YES;
+        self.scrollView.showsHorizontalScrollIndicator = YES;
+        self.scrollView.contentSize = sizeMake(frame.size.width + 0.5, 0);
     }
 }
 
@@ -139,9 +139,9 @@
 {
     _numberOfCells = [self.dataSource numberOfRowInListView:self];
     
-    if (_style == UListViewStyleHorizontal) {
+    if (_style == UListViewStyleVertical) {
         //
-    } else if (_style == UListViewStyleVertical) {
+    } else if (_style == UListViewStyleHorizontal) {
         //
     }
 }
