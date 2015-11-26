@@ -11,15 +11,15 @@
 
 @interface UHTTPRequestParam : NSObject
 
-@property (nonatomic, strong) NSString *url;
-@property (nonatomic, strong) NSString *method;
+@property (nonatomic, strong) NSString *url;        // Server API address
+@property (nonatomic, strong) NSString *method;     // Default is GET
 @property (nonatomic, strong) NSDictionary *header;
 @property (nonatomic, strong) NSDictionary *body;
-@property (nonatomic, assign) CGFloat timeout;
-@property (nonatomic, assign) CGFloat retry;
-@property (nonatomic, assign) CGFloat retryInterval;
-@property (nonatomic, assign) BOOL json;
-@property (nonatomic, assign) BOOL cached;
+@property (nonatomic, assign) CGFloat timeout;       // Default 30s
+@property (nonatomic, assign) CGFloat retry;         // Default 0
+@property (nonatomic, assign) CGFloat retryInterval; // Default 0
+@property (nonatomic, assign) BOOL json;             // Default is YES, JSON format for POST or other methods
+@property (nonatomic, assign) BOOL cached;           // Default is NO, when cached, the request will load data from cached firstly
 
 + (id)param;
 

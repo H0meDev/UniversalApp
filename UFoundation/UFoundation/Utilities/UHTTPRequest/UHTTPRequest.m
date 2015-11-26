@@ -27,6 +27,7 @@
     self = [super init];
     if (self) {
         // Initialize
+        _method = @"GET";
         _timeout = 30;
         _retry = 0;
         _retryInterval = 0;

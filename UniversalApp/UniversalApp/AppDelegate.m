@@ -25,13 +25,11 @@
     [self.window makeKeyAndVisible];
     
     UHTTPRequestParam *param = [UHTTPRequestParam param];
-    param.url = @"https://www.baidu.com";
-    param.method = @"GET";
-    param.timeout = 20;
+    param.url = @"https://www.ifeng.com";
     param.cached = YES;
     
-    UHTTPOperation *operation = [UHTTPRequest sendAsynWith:(UHTTPRequestParam *)param
-                                                  callback:^(UHTTPStatus *status, id data)
+    [UHTTPRequest sendAsynWith:(UHTTPRequestParam *)param
+                      callback:^(UHTTPStatus *status, id data)
     {
          if (status.code == UHTTPCodeLocalCached) {
              NSLog(@"From cached:\n%@", data);
@@ -39,8 +37,6 @@
              NSLog(@"From request:\n%@", data);
          }
     }];
-    
-    [operation cancel];
     
     // Start timer
     [UTimerBooster start];

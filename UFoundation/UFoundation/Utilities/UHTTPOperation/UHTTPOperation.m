@@ -219,8 +219,9 @@ singletonImplementationWith(UHTTPDataCache, cache);
             
 #if DEBUG
             NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
+            NSDictionary *header = mrequest.allHTTPHeaderFields;
             NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
-            NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nBODY: %@\n*********************************",mrequest.URL.absoluteString,mrequest.HTTPMethod,body);
+            NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nHEADER: \n%@\nBODY: %@\n*********************************",mrequest.URL.absoluteString, mrequest.HTTPMethod, header, body);
 #endif
         }
     }
@@ -253,7 +254,9 @@ singletonImplementationWith(UHTTPDataCache, cache);
             
 #if DEBUG
             NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
-            NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nBODY: %@\n*********************************",mrequest.URL.absoluteString,mrequest.HTTPMethod,mrequest.HTTPBody);
+            NSDictionary *header = mrequest.allHTTPHeaderFields;
+            NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
+            NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nHEADER: \n%@\nBODY: %@\n*********************************", mrequest.URL.absoluteString, mrequest.HTTPMethod, header, body);
 #endif
         }
     }
@@ -385,7 +388,10 @@ singletonImplementationWith(UHTTPDataCache, cache);
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     if (_receivedData == nil) {
-        _receivedData = [[NSMutableData alloc]init];
+        _receivedData = [NSMutableData data];
+        
+        // Cancel timeout
+        [UTimerBooster removeTarget:self];
     }
     [_receivedData appendData:data];
     
@@ -402,9 +408,6 @@ singletonImplementationWith(UHTTPDataCache, cache);
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    // Cancel timeout
-    [UTimerBooster removeTarget:self];
-    
     NSURLRequest *request = [connection originalRequest];
     clock_t endTime = clock();
     CGFloat usedTime = (CGFloat)(endTime - _startTime)/CLOCKS_PER_SEC;
@@ -484,6 +487,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
             [[UHTTPDataCache cache]setValue:_responseObject forKey:_cacheKey];
         }
         
+        _receivedData = nil;
         [UOperationQueue removeOperation:self];
     }
 }
@@ -525,6 +529,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
         _operationHolder = nil;
     }
     
+    _receivedData = nil;
     [UOperationQueue removeOperation:self];
 }
 
