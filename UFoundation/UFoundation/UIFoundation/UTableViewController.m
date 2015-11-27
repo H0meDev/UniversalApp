@@ -14,6 +14,8 @@
 
 @implementation UTableViewController
 
+@synthesize tableView = _tableView;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -36,7 +38,25 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
+#pragma mark - Properties
+
+- (UITableView *)tableView
+{
+    if (_tableView) {
+        return _tableView;
+    }
+    
+    UITableView *tableView = [[UITableView alloc]init];
+    tableView.frame = self.containerView.bounds;
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    [self addSubview:tableView];
+    _tableView = tableView;
+    
+    return _tableView;
+}
+
+#pragma mark - UITableViewDataSource & UITableViewDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -48,15 +68,13 @@
     return 0;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    @autoreleasepool
+    {
+        return [[UITableViewCell alloc]init];
+    }
 }
-*/
 
 /*
 // Override to support conditional editing of the table view.

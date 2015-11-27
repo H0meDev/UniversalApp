@@ -41,7 +41,6 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 @interface UListView : UIView
 
 @property (nonatomic, readonly) UListViewStyle style;
-@property (nonatomic, strong, readonly) UIScrollView *scrollView;
 @property (nonatomic, weak) id <UListViewDataSource> dataSource;
 @property (nonatomic, weak) id <UListViewDelegate> delegate;
 
@@ -51,5 +50,8 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 // Cell reuse
 - (void)reuseCell:(UListViewCell *)cell forIdentifier:(NSString *)identifier;
 - (UListViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier;
+
+// Refresh
+- (void)reloadData;
 
 @end

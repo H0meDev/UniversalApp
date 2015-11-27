@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UDefines.h"
+#import "UViewController.h"
 
-@interface UTableViewController : UITableViewController
+@interface UTableViewController : UViewController <UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, readonly, strong) UITableView *tableView;
 
 @end

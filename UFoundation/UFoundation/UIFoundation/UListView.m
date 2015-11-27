@@ -27,19 +27,21 @@
 }
 
 @property (atomic, strong) NSMutableArray *cellArray;
+@property (nonatomic, strong) UIScrollView *scrollView;
 
 @end
 
 @implementation UListView
 
 @synthesize style = _style;
-@synthesize scrollView = _scrollView;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         _style = UListViewStyleVertical;
+        _numberOfCells = -1;
+        
         self.clipsToBounds = YES;
         self.userInteractionEnabled = YES;
         self.backgroundColor = sysWhiteColor();
@@ -58,6 +60,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         _style = style;
+        _numberOfCells = -1;
+        
         self.clipsToBounds = YES;
         self.userInteractionEnabled = YES;
         self.backgroundColor = sysWhiteColor();
@@ -121,6 +125,15 @@
     }
 }
 
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    [super willMoveToWindow:newWindow];
+    
+    if (_numberOfCells == -1) {
+        _numberOfCells = [self.dataSource numberOfRowInListView:self];
+    }
+}
+
 #pragma mark - Methods
 
 - (void)reuseCell:(UListViewCell *)cell forIdentifier:(NSString *)identifier
@@ -137,13 +150,16 @@
 
 - (void)dequeueCellsWith:(CGPoint)offset
 {
-    _numberOfCells = [self.dataSource numberOfRowInListView:self];
-    
     if (_style == UListViewStyleVertical) {
         //
     } else if (_style == UListViewStyleHorizontal) {
         //
     }
+}
+
+- (void)reloadData
+{
+    //
 }
 
 #pragma mark - KVO
