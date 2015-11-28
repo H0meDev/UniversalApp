@@ -8,6 +8,7 @@
 
 #import "UListView.h"
 #import "UDefines.h"
+#import "UIView+UAExtension.h"
 
 @implementation UListViewCell
 
@@ -17,6 +18,21 @@
     {
         return [[self alloc]init];
     }
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        //
+    }
+    
+    return self;
+}
+
+- (void)dealloc
+{
+    //
 }
 
 @end
@@ -41,6 +57,7 @@
     if (self) {
         _style = UListViewStyleVertical;
         _numberOfCells = -1;
+        _cellArray = [NSMutableArray array];
         
         self.clipsToBounds = YES;
         self.userInteractionEnabled = YES;
@@ -61,6 +78,7 @@
     if (self) {
         _style = style;
         _numberOfCells = -1;
+        _cellArray = [NSMutableArray array];
         
         self.clipsToBounds = YES;
         self.userInteractionEnabled = YES;
@@ -94,7 +112,7 @@
     }
     
     UIScrollView *scrollView = [[UIScrollView alloc]init];
-    scrollView.backgroundColor = sysLightGrayColor();
+    scrollView.backgroundColor = sysClearColor();
     [self addSubview:scrollView];
     _scrollView = scrollView;
     
@@ -127,29 +145,59 @@
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
 {
-    [super willMoveToWindow:newWindow];
-    
     if (_numberOfCells == -1) {
         _numberOfCells = [self.dataSource numberOfRowInListView:self];
     }
+    
+    dispatch_async(main_queue(), ^{
+        if (!checkValidNSArray(_cellArray)) {
+            CGFloat startValue = 0;
+            for (int i = 0; i < _numberOfCells; i ++) {
+                @autoreleasepool
+                {
+                    CGFloat heightOrWidth = [self.delegate listView:self heightOrWidthForIndex:i];
+                    UListViewCell *cell = [self.dataSource listView:self cellAtIndex:i];
+                    cell.frame = rectMake(startValue, 0, heightOrWidth, self.sizeHeight);
+                    [self.scrollView addSubview:cell];
+                    
+                    startValue += heightOrWidth;
+                }
+            }
+            
+            self.scrollView.contentSize = sizeMake(startValue, 0);
+        }
+    });
 }
 
 #pragma mark - Methods
 
 - (void)reuseCell:(UListViewCell *)cell forIdentifier:(NSString *)identifier
 {
-    if (checkClass(cell, UListViewCell) && checkValidNSString(identifier)) {
-        [self.cellArray addObject:cell];
-    }
+    [_cellArray addObject:cell];
 }
 
 - (UListViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier
 {
-    return [UListViewCell cell];
+    UListViewCell *cell = nil;
+    for (UListViewCell *item in _cellArray) {
+        if (item.superview == nil) {
+            cell = item;
+            
+            break;
+        }
+    }
+    
+    return cell;
 }
 
 - (void)dequeueCellsWith:(CGPoint)offset
 {
+    for (UListViewCell *cell in _cellArray) {
+        if (cell.window == nil) {
+            [cell removeFromSuperview];
+        }
+    }
+    
     if (_style == UListViewStyleVertical) {
         //
     } else if (_style == UListViewStyleHorizontal) {

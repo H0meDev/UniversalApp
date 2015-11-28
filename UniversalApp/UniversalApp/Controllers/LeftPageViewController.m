@@ -59,12 +59,12 @@
 
 - (NSInteger)numberOfRowInListView:(UListView *)listView
 {
-    return 100;
+    return 10;
 }
 
 - (CGFloat)listView:(UListView *)listView heightOrWidthForIndex:(NSInteger)index
 {
-    return 100;
+    return screenWidth();
 }
 
 - (UListViewCell *)listView:(UListView *)listView cellAtIndex:(NSInteger)index
@@ -74,6 +74,8 @@
         cell = [UListViewCell cell];
         [listView reuseCell:cell forIdentifier:@"UListViewCell"];
     }
+    
+    cell.backgroundColor = rgbColor(100, 100, index * 20);
     
     return cell;
 }
