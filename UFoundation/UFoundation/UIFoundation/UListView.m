@@ -271,11 +271,6 @@
     return cell;
 }
 
-- (void)dequeueCellsWithOffset
-{
-    [self dequeueCellsWith:self.scrollView.contentOffset];
-}
-
 - (void)dequeueCellsWith:(CGPoint)offset
 {
     CGSize size = self.scrollView.contentSize;
@@ -425,7 +420,7 @@
 {
     if ([keyPath isEqualToString:@"contentOffset"]) {
         // Dequeue all cells
-        [self performOnMainThread:@selector(dequeueCellsWithOffset)];
+        [self dequeueCellsWith:[change[@"new"]CGPointValue]];
     }
 }
 
