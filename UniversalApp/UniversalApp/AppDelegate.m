@@ -24,19 +24,19 @@
     self.window.backgroundColor = sysWhiteColor();
     [self.window makeKeyAndVisible];
     
-    UHTTPRequestParam *param = [UHTTPRequestParam param];
-    param.url = @"https://www.ifeng.com";
-    param.cached = YES;
-    
-    [UHTTPRequest sendAsynWith:(UHTTPRequestParam *)param
-                      callback:^(UHTTPStatus *status, id data)
-    {
-         if (status.code == UHTTPCodeLocalCached) {
-             NSLog(@"From cached:\n%@", data);
-         } else if (status.code == UHTTPCodeOK) {
-             NSLog(@"From request:\n%@", data);
-         }
-    }];
+//    UHTTPRequestParam *param = [UHTTPRequestParam param];
+//    param.url = @"https://www.ifeng.com";
+//    param.cached = YES;
+//    
+//    [UHTTPRequest sendAsynWith:(UHTTPRequestParam *)param
+//                      callback:^(UHTTPStatus *status, id data)
+//    {
+//         if (status.code == UHTTPCodeLocalCached) {
+//             NSLog(@"From cached:\n%@", data);
+//         } else if (status.code == UHTTPCodeOK) {
+//             NSLog(@"From request:\n%@", data);
+//         }
+//    }];
     
     // Start timer
     [UTimerBooster start];

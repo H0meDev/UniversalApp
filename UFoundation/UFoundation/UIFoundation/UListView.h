@@ -36,6 +36,9 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 
 + (id)cell;
 
+// To be overided
+- (void)cellWillInvisible;
+
 @end;
 
 @interface UListView : UIView
