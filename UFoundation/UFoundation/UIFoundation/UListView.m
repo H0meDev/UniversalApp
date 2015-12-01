@@ -479,7 +479,11 @@
     }
     
     // Load cells
-    [self.scrollView setContentOffset:CGPointZero animated:animated];
+    if (CGPointEqualToPoint(self.scrollView.contentOffset, CGPointZero)) {
+        self.scrollView.contentOffset = CGPointZero;
+    } else {
+        [self.scrollView setContentOffset:CGPointZero animated:animated];
+    }
 }
 
 @end
