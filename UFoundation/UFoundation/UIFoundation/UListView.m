@@ -446,11 +446,6 @@
 
 - (void)reloadData
 {
-    [self reloadDataWithAnimated:NO];
-}
-
-- (void)reloadDataWithAnimated:(BOOL)animated
-{
     // Remove all cells
     NSArray *subviews = [NSArray arrayWithArray:self.scrollView.subviews];
     for (UListViewCell *cell in subviews) {
@@ -485,11 +480,7 @@
     }
     
     // Load cells
-    if (CGPointEqualToPoint(self.scrollView.contentOffset, CGPointZero)) {
-        self.scrollView.contentOffset = CGPointZero;
-    } else {
-        [self.scrollView setContentOffset:CGPointZero animated:animated];
-    }
+    self.scrollView.contentOffset = CGPointZero;
 }
 
 @end

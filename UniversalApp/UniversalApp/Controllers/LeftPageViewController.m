@@ -66,7 +66,7 @@
 
 - (void)buttonAction:(UButton *)button
 {
-    [_listView reloadDataWithAnimated:YES];
+    [_listView reloadData];
 }
 
 #pragma mark -  UListViewDataSource & UListViewDelegate
@@ -93,7 +93,7 @@
         cell = [listView dequeueReusableCellWithIdentifier:@"UListViewCell"];
     }
     
-    cell.backgroundColor = rgbColor(2.5 * index, (index % 2) * 200, (index % 2) * 200);
+    cell.backgroundColor = rgbColor((index % 2) * 200, 0, 0);
     
     NSLog(@"Load item %@", @(index));
     
