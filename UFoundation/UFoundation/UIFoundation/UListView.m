@@ -117,6 +117,10 @@
 - (void)dealloc
 {
     [_valueArray removeAllObjects];
+    [_cellReusePool removeAllObjects];
+    
+    _valueArray = nil;
+    _cellReusePool = nil;
     
     if (_scrollView) {
         [_scrollView removeObserver:self forKeyPath:@"contentOffset"];
