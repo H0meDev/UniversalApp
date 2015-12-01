@@ -440,6 +440,7 @@
 
 - (void)reloadData
 {
+    // Remove all cells
     NSArray *subviews = [NSArray arrayWithArray:self.scrollView.subviews];
     for (UListViewCell *cell in subviews) {
         if (checkClass(cell, UListViewCell)) {
@@ -471,6 +472,9 @@
     } else if (_style == UListViewStyleVertical) {
         self.scrollView.contentSize = sizeMake(0, sizeValue);
     }
+    
+    // Load cells
+    self.scrollView.contentOffset = CGPointZero;
 }
 
 @end

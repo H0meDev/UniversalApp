@@ -26,6 +26,15 @@
     self.enableBackButton = NO;
     self.navigationBarView.title = @"Left";
     
+    UButton *rightView = [UButton button];
+    rightView.selected = YES;
+    rightView.frame = rectMake(screenWidth() - 68, 0, 60, naviHeight());
+    [rightView setTitle:@"Option"];
+    [rightView setTitleColor:sysBlackColor()];
+    [rightView setTitleFont:systemFont(16)];
+    [rightView addTarget:self action:@selector(buttonAction:)];
+    self.navigationBarView.rightView = rightView;
+    
     _listView = [[UListView alloc]initWithStyle:UListViewStyleHorizontal];
     _listView.frame = rectMake(0, 0, screenWidth(), 300);
     _listView.dataSource = self;
@@ -54,6 +63,11 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (void)buttonAction:(UButton *)button
+{
+    [_listView reloadData];
+}
 
 #pragma mark -  UListViewDataSource & UListViewDelegate
 
