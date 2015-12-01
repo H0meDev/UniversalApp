@@ -66,7 +66,7 @@
 
 - (void)buttonAction:(UButton *)button
 {
-    [_listView reloadData];
+    [_listView reloadDataWithAnimated:YES];
 }
 
 #pragma mark -  UListViewDataSource & UListViewDelegate

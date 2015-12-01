@@ -60,6 +60,7 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 - (UListViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier;
 
 // Refresh
-- (void)reloadData;
+- (void)reloadData; // Reload without animated
+- (void)reloadDataWithAnimated:(BOOL)animated;
 
 @end
