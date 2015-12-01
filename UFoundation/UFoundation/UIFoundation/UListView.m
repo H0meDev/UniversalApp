@@ -224,6 +224,7 @@
             
             // Attached to scrollView
             [self.scrollView addSubview:cell];
+            [self.scrollView insertSubview:cell belowSubview:[self.scrollView.subviews firstObject]];
         }
     }
     
