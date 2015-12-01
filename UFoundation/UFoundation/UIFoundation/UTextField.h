@@ -13,6 +13,6 @@
 @interface UTextField : UITextField
 
 @property (nonatomic, assign) UIEdgeInsets textInsets; // Default is 0,0,0,0
-@property (nonatomic, retain, readonly) UImageView *backgroundView;
+@property (nonatomic, strong, readonly) UImageView *backgroundView;
 
 @end

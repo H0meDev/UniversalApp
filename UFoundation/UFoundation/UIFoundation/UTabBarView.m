@@ -11,7 +11,7 @@
 
 @interface UTabBarView ()
 
-@property (nonatomic, retain) UIImageView *topLineView;
+@property (nonatomic, strong) UIImageView *topLineView;
 
 @end
 

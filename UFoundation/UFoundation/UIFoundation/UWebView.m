@@ -124,8 +124,8 @@
     BOOL _enableProgress;
 }
 
-@property (nonatomic, retain) UWebViewProgressView *progressView;
-@property (nonatomic, retain) UIWebView *webView;
+@property (nonatomic, strong) UWebViewProgressView *progressView;
+@property (nonatomic, strong) UIWebView *webView;
 
 @end
 

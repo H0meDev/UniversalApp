@@ -79,9 +79,9 @@
 - (CGFloat)listView:(UListView *)listView heightOrWidthForIndex:(NSInteger)index
 {
     if (listView.style == UListViewStyleHorizontal) {
-        return listView.sizeWidth;
+        return listView.sizeWidth / 3.;
     } else {
-        return listView.sizeHeight;
+        return listView.sizeHeight / 3.;
     }
 }
 

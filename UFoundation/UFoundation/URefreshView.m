@@ -17,8 +17,8 @@
 @property (nonatomic, assign) SEL action;
 @property (nonatomic, assign) CGFloat progress;
 @property (nonatomic, assign) URefreshState state;
-@property (nonatomic, retain) ULabel *stateLabel;
-@property (nonatomic, retain) UIndicatorView *indicatorView;
+@property (nonatomic, strong) ULabel *stateLabel;
+@property (nonatomic, strong) UIndicatorView *indicatorView;
 
 @end
 

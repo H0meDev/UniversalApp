@@ -15,8 +15,8 @@
 
 @interface UNavigationContentView : UIImageView
 
-@property (nonatomic, retain) ULabel *titleLabel;
-@property (nonatomic, retain) UImageView *bottomLineView;
+@property (nonatomic, strong) ULabel *titleLabel;
+@property (nonatomic, strong) UImageView *bottomLineView;
 
 @end
 
@@ -80,7 +80,7 @@
     UIColor *_backgroundColor;
 }
 
-@property (nonatomic, retain) UNavigationContentView *contentView;
+@property (nonatomic, strong) UNavigationContentView *contentView;
 @property (nonatomic, weak) UImageView *backgroundView;
 
 @end

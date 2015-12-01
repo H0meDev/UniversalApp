@@ -24,7 +24,7 @@
 // Enable progress view, default is YES
 @property (nonatomic, assign) BOOL enableProgress;
 @property (nonatomic, weak) id <UWebViewDelegate> delegate;
-@property (nonatomic, readonly, retain) UIScrollView *scrollView NS_AVAILABLE_IOS(5_0);
+@property (nonatomic, readonly, strong) UIScrollView *scrollView NS_AVAILABLE_IOS(5_0);
 
 // Load from URL string
 - (void)loadURLString:(NSString *)url;
@@ -35,9 +35,9 @@
 textEncodingName:(NSString *)textEncodingName
          baseURL:(NSURL *)baseURL;
 
-@property (nonatomic, readonly, retain) NSURLRequest *request;
+@property (nonatomic, readonly, strong) NSURLRequest *request;
 // Records of access
-@property (nonatomic, readonly, retain) NSArray *accessRecords;
+@property (nonatomic, readonly, strong) NSArray *accessRecords;
 
 - (void)reload;
 - (void)stopLoading;

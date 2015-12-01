@@ -35,8 +35,8 @@
     __weak UNavigationBarView *_currentNavigationView;
 }
 
-@property (nonatomic, retain) UIView *contentView;
-@property (nonatomic, retain) UIView *shadowView;
+@property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIView *shadowView;
 @property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
 @property (nonatomic, weak) UViewController *viewController;
 

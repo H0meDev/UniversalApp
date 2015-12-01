@@ -15,7 +15,7 @@
     BOOL _isAnimating;
 }
 
-@property (nonatomic, retain) CALayer *animationLayer;
+@property (nonatomic, strong) CALayer *animationLayer;
 
 @end
 

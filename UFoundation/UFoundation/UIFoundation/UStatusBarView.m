@@ -19,7 +19,7 @@
     BOOL _needsStretch;
 }
 
-@property (nonatomic, retain) UIImageView *contentView;
+@property (nonatomic, strong) UIImageView *contentView;
 @property (nonatomic, weak) UImageView *backgroundView;
 
 @end

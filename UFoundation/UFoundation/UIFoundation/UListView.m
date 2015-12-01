@@ -11,6 +11,12 @@
 #import "NSObject+UAExtension.h"
 #import "UIView+UAExtension.h"
 
+@interface UListViewCell ()
+
+@property (nonatomic, strong) UIView *contentView;
+
+@end
+
 @implementation UListViewCell
 
 + (id)cell

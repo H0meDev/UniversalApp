@@ -81,7 +81,7 @@
     NSInteger _countOfVideos;
 }
 
-@property (nonatomic, retain) UTableView *tableView;
+@property (nonatomic, strong) UTableView *tableView;
 @property (nonatomic, weak) UImagePickerControllerController *picker;
 
 @end
@@ -318,7 +318,7 @@
     BOOL _showEmptyGroups;
 }
 
-@property (nonatomic, retain) UTableView *tableView;
+@property (nonatomic, strong) UTableView *tableView;
 
 @end
 

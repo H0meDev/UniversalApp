@@ -12,8 +12,8 @@
 
 @interface UIScrollView (UAExtensionProperty)
 
-@property (nonatomic, retain) URefreshHeaderView *headerView;
-@property (nonatomic, retain) URefreshFooterView *footerView;
+@property (nonatomic, strong) URefreshHeaderView *headerView;
+@property (nonatomic, strong) URefreshFooterView *footerView;
 
 @end
 
