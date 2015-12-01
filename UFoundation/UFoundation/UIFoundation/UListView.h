@@ -36,8 +36,9 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 
 + (id)cell;
 
-// To be overided
-- (void)cellWillInvisible;
+// To be overrided
+- (void)cellWillAppear;   // For preparing
+- (void)cellDidDisappear; // For canceling
 
 @end;
 

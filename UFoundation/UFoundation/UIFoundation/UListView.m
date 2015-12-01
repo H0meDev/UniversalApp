@@ -31,7 +31,12 @@
     return self;
 }
 
-- (void)cellWillInvisible
+- (void)cellWillAppear
+{
+    //
+}
+
+- (void)cellDidDisappear
 {
     //
 }
@@ -214,6 +219,9 @@
                 cell.frame = rectMake(0, originValue, self.scrollView.sizeWidth, sizeValue);
             }
             
+            // For visible option
+            [cell cellWillAppear];
+            
             // Attached to scrollView
             [self.scrollView addSubview:cell];
         }
@@ -283,11 +291,15 @@
         NSArray *viewArray = [NSArray arrayWithArray:subviews];
         for (UListViewCell *cell in viewArray) {
             if (![self checkVisibleWith:cell offset:offset]) {
-                [cell removeFromSuperview];
-                [subviews removeObject:cell];
+                if (cell.superview) {
+                    // Remove
+                    [cell removeFromSuperview];
+                    
+                    // For invisible option
+                    [cell cellDidDisappear];
+                }
                 
-                // For invisible option
-                [cell cellWillInvisible];
+                [subviews removeObject:cell];
             }
         }
         
@@ -386,7 +398,6 @@
     for (UListViewCell *item in _cellReusePool[identifier]) {
         if (item.superview == nil) {
             cell = item;
-            
             break;
         }
     }
@@ -399,10 +410,13 @@
     NSArray *subviews = [NSArray arrayWithArray:self.scrollView.subviews];
     for (UListViewCell *cell in subviews) {
         if (checkClass(cell, UListViewCell)) {
-            [cell removeFromSuperview];
-            
-            // For invisible option
-            [cell cellWillInvisible];
+            if (cell.superview) {
+                // Remove
+                [cell removeFromSuperview];
+                
+                // For invisible option
+                [cell cellDidDisappear];
+            }
         }
     }
     
