@@ -453,6 +453,9 @@
         }
     }
     
+    // Reset all cache
+    [_valueArray removeAllObjects];
+    [_cellReusePool removeAllObjects];
     _numberOfCells = [self.dataSource numberOfRowInListView:self.weakself];
     
     CGFloat sizeValue = 0;
