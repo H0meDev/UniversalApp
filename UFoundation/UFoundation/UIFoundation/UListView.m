@@ -331,7 +331,8 @@
 
 - (BOOL)checRectContainskWith:(CGRect)rect point:(CGPoint)point
 {
-    return CGRectContainsPoint(rect, point);
+    return ((point.x >= rect.origin.x) && (point.x <= (rect.origin.x + rect.size.width)) &&
+            (point.y >= rect.origin.y) && (point.y <= (rect.origin.y + rect.size.height)));
 }
 
 - (BOOL)checkVisibleWith:(UListViewCell *)cell offset:(CGPoint)offset
