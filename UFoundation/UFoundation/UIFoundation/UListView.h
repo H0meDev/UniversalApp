@@ -51,7 +51,7 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 - (id)initWithFrame:(CGRect)frame style:(UListViewStyle)style;
 
 // Cell reuse
-- (void)reuseCell:(UListViewCell *)cell forIdentifier:(NSString *)identifier;
+- (void)registerCell:(NSString *)cellName forIdentifier:(NSString *)identifier;
 - (UListViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier;
 
 // Refresh

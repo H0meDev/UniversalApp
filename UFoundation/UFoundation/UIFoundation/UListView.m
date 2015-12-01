@@ -45,11 +45,12 @@
 
 @interface UListView ()
 {
+    NSLock *_dequeueLock;
     NSInteger _numberOfCells;
-    NSMutableArray *_valueArray; // Store height or width of cells
+    NSMutableArray *_valueArray;
+    NSMutableDictionary *_cellReusePool;
 }
 
-@property (atomic, strong) NSMutableDictionary *reusePool;
 @property (nonatomic, strong) UIScrollView *scrollView;
 
 @end
@@ -65,8 +66,9 @@
         _style = UListViewStyleVertical;
         _numberOfCells = -1;
         
+        _dequeueLock = [[NSLock alloc]init];
         _valueArray = [NSMutableArray array];
-        _reusePool = [NSMutableDictionary dictionary];
+        _cellReusePool = [NSMutableDictionary dictionary];
         
         self.clipsToBounds = YES;
         self.userInteractionEnabled = YES;
@@ -88,8 +90,9 @@
         _style = style;
         _numberOfCells = -1;
         
+        _dequeueLock = [[NSLock alloc]init];
         _valueArray = [NSMutableArray array];
-        _reusePool = [NSMutableDictionary dictionary];
+        _cellReusePool = [NSMutableDictionary dictionary];
         
         self.clipsToBounds = YES;
         self.userInteractionEnabled = YES;
@@ -101,6 +104,8 @@
 
 - (void)dealloc
 {
+    [_valueArray removeAllObjects];
+    
     if (_scrollView) {
         [_scrollView removeObserver:self forKeyPath:@"contentOffset"];
     }
@@ -164,11 +169,62 @@
     }
 }
 
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary<NSString *,id> *)change
+                       context:(void *)context
+{
+    if ([keyPath isEqualToString:@"contentOffset"]) {
+        // Dequeue all cells
+        [self dequeueCellsWith:[change[@"new"]CGPointValue]];
+    }
+}
+
 #pragma mark - Methods
 
-- (NSRange)rangeOfVisibleIndexWith:(CGPoint)offset
+- (void)dequeueCellsWith:(CGPoint)offset
 {
-    NSInteger beginIndex = 0;
+    [_dequeueLock lock];
+    
+    CGRange range = [self visibleRangeWith:offset];
+    NSInteger beginIndex = (range.min < 0)?0:range.min;
+    NSInteger endIndex = range.max;
+    
+    for (NSInteger i = beginIndex; i <= endIndex; i ++) {
+        CGFloat sizeValue = [_valueArray[i] floatValue];
+        CGFloat originValue = [self originValueOfIndex:i];
+        NSInteger index = i - beginIndex;
+        NSArray *cells = [self currentVisibleCellsWith:offset];
+        
+        BOOL needsAttached = NO;
+        if (index <= cells.count) {
+            needsAttached = ![self checkCellWith:i from:cells];
+        } else {
+            needsAttached = YES;
+        }
+        
+        if (needsAttached) {
+            // Attach cell
+            UListViewCell *cell = [self.dataSource listView:self.weakself cellAtIndex:i];
+            if (_style == UListViewStyleHorizontal) {
+                cell.frame = rectMake(originValue, 0, sizeValue, self.scrollView.sizeHeight);
+            } else if (_style == UListViewStyleVertical) {
+                cell.frame = rectMake(0, originValue, self.scrollView.sizeWidth, sizeValue);
+            }
+            
+            // Attached to scrollView
+            [self.scrollView addSubview:cell];
+        }
+    }
+    
+    [_dequeueLock unlock];
+}
+
+- (CGRange)visibleRangeWith:(CGPoint)offset
+{
+    NSInteger beginIndex = -1;
     NSInteger endIndex = beginIndex;
     
     CGFloat deltaValue = 0;
@@ -181,33 +237,75 @@
         CGFloat delta = deltaValue + [_valueArray[index] floatValue];
         
         // Left or top
-        if (((deltaValue < offsetLValue) && (delta > offsetLValue)) ||
-            ((deltaValue < offsetTValue) && (delta > offsetTValue)))
-        {
-            beginIndex = index;
+        if (_style == UListViewStyleHorizontal) {
+            if ((deltaValue <= offsetLValue) && (delta >= offsetLValue)) {
+                beginIndex = index;
+            }
+        } else if (_style == UListViewStyleVertical) {
+            if ((deltaValue <= offsetTValue) && (delta >= offsetTValue)) {
+                beginIndex = index;
+            }
         }
         
         // Right or bottom
-        if (((deltaValue < offsetRValue) && (delta > offsetRValue)) ||
-            ((deltaValue < offsetBValue) && (delta > offsetBValue)))
-        {
-            endIndex = index;
+        if (_style == UListViewStyleHorizontal) {
+            if ((deltaValue <= offsetRValue) && (delta >= offsetRValue)) {
+                endIndex = index;
+            }
+        } else if (_style == UListViewStyleVertical) {
+            if ((deltaValue <= offsetBValue) && (delta >= offsetBValue)) {
+                endIndex = index;
+            }
         }
         
         deltaValue = delta;
     }
     
-    endIndex = (endIndex >= beginIndex)?endIndex:(_valueArray.count - 1);
-    NSInteger location = beginIndex;
-    NSInteger length = endIndex - beginIndex;
+    // Modify end
+    endIndex = (endIndex < 0)?(_numberOfCells - 1):endIndex;
     
-    NSLog(@"Range: %@ - %@", @(beginIndex), @(endIndex));
-    
-    return NSMakeRange(location, length);
+    return CGRangeMake(beginIndex, endIndex);
+}
+
+- (NSArray *)currentVisibleCellsWith:(CGPoint)offset
+{
+    @autoreleasepool
+    {
+        // All added cells
+        NSMutableArray *subviews = [NSMutableArray array];
+        for (UIView *view in self.scrollView.subviews) {
+            if (checkClass(view, UListViewCell)) {
+                [subviews addObject:view];
+            }
+        }
+        
+        // Remove invisible cells
+        NSArray *viewArray = [NSArray arrayWithArray:subviews];
+        for (UListViewCell *cell in viewArray) {
+            if (![self checkVisibleWith:cell offset:offset]) {
+                [cell removeFromSuperview];
+                [subviews removeObject:cell];
+                
+                // For invisible option
+                [cell cellWillInvisible];
+            }
+        }
+        
+        return [subviews copy];
+    }
+}
+
+- (BOOL)checRectContainskWith:(CGRect)rect point:(CGPoint)point
+{
+    return CGRectContainsPoint(rect, point);
 }
 
 - (BOOL)checkVisibleWith:(UListViewCell *)cell offset:(CGPoint)offset
 {
+    if (!cell) {
+        return NO;
+    }
+    
     CGFloat width = self.scrollView.sizeWidth;
     CGFloat height = self.scrollView.sizeHeight;
     
@@ -220,47 +318,72 @@
     CGPoint pointRT = pointMake(cell.right, cell.top);
     CGPoint pointRB = pointMake(cell.right, cell.bottom);
     
-    return (CGRectContainsPoint(frame, pointLT) ||
-            CGRectContainsPoint(frame, pointLB) ||
-            CGRectContainsPoint(frame, pointRT) ||
-            CGRectContainsPoint(frame, pointRB));
+    return ([self checRectContainskWith:frame point:pointLT] ||
+            [self checRectContainskWith:frame point:pointLB] ||
+            [self checRectContainskWith:frame point:pointRT] ||
+            [self checRectContainskWith:frame point:pointRB]);
 }
 
-- (BOOL)checkLTBoundWith:(UListViewCell *)cell offset:(CGPoint)offset
+- (CGFloat)originValueOfIndex:(NSInteger)index
 {
-    CGFloat height = self.scrollView.sizeHeight;
-    CGPoint pointLT = pointMake(offset.x, 0);
-    CGPoint pointLB = pointMake(offset.x, height);
+    index = (index < 0)?0:index;
+    index = (index > _numberOfCells)?_numberOfCells - 1:index;
     
-    return (CGRectContainsPoint(cell.frame, pointLT) || CGRectContainsPoint(cell.frame, pointLB));
-}
-
-- (BOOL)checkRBBoundWith:(UListViewCell *)cell offset:(CGPoint)offset
-{
-    CGFloat width = self.scrollView.sizeWidth;
-    CGFloat height = self.scrollView.sizeHeight;
-    CGPoint pointRT = pointMake(offset.x + width, 0);
-    CGPoint pointRB = pointMake(offset.x + width, height);
+    CGFloat value = 0;
+    for (NSInteger i = 0; i < _valueArray.count; i ++) {
+        if (index == i) {
+            break;
+        }
+        
+        value += [_valueArray[i]floatValue];
+    }
     
-    return (CGRectContainsPoint(cell.frame, pointRT) || CGRectContainsPoint(cell.frame, pointRB));
+    return value;
 }
 
-- (void)reuseCell:(UListViewCell *)cell forIdentifier:(NSString *)identifier
+- (BOOL)checkCellWith:(NSInteger)index from:(NSArray *)cells
 {
-    if (!checkValidNSString(identifier)) {
+    BOOL contains = NO;
+    CGFloat originValue = [self originValueOfIndex:index];
+    
+    for (UListViewCell *cell in cells) {
+        if (_style == UListViewStyleHorizontal) {
+            if (cell.originX == originValue) {
+                contains = YES;
+                break;
+            }
+        } else if (_style == UListViewStyleVertical) {
+            if (cell.originY == originValue) {
+                contains = YES;
+                break;
+            }
+        }
+    }
+    
+    return contains;
+}
+
+#pragma mark - Outer Methods
+
+- (void)registerCell:(NSString *)cellName forIdentifier:(NSString *)identifier
+{
+    if (!checkValidNSString(cellName) || !checkValidNSString(identifier)) {
         return;
     }
     
-    NSArray *array = _reusePool[identifier];
-    NSMutableArray *marray = (!array)?[NSMutableArray array]:[NSMutableArray arrayWithArray:array];
-    [marray addObject:cell];
-    [_reusePool setObject:[marray copy] forKey:identifier];
+    Class class = NSClassFromString(cellName);
+    if (class) {
+        NSArray *array = _cellReusePool[identifier];
+        NSMutableArray *marray = (!array)?[NSMutableArray array]:[NSMutableArray arrayWithArray:array];
+        [marray addObject:[class cell]];
+        [_cellReusePool setObject:[marray copy] forKey:identifier];
+    }
 }
 
 - (UListViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier
 {
     UListViewCell *cell = nil;
-    for (UListViewCell *item in self.scrollView.subviews) {
+    for (UListViewCell *item in _cellReusePool[identifier]) {
         if (item.superview == nil) {
             cell = item;
             
@@ -269,121 +392,6 @@
     }
     
     return cell;
-}
-
-- (void)dequeueCellsWith:(CGPoint)offset
-{
-    CGSize size = self.scrollView.contentSize;
-    CGFloat offsetMaxX =  size.width - self.scrollView.sizeWidth;
-    
-    offset.x = (offset.x < 0)?0:offset.x;
-    offset.x = (offset.x > offsetMaxX)?offsetMaxX:offset.x;
-    
-    if (_style == UListViewStyleVertical) {
-        //
-    } else if (_style == UListViewStyleHorizontal) {
-        // All added cells
-        NSMutableArray *subviews = [NSMutableArray array];
-        for (UIView *view in self.scrollView.subviews) {
-            if (checkClass(view, UListViewCell)) {
-                [subviews addObject:view];
-            }
-        }
-        
-        // Remove invisible cells
-        NSArray *viewArray = [NSArray arrayWithArray:subviews];
-        for (UListViewCell *cell in viewArray) {
-            if (cell.superview && ![self checkVisibleWith:cell offset:offset]) {
-                [cell removeFromSuperview];
-                [subviews removeObject:cell];
-                
-                // For invisible option
-                [cell cellWillInvisible];
-            }
-        }
-        
-        // Range of current
-        NSRange range = [self rangeOfVisibleIndexWith:offset];
-        NSInteger count = range.length + 1;
-        NSInteger beginIndex = range.location;
-        NSInteger endIndex = range.location + range.length;
-        
-        // Check needs dequeue or not
-        if (subviews.count > 0) {
-            if (endIndex > beginIndex) {
-                // Check left or top
-                UListViewCell *cell = (UListViewCell *)[subviews firstObject];
-                CGFloat originX = cell.left;
-                
-                if (![self checkLTBoundWith:cell offset:offset]) {
-                    CGFloat width = [_valueArray[beginIndex] floatValue];
-                    originX = originX - width;
-                    
-                    UListViewCell *cellItem = nil;
-                    if (count > subviews.count) {
-                        cellItem = [self.dataSource listView:self.weakself cellAtIndex:beginIndex];
-                        cellItem.frame = rectMake(originX, 0, width, self.scrollView.sizeHeight);
-                    } else if (beginIndex > 0) {
-                        cellItem = [self.dataSource listView:self.weakself cellAtIndex:beginIndex - 1];
-                        cellItem.frame = rectMake(originX, 0, width, self.scrollView.sizeHeight);
-                    }
-                    
-                    if (cellItem) {
-                        // Insert into first
-                        [self.scrollView addSubview:cellItem];
-                        [self.scrollView insertSubview:cellItem belowSubview:cell];
-                        
-                        // Refresh subviews
-                        [subviews removeAllObjects];
-                        for (UIView *view in self.scrollView.subviews) {
-                            if (checkClass(view, UListViewCell)) {
-                                [subviews addObject:view];
-                            }
-                        }
-                    }
-                }
-                
-                // Check right or bottom
-                cell = (UListViewCell *)[subviews lastObject];
-                originX = cell.right;
-                
-                if (![self checkRBBoundWith:cell offset:offset]) {
-                    CGFloat width = [_valueArray[endIndex] floatValue];
-                    UListViewCell *cellItem = nil;
-                    
-                    if (count > subviews.count) {
-                        cellItem = [self.dataSource listView:self.weakself cellAtIndex:endIndex];
-                        cellItem.frame = rectMake(originX, 0, width, self.scrollView.sizeHeight);
-                    } else if ((endIndex + 1) < _numberOfCells) {
-                        cellItem = [self.dataSource listView:self.weakself cellAtIndex:endIndex + 1];
-                        cellItem.frame = rectMake(originX, 0, width, self.scrollView.sizeHeight);
-                    }
-                    
-                    if (cellItem) {
-                        [self.scrollView addSubview:cellItem];
-                        [self.scrollView insertSubview:cellItem aboveSubview:cell];
-                    }
-                }
-            }
-        } else if (_valueArray.count > count) {
-            CGFloat originX = 0;
-            for (NSInteger index = 0; index < beginIndex + count; index ++) {
-                if (index < beginIndex) {
-                    originX += [_valueArray[index] floatValue];
-                } else {
-                    CGFloat value = [_valueArray[index] floatValue];
-                    UListViewCell *cell = [self.dataSource listView:self.weakself cellAtIndex:index];
-                    cell.frame = rectMake(originX, 0, value, self.sizeHeight);
-                    [self.scrollView addSubview:cell];
-                    
-                    UIView *lastView = (UIView *)[self.scrollView.subviews lastObject];
-                    [self.scrollView insertSubview:cell aboveSubview:lastView];
-                    
-                    originX +=  value;
-                }
-            }
-        }
-    }
 }
 
 - (void)reloadData
@@ -408,19 +416,10 @@
         sizeValue += value;
     }
     
-    self.scrollView.contentSize = sizeMake(sizeValue, 0);
-}
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary<NSString *,id> *)change
-                       context:(void *)context
-{
-    if ([keyPath isEqualToString:@"contentOffset"]) {
-        // Dequeue all cells
-        [self dequeueCellsWith:[change[@"new"]CGPointValue]];
+    if (_style == UListViewStyleHorizontal) {
+        self.scrollView.contentSize = sizeMake(sizeValue, 0);
+    } else if (_style == UListViewStyleVertical) {
+        self.scrollView.contentSize = sizeMake(0, sizeValue);
     }
 }
 

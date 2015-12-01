@@ -59,27 +59,25 @@
 
 - (NSInteger)numberOfRowInListView:(UListView *)listView
 {
-    return 100;
+    return 1000;
 }
 
 - (CGFloat)listView:(UListView *)listView heightOrWidthForIndex:(NSInteger)index
 {
-    if (index == 3) {
-        return screenWidth();
-    }
-    
-    return 100;
+    return 50;
 }
 
 - (UListViewCell *)listView:(UListView *)listView cellAtIndex:(NSInteger)index
 {
     UListViewCell *cell = [listView dequeueReusableCellWithIdentifier:@"UListViewCell"];
     if (!cell) {
-        cell = [UListViewCell cell];
-        [listView reuseCell:cell forIdentifier:@"UListViewCell"];
+        [listView registerCell:@"UListViewCell" forIdentifier:@"UListViewCell"];
+        cell = [listView dequeueReusableCellWithIdentifier:@"UListViewCell"];
     }
     
-    cell.backgroundColor = rgbColor(10 * index, 25 * index, (index % 2) * 200);
+    cell.backgroundColor = rgbColor(2.5 * index, (index % 2) * 200, (index % 2) * 200);
+    
+    NSLog(@"Load item %@", @(index));
     
     return cell;
 }
