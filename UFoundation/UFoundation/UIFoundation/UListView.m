@@ -164,10 +164,16 @@
     self.scrollView.frame = rectMake(0, 0, frame.size.width, frame.size.height);
     
     if (_style == UListViewStyleVertical) {
+        _showsVerticalScrollIndicator = YES;
+        _showsHorizontalScrollIndicator = NO;
+        
         self.scrollView.showsVerticalScrollIndicator = YES;
         self.scrollView.showsHorizontalScrollIndicator = NO;
         self.scrollView.contentSize = sizeMake(0, frame.size.height + 0.5);
     } else if (_style == UListViewStyleHorizontal) {
+        _showsVerticalScrollIndicator = NO;
+        _showsHorizontalScrollIndicator = YES;
+        
         self.scrollView.showsVerticalScrollIndicator = NO;
         self.scrollView.showsHorizontalScrollIndicator = YES;
         self.scrollView.contentSize = sizeMake(frame.size.width + 0.5, 0);

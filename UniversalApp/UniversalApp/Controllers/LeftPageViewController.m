@@ -26,9 +26,8 @@
     self.enableBackButton = NO;
     self.navigationBarView.title = @"Left";
     
-    _listView = [[UListView alloc]initWithStyle:UListViewStyleVertical];
+    _listView = [[UListView alloc]initWithStyle:UListViewStyleHorizontal];
     _listView.frame = rectMake(0, 0, screenWidth(), 300);
-    _listView.pagingEnabled = YES;
     _listView.dataSource = self;
     _listView.delegate = self;
     [self addSubview:_listView];
