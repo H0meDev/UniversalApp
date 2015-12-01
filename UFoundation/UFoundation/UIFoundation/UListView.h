@@ -62,4 +62,18 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 // Refresh
 - (void)reloadData;
 
+// Header & Footer update
+- (void)addHeaderTarget:(id)target action:(SEL)selector;
+- (void)addFooterTarget:(id)target action:(SEL)selector;
+
+- (void)startHeaderRefresh;
+- (void)startFooterRefresh;
+- (void)finishHeaderRefresh;
+- (void)finishFooterRefresh;
+
+- (BOOL)headerEnable;
+- (BOOL)footerEnable;
+- (void)setHeaderEnable:(BOOL)enable;
+- (void)setFooterEnable:(BOOL)enable;
+
 @end

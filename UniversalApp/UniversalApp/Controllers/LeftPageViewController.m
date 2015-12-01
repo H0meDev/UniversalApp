@@ -35,10 +35,13 @@
     [rightView addTarget:self action:@selector(buttonAction:)];
     self.navigationBarView.rightView = rightView;
     
-    _listView = [[UListView alloc]initWithStyle:UListViewStyleHorizontal];
-    _listView.frame = rectMake(0, 0, screenWidth(), 300);
+    CGFloat height = self.containerView.sizeHeight - tabHeight();
+    _listView = [[UListView alloc]initWithStyle:UListViewStyleVertical];
+    _listView.frame = rectMake(0, 0, screenWidth(), height);
     _listView.dataSource = self;
     _listView.delegate = self;
+    [_listView addHeaderTarget:self action:@selector(headerAction)];
+    [_listView addFooterTarget:self action:@selector(footerAction)];
     [self addSubview:_listView];
     
 }
@@ -69,11 +72,31 @@
     [_listView reloadData];
 }
 
+- (void)headerAction
+{
+    [UTimerBooster addTarget:self sel:@selector(finishHeaderRefresh) time:3.0];
+}
+
+- (void)footerAction
+{
+    [UTimerBooster addTarget:self sel:@selector(finishFooterRefresh) time:3.0];
+}
+
+- (void)finishHeaderRefresh
+{
+    [_listView performOnMainThread:@selector(finishHeaderRefresh)];
+}
+
+- (void)finishFooterRefresh
+{
+    [_listView performOnMainThread:@selector(finishFooterRefresh)];
+}
+
 #pragma mark -  UListViewDataSource & UListViewDelegate
 
 - (NSInteger)numberOfRowInListView:(UListView *)listView
 {
-    return 1000;
+    return 10;
 }
 
 - (CGFloat)listView:(UListView *)listView heightOrWidthForIndex:(NSInteger)index

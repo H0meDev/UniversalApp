@@ -10,6 +10,7 @@
 #import "UDefines.h"
 #import "NSObject+UAExtension.h"
 #import "UIView+UAExtension.h"
+#import "UIScrollView+UAExtension.h"
 
 @interface UListViewCell ()
 
@@ -481,6 +482,56 @@
     
     // Load cells
     self.scrollView.contentOffset = CGPointZero;
+}
+
+- (void)addHeaderTarget:(id)target action:(SEL)selector
+{
+    [self.scrollView addHeaderTarget:target action:selector];
+}
+
+- (void)addFooterTarget:(id)target action:(SEL)selector
+{
+    [self.scrollView addFooterTarget:target action:selector];
+}
+
+- (void)startHeaderRefresh
+{
+    [self.scrollView startHeaderRefresh];
+}
+
+- (void)startFooterRefresh
+{
+    [self.scrollView startFooterRefresh];
+}
+
+- (void)finishHeaderRefresh
+{
+    [self.scrollView finishHeaderRefresh];
+}
+
+- (void)finishFooterRefresh
+{
+    [self.scrollView finishFooterRefresh];
+}
+
+- (BOOL)headerEnable
+{
+    return [self.scrollView headerEnable];
+}
+
+- (BOOL)footerEnable
+{
+    return [self.scrollView footerEnable];
+}
+
+- (void)setHeaderEnable:(BOOL)enable
+{
+    [self.scrollView setHeaderEnable:enable];
+}
+
+- (void)setFooterEnable:(BOOL)enable
+{
+    [self.scrollView setFooterEnable:enable];
 }
 
 @end
