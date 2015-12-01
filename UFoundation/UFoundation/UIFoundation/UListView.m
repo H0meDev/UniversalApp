@@ -131,6 +131,11 @@
     
     if (_scrollView) {
         [_scrollView removeObserver:self forKeyPath:@"contentOffset"];
+        
+        // Remove header & footer
+        [_scrollView removeHeaderView];
+        [_scrollView removeFooterView];
+        [_scrollView removeAllSubviews];
     }
 }
 
