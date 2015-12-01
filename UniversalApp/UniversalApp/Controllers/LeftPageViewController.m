@@ -26,8 +26,9 @@
     self.enableBackButton = NO;
     self.navigationBarView.title = @"Left";
     
-    _listView = [[UListView alloc]initWithStyle:UListViewStyleHorizontal];
+    _listView = [[UListView alloc]initWithStyle:UListViewStyleVertical];
     _listView.frame = rectMake(0, 0, screenWidth(), 300);
+    _listView.pagingEnabled = YES;
     _listView.dataSource = self;
     _listView.delegate = self;
     [self addSubview:_listView];
@@ -64,7 +65,11 @@
 
 - (CGFloat)listView:(UListView *)listView heightOrWidthForIndex:(NSInteger)index
 {
-    return 50;
+    if (listView.style == UListViewStyleHorizontal) {
+        return listView.sizeWidth;
+    } else {
+        return listView.sizeHeight;
+    }
 }
 
 - (UListViewCell *)listView:(UListView *)listView cellAtIndex:(NSInteger)index

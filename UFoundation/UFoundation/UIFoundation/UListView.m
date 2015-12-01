@@ -107,6 +107,13 @@
     return self;
 }
 
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    if (_numberOfCells == -1) {
+        [self reloadData];
+    }
+}
+
 - (void)dealloc
 {
     [_valueArray removeAllObjects];
@@ -167,11 +174,25 @@
     }
 }
 
-- (void)willMoveToWindow:(UIWindow *)newWindow
+- (void)setPagingEnabled:(BOOL)enable
 {
-    if (_numberOfCells == -1) {
-        [self reloadData];
-    }
+    _pagingEnabled = enable;
+    
+    self.scrollView.pagingEnabled = enable;
+}
+
+- (void)setShowsHorizontalScrollIndicator:(BOOL)shows
+{
+    _showsHorizontalScrollIndicator = shows;
+    
+    self.scrollView.showsHorizontalScrollIndicator = shows;
+}
+
+- (void)setShowsVerticalScrollIndicator:(BOOL)shows
+{
+    _showsVerticalScrollIndicator = shows;
+    
+    self.scrollView.showsVerticalScrollIndicator = shows;
 }
 
 #pragma mark - KVO
