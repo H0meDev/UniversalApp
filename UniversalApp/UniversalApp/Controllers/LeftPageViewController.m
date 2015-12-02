@@ -94,9 +94,9 @@
 
 #pragma mark -  UListViewDataSource & UListViewDelegate
 
-- (NSInteger)numberOfRowInListView:(UListView *)listView
+- (NSInteger)numberOfItemsInListView:(UListView *)listView
 {
-    return 10;
+    return 1000;
 }
 
 - (CGFloat)listView:(UListView *)listView heightOrWidthForIndex:(NSInteger)index

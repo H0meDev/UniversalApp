@@ -502,7 +502,7 @@
     // Reset all cache
     [_valueArray removeAllObjects];
     [_cellReusePool removeAllObjects];
-    _numberOfCells = [self.dataSource numberOfRowInListView:self.weakself];
+    _numberOfCells = [self.dataSource numberOfItemsInListView:self.weakself];
     
     CGFloat sizeValue = 0;
     for (NSInteger index = 0; index < _numberOfCells; index ++) {

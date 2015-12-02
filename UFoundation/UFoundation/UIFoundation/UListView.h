@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 @protocol UListViewDataSource <NSObject>
 
 @required
-- (NSInteger)numberOfRowInListView:(UListView *)listView;
+- (NSInteger)numberOfItemsInListView:(UListView *)listView;
 - (UListViewCell *)listView:(UListView *)listView cellAtIndex:(NSInteger)index;
 
 @end
