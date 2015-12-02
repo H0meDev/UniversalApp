@@ -77,6 +77,8 @@
     if (self) {
         _style = UListViewStyleVertical;
         _numberOfCells = -1;
+        _pagingEnabled = NO;
+        _scrollEnabled = YES;
         
         _dequeueLock = [[NSLock alloc]init];
         _valueArray = [NSMutableArray array];
@@ -101,6 +103,8 @@
     if (self) {
         _style = style;
         _numberOfCells = -1;
+        _pagingEnabled = NO;
+        _scrollEnabled = YES;
         
         _dequeueLock = [[NSLock alloc]init];
         _valueArray = [NSMutableArray array];
@@ -201,6 +205,13 @@
     _pagingEnabled = enable;
     
     self.scrollView.pagingEnabled = enable;
+}
+
+- (void)setScrollEnabled:(BOOL)enable
+{
+    _scrollEnabled = enable;
+    
+    self.scrollView.scrollEnabled = enable;
 }
 
 - (void)setShowsHorizontalScrollIndicator:(BOOL)shows

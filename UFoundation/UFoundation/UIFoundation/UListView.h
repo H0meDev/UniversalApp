@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 @property (nonatomic, weak) id <UListViewDelegate> delegate;
 
 @property (nonatomic, assign) BOOL pagingEnabled;
+@property (nonatomic, assign) BOOL scrollEnabled;
 @property (nonatomic, assign) BOOL showsHorizontalScrollIndicator;
 @property (nonatomic, assign) BOOL showsVerticalScrollIndicator;
 
