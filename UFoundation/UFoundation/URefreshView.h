@@ -42,6 +42,7 @@ typedef NS_ENUM(NSInteger, URefreshState)
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, assign) CGFloat height; //  Default is 60.
 @property (nonatomic, assign) BOOL enable;    //  Default is YES
+@property (nonatomic, assign) BOOL scrollEnableWhenRefreshing; // Default YES
 
 @property (nonatomic, copy) NSString *titleOfIdle;
 @property (nonatomic, copy) NSString *titleOfReady;

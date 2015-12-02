@@ -38,8 +38,8 @@
     CGFloat height = self.containerView.sizeHeight - tabHeight();
     _listView = [[UListView alloc]initWithStyle:UListViewStyleVertical];
     _listView.frame = rectMake(0, 0, screenWidth(), height);
-    _listView.dataSource = self;
     _listView.delegate = self;
+    _listView.dataSource = self;
     [_listView addHeaderTarget:self action:@selector(headerAction)];
     [_listView addFooterTarget:self action:@selector(footerAction)];
     [self addSubview:_listView];

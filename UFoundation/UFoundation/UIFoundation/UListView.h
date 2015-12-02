@@ -52,6 +52,8 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 @property (nonatomic, assign) BOOL scrollEnabled;
 @property (nonatomic, assign) BOOL showsHorizontalScrollIndicator;
 @property (nonatomic, assign) BOOL showsVerticalScrollIndicator;
+@property (nonatomic, assign) BOOL scrollEnabledWhenHeaderRefreshing;
+@property (nonatomic, assign) BOOL scrollEnabledWhenFooterRefreshing;
 
 - (id)initWithStyle:(UListViewStyle)style;
 - (id)initWithFrame:(CGRect)frame style:(UListViewStyle)style;

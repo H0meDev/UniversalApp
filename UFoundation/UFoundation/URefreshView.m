@@ -31,11 +31,12 @@
         // Initialize
         self.backgroundColor = sysClearColor();
         self.clipsToBounds = YES;
-        self.delegate = self;
         
         self.height = 60.;
         self.progress = 0;
+        self.delegate = self;
         self.state = URefreshStateNone;
+        self.scrollEnableWhenRefreshing = YES;
         
         [self indicatorView];
         
@@ -284,6 +285,9 @@
     }
     self.state = URefreshStateLoading;
     
+    // Disable scroll
+    self.scrollView.scrollEnabled = self.scrollEnableWhenRefreshing;
+    
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
     insets.top = _insetValue + self.height;
@@ -315,6 +319,9 @@
     self.state = URefreshStateIdle;
     
     [self.indicatorView stopAnimation];
+    
+    // Enable scroll
+    self.scrollView.scrollEnabled = YES;
     
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
@@ -501,6 +508,9 @@
     }
     self.state = URefreshStateLoading;
     
+    // Disable scroll
+    self.scrollView.scrollEnabled = self.scrollEnableWhenRefreshing;
+    
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;
     insets.bottom = _insetValue + self.height;
@@ -532,6 +542,9 @@
     self.state = URefreshStateIdle;
     
     [self.indicatorView stopAnimation];
+    
+    // Enable scroll
+    self.scrollView.scrollEnabled = YES;
     
     // Resize
     UIEdgeInsets insets = self.scrollView.contentInset;

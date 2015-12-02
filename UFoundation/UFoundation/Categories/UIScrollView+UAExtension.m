@@ -99,19 +99,39 @@
     return self.headerView.enable;
 }
 
-- (BOOL)footerEnable
-{
-    return self.footerView.enable;
-}
-
 - (void)setHeaderEnable:(BOOL)enable
 {
     self.headerView.enable = enable;
 }
 
+- (BOOL)headerScrollEnableWhenLoading
+{
+    return self.headerView.scrollEnableWhenRefreshing;
+}
+
+- (void)setHeaderScrollEnableWhenLoading:(BOOL)enable
+{
+    self.headerView.scrollEnableWhenRefreshing = enable;
+}
+
+- (BOOL)footerEnable
+{
+    return self.footerView.enable;
+}
+
 - (void)setFooterEnable:(BOOL)enable
 {
     self.footerView.enable = enable;
+}
+
+- (BOOL)footerScrollEnableWhenLoading
+{
+    return self.footerView.scrollEnableWhenRefreshing;
+}
+
+- (void)setFooterScrollEnableWhenLoading:(BOOL)enable
+{
+    self.footerView.scrollEnableWhenRefreshing = enable;
 }
 
 - (void)removeHeaderView

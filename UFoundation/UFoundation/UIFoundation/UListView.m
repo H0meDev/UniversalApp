@@ -77,8 +77,6 @@
     if (self) {
         _style = UListViewStyleVertical;
         _numberOfCells = -1;
-        _pagingEnabled = NO;
-        _scrollEnabled = YES;
         
         _dequeueLock = [[NSLock alloc]init];
         _valueArray = [NSMutableArray array];
@@ -103,8 +101,6 @@
     if (self) {
         _style = style;
         _numberOfCells = -1;
-        _pagingEnabled = NO;
-        _scrollEnabled = YES;
         
         _dequeueLock = [[NSLock alloc]init];
         _valueArray = [NSMutableArray array];
@@ -184,48 +180,74 @@
     self.scrollView.frame = rectMake(0, 0, frame.size.width, frame.size.height);
     
     if (_style == UListViewStyleVertical) {
-        _showsVerticalScrollIndicator = YES;
-        _showsHorizontalScrollIndicator = NO;
-        
         self.scrollView.showsVerticalScrollIndicator = YES;
         self.scrollView.showsHorizontalScrollIndicator = NO;
         self.scrollView.contentSize = sizeMake(0, frame.size.height + 0.5);
     } else if (_style == UListViewStyleHorizontal) {
-        _showsVerticalScrollIndicator = NO;
-        _showsHorizontalScrollIndicator = YES;
-        
         self.scrollView.showsVerticalScrollIndicator = NO;
         self.scrollView.showsHorizontalScrollIndicator = YES;
         self.scrollView.contentSize = sizeMake(frame.size.width + 0.5, 0);
     }
 }
 
+- (BOOL)pagingEnabled
+{
+    return self.scrollView.isPagingEnabled;
+}
+
 - (void)setPagingEnabled:(BOOL)enable
 {
-    _pagingEnabled = enable;
-    
     self.scrollView.pagingEnabled = enable;
+}
+
+- (BOOL)scrollEnabled
+{
+    return self.scrollView.isScrollEnabled;
 }
 
 - (void)setScrollEnabled:(BOOL)enable
 {
-    _scrollEnabled = enable;
-    
     self.scrollView.scrollEnabled = enable;
+}
+
+- (BOOL)showsHorizontalScrollIndicator
+{
+    return self.scrollView.showsHorizontalScrollIndicator;
 }
 
 - (void)setShowsHorizontalScrollIndicator:(BOOL)shows
 {
-    _showsHorizontalScrollIndicator = shows;
-    
     self.scrollView.showsHorizontalScrollIndicator = shows;
+}
+
+- (BOOL)showsVerticalScrollIndicator
+{
+    return self.scrollView.showsVerticalScrollIndicator;
 }
 
 - (void)setShowsVerticalScrollIndicator:(BOOL)shows
 {
-    _showsVerticalScrollIndicator = shows;
-    
     self.scrollView.showsVerticalScrollIndicator = shows;
+}
+
+- (BOOL)scrollEnabledWhenHeaderRefreshing
+{
+    return self.scrollView.headerScrollEnableWhenLoading;
+}
+
+- (void)setScrollEnabledWhenHeaderRefreshing:(BOOL)enable
+{
+    self.scrollView.headerScrollEnableWhenLoading = enable;
+}
+
+- (BOOL)scrollEnabledWhenFooterRefreshing
+{
+    return self.scrollView.footerScrollEnableWhenLoading;
+}
+
+- (void)setScrollEnabledWhenFooterRefreshing:(BOOL)enable
+{
+    self.scrollView.footerScrollEnableWhenLoading = enable;
 }
 
 #pragma mark - KVO
