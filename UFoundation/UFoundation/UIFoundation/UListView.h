@@ -45,15 +45,9 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 @interface UListView : UIView
 
 @property (nonatomic, readonly) UListViewStyle style;
-@property (nonatomic, weak) id <UListViewDataSource> dataSource;
-@property (nonatomic, weak) id <UListViewDelegate> delegate;
-
-@property (nonatomic, assign) BOOL pagingEnabled;
-@property (nonatomic, assign) BOOL scrollEnabled;
-@property (nonatomic, assign) BOOL showsHorizontalScrollIndicator;
-@property (nonatomic, assign) BOOL showsVerticalScrollIndicator;
-@property (nonatomic, assign) BOOL scrollEnabledWhenHeaderRefreshing;
-@property (nonatomic, assign) BOOL scrollEnabledWhenFooterRefreshing;
+@property (nonatomic, weak) id<UListViewDelegate> delegate;
+@property (nonatomic, weak) id<UListViewDataSource> dataSource;
+@property (nonatomic, strong, readonly) UIScrollView *scrollView;
 
 - (id)initWithStyle:(UListViewStyle)style;
 - (id)initWithFrame:(CGRect)frame style:(UListViewStyle)style;
@@ -64,19 +58,5 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 
 // Refresh
 - (void)reloadData;
-
-// Header & Footer update
-- (void)addHeaderTarget:(id)target action:(SEL)selector;
-- (void)addFooterTarget:(id)target action:(SEL)selector;
-
-- (void)startHeaderRefresh;
-- (void)startFooterRefresh;
-- (void)finishHeaderRefresh;
-- (void)finishFooterRefresh;
-
-- (BOOL)headerEnable;
-- (BOOL)footerEnable;
-- (void)setHeaderEnable:(BOOL)enable;
-- (void)setFooterEnable:(BOOL)enable;
 
 @end

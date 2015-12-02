@@ -210,9 +210,7 @@
 {
     if ([keyPath isEqualToString:@"contentOffset"]) {
         // Unresponse to refreshing or disable
-        if (self.state == URefreshStateLoading ||
-            self.state == URefreshStateDisable)
-        {
+        if (self.state == URefreshStateLoading || self.state == URefreshStateDisable) {
             return;
         }
         
@@ -235,6 +233,10 @@
         }
         
         if (self.state == URefreshStateReady && !self.scrollView.dragging) {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewWillStartRefresh:)]) {
+                [self.delegate refreshViewWillStartRefresh:self];
+            }
+            
             // Start refresh
             [self performOnMainThread:@selector(startRefresh)];
         } else if (checkAction(self.delegate, @selector(refreshView:progress:))) {
@@ -278,9 +280,7 @@
 
 - (void)startRefresh
 {
-    if (self.state == URefreshStateLoading ||
-        self.state == URefreshStateDisable)
-    {
+    if (self.state == URefreshStateLoading || self.state == URefreshStateDisable) {
         return;
     }
     self.state = URefreshStateLoading;
@@ -305,18 +305,24 @@
                              
                              // Perform action
                              [UThreadPool addTarget:self sel:@selector(performAction)];
+                             
+                             if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewDidStartRefresh:)]) {
+                                 [self.delegate refreshViewDidStartRefresh:self];
+                             }
                          }
                      }];
 }
 
 - (void)finishRefresh
 {
-    if (self.state == URefreshStateIdle ||
-        self.state == URefreshStateDisable)
-    {
+    if (self.state == URefreshStateIdle || self.state == URefreshStateDisable) {
         return;
     }
     self.state = URefreshStateIdle;
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewWillFinishRefresh:)]) {
+        [self.delegate refreshViewWillFinishRefresh:self];
+    }
     
     [self.indicatorView stopAnimation];
     
@@ -336,6 +342,10 @@
                      completion:^(BOOL finished) {
                          if (finished) {
                              self.indicatorView.progress = 0;
+                             
+                             if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewDidFinishRefresh:)]) {
+                                 [self.delegate refreshViewDidFinishRefresh:self];
+                             }
                          }
                      }];
 }
@@ -431,9 +441,7 @@
 {
     if ([keyPath isEqualToString:@"contentOffset"]) {
         // Unresponse to refreshing or disable
-        if (self.state == URefreshStateLoading ||
-            self.state == URefreshStateDisable)
-        {
+        if (self.state == URefreshStateLoading || self.state == URefreshStateDisable) {
             return;
         }
         
@@ -455,6 +463,10 @@
         }
         
         if (self.state == URefreshStateReady && !self.scrollView.dragging) {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewWillStartRefresh:)]) {
+                [self.delegate refreshViewWillStartRefresh:self];
+            }
+            
             // Start refresh
             [self performOnMainThread:@selector(startRefresh)];
         } else if (checkAction(self.delegate, @selector(refreshView:progress:))) {
@@ -501,9 +513,7 @@
 
 - (void)startRefresh
 {
-    if (self.state == URefreshStateLoading ||
-        self.state == URefreshStateDisable)
-    {
+    if (self.state == URefreshStateLoading || self.state == URefreshStateDisable) {
         return;
     }
     self.state = URefreshStateLoading;
@@ -528,18 +538,24 @@
                              
                              // Perform action
                              [UThreadPool addTarget:self sel:@selector(performAction)];
+                             
+                             if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewDidStartRefresh:)]) {
+                                 [self.delegate refreshViewDidStartRefresh:self];
+                             }
                          }
                      }];
 }
 
 - (void)finishRefresh
 {
-    if (self.state == URefreshStateIdle ||
-        self.state == URefreshStateDisable)
-    {
+    if (self.state == URefreshStateIdle || self.state == URefreshStateDisable) {
         return;
     }
     self.state = URefreshStateIdle;
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewWillFinishRefresh:)]) {
+        [self.delegate refreshViewWillFinishRefresh:self];
+    }
     
     [self.indicatorView stopAnimation];
     
@@ -559,6 +575,10 @@
                      completion:^(BOOL finished) {
                          if (finished) {
                              self.indicatorView.progress = 0;
+                             
+                             if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewDidFinishRefresh:)]) {
+                                 [self.delegate refreshViewDidFinishRefresh:self];
+                             }
                          }
                      }];
 }

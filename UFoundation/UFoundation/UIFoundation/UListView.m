@@ -12,7 +12,7 @@
 #import "UIView+UAExtension.h"
 #import "UIScrollView+UAExtension.h"
 
-@interface UListViewCell ()
+@interface UListViewCell () <URefreshViewDelegate>
 
 @property (nonatomic, strong) UIView *contentView;
 
@@ -63,13 +63,12 @@
     NSMutableDictionary *_cellReusePool;
 }
 
-@property (nonatomic, strong) UIScrollView *scrollView;
-
 @end
 
 @implementation UListView
 
 @synthesize style = _style;
+@synthesize scrollView = _scrollView;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -188,66 +187,6 @@
         self.scrollView.showsHorizontalScrollIndicator = YES;
         self.scrollView.contentSize = sizeMake(frame.size.width + 0.5, 0);
     }
-}
-
-- (BOOL)pagingEnabled
-{
-    return self.scrollView.isPagingEnabled;
-}
-
-- (void)setPagingEnabled:(BOOL)enable
-{
-    self.scrollView.pagingEnabled = enable;
-}
-
-- (BOOL)scrollEnabled
-{
-    return self.scrollView.isScrollEnabled;
-}
-
-- (void)setScrollEnabled:(BOOL)enable
-{
-    self.scrollView.scrollEnabled = enable;
-}
-
-- (BOOL)showsHorizontalScrollIndicator
-{
-    return self.scrollView.showsHorizontalScrollIndicator;
-}
-
-- (void)setShowsHorizontalScrollIndicator:(BOOL)shows
-{
-    self.scrollView.showsHorizontalScrollIndicator = shows;
-}
-
-- (BOOL)showsVerticalScrollIndicator
-{
-    return self.scrollView.showsVerticalScrollIndicator;
-}
-
-- (void)setShowsVerticalScrollIndicator:(BOOL)shows
-{
-    self.scrollView.showsVerticalScrollIndicator = shows;
-}
-
-- (BOOL)scrollEnabledWhenHeaderRefreshing
-{
-    return self.scrollView.headerScrollEnableWhenLoading;
-}
-
-- (void)setScrollEnabledWhenHeaderRefreshing:(BOOL)enable
-{
-    self.scrollView.headerScrollEnableWhenLoading = enable;
-}
-
-- (BOOL)scrollEnabledWhenFooterRefreshing
-{
-    return self.scrollView.footerScrollEnableWhenLoading;
-}
-
-- (void)setScrollEnabledWhenFooterRefreshing:(BOOL)enable
-{
-    self.scrollView.footerScrollEnableWhenLoading = enable;
 }
 
 #pragma mark - KVO
@@ -473,10 +412,25 @@
 - (UListViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier
 {
     UListViewCell *cell = nil;
-    for (UListViewCell *item in _cellReusePool[identifier]) {
-        if (item.superview == nil) {
-            cell = item;
-            break;
+    
+    if (checkValidNSString(identifier) && checkValidNSDictionary(_cellReusePool)) {
+        NSArray *cells = _cellReusePool[identifier];
+        if (checkValidNSArray(cells)) {
+            // Only one unattached cell leaves
+            NSMutableArray *marray = [NSMutableArray arrayWithArray:cells];
+            for (UListViewCell *cellItem in cells) {
+                if (cellItem.superview == nil) {
+                    if (cell == nil) {
+                        cell = cellItem;
+                    } else {
+                        // Remove
+                        [marray removeObject:cellItem];
+                    }
+                }
+            }
+            
+            // Reset cells
+            [_cellReusePool setObject:[marray copy] forKey:identifier];
         }
     }
     
@@ -520,56 +474,6 @@
     
     // Load cells
     self.scrollView.contentOffset = CGPointZero;
-}
-
-- (void)addHeaderTarget:(id)target action:(SEL)selector
-{
-    [self.scrollView addHeaderTarget:target action:selector];
-}
-
-- (void)addFooterTarget:(id)target action:(SEL)selector
-{
-    [self.scrollView addFooterTarget:target action:selector];
-}
-
-- (void)startHeaderRefresh
-{
-    [self.scrollView startHeaderRefresh];
-}
-
-- (void)startFooterRefresh
-{
-    [self.scrollView startFooterRefresh];
-}
-
-- (void)finishHeaderRefresh
-{
-    [self.scrollView finishHeaderRefresh];
-}
-
-- (void)finishFooterRefresh
-{
-    [self.scrollView finishFooterRefresh];
-}
-
-- (BOOL)headerEnable
-{
-    return [self.scrollView headerEnable];
-}
-
-- (BOOL)footerEnable
-{
-    return [self.scrollView footerEnable];
-}
-
-- (void)setHeaderEnable:(BOOL)enable
-{
-    [self.scrollView setHeaderEnable:enable];
-}
-
-- (void)setFooterEnable:(BOOL)enable
-{
-    [self.scrollView setFooterEnable:enable];
 }
 
 @end

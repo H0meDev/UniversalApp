@@ -22,6 +22,10 @@ typedef NS_ENUM(NSInteger, URefreshState)
 
 @optional
 - (void)refreshView:(URefreshView *)view progress:(CGFloat)progress; // Progress from 0 to 1.0
+- (void)refreshViewWillStartRefresh:(URefreshView *)view;
+- (void)refreshViewWillFinishRefresh:(URefreshView *)view;
+- (void)refreshViewDidStartRefresh:(URefreshView *)view;
+- (void)refreshViewDidFinishRefresh:(URefreshView *)view;
 
 @end
 

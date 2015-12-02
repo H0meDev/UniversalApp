@@ -40,8 +40,6 @@
     _listView.frame = rectMake(0, 0, screenWidth(), height);
     _listView.delegate = self;
     _listView.dataSource = self;
-    [_listView addHeaderTarget:self action:@selector(headerAction)];
-    [_listView addFooterTarget:self action:@selector(footerAction)];
     [self addSubview:_listView];
     
 }
@@ -102,9 +100,9 @@
 - (CGFloat)listView:(UListView *)listView heightOrWidthForIndex:(NSInteger)index
 {
     if (listView.style == UListViewStyleHorizontal) {
-        return listView.sizeWidth / 3.;
+        return listView.sizeWidth / 6.;
     } else {
-        return listView.sizeHeight / 3.;
+        return listView.sizeHeight / 6.;
     }
 }
 
@@ -116,7 +114,7 @@
         cell = [listView dequeueReusableCellWithIdentifier:@"UListViewCell"];
     }
     
-    cell.backgroundColor = rgbColor((index % 2) * 200, 0, 0);
+    cell.backgroundColor = rgbColor((index % 2) * 200, (index * 100) % 255, (index * 200) % 255);
     
     NSLog(@"Load item %@", @(index));
     

@@ -64,6 +64,76 @@
 
 @implementation UIScrollView (UAExtension)
 
+- (void)setHeaderDelegate:(id<URefreshViewDelegate>)delegate
+{
+    self.headerView.delegate = delegate;
+}
+
+- (void)setFooterDelegate:(id<URefreshViewDelegate>)delegate
+{
+    self.footerView.delegate = delegate;
+}
+
+- (void)setHeaderHeight:(CGFloat)height
+{
+    self.headerView.height = height;
+}
+
+- (void)setFooterHeight:(CGFloat)height
+{
+    self.footerView.height = height;
+}
+
+- (void)setHeaderTitleOfIdle:(NSString *)title
+{
+    self.headerView.titleOfIdle = title;
+}
+
+- (void)setHeaderTitleOfReady:(NSString *)title
+{
+    self.headerView.titleOfReady = title;
+}
+
+- (void)setHeaderTitleOfLoading:(NSString *)title
+{
+    self.headerView.titleOfLoading = title;
+}
+
+- (void)setHeaderTitleOfDisable:(NSString *)title
+{
+    self.headerView.titleOfDisable = title;
+}
+
+- (void)setFooterTitleOfIdle:(NSString *)title
+{
+    self.footerView.titleOfIdle = title;
+}
+
+- (void)setFooterTitleOfReady:(NSString *)title
+{
+    self.footerView.titleOfReady = title;
+}
+
+- (void)setFooterTitleOfLoading:(NSString *)title
+{
+    self.footerView.titleOfLoading = title;
+}
+
+- (void)setFooterTitleOfDisable:(NSString *)title
+{
+    self.footerView.titleOfDisable = title;
+}
+
+- (void)addHeaderSubview:(UIView *)view
+{
+    [self.headerView addSubview:view];
+}
+
+- (void)addFooterSubview:(UIView *)view
+{
+    [self.footerView addSubview:view];
+}
+
 - (void)addHeaderTarget:(id)target action:(SEL)selector
 {
     [self.headerView addTarget:target action:selector];

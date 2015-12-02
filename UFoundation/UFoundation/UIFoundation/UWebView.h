@@ -23,7 +23,7 @@
 
 // Enable progress view, default is YES
 @property (nonatomic, assign) BOOL enableProgress;
-@property (nonatomic, weak) id <UWebViewDelegate> delegate;
+@property (nonatomic, weak) id<UWebViewDelegate> delegate;
 @property (nonatomic, readonly, strong) UIScrollView *scrollView NS_AVAILABLE_IOS(5_0);
 
 // Load from URL string
