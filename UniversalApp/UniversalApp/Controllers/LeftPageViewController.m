@@ -116,6 +116,8 @@
     
     cell.backgroundColor = rgbColor(255, 0, (index % 2) * 200);
     
+    NSLog(@"Load item %@", @(index));
+    
     return cell;
 }
 

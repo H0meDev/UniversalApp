@@ -213,52 +213,58 @@
 {
     if ([keyPath isEqualToString:@"contentOffset"]) {
         // Dequeue all cells
-        [self performOnMainThread:@selector(dequeueCellsWith:) with:change[@"new"]];
+        [self dequeueCellsWith:[change[@"new"] CGPointValue]];
     }
 }
 
 #pragma mark - Methods
 
-- (void)dequeueCellsWith:(NSValue *)value
+- (void)dequeueCellsWith:(CGPoint)offset
 {
     [_dequeueLock lock];
     
-    CGPoint offset = [value CGPointValue];
-    CGRange range = [self visibleRangeWith:offset];
-    NSInteger beginIndex = range.min;
-    NSInteger endIndex = range.max;
-    
-    for (NSInteger i = beginIndex; i <= endIndex; i ++) {
-        @autoreleasepool
-        {
-            NSArray *cells = [self currentVisibleCellsWith:offset];
-            
-            BOOL needsAttached = NO;
-            if ((i - beginIndex) <= cells.count) {
-                needsAttached = ![self checkCellWith:i from:cells];
-            } else {
-                needsAttached = YES;
-            }
-            
-            if (needsAttached) {
-                // Attach cell
-                CGFloat sizeValue = [_valueArray[i] floatValue];
-                CGFloat originValue = [self originValueOfIndex:i];
-                
-                UListViewCell *cell = [self.dataSource listView:self.weakself cellAtIndex:i];
-                if (_style == UListViewStyleHorizontal) {
-                    cell.frame = rectMake(originValue, 0, sizeValue, self.scrollView.sizeHeight);
-                } else if (_style == UListViewStyleVertical) {
-                    cell.frame = rectMake(0, originValue, self.scrollView.sizeWidth, sizeValue);
+    if (_valueArray) {
+        CGRange range = [self visibleRangeWith:offset];
+        NSInteger beginIndex = range.min;
+        NSInteger endIndex = range.max;
+        
+        if (_valueArray.count > endIndex) {
+            for (NSInteger i = beginIndex; i <= endIndex; i ++) {
+                @autoreleasepool
+                {
+                    NSArray *cells = [self currentVisibleCellsWith:offset];
+                    
+                    BOOL needsAttached = NO;
+                    if ((i - beginIndex) <= cells.count) {
+                        needsAttached = ![self checkCellWith:i from:cells];
+                    } else {
+                        needsAttached = YES;
+                    }
+                    
+                    if (needsAttached) {
+                        // Attach cell
+                        CGFloat sizeValue = [_valueArray[i] floatValue];
+                        CGFloat originValue = [self originValueOfIndex:i];
+                        
+                        UListViewCell *cell = [self.dataSource listView:self.weakself cellAtIndex:i];
+                        if (_style == UListViewStyleHorizontal) {
+                            cell.frame = rectMake(originValue, 0, sizeValue, self.scrollView.sizeHeight);
+                        } else if (_style == UListViewStyleVertical) {
+                            cell.frame = rectMake(0, originValue, self.scrollView.sizeWidth, sizeValue);
+                        }
+                        
+                        // For visible option
+                        [cell cellWillAppear];
+                        
+                        // Attached to scrollView
+                        [self.contentView addSubview:cell];
+                    }
                 }
-                
-                // For visible option
-                [cell cellWillAppear];
-                
-                // Attached to scrollView
-                [self.contentView addSubview:cell];
             }
         }
+        
+        // Remove unused cells
+        [self removeUnusedCells];
     }
     
     [_dequeueLock unlock];
@@ -266,47 +272,47 @@
 
 - (CGRange)visibleRangeWith:(CGPoint)offset
 {
-    CGFloat deltaValue = 0;
-    CGFloat offsetLValue = offset.x;
-    CGFloat offsetTValue = offset.y;
-    CGFloat offsetRValue = offset.x + self.scrollView.sizeWidth;
-    CGFloat offsetBValue = offset.y + self.scrollView.sizeHeight;
-    
     NSInteger beginIndex = -1;
     NSInteger endIndex = 0;
     
-    for (NSInteger index = 0; index < _valueArray.count; index ++) {
-        CGFloat minValue = deltaValue + _spaceValue * index;
-        CGFloat maxValue = minValue + [_valueArray[index] floatValue];
+    if (_valueArray) {
+        CGFloat deltaValue = 0;
+        CGFloat offsetLValue = offset.x;
+        CGFloat offsetTValue = offset.y;
+        CGFloat offsetRValue = offset.x + self.scrollView.sizeWidth;
+        CGFloat offsetBValue = offset.y + self.scrollView.sizeHeight;
         
-        // Begin, pick the first suitable index
-        if (beginIndex == -1) {
+        for (NSInteger index = 0; index < _valueArray.count; index ++) {
+            CGFloat minValue = deltaValue + _spaceValue * index;
+            CGFloat maxValue = minValue + [_valueArray[index] floatValue];
+            
+            // Begin, pick the first suitable index
+            if (beginIndex == -1) {
+                if (_style == UListViewStyleHorizontal) {
+                    if (maxValue >= offsetLValue) {
+                        beginIndex = index;
+                    }
+                } else if (_style == UListViewStyleVertical) {
+                    if (maxValue >= offsetTValue) {
+                        beginIndex = index;
+                    }
+                }
+            }
+            
+            // End, pick the last suitable index
             if (_style == UListViewStyleHorizontal) {
-                if (maxValue >= offsetLValue) {
-                    beginIndex = index;
+                if ((maxValue <= offsetRValue) || (minValue <= offsetRValue && maxValue >= offsetRValue)) {
+                    endIndex = index;
                 }
             } else if (_style == UListViewStyleVertical) {
-                if (maxValue >= offsetTValue) {
-                    beginIndex = index;
+                if ((maxValue <= offsetBValue) || (minValue <= offsetBValue && maxValue >= offsetBValue)) {
+                    endIndex = index;
                 }
             }
+            
+            deltaValue += [_valueArray[index] floatValue];
         }
-        
-        // End, pick the last suitable index
-        if (_style == UListViewStyleHorizontal) {
-            if ((maxValue <= offsetRValue) || (minValue <= offsetRValue && maxValue >= offsetRValue)) {
-                endIndex = index;
-            }
-        } else if (_style == UListViewStyleVertical) {
-            if ((maxValue <= offsetBValue) || (minValue <= offsetBValue && maxValue >= offsetBValue)) {
-                endIndex = index;
-            }
-        }
-        
-        deltaValue += [_valueArray[index] floatValue];
     }
-    
-    NSLog(@"%@ - %@", @(beginIndex), @(endIndex));
     
     return CGRangeMake((beginIndex < 0)?0:beginIndex, endIndex);
 }
@@ -395,6 +401,24 @@
     }
     
     return contains;
+}
+
+- (void)removeUnusedCells
+{
+    for (NSString *key in _cellReusePool) {
+        NSArray *cells = _cellReusePool[key];
+        if (checkValidNSArray(cells)) {
+            NSMutableArray *marray = [NSMutableArray arrayWithArray:cells];
+            for (UListViewCell *cell in cells) {
+                if (cell.superview == nil) {
+                    [marray removeObject:cell];
+                }
+            }
+            
+            // Refresh
+            [_cellReusePool setObject:[marray copy] forKey:key];
+        }
+    }
 }
 
 #pragma mark - Outer Methods
