@@ -44,7 +44,12 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 
 @interface UListView : UIView
 
-@property (nonatomic, assign) CGFloat spaceValue; // Default is 0.
+@property (nonatomic, assign) CGFloat spaceValue;     // Default is 0.
+@property (nonatomic, assign) CGFloat headerValue;    // Default is 0.
+@property (nonatomic, assign) CGFloat footerValue;    // Default is 0.
+@property (nonatomic, assign) UIView *headerView;     // Header, headerValue required
+@property (nonatomic, assign) UIView *footerView;     // Footer, footerValue required
+
 @property (nonatomic, weak) id<UListViewDelegate> delegate;
 @property (nonatomic, weak) id<UListViewDataSource> dataSource;
 @property (nonatomic, readonly) UListViewStyle style;

@@ -36,11 +36,15 @@
     self.navigationBarView.rightView = rightView;
     
     CGFloat height = self.containerView.sizeHeight - tabHeight();
-    _listView = [[UListView alloc]initWithStyle:UListViewStyleVertical];
+    _listView = [[UListView alloc]initWithStyle:UListViewStyleHorizontal];
     _listView.frame = rectMake(0, 0, screenWidth(), height);
     _listView.delegate = self;
     _listView.dataSource = self;
-    _listView.spaceValue = 10;
+    _listView.spaceValue = 0.5;
+    _listView.headerValue = 0;
+    _listView.footerValue = 0;
+    _listView.scrollView.pagingEnabled = YES;
+    _listView.backgroundColor = sysLightGrayColor();
     [self addSubview:_listView];
 }
 
@@ -67,7 +71,7 @@
 
 - (void)buttonAction:(UButton *)button
 {
-//    [_listView reloadData];
+    [_listView reloadData];
 }
 
 - (void)headerAction
@@ -100,9 +104,9 @@
 - (CGFloat)listView:(UListView *)listView heightOrWidthForIndex:(NSInteger)index
 {
     if (listView.style == UListViewStyleHorizontal) {
-        return 100;
+        return listView.sizeWidth;
     } else {
-        return 100;
+        return listView.sizeHeight;
     }
 }
 
@@ -114,7 +118,7 @@
         cell = [listView dequeueReusableCellWithIdentifier:@"UListViewCell"];
     }
     
-    cell.backgroundColor = rgbColor(255, 0, (index % 2) * 200);
+    cell.backgroundColor = sysYellowColor();
     
     NSLog(@"Load item %@", @(index));
     

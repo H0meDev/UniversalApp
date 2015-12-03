@@ -32,10 +32,43 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        //
+        // Initalize
     }
     
     return self;
+}
+
+- (UIView *)contentView
+{
+    if (_contentView) {
+        return _contentView;
+    }
+    
+    UIView *contentView = [[UIView alloc]init];
+    contentView.backgroundColor = sysWhiteColor();
+    [super addSubview:contentView];
+    _contentView = contentView;
+    
+    return _contentView;
+}
+
+- (void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
+    
+    self.contentView.frame = self.bounds;
+}
+
+- (void)setBackgroundColor:(UIColor *)color
+{
+    [super setBackgroundColor:sysClearColor()];
+    
+    self.contentView.backgroundColor = color;
+}
+
+- (void)addSubview:(UIView *)view
+{
+    [self.contentView addSubview:view];
 }
 
 - (void)cellWillAppear
@@ -80,6 +113,8 @@
         _style = UListViewStyleVertical;
         _numberOfCells = -1;
         _spaceValue = 0;
+        _headerValue = 0;
+        _footerValue = 0;
         
         _dequeueLock = [[NSLock alloc]init];
         _valueArray = [NSMutableArray array];
@@ -105,6 +140,8 @@
         _style = style;
         _numberOfCells = -1;
         _spaceValue = 0;
+        _headerValue = 0;
+        _footerValue = 0;
         
         _dequeueLock = [[NSLock alloc]init];
         _valueArray = [NSMutableArray array];
@@ -121,6 +158,9 @@
 - (void)willMoveToWindow:(UIWindow *)newWindow
 {
     if (_numberOfCells == -1) {
+        _numberOfCells = 0;
+        
+        // Reload cells
         [self reloadData];
     }
 }
@@ -199,9 +239,51 @@
     }
 }
 
+- (void)setBackgroundColor:(UIColor *)color
+{
+    [super setBackgroundColor:sysClearColor()];
+    
+    self.contentView.backgroundColor = color;
+}
+
 - (void)setSpaceValue:(CGFloat)value
 {
     _spaceValue = (value < 0)?0:value;
+    
+    // Reset all
+    [self reloadData];
+}
+
+- (void)setHeaderValue:(CGFloat)value
+{
+    _headerValue = value;
+    
+    // Reset all
+    [self reloadData];
+}
+
+- (void)setFooterValue:(CGFloat)value
+{
+    _footerValue = value;
+    
+    // Reset all
+    [self reloadData];
+}
+
+- (void)setHeaderView:(UIView *)headerView
+{
+    _headerView = headerView;
+    
+    // Reset all
+    [self reloadData];
+}
+
+- (void)setFooterView:(UIView *)footerView
+{
+    _footerView = footerView;
+    
+    // Reset all
+    [self reloadData];
 }
 
 #pragma mark - KVO
@@ -276,11 +358,11 @@
     NSInteger endIndex = 0;
     
     if (_valueArray) {
-        CGFloat deltaValue = 0;
         CGFloat offsetLValue = offset.x;
         CGFloat offsetTValue = offset.y;
         CGFloat offsetRValue = offset.x + self.scrollView.sizeWidth;
         CGFloat offsetBValue = offset.y + self.scrollView.sizeHeight;
+        CGFloat deltaValue = _headerValue;
         
         for (NSInteger index = 0; index < _valueArray.count; index ++) {
             CGFloat minValue = deltaValue + _spaceValue * index;
@@ -367,7 +449,7 @@
     index = (index < 0)?0:index;
     index = (index > _numberOfCells)?_numberOfCells - 1:index;
     
-    CGFloat value = 0;
+    CGFloat value = _headerValue;
     for (NSInteger i = 0; i < _valueArray.count; i ++) {
         if (index == i) {
             break;
@@ -460,6 +542,10 @@
 
 - (void)reloadData
 {
+    if (_numberOfCells == -1) {
+        return;
+    }
+    
     // Remove all cells
     for (UListViewCell *cell in self.contentView.subviews) {
         if (cell.superview) {
@@ -476,7 +562,7 @@
     [_cellReusePool removeAllObjects];
     _numberOfCells = [self.dataSource numberOfItemsInListView:self.weakself];
     
-    CGFloat sizeValue = 0;
+    CGFloat sizeValue = _headerValue + _footerValue;
     for (NSInteger index = 0; index < _numberOfCells; index ++) {
         CGFloat value = [self.delegate listView:self.weakself heightOrWidthForIndex:index];
         [_valueArray addObject:@(value)];
