@@ -40,7 +40,7 @@
     _listView.frame = rectMake(0, 0, screenWidth(), height);
     _listView.delegate = self;
     _listView.dataSource = self;
-    _listView.spaceValue = 1.;
+    _listView.spaceValue = 10;
     [self addSubview:_listView];
 }
 
@@ -115,8 +115,6 @@
     }
     
     cell.backgroundColor = rgbColor(255, 0, (index % 2) * 200);
-    
-    NSLog(@"Load item %@", @(index));
     
     return cell;
 }
