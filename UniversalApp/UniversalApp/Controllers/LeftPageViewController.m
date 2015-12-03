@@ -40,8 +40,8 @@
     _listView.frame = rectMake(0, 0, screenWidth(), height);
     _listView.delegate = self;
     _listView.dataSource = self;
+    _listView.spaceValue = 1.;
     [self addSubview:_listView];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -100,9 +100,9 @@
 - (CGFloat)listView:(UListView *)listView heightOrWidthForIndex:(NSInteger)index
 {
     if (listView.style == UListViewStyleHorizontal) {
-        return listView.sizeWidth / 6.;
+        return 100;
     } else {
-        return listView.sizeHeight / 6.;
+        return 100;
     }
 }
 

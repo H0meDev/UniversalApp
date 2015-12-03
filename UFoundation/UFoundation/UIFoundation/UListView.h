@@ -44,9 +44,10 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 
 @interface UListView : UIView
 
-@property (nonatomic, readonly) UListViewStyle style;
+@property (nonatomic, assign) CGFloat spaceValue; // Default is 0.
 @property (nonatomic, weak) id<UListViewDelegate> delegate;
 @property (nonatomic, weak) id<UListViewDataSource> dataSource;
+@property (nonatomic, readonly) UListViewStyle style;
 @property (nonatomic, strong, readonly) UIScrollView *scrollView;
 
 - (id)initWithStyle:(UListViewStyle)style;

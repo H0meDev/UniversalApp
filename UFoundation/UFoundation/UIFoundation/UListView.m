@@ -76,6 +76,7 @@
     if (self) {
         _style = UListViewStyleVertical;
         _numberOfCells = -1;
+        _spaceValue = 0;
         
         _dequeueLock = [[NSLock alloc]init];
         _valueArray = [NSMutableArray array];
@@ -100,6 +101,7 @@
     if (self) {
         _style = style;
         _numberOfCells = -1;
+        _spaceValue = 0;
         
         _dequeueLock = [[NSLock alloc]init];
         _valueArray = [NSMutableArray array];
@@ -189,6 +191,11 @@
     }
 }
 
+- (void)setSpaceValue:(CGFloat)value
+{
+    _spaceValue = (value < 0)?0:value;
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -213,8 +220,6 @@
     NSInteger endIndex = range.max;
     
     for (NSInteger i = beginIndex; i <= endIndex; i ++) {
-        CGFloat sizeValue = [_valueArray[i] floatValue];
-        CGFloat originValue = [self originValueOfIndex:i];
         NSInteger index = i - beginIndex;
         NSArray *cells = [self currentVisibleCellsWith:offset];
         
@@ -227,6 +232,9 @@
         
         if (needsAttached) {
             // Attach cell
+            CGFloat sizeValue = [_valueArray[i] floatValue];
+            CGFloat originValue = [self originValueOfIndex:i];
+            
             UListViewCell *cell = [self.dataSource listView:self.weakself cellAtIndex:i];
             if (_style == UListViewStyleHorizontal) {
                 cell.frame = rectMake(originValue, 0, sizeValue, self.scrollView.sizeHeight);
@@ -258,35 +266,40 @@
     CGFloat offsetBValue = offset.y + self.scrollView.sizeHeight;
     
     for (NSInteger index = 0; index < _valueArray.count; index ++) {
-        CGFloat delta = deltaValue + [_valueArray[index] floatValue];
+        CGFloat minValue = deltaValue + _spaceValue * (index + 1);
+        CGFloat maxValue = minValue + [_valueArray[index] floatValue];
         
-        // Left or top
-        if (_style == UListViewStyleHorizontal) {
-            if ((deltaValue <= offsetLValue) && (delta >= offsetLValue)) {
-                beginIndex = index;
-            }
-        } else if (_style == UListViewStyleVertical) {
-            if ((deltaValue <= offsetTValue) && (delta >= offsetTValue)) {
-                beginIndex = index;
+        // Begin
+        if (beginIndex == -1) {
+            if (_style == UListViewStyleHorizontal) {
+                if (maxValue >= offsetLValue) {
+                    beginIndex = index;
+                }
+            } else if (_style == UListViewStyleVertical) {
+                if (maxValue >= offsetTValue) {
+                    beginIndex = index;
+                }
             }
         }
         
-        // Right or bottom
-        if (_style == UListViewStyleHorizontal) {
-            if ((deltaValue <= offsetRValue) && (delta >= offsetRValue)) {
-                endIndex = index;
-            }
-        } else if (_style == UListViewStyleVertical) {
-            if ((deltaValue <= offsetBValue) && (delta >= offsetBValue)) {
-                endIndex = index;
+        if (endIndex == -1) {
+            if (_style == UListViewStyleHorizontal) {
+                if (minValue <= offsetRValue && maxValue >= offsetRValue) {
+                    endIndex = index;
+                }
+            } else if (_style == UListViewStyleVertical) {
+                if (minValue <= offsetBValue && maxValue >= offsetBValue) {
+                    endIndex = index;
+                }
             }
         }
         
-        deltaValue = delta;
+        if (beginIndex != -1 && endIndex != -1) {
+            break;
+        }
+        
+        deltaValue += [_valueArray[index] floatValue];
     }
-    
-    // Modify end
-    endIndex = (endIndex < 0)?(_numberOfCells - 1):endIndex;
     
     return CGRangeMake(beginIndex, endIndex);
 }
@@ -358,13 +371,13 @@
     index = (index < 0)?0:index;
     index = (index > _numberOfCells)?_numberOfCells - 1:index;
     
-    CGFloat value = 0;
+    CGFloat value = _spaceValue;
     for (NSInteger i = 0; i < _valueArray.count; i ++) {
         if (index == i) {
             break;
         }
         
-        value += [_valueArray[i]floatValue];
+        value += [_valueArray[i] floatValue] + _spaceValue;
     }
     
     return value;
