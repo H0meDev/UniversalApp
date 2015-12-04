@@ -126,7 +126,6 @@
     NSLock *_dequeueLock;
     NSArray *_itemArray; // Array of UListViewCellItem
     NSMutableDictionary *_cellReusePool;
-    CGRange _currentRange;
 }
 
 // For cells
@@ -148,8 +147,6 @@
         _spaceValue = 0;
         _headerValue = 0;
         _footerValue = 0;
-        _currentRange.min = -1;
-        _currentRange.max = -1;
         
         _dequeueLock = [[NSLock alloc]init];
         _cellReusePool = [NSMutableDictionary dictionary];
@@ -355,13 +352,6 @@
 {
     if (_itemArray) {
         CGRange range = [self visibleRangeWith:offset];
-        if (_currentRange.min == range.min && _currentRange.max == range.max) {
-            return;
-        }
-        
-        _currentRange.min = range.min;
-        _currentRange.max = range.max;
-        
         NSInteger beginIndex = range.min;
         NSInteger endIndex = range.max;
         
