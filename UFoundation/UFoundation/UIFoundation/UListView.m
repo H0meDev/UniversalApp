@@ -98,13 +98,13 @@
 
 // For cells
 @property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIScrollView *scrollView;
 
 @end
 
 @implementation UListView
 
 @synthesize style = _style;
-@synthesize scrollView = _scrollView;
 
 - (id)initWithFrame:(CGRect)frame
 {

@@ -53,7 +53,6 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 @property (nonatomic, weak) id<UListViewDelegate> delegate;
 @property (nonatomic, weak) id<UListViewDataSource> dataSource;
 @property (nonatomic, readonly) UListViewStyle style;
-@property (nonatomic, strong, readonly) UIScrollView *scrollView;
 
 - (id)initWithStyle:(UListViewStyle)style;
 - (id)initWithFrame:(CGRect)frame style:(UListViewStyle)style;

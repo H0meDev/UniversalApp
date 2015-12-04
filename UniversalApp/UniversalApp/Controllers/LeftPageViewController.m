@@ -36,14 +36,13 @@
     self.navigationBarView.rightView = rightView;
     
     CGFloat height = self.containerView.sizeHeight - tabHeight();
-    _listView = [[UListView alloc]initWithStyle:UListViewStyleHorizontal];
+    _listView = [[UListView alloc]initWithStyle:UListViewStyleVertical];
     _listView.frame = rectMake(0, 0, screenWidth(), height);
     _listView.delegate = self;
     _listView.dataSource = self;
-    _listView.spaceValue = 0.5;
-    _listView.headerValue = 0;
-    _listView.footerValue = 0;
-    _listView.scrollView.pagingEnabled = YES;
+    _listView.spaceValue = naviBLineH();
+    _listView.headerValue = naviHeight();
+    _listView.footerValue = tabHeight();
     _listView.backgroundColor = sysLightGrayColor();
     [self addSubview:_listView];
 }
@@ -104,9 +103,9 @@
 - (CGFloat)listView:(UListView *)listView heightOrWidthForIndex:(NSInteger)index
 {
     if (listView.style == UListViewStyleHorizontal) {
-        return listView.sizeWidth;
+        return listView.sizeWidth / 5.;
     } else {
-        return listView.sizeHeight;
+        return listView.sizeHeight / 5.;
     }
 }
 
