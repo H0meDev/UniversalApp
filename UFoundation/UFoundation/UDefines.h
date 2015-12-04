@@ -118,7 +118,7 @@ CG_INLINE CGRange CGRangeMake(CGFloat min, CGFloat max)
 #define screenHScale()      screenWidth() / 320.
 
 // Class check
-#define checkClass(object, className)     [object isKindOfClass:[className class]]
+#define checkClass(object, className)     (object && [object isKindOfClass:[className class]])
 #define checkValidNSData(data)            ([data isKindOfClass:NSData.class] && ((NSData *)data).length > 0)
 #define checkValidNSString(string)        ([string isKindOfClass:NSString.class] && ((NSString *)string).length > 0)
 #define checkValidNSArray(array)          ([array isKindOfClass:NSArray.class] && ((NSArray *)array).count > 0)

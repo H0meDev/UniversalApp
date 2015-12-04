@@ -90,9 +90,9 @@
 
 @interface UListView ()
 {
-    NSLock *_dequeueLock;
     NSInteger _numberOfCells;
-    NSMutableArray *_valueArray;
+    NSMutableArray *_valueArray;   // Height of cells
+    NSMutableArray *_originArray;  // Origin value of cells
     NSMutableDictionary *_cellReusePool;
 }
 
@@ -116,8 +116,8 @@
         _headerValue = 0;
         _footerValue = 0;
         
-        _dequeueLock = [[NSLock alloc]init];
         _valueArray = [NSMutableArray array];
+        _originArray = [NSMutableArray array];
         _cellReusePool = [NSMutableDictionary dictionary];
         
         self.clipsToBounds = YES;
@@ -135,21 +135,9 @@
 
 - (id)initWithFrame:(CGRect)frame style:(UListViewStyle)style
 {
-    self = [super initWithFrame:frame];
+    self = [self initWithFrame:frame];
     if (self) {
         _style = style;
-        _numberOfCells = -1;
-        _spaceValue = 0;
-        _headerValue = 0;
-        _footerValue = 0;
-        
-        _dequeueLock = [[NSLock alloc]init];
-        _valueArray = [NSMutableArray array];
-        _cellReusePool = [NSMutableDictionary dictionary];
-        
-        self.clipsToBounds = YES;
-        self.userInteractionEnabled = YES;
-        self.backgroundColor = sysWhiteColor();
     }
     
     return self;
@@ -203,7 +191,7 @@
     [self addSubview:scrollView];
     _scrollView = scrollView;
     
-    // Clear subviews
+    // Content
     UIView *contentView = [[UIView alloc]init];
     contentView.userInteractionEnabled = YES;
     contentView.backgroundColor = sysClearColor();
@@ -237,13 +225,6 @@
         self.scrollView.contentSize = sizeMake(frame.size.width + 0.5, 0);
         self.contentView.frame = rectMake(0, 0, frame.size.width + 0.5, frame.size.height);
     }
-}
-
-- (void)setBackgroundColor:(UIColor *)color
-{
-    [super setBackgroundColor:sysClearColor()];
-    
-    self.contentView.backgroundColor = color;
 }
 
 - (void)setSpaceValue:(CGFloat)value
@@ -294,17 +275,47 @@
                        context:(void *)context
 {
     if ([keyPath isEqualToString:@"contentOffset"]) {
-        // Dequeue all cells
-        [self dequeueCellsWith:[change[@"new"] CGPointValue]];
+        // Dequeue all views
+        [self dequeueAllViewsWith:[change[@"new"] CGPointValue]];
     }
 }
 
 #pragma mark - Methods
 
+- (void)dequeueAllViewsWith:(CGPoint)offset
+{
+    // Visible cells
+    [self dequeueCellsWith:offset];
+    
+    // Headers & Footers
+    [self dequeueHeadersWith:offset];
+    [self dequeueFootersWith:offset];
+}
+
+- (void)dequeueHeadersWith:(CGPoint)offset
+{
+    if (_headerView) {
+        if (_style == UListViewStyleHorizontal) {
+            //
+        } else if (_style == UListViewStyleVertical) {
+            //
+        }
+    }
+}
+
+- (void)dequeueFootersWith:(CGPoint)offset
+{
+    if (_footerView) {
+        if (_style == UListViewStyleHorizontal) {
+            //
+        } else if (_style == UListViewStyleVertical) {
+            //
+        }
+    }
+}
+
 - (void)dequeueCellsWith:(CGPoint)offset
 {
-    [_dequeueLock lock];
-    
     if (_valueArray) {
         CGRange range = [self visibleRangeWith:offset];
         NSInteger beginIndex = range.min;
@@ -326,7 +337,7 @@
                     if (needsAttached) {
                         // Attach cell
                         CGFloat sizeValue = [_valueArray[i] floatValue];
-                        CGFloat originValue = [self originValueOfIndex:i];
+                        CGFloat originValue = [_originArray[i] floatValue];
                         
                         UListViewCell *cell = [self.dataSource listView:self.weakself cellAtIndex:i];
                         if (_style == UListViewStyleHorizontal) {
@@ -348,8 +359,6 @@
         // Remove unused cells
         [self removeUnusedCells];
     }
-    
-    [_dequeueLock unlock];
 }
 
 - (CGRange)visibleRangeWith:(CGPoint)offset
@@ -365,7 +374,7 @@
         CGFloat deltaValue = _headerValue;
         
         for (NSInteger index = 0; index < _valueArray.count; index ++) {
-            CGFloat minValue = deltaValue + _spaceValue * index;
+            CGFloat minValue = [_originArray[index] floatValue];
             CGFloat maxValue = minValue + [_valueArray[index] floatValue];
             
             // Begin, pick the first suitable index
@@ -385,10 +394,14 @@
             if (_style == UListViewStyleHorizontal) {
                 if ((maxValue <= offsetRValue) || (minValue <= offsetRValue && maxValue >= offsetRValue)) {
                     endIndex = index;
+                } else {
+                    break;
                 }
             } else if (_style == UListViewStyleVertical) {
                 if ((maxValue <= offsetBValue) || (minValue <= offsetBValue && maxValue >= offsetBValue)) {
                     endIndex = index;
+                } else {
+                    break;
                 }
             }
             
@@ -404,7 +417,7 @@
     // All added cells
     NSMutableArray *subviews = [NSMutableArray array];
     for (UListViewCell *cell in self.contentView.subviews) {
-        if (![self checkVisibleWith:cell offset:offset]) {
+        if (checkClass(cell, UListViewCell) && ![self checkVisibleWith:cell offset:offset]) {
             if (cell.superview) {
                 // Remove
                 [cell removeFromSuperview];
@@ -420,9 +433,9 @@
     return subviews;
 }
 
-- (BOOL)checkVisibleWith:(UListViewCell *)cell offset:(CGPoint)offset
+- (BOOL)checkVisibleWith:(UIView *)view offset:(CGPoint)offset
 {
-    if (!cell) {
+    if (!checkClass(view, UIView)) {
         return NO;
     }
     
@@ -433,10 +446,10 @@
     CGRect frame = rectMake(offset.x, offset.y, width, height);
     
     // To be detected
-    CGPoint pointLT = pointMake(cell.left, cell.top);
-    CGPoint pointLB = pointMake(cell.left, cell.bottom);
-    CGPoint pointRT = pointMake(cell.right, cell.top);
-    CGPoint pointRB = pointMake(cell.right, cell.bottom);
+    CGPoint pointLT = pointMake(view.left, view.top);
+    CGPoint pointLB = pointMake(view.left, view.bottom);
+    CGPoint pointRT = pointMake(view.right, view.top);
+    CGPoint pointRB = pointMake(view.right, view.bottom);
     
     return (CGRectContainsPoint(frame, pointLT) ||
             CGRectContainsPoint(frame, pointLB) ||
@@ -444,29 +457,12 @@
             CGRectContainsPoint(frame, pointRB));
 }
 
-- (CGFloat)originValueOfIndex:(NSInteger)index
-{
-    index = (index < 0)?0:index;
-    index = (index > _numberOfCells)?_numberOfCells - 1:index;
-    
-    CGFloat value = _headerValue;
-    for (NSInteger i = 0; i < _valueArray.count; i ++) {
-        if (index == i) {
-            break;
-        }
-        
-        value += [_valueArray[i] floatValue] + _spaceValue;
-    }
-    
-    return value;
-}
-
 - (BOOL)checkCellWith:(NSInteger)index from:(NSArray *)cells
 {
     BOOL contains = NO;
     
     if (checkValidNSArray(cells)) {
-        CGFloat originValue = [self originValueOfIndex:index];
+        CGFloat originValue = [_originArray[index] floatValue];
         for (UListViewCell *cell in cells) {
             if (_style == UListViewStyleHorizontal) {
                 if (cell.originX == originValue) {
@@ -548,7 +544,7 @@
     
     // Remove all cells
     for (UListViewCell *cell in self.contentView.subviews) {
-        if (cell.superview) {
+        if (checkClass(cell, UListViewCell) && cell.superview) {
             // Remove
             [cell removeFromSuperview];
             
@@ -562,10 +558,11 @@
     [_cellReusePool removeAllObjects];
     _numberOfCells = [self.dataSource numberOfItemsInListView:self.weakself];
     
-    CGFloat sizeValue = _headerValue + _footerValue;
+    CGFloat sizeValue = _headerValue; // Header
     for (NSInteger index = 0; index < _numberOfCells; index ++) {
         CGFloat value = [self.delegate listView:self.weakself heightOrWidthForIndex:index];
         [_valueArray addObject:@(value)];
+        [_originArray addObject:@(sizeValue)];
         
         if (index == (_numberOfCells - 1)) {
             sizeValue += value;
@@ -573,6 +570,7 @@
             sizeValue += value + _spaceValue;
         }
     }
+    sizeValue += _footerValue; // Footer
     
     if (_style == UListViewStyleHorizontal) {
         self.contentView.sizeWidth = sizeValue;

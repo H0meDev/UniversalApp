@@ -81,7 +81,7 @@
     [self addKeyValueObject:_tableView keyPath:@"contentOffset"];
     
     NSMutableArray *sectionArray = [NSMutableArray array];
-    for (int i = 0; i < 10; i ++) {
+    for (int i = 0; i < 100; i ++) {
         UTableViewDataSection *section = [UTableViewDataSection section];
         for (int j = 0; j < 3; j ++) {
             UTableViewDataRow *row = [UTableViewDataRow row];
