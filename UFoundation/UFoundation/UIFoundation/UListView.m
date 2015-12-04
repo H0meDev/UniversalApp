@@ -12,6 +12,39 @@
 #import "UIView+UAExtension.h"
 #import "UIScrollView+UAExtension.h"
 
+@interface UListViewCellItem : NSObject
+
+@property (nonatomic, assign) NSInteger index;
+@property (nonatomic, assign) CGFloat sizeValue;   // Value of size
+@property (nonatomic, assign) CGFloat originValue; // Value of origin
+
++ (id)item;
+
+@end
+
+@implementation UListViewCellItem
+
++ (id)item
+{
+    @autoreleasepool
+    {
+        return [[self alloc]init];
+    }
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        _sizeValue = 0;
+        _originValue = 0;
+    }
+    
+    return self;
+}
+
+@end
+
 @interface UListViewCell () <URefreshViewDelegate>
 
 @property (nonatomic, strong) UIView *contentView;
@@ -90,9 +123,8 @@
 
 @interface UListView ()
 {
-    NSInteger _numberOfCells;
-    NSMutableArray *_valueArray;   // Height of cells
-    NSMutableArray *_originArray;  // Origin value of cells
+    NSLock *_dequeueLock;
+    NSArray *_itemArray; // Array of UListViewCellItem
     NSMutableDictionary *_cellReusePool;
 }
 
@@ -111,13 +143,12 @@
     self = [super initWithFrame:frame];
     if (self) {
         _style = UListViewStyleVertical;
-        _numberOfCells = -1;
+        
         _spaceValue = 0;
         _headerValue = 0;
         _footerValue = 0;
         
-        _valueArray = [NSMutableArray array];
-        _originArray = [NSMutableArray array];
+        _dequeueLock = [[NSLock alloc]init];
         _cellReusePool = [NSMutableDictionary dictionary];
         
         self.clipsToBounds = YES;
@@ -145,8 +176,8 @@
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
 {
-    if (_numberOfCells == -1) {
-        _numberOfCells = 0;
+    if (_itemArray == nil) {
+        _itemArray = [NSMutableArray array];
         
         // Reload cells
         [self reloadData];
@@ -155,10 +186,9 @@
 
 - (void)dealloc
 {
-    [_valueArray removeAllObjects];
     [_cellReusePool removeAllObjects];
     
-    _valueArray = nil;
+    _itemArray = nil;
     _cellReusePool = nil;
     
     if (_scrollView) {
@@ -284,12 +314,16 @@
 
 - (void)dequeueAllViewsWith:(CGPoint)offset
 {
+    [_dequeueLock lock];
+    
     // Visible cells
     [self dequeueCellsWith:offset];
     
     // Headers & Footers
     [self dequeueHeadersWith:offset];
     [self dequeueFootersWith:offset];
+    
+    [_dequeueLock unlock];
 }
 
 - (void)dequeueHeadersWith:(CGPoint)offset
@@ -316,34 +350,33 @@
 
 - (void)dequeueCellsWith:(CGPoint)offset
 {
-    if (_valueArray) {
+    if (_itemArray) {
         CGRange range = [self visibleRangeWith:offset];
         NSInteger beginIndex = range.min;
         NSInteger endIndex = range.max;
         
-        if (_valueArray.count > endIndex) {
-            for (NSInteger i = beginIndex; i <= endIndex; i ++) {
+        if (_itemArray.count > endIndex) {
+            for (NSInteger index = beginIndex; index <= endIndex; index ++) {
                 @autoreleasepool
                 {
                     NSArray *cells = [self currentVisibleCellsWith:offset];
                     
                     BOOL needsAttached = NO;
-                    if ((i - beginIndex) <= cells.count) {
-                        needsAttached = ![self checkCellWith:i from:cells];
+                    if ((index - beginIndex) <= cells.count) {
+                        needsAttached = ![self checkCellWith:index from:cells];
                     } else {
                         needsAttached = YES;
                     }
                     
                     if (needsAttached) {
                         // Attach cell
-                        CGFloat sizeValue = [_valueArray[i] floatValue];
-                        CGFloat originValue = [_originArray[i] floatValue];
+                        UListViewCellItem *item = _itemArray[index];
+                        UListViewCell *cell = [self.dataSource listView:self.weakself cellAtIndex:index];
                         
-                        UListViewCell *cell = [self.dataSource listView:self.weakself cellAtIndex:i];
                         if (_style == UListViewStyleHorizontal) {
-                            cell.frame = rectMake(originValue, 0, sizeValue, self.scrollView.sizeHeight);
+                            cell.frame = rectMake(item.originValue, 0, item.sizeValue, self.scrollView.sizeHeight);
                         } else if (_style == UListViewStyleVertical) {
-                            cell.frame = rectMake(0, originValue, self.scrollView.sizeWidth, sizeValue);
+                            cell.frame = rectMake(0, item.originValue, self.scrollView.sizeWidth, item.sizeValue);
                         }
                         
                         // For visible option
@@ -366,16 +399,16 @@
     NSInteger beginIndex = -1;
     NSInteger endIndex = 0;
     
-    if (_valueArray) {
+    if (_itemArray) {
         CGFloat offsetLValue = offset.x;
         CGFloat offsetTValue = offset.y;
         CGFloat offsetRValue = offset.x + self.scrollView.sizeWidth;
         CGFloat offsetBValue = offset.y + self.scrollView.sizeHeight;
-        CGFloat deltaValue = _headerValue;
         
-        for (NSInteger index = 0; index < _valueArray.count; index ++) {
-            CGFloat minValue = [_originArray[index] floatValue];
-            CGFloat maxValue = minValue + [_valueArray[index] floatValue];
+        for (NSInteger index = 0; index < _itemArray.count; index ++) {
+            UListViewCellItem *item = _itemArray[index];
+            CGFloat minValue = item.originValue;
+            CGFloat maxValue = item.originValue + item.sizeValue;
             
             // Begin, pick the first suitable index
             if (beginIndex == -1) {
@@ -404,8 +437,6 @@
                     break;
                 }
             }
-            
-            deltaValue += [_valueArray[index] floatValue];
         }
     }
     
@@ -462,15 +493,15 @@
     BOOL contains = NO;
     
     if (checkValidNSArray(cells)) {
-        CGFloat originValue = [_originArray[index] floatValue];
+        UListViewCellItem *item = _itemArray[index];
         for (UListViewCell *cell in cells) {
             if (_style == UListViewStyleHorizontal) {
-                if (cell.originX == originValue) {
+                if (cell.originX == item.originValue) {
                     contains = YES;
                     break;
                 }
             } else if (_style == UListViewStyleVertical) {
-                if (cell.originY == originValue) {
+                if (cell.originY == item.originValue) {
                     contains = YES;
                     break;
                 }
@@ -494,7 +525,7 @@
             }
             
             // Refresh
-            [_cellReusePool setObject:[marray copy] forKey:key];
+            [_cellReusePool setObject:marray forKey:key];
         }
     }
 }
@@ -538,7 +569,7 @@
 
 - (void)reloadData
 {
-    if (_numberOfCells == -1) {
+    if (_itemArray == nil) {
         return;
     }
     
@@ -554,30 +585,42 @@
     }
     
     // Reset all cache
-    [_valueArray removeAllObjects];
+    _itemArray = nil;
     [_cellReusePool removeAllObjects];
-    _numberOfCells = [self.dataSource numberOfItemsInListView:self.weakself];
     
-    CGFloat sizeValue = _headerValue; // Header
-    for (NSInteger index = 0; index < _numberOfCells; index ++) {
-        CGFloat value = [self.delegate listView:self.weakself heightOrWidthForIndex:index];
-        [_valueArray addObject:@(value)];
-        [_originArray addObject:@(sizeValue)];
+    CGFloat originValue = _headerValue; // Header
+    NSInteger count = [self.dataSource numberOfItemsInListView:self.weakself];
+    NSMutableArray *marray = [NSMutableArray array];
+    
+    for (NSInteger index = 0; index < count; index ++) {
+        CGFloat sizeValue = [self.delegate listView:self.weakself sizeValueForIndex:index];
+        sizeValue = [@(sizeValue) floatValue];
+        originValue = [@(originValue) floatValue];
         
-        if (index == (_numberOfCells - 1)) {
-            sizeValue += value;
+        // To store item
+        UListViewCellItem *item = [UListViewCellItem item];
+        item.index = index;
+        item.sizeValue = sizeValue;
+        item.originValue = originValue;
+        [marray addObject:item];
+        
+        if (index == (count - 1)) {
+            originValue += sizeValue;
         } else {
-            sizeValue += value + _spaceValue;
+            originValue += sizeValue + _spaceValue;
         }
     }
-    sizeValue += _footerValue; // Footer
     
+    _itemArray = marray;
+    originValue += _footerValue; // Footer
+    
+    // Resize
     if (_style == UListViewStyleHorizontal) {
-        self.contentView.sizeWidth = sizeValue;
-        self.scrollView.contentSize = sizeMake(sizeValue, 0);
+        self.contentView.sizeWidth = originValue;
+        self.scrollView.contentSize = sizeMake(originValue, 0);
     } else if (_style == UListViewStyleVertical) {
-        self.contentView.sizeHeight = sizeValue;
-        self.scrollView.contentSize = sizeMake(0, sizeValue);
+        self.contentView.sizeHeight = originValue;
+        self.scrollView.contentSize = sizeMake(0, originValue);
     }
     
     // Load cells

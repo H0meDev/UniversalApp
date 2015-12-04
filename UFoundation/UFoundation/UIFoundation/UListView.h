@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, UListViewStyle)
 @protocol UListViewDelegate <NSObject>
 
 @required
-- (CGFloat)listView:(UListView *)listView heightOrWidthForIndex:(NSInteger)index;
+- (CGFloat)listView:(UListView *)listView sizeValueForIndex:(NSInteger)index;
 
 @end
 
