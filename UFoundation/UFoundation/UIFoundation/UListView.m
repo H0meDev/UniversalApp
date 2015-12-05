@@ -244,20 +244,19 @@
 {
     [super setFrame:frame];
     
-    // Resize scrollView
-    self.scrollView.frame = rectMake(0, 0, frame.size.width, frame.size.height);
-    
     if (_style == UListViewStyleVertical) {
         self.scrollView.showsVerticalScrollIndicator = YES;
         self.scrollView.showsHorizontalScrollIndicator = NO;
-        self.scrollView.contentSize = sizeMake(0, frame.size.height + 0.5);
-        self.contentView.frame = rectMake(0, 0, frame.size.width, frame.size.height + 0.5);
+        self.scrollView.contentSize = sizeMake(0, frame.size.height);
     } else if (_style == UListViewStyleHorizontal) {
         self.scrollView.showsVerticalScrollIndicator = NO;
         self.scrollView.showsHorizontalScrollIndicator = YES;
-        self.scrollView.contentSize = sizeMake(frame.size.width + 0.5, 0);
-        self.contentView.frame = rectMake(0, 0, frame.size.width + 0.5, frame.size.height);
+        self.scrollView.contentSize = sizeMake(frame.size.width, 0);
     }
+    
+    // Resize
+    self.scrollView.frame = rectMake(0, 0, frame.size.width, frame.size.height);
+    self.contentView.frame = rectMake(0, 0, frame.size.width, frame.size.height);
 }
 
 - (void)setSpaceValue:(CGFloat)value
