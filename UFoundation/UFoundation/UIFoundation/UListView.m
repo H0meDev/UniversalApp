@@ -130,8 +130,8 @@
 }
 
 // For cells
-@property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) UIView *contentView;
 
 @end
 
@@ -284,22 +284,6 @@
     [self reloadData];
 }
 
-- (void)setHeaderView:(UIView *)headerView
-{
-    _headerView = headerView;
-    
-    // Reset all
-    [self reloadData];
-}
-
-- (void)setFooterView:(UIView *)footerView
-{
-    _footerView = footerView;
-    
-    // Reset all
-    [self reloadData];
-}
-
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -322,33 +306,7 @@
     // Visible cells
     [self dequeueCellsWith:offset];
     
-    // Headers & Footers
-    [self dequeueHeadersWith:offset];
-    [self dequeueFootersWith:offset];
-    
     [_dequeueLock unlock];
-}
-
-- (void)dequeueHeadersWith:(CGPoint)offset
-{
-    if (_headerView) {
-        if (_style == UListViewStyleHorizontal) {
-            //
-        } else if (_style == UListViewStyleVertical) {
-            //
-        }
-    }
-}
-
-- (void)dequeueFootersWith:(CGPoint)offset
-{
-    if (_footerView) {
-        if (_style == UListViewStyleHorizontal) {
-            //
-        } else if (_style == UListViewStyleVertical) {
-            //
-        }
-    }
 }
 
 - (void)dequeueCellsWith:(CGPoint)offset

@@ -41,17 +41,7 @@
     _listView.delegate = self;
     _listView.dataSource = self;
     _listView.spaceValue = naviBLineH();
-    _listView.headerValue = naviHeight();
-    _listView.footerValue = tabHeight();
     [self addSubview:_listView];
-    
-    UIView *header = [[UIView alloc]init];
-    header.backgroundColor = sysRedColor();
-    _listView.headerView = header;
-    
-    UIView *footer = [[UIView alloc]init];
-    footer.backgroundColor = sysRedColor();
-    _listView.footerView = footer;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -124,7 +114,7 @@
         cell = [listView dequeueReusableCellWithIdentifier:@"UListViewCell"];
     }
     
-    cell.backgroundColor = sysLightGrayColor();
+    cell.backgroundColor = sysOrangeColor();
     
     NSLog(@"Load item %@", @(index));
     
