@@ -24,44 +24,11 @@
     self.window.backgroundColor = sysWhiteColor();
     [self.window makeKeyAndVisible];
     
-//    UHTTPRequestParam *param = [UHTTPRequestParam param];
-//    param.url = @"https://www.ifeng.com";
-//    param.cached = YES;
-//    
-//    [UHTTPRequest sendAsynWith:(UHTTPRequestParam *)param
-//                      callback:^(UHTTPStatus *status, id data)
-//    {
-//         if (status.code == UHTTPCodeLocalCached) {
-//             NSLog(@"From cached:\n%@", data);
-//         } else if (status.code == UHTTPCodeOK) {
-//             NSLog(@"From request:\n%@", data);
-//         }
-//    }];
-    
     // Start timer
     [UTimerBooster start];
     
     // Goto home
     [self gotoHomePage];
-    
-    NSDate *date = [NSDate dateFromString:@"2015-10-30" format:@"yyyy-MM-dd"];
-    NSLog(@"%@", [date stringWithFormat:@"yyyy-MM-dd HH:mm:ss:SSS"]);
-    
-    // UModel examples
-    NSDictionary *dict = @{@"name":@"cailiang", @"content_fields":@[@{@"time":@"12:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}, @{@"time":@"00:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}]};
-    NetworkModel *model = [NetworkModel modelWithDictionary:dict];
-    dict = [model dictionaryWithModelKey];
-    model = [NetworkModel modelWithDictionary:dict];
-    NSString *JSONString = [dict JSONString];
-    model = [NetworkModel modelWithJSONString:JSONString];
-    model = [UModel modelWithJSONString:JSONString];
-    
-    NSLog(@"%@", JSONString);
-    
-    NSArray *array = @[@{@"time":@"12:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}, @{@"time":@"00:00", @"content_fields":@[@{@"time":@"12:00"}, @{@"time":@"00:00"}]}];
-    NSArray *items = [NetworkModelContentFieldsItem modelsWithArray:array];
-    
-    NSLog(@"%@", [NetworkModelContentFieldsItem arrayWithModels:items]);
     
     return YES;
 }
