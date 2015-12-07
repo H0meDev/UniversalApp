@@ -48,8 +48,8 @@ typedef NS_ENUM(NSInteger, UListViewCellSepratorLineStyle)
 
 // To be overrided
 - (void)cellDidLoad;      // For initialization
-- (void)cellWillAppear;   // For preparing
-- (void)cellDidDisappear; // For canceling
+- (void)cellWillAppear;   // For preparation
+- (void)cellDidDisappear; // For cancel
 
 @end;
 
