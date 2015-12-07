@@ -8,10 +8,11 @@
 
 #import "LastViewController.h"
 #import "ListViewController.h"
+#import "LastListItemCell.h"
 
-@interface LastViewController () <UTableViewDefaultDelegate>
+@interface LastViewController () <UITableViewDelegate, UITableViewDataSource>
 {
-    UTableView *_tableView;
+    UITableView *_tableView;
 }
 
 @end
@@ -26,8 +27,6 @@
     self.countOfControllerToPop = 1;
     self.navigationBarView.title = @"Last";
     [self.navigationBarView.leftButton setTitle:@"Next"];
-//    self.statusBarView.backgroundColor = [sysBlueColor() setAlphaValue:0.3];
-//    self.navigationBarView.backgroundColor = [sysBlueColor() setAlphaValue:0.3];
    
     UButton *rightView = [UButton button];
     rightView.selected = YES;
@@ -35,41 +34,15 @@
     [rightView setTitle:@"Option"];
     [rightView setTitleColor:sysBlackColor()];
     [rightView setTitleFont:systemFont(16)];
-    [rightView addTarget:self action:@selector(buttonAction:)];
     self.navigationBarView.rightView = rightView;
     
-    UTableView *tableView = [[UTableView alloc]init];
-    tableView.frame = rectMake(0, - 64, screenWidth(), screenHeight());
-    tableView.contentInset = edgeMake(64, 0, 0, 0);
-    tableView.scrollIndicatorInsets = edgeMake(64, 0, 0, 0);
-    tableView.defaultDelegate = self;
-//    [tableView addHeaderTarget:self action:@selector(headerAction:)];
-//    [tableView addFooterTarget:self action:@selector(footerAction:)];
+    CGFloat height = self.containerView.sizeHeight;
+    UITableView *tableView = [[UITableView alloc]init];
+    tableView.frame = rectMake(0, 0, screenWidth(), height);
+    tableView.delegate = self;
+    tableView.dataSource = self;
     [self addSubview:tableView];
     _tableView = tableView;
-    
-    // KVO
-    [self addKeyValueObject:_tableView keyPath:@"contentOffset"];
-    
-    UTableViewDataSection *section = [UTableViewDataSection section];
-    for (int i = 0; i < 1000; i ++) {
-        UTableViewDataRow *row = [UTableViewDataRow row];
-        row.cellHeight = -1;
-        row.cellName = @"LastListItemCell";
-        
-        NSInteger rowValue = i % 3;
-        if (rowValue == 0) {
-            row.cellData = @{@"title":@"这是一段短文本",@"content":@"这是一段短文本"};
-        } else if (rowValue == 1) {
-            row.cellData = @{@"title":@"这是一段中文本",@"content":@"这是一段中文本，这是一段中文本,这是一段中文本，这是一段中文本，这是一段中文本，这是一段中文本"};
-        } else if (rowValue == 2) {
-            row.cellData = @{@"title":@"这是一段长文本",@"content":@"这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本"};
-        }
-        
-        [section addRow:row];
-    }
-    
-    tableView.sectionArray = @[section];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -81,15 +54,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)receivedKVObserverValueForKayPath:(NSString *)keyPath
-                                 ofObject:(id)object
-                                   change:(NSDictionary *)change
-{
-    if ([keyPath isEqualToString:@"contentOffset"]) {
-        //
-    }
 }
 
 - (void)dealloc
@@ -122,25 +86,48 @@
 }
 */
 
-- (void)headerAction:(UIScrollView *)scrollView
+#pragma mark - UITableViewDelegate & UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    [UTimerBooster addTarget:scrollView sel:@selector(finishHeaderRefresh) time:3.0];
+    return 1;
 }
 
-- (void)footerAction:(UIScrollView *)scrollView
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    [UTimerBooster addTarget:scrollView sel:@selector(finishFooterRefresh) time:3.0];
+    return 1000;
 }
 
-- (void)buttonAction:(UIButton *)button
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    button.selected = !button.selected;
+    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell.sizeHeight;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    LastListItemCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LastListItemCell"];
+    if (cell == nil) {
+        registerCellNibName(@"LastListItemCell");
+        cell = [tableView dequeueReusableCellWithIdentifier:@"LastListItemCell"];
+    }
     
-    _tableView.headerEnable = button.selected;
-    _tableView.footerEnable = button.selected;
+    NSDictionary *dict = nil;
+    NSInteger rowValue = indexPath.row % 3;
+    if (rowValue == 0) {
+        dict = @{@"title":@"这是一段短文本",@"content":@"这是一段短文本"};
+    } else if (rowValue == 1) {
+        dict = @{@"title":@"这是一段中文本",@"content":@"这是一段中文本，这是一段中文本,这是一段中文本，这是一段中文本，这是一段中文本，这是一段中文本"};
+    } else if (rowValue == 2) {
+        dict = @{@"title":@"这是一段长文本",@"content":@"这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本"};
+    }
+    
+    [cell setCellData:dict];
+    
+    return cell;
 }
 
-- (void)tableView:(UTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
