@@ -24,6 +24,9 @@
 - (CGFloat)blueValue;
 - (CGFloat)alphaValue;
 
+// UIColor alpha reset
+- (UIColor *)setAlphaValue:(CGFloat)alpha;
+
 // UIColor compare
 - (BOOL)isEqualToColor:(UIColor *)color;
 

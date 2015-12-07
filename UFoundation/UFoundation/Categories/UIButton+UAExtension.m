@@ -8,6 +8,7 @@
 
 #import "UIButton+UAExtension.h"
 #import "UIView+UAExtension.h"
+#import "UIColor+UAExtension.h"
 
 @implementation UIButton (UAExtension)
 
@@ -73,7 +74,7 @@
 - (void)setTitleColor:(UIColor *)color
 {
     [self setTitleColor:color forState:UIControlStateNormal];
-    [self setTitleColor:[color colorWithAlphaComponent:0.3] forState:UIControlStateHighlighted];
+    [self setTitleColor:[color setAlphaValue:0.3] forState:UIControlStateHighlighted];
 }
 
 - (void)setSTitleColor:(UIColor *)color

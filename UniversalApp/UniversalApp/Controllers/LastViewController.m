@@ -7,7 +7,7 @@
 //
 
 #import "LastViewController.h"
-#import "CurrentViewController.h"
+#import "ListViewController.h"
 
 @interface LastViewController () <UTableViewDefaultDelegate>
 {
@@ -26,28 +26,9 @@
     self.countOfControllerToPop = 1;
     self.navigationBarView.title = @"Last";
     [self.navigationBarView.leftButton setTitle:@"Next"];
-    self.statusBarView.backgroundColor = [sysBlueColor() colorWithAlphaComponent:0.3];
-    self.navigationBarView.backgroundColor = [sysBlueColor() colorWithAlphaComponent:0.3];
-
-//    self.statusBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
-//    self.navigationBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
-    
-//    self.statusBarView.backgroundColor = sysClearColor();
-//    self.navigationBarView.backgroundColor = sysClearColor();
-    
-//    UILabel *leftView = [[UILabel alloc]init];
-//    leftView.frame = rectMake(8, 0, 60, naviHeight());
-//    leftView.text = @"Next";
-//    leftView.textColor = sysWhiteColor();
-//    self.navigationBarView.leftView = leftView;
-//    
-//    UILabel *centerView = [[UILabel alloc]init];
-//    centerView.frame = rectMake(0, 0, 100, naviHeight());
-//    centerView.text = @"Last";
-//    centerView.textColor = sysWhiteColor();
-//    centerView.textAlignment = NSTextAlignmentCenter;
-//    self.navigationBarView.centerView = centerView;
-//    
+//    self.statusBarView.backgroundColor = [sysBlueColor() setAlphaValue:0.3];
+//    self.navigationBarView.backgroundColor = [sysBlueColor() setAlphaValue:0.3];
+   
     UButton *rightView = [UButton button];
     rightView.selected = YES;
     rightView.frame = rectMake(screenWidth() - 68, 0, 60, naviHeight());
@@ -57,60 +38,38 @@
     [rightView addTarget:self action:@selector(buttonAction:)];
     self.navigationBarView.rightView = rightView;
     
-//    UButton *button = [UButton button];
-//    button.frame = rectMake(0, 160, screenWidth(), 50);
-//    [button setTitle:@"Push"];
-//    button.backgroundColor = sysRedColor();
-//    [button addTarget:self action:@selector(buttonAction)];
-//    [self addSubview:button];
-    
     UTableView *tableView = [[UTableView alloc]init];
     tableView.frame = rectMake(0, - 64, screenWidth(), screenHeight());
     tableView.contentInset = edgeMake(64, 0, 0, 0);
     tableView.scrollIndicatorInsets = edgeMake(64, 0, 0, 0);
     tableView.defaultDelegate = self;
-    [tableView addHeaderTarget:self action:@selector(headerAction:)];
-    [tableView addFooterTarget:self action:@selector(footerAction:)];
+//    [tableView addHeaderTarget:self action:@selector(headerAction:)];
+//    [tableView addFooterTarget:self action:@selector(footerAction:)];
     [self addSubview:tableView];
     _tableView = tableView;
-    
-    // Start refresh
-//    [tableView startHeaderRefresh];
     
     // KVO
     [self addKeyValueObject:_tableView keyPath:@"contentOffset"];
     
-    NSMutableArray *sectionArray = [NSMutableArray array];
-    for (int i = 0; i < 100; i ++) {
-        UTableViewDataSection *section = [UTableViewDataSection section];
-        for (int j = 0; j < 3; j ++) {
-            UTableViewDataRow *row = [UTableViewDataRow row];
-            row.cellHeight = -1;
-            row.cellName = @"LastListItemCell";
-            
-            if (j == 0) {
-                row.cellData = @{@"title":@"这是一段短文本",@"content":@"这是一段短文本"};
-            } else if (j == 1) {
-                row.cellData = @{@"title":@"这是一段中文本",@"content":@"这是一段中文本，这是一段中文本,这是一段中文本，这是一段中文本，这是一段中文本，这是一段中文本"};
-            } else if (j == 2) {
-                row.cellData = @{@"title":@"这是一段长文本",@"content":@"这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本"};
-            }
-            
-            [section addRow:row];
+    UTableViewDataSection *section = [UTableViewDataSection section];
+    for (int i = 0; i < 1000; i ++) {
+        UTableViewDataRow *row = [UTableViewDataRow row];
+        row.cellHeight = -1;
+        row.cellName = @"LastListItemCell";
+        
+        NSInteger rowValue = i % 3;
+        if (rowValue == 0) {
+            row.cellData = @{@"title":@"这是一段短文本",@"content":@"这是一段短文本"};
+        } else if (rowValue == 1) {
+            row.cellData = @{@"title":@"这是一段中文本",@"content":@"这是一段中文本，这是一段中文本,这是一段中文本，这是一段中文本，这是一段中文本，这是一段中文本"};
+        } else if (rowValue == 2) {
+            row.cellData = @{@"title":@"这是一段长文本",@"content":@"这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本，这是一段长文本"};
         }
         
-        if (i > 0) {
-            section.headerHeight = 5;
-        }
-        
-        if (i < 9) {
-            section.footerHeight = 5;
-        }
-        
-        [sectionArray addObject:section];
+        [section addRow:row];
     }
     
-    tableView.sectionArray = sectionArray;
+    tableView.sectionArray = @[section];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -129,16 +88,7 @@
                                    change:(NSDictionary *)change
 {
     if ([keyPath isEqualToString:@"contentOffset"]) {
-        CGPoint offset = [change[@"new"] CGPointValue];
-        CGFloat alpha = fabs(offset.y / 320);
-        alpha = (alpha < 0)?0:alpha;
-        alpha = (alpha > 1)?1:alpha;
-        
-//        dispatch_async(main_queue(), ^{
-//            UIColor *color = rgbaColor(0, 255, 0, alpha);
-//            self.statusBarView.backgroundColor = color;
-//            self.navigationBarView.backgroundColor = color;
-//        });
+        //
     }
 }
 
@@ -174,7 +124,6 @@
 
 - (void)headerAction:(UIScrollView *)scrollView
 {
-//    scrollView.headerEnable = NO;
     [UTimerBooster addTarget:scrollView sel:@selector(finishHeaderRefresh) time:3.0];
 }
 
@@ -195,9 +144,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    CurrentViewController *current = [[CurrentViewController alloc]init];
-    [current.navigationBarView.leftButton setTitle:self.navigationBarView.title];
-    [self pushViewController:current];
+    ListViewController *list = [[ListViewController alloc]init];
+    [list.navigationBarView.leftButton setTitle:self.navigationBarView.title];
+    [self pushViewController:list];
 }
 
 @end

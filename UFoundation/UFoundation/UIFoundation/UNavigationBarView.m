@@ -11,6 +11,7 @@
 #import "UView.h"
 #import "UImageView.h"
 #import "UIView+UAExtension.h"
+#import "UIColor+UAExtension.h"
 #import "NSObject+UAExtension.h"
 
 @interface UNavigationContentView : UIImageView
@@ -64,7 +65,7 @@
     
     UImageView *bottomLineView = [[UImageView alloc]init];
     bottomLineView.frame = rectMake(0, naviHeight() - naviBLineH(), screenWidth(), naviBLineH());
-    bottomLineView.backgroundColor = [sysDarkGrayColor() colorWithAlphaComponent:0.3];
+    bottomLineView.backgroundColor = [sysDarkGrayColor() setAlphaValue:0.3];
     [self addSubview:bottomLineView];
     _bottomLineView = bottomLineView;
     

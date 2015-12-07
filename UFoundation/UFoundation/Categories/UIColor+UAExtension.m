@@ -85,6 +85,11 @@
     return CGColorGetAlpha(self.CGColor);
 }
 
+- (UIColor *)setAlphaValue:(CGFloat)alpha
+{
+    return [self colorWithAlphaComponent:alpha];
+}
+
 - (BOOL)isEqualToColor:(UIColor *)color
 {
     if (color) {

@@ -36,12 +36,13 @@
     self.navigationBarView.rightView = rightView;
     
     CGFloat height = self.containerView.sizeHeight - tabHeight();
-    _listView = [[UListView alloc]initWithStyle:UListViewStyleVertical];
+    _listView = [[UListView alloc]initWith:UListViewStyleVertical];
     _listView.tag = 1;
     _listView.frame = rectMake(0, 0, screenWidth(), height);
     _listView.delegate = self;
     _listView.dataSource = self;
     _listView.spaceValue = naviBLineH();
+    _listView.separatorStyle = UListViewCellSepratorLineStyleNone;
     [self addSubview:_listView];
 }
 
@@ -120,12 +121,13 @@
         
         if (listView.tag == 1) {
             CGFloat height = self.containerView.sizeHeight - tabHeight();
-            UListView *subListView = [[UListView alloc]initWithStyle:UListViewStyleHorizontal];
+            UListView *subListView = [[UListView alloc]initWith:UListViewStyleHorizontal];
             subListView.tag = 2;
             subListView.frame = rectMake(0, 0, screenWidth(), height / 3.);
             subListView.delegate = self;
             subListView.dataSource = self;
             subListView.spaceValue = naviBLineH();
+            subListView.separatorStyle = UListViewCellSepratorLineStyleNone;
             [cell addSubview:subListView];
         }
     }

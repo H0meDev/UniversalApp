@@ -48,17 +48,31 @@
 @interface UListViewCell () <URefreshViewDelegate>
 
 @property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIImageView *headerLineView;
+@property (nonatomic, strong) UIImageView *footerLineView;
 
 @end
 
 @implementation UListViewCell
 
+@synthesize style = _style;
+
 + (id)cell
 {
-    @autoreleasepool
-    {
-        return [[self alloc]init];
+    return [[self alloc]init];
+}
+
+- (id)initWith:(UListViewStyle)style
+{
+    self = [super initWithFrame:CGRectZero];
+    if (self) {
+        // Initalize
+        _style = style;
+        
+        [self cellDidLoad];
     }
+    
+    return self;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -66,10 +80,15 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initalize
+        _style = UListViewStyleVertical;
+        
+        [self cellDidLoad];
     }
     
     return self;
 }
+
+#pragma mark - Properties
 
 - (UIView *)contentView
 {
@@ -85,11 +104,53 @@
     return _contentView;
 }
 
+- (UIImageView *)headerLineView
+{
+    if (_headerLineView) {
+        return _headerLineView;
+    }
+    
+    UIImageView *headerLineView = [[UIImageView alloc]init];
+    headerLineView.backgroundColor = [sysBlackColor() setAlphaValue:0.2];
+    [self.contentView addSubview:headerLineView];
+    _headerLineView = headerLineView;
+    
+    return _headerLineView;
+}
+
+- (UIImageView *)footerLineView
+{
+    if (_footerLineView) {
+        return _footerLineView;
+    }
+    
+    UIImageView *footerLineView = [[UIImageView alloc]init];
+    footerLineView.backgroundColor = [sysBlackColor() setAlphaValue:0.2];
+    [self.contentView addSubview:footerLineView];
+    _footerLineView = footerLineView;
+    
+    return _footerLineView;
+}
+
 - (void)setFrame:(CGRect)frame
 {
     [super setFrame:frame];
     
-    self.contentView.frame = self.bounds;
+    if (!CGRectEqualToRect(frame, CGRectZero)) {
+        CGFloat headerValue = 0.5;
+        CGFloat footerValue = 0.5;
+        CGFloat width = frame.size.width;
+        CGFloat height = frame.size.height;
+        
+        self.contentView.frame = rectMake(0, 0, width, height);
+        if (_style == UListViewStyleVertical) {
+            self.headerLineView.frame = rectMake(0, 0, width, headerValue);
+            self.footerLineView.frame = rectMake(0, height - footerValue, width, footerValue);
+        } else if (_style == UListViewStyleHorizontal) {
+            self.headerLineView.frame = rectMake(0, 0, headerValue, height);
+            self.footerLineView.frame = rectMake(width - footerValue, 0, footerValue, height);
+        }
+    }
 }
 
 - (void)setBackgroundColor:(UIColor *)color
@@ -99,9 +160,16 @@
     self.contentView.backgroundColor = color;
 }
 
+#pragma mark - Methods
+
 - (void)addSubview:(UIView *)view
 {
     [self.contentView addSubview:view];
+}
+
+- (void)cellDidLoad
+{
+    //
 }
 
 - (void)cellWillAppear
@@ -144,6 +212,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _style = UListViewStyleVertical;
+        _separatorStyle = UListViewCellSepratorLineStyleNoEnds;
         
         _spaceValue = 0;
         _headerValue = 0;
@@ -162,7 +231,7 @@
     return self;
 }
 
-- (id)initWithStyle:(UListViewStyle)style
+- (id)initWith:(UListViewStyle)style
 {
     return [self initWithFrame:CGRectZero style:style];
 }
@@ -283,6 +352,14 @@
     [self reloadData];
 }
 
+- (void)setSeparatorStyle:(UListViewCellSepratorLineStyle)style
+{
+    _separatorStyle = style;
+    
+    // Reset all
+    [self reloadData];
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -348,6 +425,9 @@
                         
                         // For visible option
                         [cell cellWillAppear];
+                        
+                        // Reset cell seprator line
+                        [self resetSepratorWith:cell index:index];
                         
                         // Attached to scrollView
                         [self.contentView addSubview:cell];
@@ -479,6 +559,45 @@
     return contains;
 }
 
+- (void)resetSepratorWith:(UListViewCell *)cell index:(NSInteger)index
+{
+    switch (_separatorStyle) {
+        case UListViewCellSepratorLineStyleNone:
+        {
+            cell.headerLineView.hidden = YES;
+            cell.footerLineView.hidden = YES;
+        }
+            break;
+            
+        case UListViewCellSepratorLineStyleNoEnds:
+        {
+            if (index == _itemArray.count - 1) {
+                cell.headerLineView.hidden = YES;
+                cell.footerLineView.hidden = YES;
+            } else {
+                cell.headerLineView.hidden = YES;
+                cell.footerLineView.hidden = NO;
+            }
+        }
+            break;
+            
+        case UListViewCellSepratorLineStyleFull:
+        {
+            if (index == 0) {
+                cell.headerLineView.hidden = NO;
+                cell.footerLineView.hidden = NO;
+            } else {
+                cell.headerLineView.hidden = YES;
+                cell.footerLineView.hidden = NO;
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
 - (void)removeUnusedCells
 {
     for (NSString *key in _cellReusePool) {
@@ -509,7 +628,7 @@
     if (class) {
         NSArray *array = _cellReusePool[identifier];
         NSMutableArray *marray = (!array)?[NSMutableArray array]:[NSMutableArray arrayWithArray:array];
-        [marray addObject:[class cell]];
+        [marray addObject:[[class alloc]initWith:_style]];
         [_cellReusePool setObject:[marray copy] forKey:identifier];
     }
 }

@@ -33,6 +33,8 @@
 		F51C11901B905BD200F29C3F /* BaseScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11871B905BD200F29C3F /* BaseScrollView.m */; };
 		F51C11911B905BD200F29C3F /* BaseTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11891B905BD200F29C3F /* BaseTableView.m */; };
 		F51C11921B905BD200F29C3F /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C118B1B905BD200F29C3F /* BaseTableViewCell.m */; };
+		F53640511C1525CE0021774D /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F53640501C1525CE0021774D /* ListViewController.m */; };
+		F53640551C15267C0021774D /* ListItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F53640541C15267C0021774D /* ListItemCell.m */; };
 		F5687D321B022B640073594C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F5687D311B022B640073594C /* main.m */; };
 		F5687D351B022B640073594C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F5687D341B022B640073594C /* AppDelegate.m */; };
 		F5687D3D1B022B640073594C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5687D3C1B022B640073594C /* Images.xcassets */; };
@@ -101,6 +103,10 @@
 		F51C11891B905BD200F29C3F /* BaseTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableView.m; sourceTree = "<group>"; };
 		F51C118A1B905BD200F29C3F /* BaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableViewCell.h; sourceTree = "<group>"; };
 		F51C118B1B905BD200F29C3F /* BaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableViewCell.m; sourceTree = "<group>"; };
+		F536404F1C1525CE0021774D /* ListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
+		F53640501C1525CE0021774D /* ListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
+		F53640531C15267C0021774D /* ListItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListItemCell.h; sourceTree = "<group>"; };
+		F53640541C15267C0021774D /* ListItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListItemCell.m; sourceTree = "<group>"; };
 		F56802B81B16CB0100A3F2CD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		F5687D2C1B022B640073594C /* UniversalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UniversalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5687D311B022B640073594C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -155,6 +161,8 @@
 				F5C5E5B21BB3C0EB00AC039F /* CurrentViewController.m */,
 				F51C11591B905B6900F29C3F /* NextViewController.h */,
 				F51C115A1B905B6900F29C3F /* NextViewController.m */,
+				F536404F1C1525CE0021774D /* ListViewController.h */,
+				F53640501C1525CE0021774D /* ListViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -194,6 +202,8 @@
 				F515938D1BAC5A900043FFE9 /* LastListItemCell.h */,
 				F515938E1BAC5A900043FFE9 /* LastListItemCell.m */,
 				F515938F1BAC5A900043FFE9 /* LastListItemCell.xib */,
+				F53640531C15267C0021774D /* ListItemCell.h */,
+				F53640541C15267C0021774D /* ListItemCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -432,11 +442,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F53640511C1525CE0021774D /* ListViewController.m in Sources */,
 				F51508101B92F61E00C12A87 /* MiddlePageViewController.m in Sources */,
 				F51C11741B905B6900F29C3F /* NetworkModel.m in Sources */,
 				F51C11771B905B6900F29C3F /* UserInfo.m in Sources */,
 				F515080C1B92F60D00C12A87 /* LeftPageViewController.m in Sources */,
 				F5C5E5B31BB3C0EB00AC039F /* CurrentViewController.m in Sources */,
+				F53640551C15267C0021774D /* ListItemCell.m in Sources */,
 				F5687D351B022B640073594C /* AppDelegate.m in Sources */,
 				F51C116F1B905B6900F29C3F /* LastViewController.m in Sources */,
 				F51C116E1B905B6900F29C3F /* HomeTabViewController.m in Sources */,
