@@ -124,6 +124,8 @@
     
     [cell setCellData:dict];
     
+    NSLog(@"Load UITableViewCell %@", @(indexPath.row));
+    
     return cell;
 }
 

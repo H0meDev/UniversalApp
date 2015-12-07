@@ -83,6 +83,8 @@
     
     [cell setCellData:dict];
     
+    NSLog(@"Load UListViewCell %@", @(index));
+    
     return cell;
 }
 
