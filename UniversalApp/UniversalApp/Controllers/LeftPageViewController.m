@@ -82,16 +82,6 @@
     [UTimerBooster addTarget:self sel:@selector(finishFooterRefresh) time:3.0];
 }
 
-- (void)finishHeaderRefresh
-{
-    [_listView performOnMainThread:@selector(finishHeaderRefresh)];
-}
-
-- (void)finishFooterRefresh
-{
-    [_listView performOnMainThread:@selector(finishFooterRefresh)];
-}
-
 #pragma mark -  UListViewDataSource & UListViewDelegate
 
 - (NSInteger)numberOfItemsInListView:(UListView *)listView

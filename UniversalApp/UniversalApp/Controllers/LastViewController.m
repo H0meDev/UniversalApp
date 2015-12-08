@@ -27,14 +27,6 @@
     self.countOfControllerToPop = 1;
     self.navigationBarView.title = @"Last";
     [self.navigationBarView.leftButton setTitle:@"Next"];
-   
-    UButton *rightView = [UButton button];
-    rightView.selected = YES;
-    rightView.frame = rectMake(screenWidth() - 68, 0, 60, naviHeight());
-    [rightView setTitle:@"Option"];
-    [rightView setTitleColor:sysBlackColor()];
-    [rightView setTitleFont:systemFont(16)];
-    self.navigationBarView.rightView = rightView;
     
     CGFloat height = self.containerView.sizeHeight;
     UITableView *tableView = [[UITableView alloc]init];
@@ -58,22 +50,17 @@
 
 - (void)dealloc
 {
-    [_tableView removeHeaderView];
-    [_tableView removeFooterView];
+    //
 }
 
 - (void)controllerWillMove
 {
-    [_tableView finishHeaderRefresh];
-    [_tableView finishFooterRefresh];
+    //
 }
 
 - (void)backAction
 {
     [super backAction];
-    
-    [_tableView finishHeaderRefresh];
-    [_tableView finishFooterRefresh];
 }
 
 /*
@@ -100,6 +87,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+//    NSLog(@"Load UITableViewCell %@", @(indexPath.row));
+    
     UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
     return cell.sizeHeight;
 }
@@ -124,7 +113,7 @@
     
     [cell setCellData:dict];
     
-    NSLog(@"Load UITableViewCell %@", @(indexPath.row));
+//    NSLog(@"Load UITableViewCell %@", @(indexPath.row));
     
     return cell;
 }

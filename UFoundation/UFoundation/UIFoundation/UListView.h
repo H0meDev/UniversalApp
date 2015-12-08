@@ -44,7 +44,7 @@ typedef NS_ENUM(NSInteger, UListViewCellSepratorLineStyle)
 @property (nonatomic, readonly) UListViewStyle style; // Default style is UListViewStyleVertical
 
 + (id)cell; // Default style is UListViewStyleVertical
-- (id)initWith:(UListViewStyle)style;
+- (id)initWith:(UListViewStyle)style; // The style must be consistent with UListView
 
 // To be overrided
 - (void)cellDidLoad;      // For initialization
