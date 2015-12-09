@@ -106,13 +106,13 @@
 - (void)setTarget:(id)target action:(SEL)action
 {
     if (_target && _action) {
-        [self removeTarget:target action:action forControlEvents:UIControlEventTouchDown];
+        [self removeTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     }
     
     _target = target;
     _action = action;
     
-    [self addTarget:target action:action forControlEvents:UIControlEventTouchDown];
+    [self addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - Event callback
@@ -756,14 +756,14 @@
     
     if (checkValidNSArray(cells)) {
         UListViewCellItem *item = _itemArray[index];
-        for (UListViewCell *cell in cells) {
+        for (UListViewCell *cellItem in cells) {
             if (_style == UListViewStyleHorizontal) {
-                if (cell.originX == item.originValue) {
+                if (cellItem.originX == item.originValue) {
                     contains = YES;
                     break;
                 }
             } else if (_style == UListViewStyleVertical) {
-                if (cell.originY == item.originValue) {
+                if (cellItem.originY == item.originValue) {
                     contains = YES;
                     break;
                 }
@@ -839,9 +839,9 @@
         NSArray *cells = _cellReusePool[key];
         if (checkValidNSArray(cells)) {
             NSMutableArray *marray = [NSMutableArray arrayWithArray:cells];
-            for (UListViewCell *cell in cells) {
-                if (cell.superview == nil) {
-                    [marray removeObject:cell];
+            for (UListViewCell *cellItem in cells) {
+                if (cellItem.superview == nil) {
+                    [marray removeObject:cellItem];
                 }
             }
             
@@ -1002,9 +1002,9 @@
     index = (index > _itemArray.count)?_itemArray.count:index;
     
     NSArray *cells = [self currentVisibleCellsWith:_scrollView.contentOffset];
-    for (UListViewCell *cell in cells) {
-        if (cell.index == index) {
-            cell.contentView.selected = YES;
+    for (UListViewCell *cellItem in cells) {
+        if (cellItem.index == index) {
+            cellItem.contentView.selected = YES;
         }
     }
     
@@ -1033,13 +1033,19 @@
 
 - (void)deselectCellAtIndex:(NSInteger)index
 {
+    [self deselectCellAtIndex:index animated:YES];
+}
+
+- (void)deselectCellAtIndex:(NSInteger)index animated:(BOOL)animated
+{
     index = (index < 0)?0:index;
     index = (index > _itemArray.count)?_itemArray.count:index;
     
+    __weak UListViewCell *cell = nil;
     NSArray *cells = [self currentVisibleCellsWith:_scrollView.contentOffset];
-    for (UListViewCell *cell in cells) {
-        if (cell.index == index) {
-            cell.contentView.selected = NO;
+    for (UListViewCell *cellItem in cells) {
+        if (cellItem.index == index) {
+            cell = cellItem;
         }
     }
     
@@ -1061,6 +1067,16 @@
     
     if (_delegate && [_delegate respondsToSelector:@selector(listView:didDeselectCellAtIndex:)]) {
         [_delegate listView:self didDeselectCellAtIndex:index];
+    }
+    
+    if (cell) {
+        if (!animated) {
+            cell.contentView.selected = NO;
+        } else {
+            [UIView animateWithDuration:0.3 animations:^{
+                cell.contentView.selected = NO;
+            }];
+        }
     }
 }
 
