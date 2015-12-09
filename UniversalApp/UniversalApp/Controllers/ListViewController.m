@@ -88,5 +88,9 @@
     return cell;
 }
 
+- (void)listView:(UListView *)listView didSelectCellAtIndex:(NSInteger)index
+{
+    NSLog(@"UListViewCell selected %@", @(index));
+}
 
 @end

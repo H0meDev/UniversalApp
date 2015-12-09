@@ -76,5 +76,14 @@
  */
 - (BOOL)isNumberFormat;
 
+/*
+ * Check if contains string
+ */
+- (BOOL)containsWithString:(NSString *)string;
+
+/*
+ * Replace string with replacement
+ */
+- (NSString *)replaceWithString:(NSString *)string with:(NSString *)replacement;
 
 @end

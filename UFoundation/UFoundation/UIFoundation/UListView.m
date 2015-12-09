@@ -45,9 +45,93 @@
 
 @end
 
+@interface UListViewCellContentView : UIControl
+{
+    BOOL _selected;
+}
+
+@property (nonatomic, strong) UIView *backgroundMaskView;
+@property (nonatomic, strong) UIColor *highlightedColor;
+
+@end
+
+@implementation UListViewCellContentView
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        _highlightedColor = [sysLightGrayColor() colorWithAlpha:0.35];
+    }
+    
+    return self;
+}
+
+#pragma mark - Properties
+
+- (UIView *)backgroundMaskView
+{
+    if (_backgroundMaskView) {
+        return _backgroundMaskView;
+    }
+    
+    UIView *backgroundMaskView = [[UIView alloc]init];
+    backgroundMaskView.backgroundColor = sysClearColor();
+    backgroundMaskView.userInteractionEnabled = NO;
+    backgroundMaskView = backgroundMaskView;
+    [self addSubview:backgroundMaskView];
+    _backgroundMaskView = backgroundMaskView;
+    
+    return _backgroundMaskView;
+}
+
+#pragma mark - Methods
+
+- (void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
+    
+    self.backgroundMaskView.frame = rectMake(0, 0, frame.size.width, frame.size.height);
+}
+
+#pragma mark - Event callback
+
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    self.backgroundMaskView.backgroundColor = _highlightedColor;
+    
+    return YES;
+}
+
+- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    self.backgroundMaskView.backgroundColor = _highlightedColor;
+    
+    return YES;
+}
+
+- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    self.backgroundMaskView.backgroundColor = sysClearColor();
+}
+
+- (void)cancelTrackingWithEvent:(UIEvent *)event
+{
+    self.backgroundMaskView.backgroundColor = sysClearColor();
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+    
+    _selected = selected;
+}
+
+@end
+
 @interface UListViewCell () <URefreshViewDelegate>
 
-@property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UListViewCellContentView *contentView;
 @property (nonatomic, strong) UIImageView *headerLineView;
 @property (nonatomic, strong) UIImageView *footerLineView;
 
@@ -59,7 +143,7 @@
 
 + (id)cell
 {
-    return [[self alloc]init];
+    return [[self alloc]initWithFrame:CGRectZero];
 }
 
 - (id)initWith:(UListViewStyle)style
@@ -67,6 +151,9 @@
     self = [super initWithFrame:CGRectZero];
     if (self) {
         // Initalize
+        self.backgroundColor = sysClearColor();
+        self.userInteractionEnabled = YES;
+        
         _style = style;
         
         [self cellDidLoad];
@@ -90,13 +177,14 @@
 
 #pragma mark - Properties
 
-- (UIView *)contentView
+- (UListViewCellContentView *)contentView
 {
     if (_contentView) {
         return _contentView;
     }
     
-    UIView *contentView = [[UIView alloc]init];
+    UListViewCellContentView *contentView = [[UListViewCellContentView alloc]init];
+    contentView.userInteractionEnabled = YES;
     contentView.backgroundColor = sysWhiteColor();
     [super addSubview:contentView];
     _contentView = contentView;
@@ -111,7 +199,7 @@
     }
     
     UIImageView *headerLineView = [[UIImageView alloc]init];
-    headerLineView.backgroundColor = [sysBlackColor() setAlphaValue:0.2];
+    headerLineView.backgroundColor = [sysBlackColor() colorWithAlpha:0.2];
     [self.contentView addSubview:headerLineView];
     _headerLineView = headerLineView;
     
@@ -125,12 +213,14 @@
     }
     
     UIImageView *footerLineView = [[UIImageView alloc]init];
-    footerLineView.backgroundColor = [sysBlackColor() setAlphaValue:0.2];
+    footerLineView.backgroundColor = [sysBlackColor() colorWithAlpha:0.2];
     [self.contentView addSubview:footerLineView];
     _footerLineView = footerLineView;
     
     return _footerLineView;
 }
+
+#pragma mark - Methods
 
 - (void)setFrame:(CGRect)frame
 {
@@ -160,7 +250,12 @@
     self.contentView.backgroundColor = color;
 }
 
-#pragma mark - Methods
+- (void)setHighlightedColor:(UIColor *)color
+{
+    _highlightedColor = color;
+    
+    self.contentView.highlightedColor = color;
+}
 
 - (void)addSubview:(UIView *)view
 {

@@ -317,9 +317,18 @@
     return YES;
 }
 
-- (NSString *)replaceSubString:(NSString *)string with:(NSString *)place
+- (BOOL)containsWithString:(NSString *)subString
 {
-    return [self stringByReplacingOccurrencesOfString:string withString:place];
+    if ([self rangeOfString:subString].location != NSNotFound) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (NSString *)replaceWithString:(NSString *)string with:(NSString *)replacement
+{
+    return [self stringByReplacingOccurrencesOfString:string withString:replacement];
 }
 
 @end

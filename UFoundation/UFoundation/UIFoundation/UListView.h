@@ -37,11 +37,15 @@ typedef NS_ENUM(NSInteger, UListViewCellSepratorLineStyle)
 @required
 - (CGFloat)listView:(UListView *)listView sizeValueForIndex:(NSInteger)index;
 
+@optional
+- (void)listView:(UListView *)listView didSelectCellAtIndex:(NSInteger)index;
+
 @end
 
 @interface UListViewCell : UIView
 
-@property (nonatomic, readonly) UListViewStyle style; // Default style is UListViewStyleVertical
+@property (nonatomic, readonly) UListViewStyle style;    // Default style is UListViewStyleVertical_selectionStyle
+@property (nonatomic, strong) UIColor *highlightedColor; // Color of highlighted and selected
 
 + (id)cell; // Default style is UListViewStyleVertical
 - (id)initWith:(UListViewStyle)style; // The style must be consistent with UListView

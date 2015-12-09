@@ -85,7 +85,7 @@
     return CGColorGetAlpha(self.CGColor);
 }
 
-- (UIColor *)setAlphaValue:(CGFloat)alpha
+- (UIColor *)colorWithAlpha:(CGFloat)alpha
 {
     return [self colorWithAlphaComponent:alpha];
 }

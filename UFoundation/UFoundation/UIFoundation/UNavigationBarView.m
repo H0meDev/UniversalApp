@@ -65,7 +65,7 @@
     
     UImageView *bottomLineView = [[UImageView alloc]init];
     bottomLineView.frame = rectMake(0, naviHeight() - naviBLineH(), screenWidth(), naviBLineH());
-    bottomLineView.backgroundColor = [sysDarkGrayColor() setAlphaValue:0.3];
+    bottomLineView.backgroundColor = [sysDarkGrayColor() colorWithAlpha:0.3];
     [self addSubview:bottomLineView];
     _bottomLineView = bottomLineView;
     

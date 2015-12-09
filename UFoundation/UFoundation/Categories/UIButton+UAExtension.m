@@ -74,7 +74,7 @@
 - (void)setTitleColor:(UIColor *)color
 {
     [self setTitleColor:color forState:UIControlStateNormal];
-    [self setTitleColor:[color setAlphaValue:0.3] forState:UIControlStateHighlighted];
+    [self setTitleColor:[color colorWithAlpha:0.3] forState:UIControlStateHighlighted];
 }
 
 - (void)setSTitleColor:(UIColor *)color
