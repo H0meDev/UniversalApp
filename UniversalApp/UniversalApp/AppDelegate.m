@@ -24,8 +24,8 @@
     self.window.backgroundColor = sysWhiteColor();
     [self.window makeKeyAndVisible];
     
-    // Start timer
-    [UTimerBooster start];
+//    // Start timer
+//    [UTimerBooster start];
     
     // Goto home
     [self gotoHomePage];

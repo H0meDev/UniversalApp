@@ -92,8 +92,6 @@
 
 - (void)listView:(UListView *)listView didSelectCellAtIndex:(NSInteger)index
 {
-    [listView deselectCellAtIndex:index];
-    
     NSLog(@"UListViewCell selected %@", @(index));
 }
 

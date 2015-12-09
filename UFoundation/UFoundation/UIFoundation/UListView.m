@@ -557,24 +557,6 @@
     [self reloadData];
 }
 
-- (NSArray *)selectedIndexs
-{
-    // Sort
-    _selectedIndexs = [_selectedIndexs sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        if ([obj1 integerValue] > [obj2 integerValue]) {
-            return NSOrderedAscending;
-        }
-        
-        if ([obj1 integerValue] < [obj2 integerValue]) {
-            return NSOrderedDescending;
-        }
-        
-        return NSOrderedSame;
-    }];
-    
-    return _selectedIndexs;
-}
-
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -851,6 +833,22 @@
     }
 }
 
+- (NSArray *)sortSelectedIndexsWith:(NSArray *)selectedIndexs
+{
+    // Sort
+    return [selectedIndexs sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        if ([obj1 integerValue] > [obj2 integerValue]) {
+            return NSOrderedAscending;
+        }
+        
+        if ([obj1 integerValue] < [obj2 integerValue]) {
+            return NSOrderedDescending;
+        }
+        
+        return NSOrderedSame;
+    }];
+}
+
 #pragma mark - Actions
 
 - (void)cellTouchedDownAction:(UListViewCell *)cell
@@ -885,6 +883,8 @@
             _selectedIndexs = [marray copy];
         }
     }
+    
+    _selectedIndexs = [self sortSelectedIndexsWith:_selectedIndexs];
     
     if (_delegate) {
         if (cell.selected && [_delegate respondsToSelector:@selector(listView:didSelectCellAtIndex:)]) {
@@ -1026,6 +1026,8 @@
         }
     }
     
+    _selectedIndexs = [self sortSelectedIndexsWith:_selectedIndexs];
+    
     if (_delegate && [_delegate respondsToSelector:@selector(listView:didSelectCellAtIndex:)]) {
         [_delegate listView:self didSelectCellAtIndex:index];
     }
@@ -1064,6 +1066,8 @@
             _selectedIndexs = [marray copy];
         }
     }
+    
+    _selectedIndexs = [self sortSelectedIndexsWith:_selectedIndexs];
     
     if (_delegate && [_delegate respondsToSelector:@selector(listView:didDeselectCellAtIndex:)]) {
         [_delegate listView:self didDeselectCellAtIndex:index];
