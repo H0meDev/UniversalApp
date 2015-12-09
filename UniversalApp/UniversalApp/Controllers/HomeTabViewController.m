@@ -110,7 +110,7 @@
     }
 }
 
-#pragma mark - Action
+#pragma mark - Actions
 
 - (void)tabAction:(UTabBarButton *)button
 {

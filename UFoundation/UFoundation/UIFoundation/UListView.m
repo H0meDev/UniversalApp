@@ -12,6 +12,8 @@
 #import "UIView+UAExtension.h"
 #import "UIScrollView+UAExtension.h"
 
+#pragma mark - UListViewCellItem class
+
 @interface UListViewCellItem : NSObject
 
 @property (nonatomic, assign) NSInteger index;
@@ -45,13 +47,20 @@
 
 @end
 
+#pragma mark - UListViewCellContentView class
+
 @interface UListViewCellContentView : UIControl
 {
     BOOL _selected;
+    __weak id _target;
+    SEL _action;
 }
 
 @property (nonatomic, strong) UIView *backgroundMaskView;
 @property (nonatomic, strong) UIColor *highlightedColor;
+@property (nonatomic, assign) BOOL cancelable;
+
+- (void)setTarget:(id)target action:(SEL)action;
 
 @end
 
@@ -94,30 +103,48 @@
     self.backgroundMaskView.frame = rectMake(0, 0, frame.size.width, frame.size.height);
 }
 
+- (void)setTarget:(id)target action:(SEL)action
+{
+    if (_target && _action) {
+        [self removeTarget:target action:action forControlEvents:UIControlEventTouchDown];
+    }
+    
+    _target = target;
+    _action = action;
+    
+    [self addTarget:target action:action forControlEvents:UIControlEventTouchDown];
+}
+
 #pragma mark - Event callback
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    self.backgroundMaskView.backgroundColor = _highlightedColor;
+    if (_cancelable) {
+        self.selected = !_selected;
+    } else {
+        self.selected = YES;
+    }
     
     return YES;
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    self.backgroundMaskView.backgroundColor = _highlightedColor;
-    
     return YES;
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    self.backgroundMaskView.backgroundColor = sysClearColor();
+    if (!_selected) {
+        self.backgroundMaskView.backgroundColor = sysClearColor();
+    }
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event
 {
-    self.backgroundMaskView.backgroundColor = sysClearColor();
+    if (!_selected) {
+        self.backgroundMaskView.backgroundColor = sysClearColor();
+    }
 }
 
 - (void)setSelected:(BOOL)selected
@@ -125,15 +152,31 @@
     [super setSelected:selected];
     
     _selected = selected;
+    if (_selected) {
+        self.backgroundMaskView.backgroundColor = _highlightedColor;
+    } else {
+        self.backgroundMaskView.backgroundColor = sysClearColor();
+    }
 }
 
 @end
 
+#pragma mark - UListViewCell class
+
 @interface UListViewCell () <URefreshViewDelegate>
+{
+    __weak id _target;
+    SEL _action;
+    BOOL _selected;
+}
 
 @property (nonatomic, strong) UListViewCellContentView *contentView;
 @property (nonatomic, strong) UIImageView *headerLineView;
 @property (nonatomic, strong) UIImageView *footerLineView;
+@property (nonatomic, assign) NSInteger index;
+@property (nonatomic, assign) BOOL cancelable;
+
+- (void)setTarget:(id)target action:(SEL)action;
 
 @end
 
@@ -186,6 +229,7 @@
     UListViewCellContentView *contentView = [[UListViewCellContentView alloc]init];
     contentView.userInteractionEnabled = YES;
     contentView.backgroundColor = sysWhiteColor();
+    [contentView setTarget:self action:@selector(touchDownAction)];
     [super addSubview:contentView];
     _contentView = contentView;
     
@@ -218,6 +262,16 @@
     _footerLineView = footerLineView;
     
     return _footerLineView;
+}
+
+- (BOOL)cancelable
+{
+    return self.contentView.cancelable;
+}
+
+- (BOOL)selected
+{
+    return self.contentView.selected;
 }
 
 #pragma mark - Methods
@@ -257,9 +311,20 @@
     self.contentView.highlightedColor = color;
 }
 
+- (void)setCancelable:(BOOL)cancelable
+{
+    self.contentView.cancelable = cancelable;
+}
+
 - (void)addSubview:(UIView *)view
 {
     [self.contentView addSubview:view];
+}
+
+- (void)setTarget:(id)target action:(SEL)action
+{
+    _target = target;
+    _action = action;
 }
 
 - (void)cellDidLoad
@@ -277,12 +342,40 @@
     //
 }
 
+- (void)cellDidSelected
+{
+    //
+}
+
+- (void)cellDidDeselected
+{
+    //
+}
+
 - (void)dealloc
 {
     //
 }
 
+#pragma mark - Actions
+
+- (void)touchDownAction
+{
+    _selected = !_selected;
+    if (_selected) {
+        [self cellDidSelected];
+    } else {
+        [self cellDidDeselected];
+    }
+    
+    if (_target && _action) {
+        [_target performWithName:NSStringFromSelector(_action) with:self];
+    }
+}
+
 @end
+
+#pragma mark - UListView class
 
 @interface UListView ()
 {
@@ -301,6 +394,7 @@
 @implementation UListView
 
 @synthesize style = _style;
+@synthesize selectedIndexs = _selectedIndexs;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -455,6 +549,32 @@
     [self reloadData];
 }
 
+- (void)setCancelable:(BOOL)cancelable
+{
+    _cancelable = cancelable;
+    
+    // Reset all
+    [self reloadData];
+}
+
+- (NSArray *)selectedIndexs
+{
+    // Sort
+    _selectedIndexs = [_selectedIndexs sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        if ([obj1 integerValue] > [obj2 integerValue]) {
+            return NSOrderedAscending;
+        }
+        
+        if ([obj1 integerValue] < [obj2 integerValue]) {
+            return NSOrderedDescending;
+        }
+        
+        return NSOrderedSame;
+    }];
+    
+    return _selectedIndexs;
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -510,7 +630,7 @@
                     if (needsAttached) {
                         // Attach cell
                         UListViewCellItem *item = _itemArray[index];
-                        UListViewCell *cell = [self.dataSource listView:self.weakself cellAtIndex:index];
+                        UListViewCell *cell = [self cellAtIndex:index];
                         
                         if (_style == UListViewStyleHorizontal) {
                             cell.frame = rectMake(item.originValue, 0, item.sizeValue, self.scrollView.sizeHeight);
@@ -654,6 +774,26 @@
     return contains;
 }
 
+- (UListViewCell *)cellAtIndex:(NSInteger)index
+{
+    UListViewCell *cell = [self.dataSource listView:self.weakself cellAtIndex:index];
+    
+    // For selection
+    cell.index = index;
+    cell.cancelable = self.cancelable;
+    cell.contentView.selected = NO;
+    [cell setTarget:self action:@selector(cellTouchedDownAction:)];
+    
+    for (NSNumber *indexValue in _selectedIndexs) {
+        if ([indexValue integerValue] == index) {
+            cell.contentView.selected = YES;
+            break;
+        }
+    }
+    
+    return cell;
+}
+
 - (void)resetSepratorWith:(UListViewCell *)cell index:(NSInteger)index
 {
     switch (_separatorStyle) {
@@ -707,6 +847,50 @@
             
             // Refresh
             [_cellReusePool setObject:marray forKey:key];
+        }
+    }
+}
+
+#pragma mark - Actions
+
+- (void)cellTouchedDownAction:(UListViewCell *)cell
+{
+    if (!self.multipleSelected) {
+        NSArray *cells = [self currentVisibleCellsWith:_scrollView.contentOffset];
+        for (UListViewCell *cellItem in cells) {
+            if (cellItem != cell) {
+                cellItem.contentView.selected = NO;
+            }
+        }
+        
+        _selectedIndexs = @[@(cell.index)];
+    } else {
+        if (!_selectedIndexs) {
+            _selectedIndexs = @[@(cell.index)];
+        } else {
+            BOOL contains = NO;
+            for (NSNumber *indexValue in _selectedIndexs) {
+                if ([indexValue integerValue] == cell.index) {
+                    contains = YES;
+                    break;
+                }
+            }
+            
+            NSMutableArray *marray = [NSMutableArray arrayWithArray:_selectedIndexs];
+            if (!contains) {
+                [marray addObject:@(cell.index)];
+            } else if (self.cancelable) {
+                [marray removeObject:@(cell.index)];
+            }
+            _selectedIndexs = [marray copy];
+        }
+    }
+    
+    if (_delegate) {
+        if (cell.selected && [_delegate respondsToSelector:@selector(listView:didSelectCellAtIndex:)]) {
+            [_delegate listView:self didSelectCellAtIndex:cell.index];
+        } else if (!cell.selected && [_delegate respondsToSelector:@selector(listView:didDeselectCellAtIndex:)]) {
+            [_delegate listView:self didDeselectCellAtIndex:cell.index];
         }
     }
 }
@@ -770,6 +954,7 @@
     _currentRange.max = -1;
     
     _itemArray = nil;
+    _selectedIndexs = nil;
     [_cellReusePool removeAllObjects];
     
     CGFloat originValue = _headerValue; // Header
@@ -809,6 +994,74 @@
     
     // Load cells
     self.scrollView.contentOffset = CGPointZero;
+}
+
+- (void)selectCellAtIndex:(NSInteger)index
+{
+    index = (index < 0)?0:index;
+    index = (index > _itemArray.count)?_itemArray.count:index;
+    
+    NSArray *cells = [self currentVisibleCellsWith:_scrollView.contentOffset];
+    for (UListViewCell *cell in cells) {
+        if (cell.index == index) {
+            cell.contentView.selected = YES;
+        }
+    }
+    
+    if (!_selectedIndexs) {
+        _selectedIndexs = @[@(index)];
+    } else {
+        BOOL contains = NO;
+        for (NSNumber *indexValue in _selectedIndexs) {
+            if ([indexValue integerValue] == index) {
+                contains = YES;
+                break;
+            }
+        }
+        
+        if (!contains) {
+            NSMutableArray *marray = [NSMutableArray arrayWithArray:_selectedIndexs];
+            [marray addObject:@(index)];
+            _selectedIndexs = [marray copy];
+        }
+    }
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(listView:didSelectCellAtIndex:)]) {
+        [_delegate listView:self didSelectCellAtIndex:index];
+    }
+}
+
+- (void)deselectCellAtIndex:(NSInteger)index
+{
+    index = (index < 0)?0:index;
+    index = (index > _itemArray.count)?_itemArray.count:index;
+    
+    NSArray *cells = [self currentVisibleCellsWith:_scrollView.contentOffset];
+    for (UListViewCell *cell in cells) {
+        if (cell.index == index) {
+            cell.contentView.selected = NO;
+        }
+    }
+    
+    if (checkValidNSArray(_selectedIndexs)) {
+        BOOL contains = NO;
+        for (NSNumber *indexValue in _selectedIndexs) {
+            if ([indexValue integerValue] == index) {
+                contains = YES;
+                break;
+            }
+        }
+        
+        if (contains) {
+            NSMutableArray *marray = [NSMutableArray arrayWithArray:_selectedIndexs];
+            [marray removeObject:@(index)];
+            _selectedIndexs = [marray copy];
+        }
+    }
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(listView:didDeselectCellAtIndex:)]) {
+        [_delegate listView:self didDeselectCellAtIndex:index];
+    }
 }
 
 @end

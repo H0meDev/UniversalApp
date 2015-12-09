@@ -118,6 +118,7 @@
             subListView.dataSource = self;
             subListView.spaceValue = naviBLineH();
             subListView.separatorStyle = UListViewCellSepratorLineStyleNone;
+            subListView.cancelable = YES;
             [cell addSubview:subListView];
         }
     }
@@ -125,6 +126,16 @@
     cell.backgroundColor = sysOrangeColor();
     
     return cell;
+}
+
+- (void)listView:(UListView *)listView didSelectCellAtIndex:(NSInteger)index
+{
+    NSLog(@"UListViewCell selected %@", @(index));
+}
+
+- (void)listView:(UListView *)listView didDeselectCellAtIndex:(NSInteger)index
+{
+    NSLog(@"UListViewCell deselected %@", @(index));
 }
 
 @end

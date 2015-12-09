@@ -209,7 +209,7 @@
     }
 }
 
-#pragma mark - Action
+#pragma mark - Actions
 
 - (void)rightButtonAction
 {
@@ -448,7 +448,7 @@
     [_assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupLibrary | ALAssetsGroupPhotoStream usingBlock:results failureBlock:failure];
 }
 
-#pragma mark - Action
+#pragma mark - Actions
 
 - (void)leftButtonAction
 {

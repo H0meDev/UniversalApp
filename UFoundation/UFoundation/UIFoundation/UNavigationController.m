@@ -610,7 +610,7 @@
     return nil;
 }
 
-#pragma mark - Action
+#pragma mark - Actions
 
 - (void)panAction:(UIGestureRecognizer *)recognizer
 {

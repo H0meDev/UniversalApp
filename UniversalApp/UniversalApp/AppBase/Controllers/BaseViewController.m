@@ -108,7 +108,7 @@
     return _keyValueObservers;
 }
 
-#pragma mark - Action
+#pragma mark - Actions
 
 - (void)backAction
 {

@@ -209,10 +209,10 @@
          contextName = "-[UNavigationController resetAllStates]:UNavigationController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_viewController.contentView">
+               value = "_viewController">
             </PersistentString>
             <PersistentString
-               value = "_viewController">
+               value = "_viewController.contentView">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -220,18 +220,18 @@
          contextName = "__37-[UNavigationController popAnimation]_block_invoke185:UNavigationController.m">
       </ContextState>
       <ContextState
-         contextName = "-[UNavigationBarView setNavigationBarItem:]:UNavigationBarView.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "item.navigationBarViewHidden">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "-[UListView checkCellWith:from:]:UListView.m">
          <PersistentStrings>
             <PersistentString
                value = "cell.originY">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[UNavigationBarView setNavigationBarItem:]:UNavigationBarView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "item.navigationBarViewHidden">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -468,10 +468,10 @@
                value = "self.viewControllers">
             </PersistentString>
             <PersistentString
-               value = "currentController">
+               value = "_viewController">
             </PersistentString>
             <PersistentString
-               value = "_viewController">
+               value = "currentController">
             </PersistentString>
             <PersistentString
                value = "_currentNavigationItem">
@@ -526,10 +526,10 @@
          contextName = "-[UNavigationController repositionAllViewWithX:]:UNavigationController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_viewController.countOfControllerToPop">
+               value = "_viewController">
             </PersistentString>
             <PersistentString
-               value = "_viewController">
+               value = "_viewController.countOfControllerToPop">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -545,7 +545,7 @@
          contextName = "-[UNavigationController repositionBarsWithX:]:UNavigationController.m">
          <PersistentStrings>
             <PersistentString
-               value = "leftButton.attachedLabel.text">
+               value = "leftButton">
             </PersistentString>
             <PersistentString
                value = "_currentNavigationItem.leftButton">
@@ -554,7 +554,7 @@
                value = "_currentNavigationItem">
             </PersistentString>
             <PersistentString
-               value = "leftButton">
+               value = "leftButton.attachedLabel.text">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -592,10 +592,18 @@
                value = "lastTitleLabel.text">
             </PersistentString>
             <PersistentString
-               value = "leftButton.superview ">
+               value = "_lastNavigationItem">
             </PersistentString>
             <PersistentString
-               value = "_lastNavigationItem">
+               value = "leftButton.superview ">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ListViewController listView:didSelectCellAtIndex:]:ListViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "listView.selectedIndexs">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

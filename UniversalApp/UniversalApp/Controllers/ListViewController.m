@@ -31,6 +31,8 @@
     _listView.frame = rectMake(0, 0, screenWidth(), height);
     _listView.delegate = self;
     _listView.dataSource = self;
+    _listView.cancelable = YES;
+    _listView.multipleSelected = YES;
     [self addSubview:_listView];
 }
 
@@ -91,6 +93,11 @@
 - (void)listView:(UListView *)listView didSelectCellAtIndex:(NSInteger)index
 {
     NSLog(@"UListViewCell selected %@", @(index));
+}
+
+- (void)listView:(UListView *)listView didDeselectCellAtIndex:(NSInteger)index
+{
+    NSLog(@"UListViewCell deselected %@", @(index));
 }
 
 @end

@@ -39,6 +39,7 @@ typedef NS_ENUM(NSInteger, UListViewCellSepratorLineStyle)
 
 @optional
 - (void)listView:(UListView *)listView didSelectCellAtIndex:(NSInteger)index;
+- (void)listView:(UListView *)listView didDeselectCellAtIndex:(NSInteger)index;
 
 @end
 
@@ -46,14 +47,17 @@ typedef NS_ENUM(NSInteger, UListViewCellSepratorLineStyle)
 
 @property (nonatomic, readonly) UListViewStyle style;    // Default style is UListViewStyleVertical_selectionStyle
 @property (nonatomic, strong) UIColor *highlightedColor; // Color of highlighted and selected
+@property (nonatomic, readonly) BOOL selected;
 
 + (id)cell; // Default style is UListViewStyleVertical
 - (id)initWith:(UListViewStyle)style; // The style must be consistent with UListView
 
 // To be overrided
-- (void)cellDidLoad;      // For initialization
-- (void)cellWillAppear;   // For preparation
-- (void)cellDidDisappear; // For cancel
+- (void)cellDidLoad;       // For initialization
+- (void)cellWillAppear;    // For preparation
+- (void)cellDidDisappear;  // For cancel
+- (void)cellDidSelected;   // For selected option
+- (void)cellDidDeselected; // For deselected option
 
 @end;
 
@@ -67,6 +71,9 @@ typedef NS_ENUM(NSInteger, UListViewCellSepratorLineStyle)
 @property (nonatomic, weak) id<UListViewDelegate> delegate;
 @property (nonatomic, weak) id<UListViewDataSource> dataSource;
 @property (nonatomic, readonly) UListViewStyle style;
+@property (nonatomic, assign) BOOL multipleSelected; // Default is NO
+@property (nonatomic, assign) BOOL cancelable;       // Default is NO
+@property (nonatomic, readonly) NSArray *selectedIndexs;
 
 - (id)initWith:(UListViewStyle)style;
 - (id)initWithFrame:(CGRect)frame style:(UListViewStyle)style;
@@ -77,5 +84,9 @@ typedef NS_ENUM(NSInteger, UListViewCellSepratorLineStyle)
 
 // Refresh
 - (void)reloadData;
+
+// Selection
+- (void)selectCellAtIndex:(NSInteger)index;
+- (void)deselectCellAtIndex:(NSInteger)index;
 
 @end
