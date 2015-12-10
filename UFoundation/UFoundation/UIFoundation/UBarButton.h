@@ -19,7 +19,8 @@
 // Custom inner frame for imageView & titleLabel
 @property (nonatomic, assign) CGRect imageFrame;
 @property (nonatomic, assign) CGRect titleFrame;
-@property (nonatomic, assign) BOOL needsAutoResize; // Default NO
+@property (nonatomic, assign) BOOL synchronous;             // Default NO
+@property (nonatomic, assign) BOOL needsAutoResize;         // Default NO
 @property (nonatomic, assign) BOOL showMaskWhenHighlighted; // Default YES
 
 // Custom text alignment, default is NSTextAlignmentCenter
@@ -70,11 +71,11 @@
 - (void)setDBackgroundAlpha:(CGFloat)alpha;
 
 // Add action
-- (void)addTarget:(id)target action:(SEL)action;
-- (void)addTouchDownTarget:(id)target action:(SEL)action;
+- (void)setTarget:(id)target action:(SEL)action;
+- (void)setTouchDownTarget:(id)target action:(SEL)action;
 
 // Remove action
-- (void)removeTarget:(id)target action:(SEL)action;
-- (void)removeTouchDownTarget:(id)target action:(SEL)action;
+- (void)removeTargetAction;
+- (void)removeTouchDownTargetAction;
 
 @end

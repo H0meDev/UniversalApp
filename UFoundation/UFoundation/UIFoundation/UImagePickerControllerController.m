@@ -51,7 +51,7 @@
             button.tag = i;
             button.frame = rectMake(originX, 2, width, width);
             [button setImage:image];
-            [button addTouchDownTarget:self action:@selector(selectAction:)];
+            [button setTouchDownTarget:self action:@selector(selectAction:)];
             [self.contentView addSubview:button];
             
             originX += width + 4;
@@ -130,7 +130,7 @@
     [rightButton setTitle:@"选择"];
     [rightButton setTitleFont:systemFont(16)];
     [rightButton setTitleColor:rgbColor(29, 158, 246)];
-    [rightButton addTarget:self action:@selector(rightButtonAction)];
+    [rightButton setTarget:self action:@selector(rightButtonAction)];
     self.navigationBarView.rightButton = rightButton;
 }
 
@@ -345,7 +345,7 @@
     [leftButton setTitle:@"取消"];
     [leftButton setTitleFont:systemFont(16)];
     [leftButton setTitleColor:rgbColor(29, 158, 246)];
-    [leftButton addTarget:self action:@selector(leftButtonAction)];
+    [leftButton setTarget:self action:@selector(leftButtonAction)];
     self.navigationBarView.leftButton = leftButton;
     
     // Table view

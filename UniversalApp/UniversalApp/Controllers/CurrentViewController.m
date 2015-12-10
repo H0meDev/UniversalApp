@@ -26,11 +26,13 @@
 //    self.statusBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
 //    self.navigationBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
     
-    UButton *button = [UButton button];
+    UBarButton *button = [UBarButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);
     [button setTitle:@"Push"];
+    [button setTitleColor:sysWhiteColor()];
+    [button setHTitleColor:sysLightGrayColor()];
     button.backgroundColor = sysRedColor();
-    [button addTarget:self action:@selector(buttonAction)];
+    [button setTarget:self action:@selector(buttonAction)];
     [self addSubview:button];
 }
 

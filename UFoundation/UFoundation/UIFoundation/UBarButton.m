@@ -7,6 +7,7 @@
 //
 
 #import "UBarButton.h"
+#import "NSObject+UAExtension.h"
 
 @interface UBarButtonItem : NSObject
 
@@ -48,11 +49,33 @@
 
 @end
 
+@interface UBarButtonActionItem : NSObject
+
+@property (nonatomic, weak) id target;
+@property (nonatomic, assign) SEL action;
+@property (nonatomic, assign) UIControlEvents event;
+
++ (id)item;
+
+@end
+
+@implementation UBarButtonActionItem
+
++ (id)item
+{
+    __autoreleasing UBarButtonActionItem *item = [[UBarButtonActionItem alloc]init];
+    
+    return item;
+}
+
+@end
+
 @interface UBarButton ()
 {
     UIView *_backgroundMaskView;
     
     NSMutableArray *_stateItems;
+    NSMutableArray *_actionItems;
     BOOL _isSelected;
 }
 
@@ -70,6 +93,8 @@
     if (self) {
         // Initialize
         _stateItems = [NSMutableArray array];
+        _actionItems = [NSMutableArray array];
+        
         _textAlignment = NSTextAlignmentCenter;
         _showMaskWhenHighlighted = YES;
         _backgroundMaskHColor = rgbaColor(0, 0, 0, 0.3);
@@ -77,6 +102,11 @@
         // Default
         [self setTitleColor:sysBlackColor()];
         [self setTitleFont:systemFont(16)];
+        
+        // Actions
+        [super addTarget:self action:@selector(touchDownAction) forControlEvents:UIControlEventTouchDown];
+        [super addTarget:self action:@selector(touchUpInsideAction) forControlEvents:UIControlEventTouchUpInside];
+        [super addTarget:self action:@selector(touchDragOutsideAction) forControlEvents:UIControlEventTouchDragOutside];
     }
     
     return self;
@@ -110,6 +140,9 @@
 
 - (void)dealloc
 {
+    [_actionItems removeAllObjects];
+    _actionItems = nil;
+    
     [_stateItems removeAllObjects];
     _stateItems = nil;
 }
@@ -226,6 +259,55 @@
     } else {
         [self refreshButtonWith:UIControlStateSelected];
     }
+}
+
+#pragma mark -  Actions
+
+- (void)touchDownAction
+{
+    [self performActionWithEvent:UIControlEventTouchDown];
+}
+
+- (void)touchUpInsideAction
+{
+    [self performActionWithEvent:UIControlEventTouchUpInside];
+}
+
+- (void)touchDragOutsideAction
+{
+    [self refreshButtonWith:UIControlStateNormal];
+}
+
+#pragma mark - Targets
+
+- (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
+{
+    //
+}
+
+- (void)removeTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
+{
+    //
+}
+
+- (void)setTarget:(id)target action:(SEL)action
+{
+    [self addActionWithEvent:UIControlEventTouchUpInside target:target action:action];
+}
+
+- (void)setTouchDownTarget:(id)target action:(SEL)action
+{
+    [self addActionWithEvent:UIControlEventTouchDown target:target action:action];
+}
+
+- (void)removeTargetAction
+{
+    [self removeActionWithEvent:UIControlEventTouchUpInside];
+}
+
+- (void)removeTouchDownTargetAction
+{
+    [self removeActionWithEvent:UIControlEventTouchDown];
 }
 
 #pragma mark -  Inner Methods
@@ -416,6 +498,62 @@
     return nil;
 }
 
+- (void)performActionWithEvent:(UIControlEvents)event
+{
+    UBarButtonActionItem *actionItem = nil;
+    for (UBarButtonActionItem *item in _actionItems) {
+        if (item.event == event) {
+            actionItem = item;
+            break;
+        }
+    }
+    
+    if (actionItem) {
+        if (_synchronous) {
+            [actionItem.target performWithName:NSStringFromSelector(actionItem.action) with:self];
+        } else {
+            dispatch_async(main_queue(), ^{
+                [actionItem.target performWithName:NSStringFromSelector(actionItem.action) with:self];
+            });
+        }
+    }
+}
+
+- (void)addActionWithEvent:(UIControlEvents)event target:(id)target action:(SEL)action
+{
+    UBarButtonActionItem *actionItem = nil;
+    for (UBarButtonActionItem *item in _actionItems) {
+        if (item.event == UIControlEventTouchUpInside) {
+            actionItem = item;
+            break;
+        }
+    }
+    
+    if (actionItem) {
+        [_actionItems removeObject:actionItem];
+    } else {
+        actionItem = [UBarButtonActionItem item];
+    }
+    
+    actionItem.target = target;
+    actionItem.action = action;
+    actionItem.event = UIControlEventTouchUpInside;
+    [_actionItems addObject:actionItem];
+}
+
+- (void)removeActionWithEvent:(UIControlEvents)event
+{
+    UBarButtonActionItem *actionItem = nil;
+    for (UBarButtonActionItem *item in _actionItems) {
+        if (item.event == event) {
+            actionItem = item;
+            break;
+        }
+    }
+    
+    [_actionItems removeObject:actionItem];
+}
+
 #pragma mark -  Outer Methods
 
 + (id)button
@@ -582,28 +720,6 @@
 - (void)setDBackgroundAlpha:(CGFloat)alpha
 {
     [self setBackgroundAlpha:alpha forState:UIControlStateDisabled];
-}
-
-#pragma mark - Target
-
-- (void)addTarget:(id)target action:(SEL)action
-{
-    [self addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)addTouchDownTarget:(id)target action:(SEL)action
-{
-    [self addTarget:target action:action forControlEvents:UIControlEventTouchDown];
-}
-
-- (void)removeTarget:(id)target action:(SEL)action
-{
-    [self removeTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)removeTouchDownTarget:(id)target action:(SEL)action
-{
-    [self removeTarget:target action:action forControlEvents:UIControlEventTouchDown];
 }
 
 @end

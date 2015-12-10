@@ -84,7 +84,7 @@
         [leftButton setBackImageWithColor:rgbColor(0, 131, 241)];
         [leftButton setTitleColor:rgbColor(0, 131, 241)];
         [leftButton setTitleFont:systemFont(16)];
-        [leftButton addTarget:self action:@selector(backAction)];
+        [leftButton setTarget:self action:@selector(backAction)];
         self.navigationBarView.leftButton = leftButton;
         
         // Resize
