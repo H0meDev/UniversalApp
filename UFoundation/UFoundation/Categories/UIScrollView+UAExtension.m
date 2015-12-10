@@ -9,6 +9,7 @@
 #import "UIScrollView+UAExtension.h"
 #import <objc/runtime.h>
 #import "URefreshView.h"
+#import "NSObject+UAExtension.h"
 
 @interface UIScrollView (UAExtensionProperty)
 

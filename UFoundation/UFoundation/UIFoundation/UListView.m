@@ -9,6 +9,7 @@
 #import "UListView.h"
 #import "UDefines.h"
 #import "NSObject+UAExtension.h"
+#import "UIColor+UAExtension.h"
 #import "UIView+UAExtension.h"
 #import "UIScrollView+UAExtension.h"
 
@@ -224,7 +225,7 @@
     UListViewCellContentView *contentView = [[UListViewCellContentView alloc]init];
     contentView.userInteractionEnabled = YES;
     contentView.backgroundColor = sysWhiteColor();
-    [contentView setTarget:self action:@selector(touchDownAction)];
+    [contentView setTarget:self action:@selector(touchUpInsideAction)];
     [super addSubview:contentView];
     _contentView = contentView;
     
@@ -354,7 +355,7 @@
 
 #pragma mark - Actions
 
-- (void)touchDownAction
+- (void)touchUpInsideAction
 {
     self.contentView.selected = !self.contentView.selected;
     
@@ -884,9 +885,13 @@
     
     if (_delegate) {
         if (cell.selected && [_delegate respondsToSelector:@selector(listView:didSelectCellAtIndex:)]) {
-            [_delegate listView:self didSelectCellAtIndex:cell.index];
+            dispatch_async(main_queue(), ^{
+                [_delegate listView:self didSelectCellAtIndex:cell.index];
+            });
         } else if (!cell.selected && [_delegate respondsToSelector:@selector(listView:didDeselectCellAtIndex:)]) {
-            [_delegate listView:self didDeselectCellAtIndex:cell.index];
+            dispatch_async(main_queue(), ^{
+                [_delegate listView:self didDeselectCellAtIndex:cell.index];
+            });
         }
     }
 }
@@ -1025,7 +1030,9 @@
     _selectedIndexs = [self sortSelectedIndexsWith:_selectedIndexs];
     
     if (_delegate && [_delegate respondsToSelector:@selector(listView:didSelectCellAtIndex:)]) {
-        [_delegate listView:self didSelectCellAtIndex:index];
+        dispatch_async(main_queue(), ^{
+            [_delegate listView:self didSelectCellAtIndex:index];
+        });
     }
 }
 
@@ -1066,7 +1073,9 @@
     _selectedIndexs = [self sortSelectedIndexsWith:_selectedIndexs];
     
     if (_delegate && [_delegate respondsToSelector:@selector(listView:didDeselectCellAtIndex:)]) {
-        [_delegate listView:self didDeselectCellAtIndex:index];
+        dispatch_async(main_queue(), ^{
+            [_delegate listView:self didDeselectCellAtIndex:index];
+        });
     }
     
     if (cell) {

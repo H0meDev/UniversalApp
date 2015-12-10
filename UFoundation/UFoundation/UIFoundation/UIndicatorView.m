@@ -7,6 +7,7 @@
 //
 
 #import "UIndicatorView.h"
+#import "UDefines.h"
 
 @interface UIndicatorView ()
 {

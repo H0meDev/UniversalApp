@@ -6,7 +6,7 @@
 //  Copyright © 2015年 think. All rights reserved.
 //
 
-#import <UFoundation/UFoundation.h>
+#import "UView.h"
 
 typedef NS_ENUM(NSInteger, UIndicatorStyle)
 {

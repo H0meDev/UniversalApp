@@ -6,7 +6,6 @@
 //  Copyright © 2015年 think. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "URefreshView.h"
 
 @interface UIScrollView (UAExtension)
