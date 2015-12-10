@@ -6,8 +6,8 @@
 //  Copyright (c) 2015年 think. All rights reserved.
 //
 
-#import "UBarButton.h"
+#import "UButton.h"
 
-@interface UTabBarButton : UBarButton
+@interface UTabBarButton : UButton
 
 @end

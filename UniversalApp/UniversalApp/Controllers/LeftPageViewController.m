@@ -32,7 +32,7 @@
     [rightView setTitle:@"Option"];
     [rightView setTitleColor:sysBlackColor()];
     [rightView setTitleFont:systemFont(16)];
-    [rightView addTarget:self action:@selector(buttonAction:)];
+    [rightView setTarget:self action:@selector(buttonAction:)];
     self.navigationBarView.rightView = rightView;
     
     CGFloat height = self.containerView.sizeHeight - tabHeight();

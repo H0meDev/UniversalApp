@@ -23,7 +23,7 @@
     self.enableBackButton = NO;
     self.navigationBarView.title = @"Right";
     
-    UBarButton *button = [UBarButton button];
+    UButton *button = [UButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);
     [button setTitle:@"Push"];
     [button setTitleColor:sysWhiteColor()];

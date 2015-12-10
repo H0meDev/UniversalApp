@@ -26,7 +26,7 @@
 //    self.statusBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
 //    self.navigationBarView.backgroundColor = rgbaColor(231, 68, 113, 0.2);
     
-    UBarButton *button = [UBarButton button];
+    UButton *button = [UButton button];
     button.frame = rectMake(0, 160, screenWidth(), 50);
     [button setTitle:@"Push"];
     [button setTitleColor:sysWhiteColor()];

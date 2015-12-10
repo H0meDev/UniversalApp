@@ -17,8 +17,8 @@
 		F51431C71B89AE7800C2372E /* UNavigationbarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F51431C51B89AE7800C2372E /* UNavigationbarButton.m */; };
 		F51431CA1B89AE9300C2372E /* UTabBarButton.h in Headers */ = {isa = PBXBuildFile; fileRef = F51431C81B89AE9300C2372E /* UTabBarButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F51431CB1B89AE9300C2372E /* UTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F51431C91B89AE9300C2372E /* UTabBarButton.m */; };
-		F51431CE1B89AFFF00C2372E /* UBarButton.h in Headers */ = {isa = PBXBuildFile; fileRef = F51431CC1B89AFFF00C2372E /* UBarButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F51431CF1B89AFFF00C2372E /* UBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F51431CD1B89AFFF00C2372E /* UBarButton.m */; };
+		F51431CE1B89AFFF00C2372E /* UButton.h in Headers */ = {isa = PBXBuildFile; fileRef = F51431CC1B89AFFF00C2372E /* UButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F51431CF1B89AFFF00C2372E /* UButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F51431CD1B89AFFF00C2372E /* UButton.m */; };
 		F515938B1BAC55440043FFE9 /* UIScrollView+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51593891BAC55440043FFE9 /* UIScrollView+UAExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F515938C1BAC55440043FFE9 /* UIScrollView+UAExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F515938A1BAC55440043FFE9 /* UIScrollView+UAExtension.m */; };
 		F51C11CF1B90630300F29C3F /* NSArray+UAExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F51C11991B90630300F29C3F /* NSArray+UAExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -84,8 +84,6 @@
 		F56C2CB81B04449400D5DF66 /* UTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56C2CB21B04449400D5DF66 /* UTabBarController.m */; };
 		F56C2CB91B04449400D5DF66 /* UViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F56C2CB31B04449400D5DF66 /* UViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F56C2CBA1B04449400D5DF66 /* UViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56C2CB41B04449400D5DF66 /* UViewController.m */; };
-		F56C2CD31B0444D300D5DF66 /* UButton.h in Headers */ = {isa = PBXBuildFile; fileRef = F56C2CBB1B0444D300D5DF66 /* UButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F56C2CD41B0444D300D5DF66 /* UButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F56C2CBC1B0444D300D5DF66 /* UButton.m */; };
 		F56C2CD51B0444D300D5DF66 /* UImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = F56C2CBD1B0444D300D5DF66 /* UImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F56C2CD61B0444D300D5DF66 /* UImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F56C2CBE1B0444D300D5DF66 /* UImageView.m */; };
 		F56C2CD71B0444D300D5DF66 /* ULabel.h in Headers */ = {isa = PBXBuildFile; fileRef = F56C2CBF1B0444D300D5DF66 /* ULabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -125,8 +123,8 @@
 		F51431C51B89AE7800C2372E /* UNavigationbarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UNavigationbarButton.m; path = UIFoundation/UNavigationbarButton.m; sourceTree = "<group>"; };
 		F51431C81B89AE9300C2372E /* UTabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UTabBarButton.h; path = UIFoundation/UTabBarButton.h; sourceTree = "<group>"; };
 		F51431C91B89AE9300C2372E /* UTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UTabBarButton.m; path = UIFoundation/UTabBarButton.m; sourceTree = "<group>"; };
-		F51431CC1B89AFFF00C2372E /* UBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UBarButton.h; path = UIFoundation/UBarButton.h; sourceTree = "<group>"; };
-		F51431CD1B89AFFF00C2372E /* UBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UBarButton.m; path = UIFoundation/UBarButton.m; sourceTree = "<group>"; };
+		F51431CC1B89AFFF00C2372E /* UButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UButton.h; path = UIFoundation/UButton.h; sourceTree = "<group>"; };
+		F51431CD1B89AFFF00C2372E /* UButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UButton.m; path = UIFoundation/UButton.m; sourceTree = "<group>"; };
 		F51593891BAC55440043FFE9 /* UIScrollView+UAExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+UAExtension.h"; sourceTree = "<group>"; };
 		F515938A1BAC55440043FFE9 /* UIScrollView+UAExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+UAExtension.m"; sourceTree = "<group>"; };
 		F51C114D1B90567900F29C3F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -191,8 +189,6 @@
 		F56C2CB21B04449400D5DF66 /* UTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UTabBarController.m; path = UIFoundation/UTabBarController.m; sourceTree = "<group>"; };
 		F56C2CB31B04449400D5DF66 /* UViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UViewController.h; path = UIFoundation/UViewController.h; sourceTree = "<group>"; };
 		F56C2CB41B04449400D5DF66 /* UViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UViewController.m; path = UIFoundation/UViewController.m; sourceTree = "<group>"; };
-		F56C2CBB1B0444D300D5DF66 /* UButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UButton.h; path = UIFoundation/UButton.h; sourceTree = "<group>"; };
-		F56C2CBC1B0444D300D5DF66 /* UButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UButton.m; path = UIFoundation/UButton.m; sourceTree = "<group>"; };
 		F56C2CBD1B0444D300D5DF66 /* UImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UImageView.h; path = UIFoundation/UImageView.h; sourceTree = "<group>"; };
 		F56C2CBE1B0444D300D5DF66 /* UImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UImageView.m; path = UIFoundation/UImageView.m; sourceTree = "<group>"; };
 		F56C2CBF1B0444D300D5DF66 /* ULabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ULabel.h; path = UIFoundation/ULabel.h; sourceTree = "<group>"; };
@@ -462,8 +458,6 @@
 				F56C2CD01B0444D300D5DF66 /* UView.m */,
 				F56C2CBF1B0444D300D5DF66 /* ULabel.h */,
 				F56C2CC01B0444D300D5DF66 /* ULabel.m */,
-				F56C2CBB1B0444D300D5DF66 /* UButton.h */,
-				F56C2CBC1B0444D300D5DF66 /* UButton.m */,
 				F56C2CBD1B0444D300D5DF66 /* UImageView.h */,
 				F56C2CBE1B0444D300D5DF66 /* UImageView.m */,
 				F56C2CC71B0444D300D5DF66 /* UTableView.h */,
@@ -486,8 +480,8 @@
 				F5127BC31B7A38DC007952C7 /* UScrollView.m */,
 				F5AFC7541C070047000444A6 /* UListView.h */,
 				F5AFC7551C070047000444A6 /* UListView.m */,
-				F51431CC1B89AFFF00C2372E /* UBarButton.h */,
-				F51431CD1B89AFFF00C2372E /* UBarButton.m */,
+				F51431CC1B89AFFF00C2372E /* UButton.h */,
+				F51431CD1B89AFFF00C2372E /* UButton.m */,
 				F51431C81B89AE9300C2372E /* UTabBarButton.h */,
 				F51431C91B89AE9300C2372E /* UTabBarButton.m */,
 				F51431C41B89AE7800C2372E /* UNavigationBarButton.h */,
@@ -540,7 +534,7 @@
 				F51C11F91B90630300F29C3F /* UThreadPool.h in Headers */,
 				F51C11D91B90630300F29C3F /* NSString+UAExtension.h in Headers */,
 				F51C11E91B90630300F29C3F /* UITextView+UAExtension.h in Headers */,
-				F51431CE1B89AFFF00C2372E /* UBarButton.h in Headers */,
+				F51431CE1B89AFFF00C2372E /* UButton.h in Headers */,
 				F51431C61B89AE7800C2372E /* UNavigationBarButton.h in Headers */,
 				F51431CA1B89AE9300C2372E /* UTabBarButton.h in Headers */,
 				F5127BC41B7A38DC007952C7 /* UScrollView.h in Headers */,
@@ -548,7 +542,6 @@
 				F56C2CDD1B0444D300D5DF66 /* UTabBarView.h in Headers */,
 				F56C2CE91B0444D300D5DF66 /* UWebView.h in Headers */,
 				F56C2CE71B0444D300D5DF66 /* UView.h in Headers */,
-				F56C2CD31B0444D300D5DF66 /* UButton.h in Headers */,
 				F56C2CD71B0444D300D5DF66 /* ULabel.h in Headers */,
 				F56C2CB71B04449400D5DF66 /* UTabBarController.h in Headers */,
 				F56C2CE51B0444D300D5DF66 /* UTextView.h in Headers */,
@@ -653,7 +646,6 @@
 				F51C11D81B90630300F29C3F /* NSObject+UAExtension.m in Sources */,
 				F57848DF1BAD587B00E7121B /* UTableViewController.m in Sources */,
 				F51C11EC1B90630300F29C3F /* UIView+UAExtension.m in Sources */,
-				F56C2CD41B0444D300D5DF66 /* UButton.m in Sources */,
 				F52AD2BB1BB2AA630074DBA1 /* UIndicatorView.m in Sources */,
 				F56C2CBA1B04449400D5DF66 /* UViewController.m in Sources */,
 				F5127BC51B7A38DC007952C7 /* UScrollView.m in Sources */,
@@ -663,7 +655,7 @@
 				F51C11D61B90630300F29C3F /* NSDictionary+UAExtension.m in Sources */,
 				F56C2CE61B0444D300D5DF66 /* UTextView.m in Sources */,
 				F5AFC7571C070047000444A6 /* UListView.m in Sources */,
-				F51431CF1B89AFFF00C2372E /* UBarButton.m in Sources */,
+				F51431CF1B89AFFF00C2372E /* UButton.m in Sources */,
 				F51431CB1B89AE9300C2372E /* UTabBarButton.m in Sources */,
 				F56C2CDE1B0444D300D5DF66 /* UTabBarView.m in Sources */,
 				F5476E6D1C190C5200AF9F9D /* UGridListView.m in Sources */,
