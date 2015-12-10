@@ -119,11 +119,7 @@
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if (_cancelable) {
-        self.selected = !_selected;
-    } else {
-        self.selected = YES;
-    }
+    self.backgroundMaskView.backgroundColor = _highlightedColor;
     
     return YES;
 }
@@ -167,7 +163,6 @@
 {
     __weak id _target;
     SEL _action;
-    BOOL _selected;
 }
 
 @property (nonatomic, strong) UListViewCellContentView *contentView;
@@ -361,8 +356,9 @@
 
 - (void)touchDownAction
 {
-    _selected = !_selected;
-    if (_selected) {
+    self.contentView.selected = !self.contentView.selected;
+    
+    if (self.contentView.selected) {
         [self cellDidSelected];
     } else {
         [self cellDidDeselected];
