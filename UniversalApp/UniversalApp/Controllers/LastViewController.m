@@ -97,8 +97,7 @@
 {
     LastListItemCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LastListItemCell"];
     if (cell == nil) {
-        registerCellNibName(@"LastListItemCell");
-        cell = [tableView dequeueReusableCellWithIdentifier:@"LastListItemCell"];
+        cell = [[LastListItemCell alloc]initWithReuseIdentifier:@"LastListItemCell"];
     }
     
     NSDictionary *dict = nil;
