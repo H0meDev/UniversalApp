@@ -64,9 +64,9 @@
 
 @implementation UBarButton
 
-- (id)init
+- (id)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
         // Initialize
         _stateItems = [NSMutableArray array];
@@ -108,6 +108,12 @@
     self.backgroundView.backgroundColor = backgroundColor;
 }
 
+- (void)dealloc
+{
+    [_stateItems removeAllObjects];
+    _stateItems = nil;
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -127,6 +133,7 @@
     ULabel *titleLabel = [[ULabel alloc]init];
     titleLabel.backgroundColor = sysClearColor();
     titleLabel.textColor = sysBlackColor();
+    titleLabel.userInteractionEnabled = NO;
     titleLabel.numberOfLines = 1;
     titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -144,6 +151,7 @@
     
     UImageView *imageView = [[UImageView alloc]init];
     imageView.backgroundColor = sysClearColor();
+    imageView.userInteractionEnabled = NO;
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.backgroundView addSubview:imageView];
     _imageView = imageView;
@@ -158,12 +166,14 @@
     }
     
     UImageView *backgroundView = [[UImageView alloc]init];
+    backgroundView.userInteractionEnabled = NO;
     backgroundView.backgroundColor = sysClearColor();
     [self addSubview:backgroundView];
     _backgroundView = backgroundView;
     
     UIView *backgroundMaskView = [[UIView alloc]init];
     backgroundMaskView.backgroundColor = sysClearColor();
+    backgroundMaskView.userInteractionEnabled = NO;
     _backgroundMaskView = backgroundMaskView;
     [backgroundView addSubview:_backgroundMaskView];
     
