@@ -26,14 +26,14 @@
     self.enableBackButton = NO;
     self.navigationBarView.title = @"Left";
     
-    UButton *rightView = [UButton button];
-    rightView.selected = YES;
-    rightView.frame = rectMake(screenWidth() - 68, 0, 60, naviHeight());
-    [rightView setTitle:@"Option"];
-    [rightView setTitleColor:sysBlackColor()];
-    [rightView setTitleFont:systemFont(16)];
-    [rightView setTarget:self action:@selector(buttonAction:)];
-    self.navigationBarView.rightView = rightView;
+//    UButton *rightView = [UButton button];
+//    rightView.selected = YES;
+//    rightView.frame = rectMake(screenWidth() - 68, 0, 60, naviHeight());
+//    [rightView setTitle:@"Option"];
+//    [rightView setTitleColor:sysBlackColor()];
+//    [rightView setTitleFont:systemFont(16)];
+//    [rightView setTarget:self action:@selector(buttonAction:)];
+//    self.navigationBarView.rightView = rightView;
     
     CGFloat height = self.containerView.sizeHeight - tabHeight();
     _listView = [[UListView alloc]initWith:UListViewStyleVertical];
