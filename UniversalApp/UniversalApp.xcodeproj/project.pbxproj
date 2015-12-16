@@ -40,6 +40,7 @@
 		F5687D651B022D510073594C /* UFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5687D641B022D510073594C /* UFoundation.framework */; };
 		F5859F471B70B0BC004EC7D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F5859F491B70B0BC004EC7D2 /* InfoPlist.strings */; };
 		F5C5E5B31BB3C0EB00AC039F /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5C5E5B21BB3C0EB00AC039F /* CurrentViewController.m */; };
+		F5E7B0C51C1FC09B009FEB76 /* LeftListItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E7B0C41C1FC09B009FEB76 /* LeftListItemCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +122,8 @@
 		F595BB011B70BB0800659E1D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "zh-Hans"; path = "zh-Hans.lproj/Info.plist"; sourceTree = "<group>"; };
 		F5C5E5B11BB3C0EB00AC039F /* CurrentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentViewController.h; sourceTree = "<group>"; };
 		F5C5E5B21BB3C0EB00AC039F /* CurrentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentViewController.m; sourceTree = "<group>"; };
+		F5E7B0C31C1FC09B009FEB76 /* LeftListItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftListItemCell.h; sourceTree = "<group>"; };
+		F5E7B0C41C1FC09B009FEB76 /* LeftListItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftListItemCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +204,8 @@
 				F515938E1BAC5A900043FFE9 /* LastListItemCell.m */,
 				F53640531C15267C0021774D /* ListItemCell.h */,
 				F53640541C15267C0021774D /* ListItemCell.m */,
+				F5E7B0C31C1FC09B009FEB76 /* LeftListItemCell.h */,
+				F5E7B0C41C1FC09B009FEB76 /* LeftListItemCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -458,6 +463,7 @@
 				F51C11901B905BD200F29C3F /* BaseScrollView.m in Sources */,
 				F51C11731B905B6900F29C3F /* LocalNotification.m in Sources */,
 				F51C11711B905B6900F29C3F /* GlobalManager.m in Sources */,
+				F5E7B0C51C1FC09B009FEB76 /* LeftListItemCell.m in Sources */,
 				F51C118F1B905BD200F29C3F /* BaseModel.m in Sources */,
 				F51C11751B905B6900F29C3F /* NetworkSDK.m in Sources */,
 				F51C11761B905B6900F29C3F /* SkinManager.m in Sources */,

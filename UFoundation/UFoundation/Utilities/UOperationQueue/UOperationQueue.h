@@ -11,7 +11,7 @@
 
 @interface UOperationQueue : NSObject
 
-// Default is 8
+// Default is 10
 + (void)setMaxConcurrentCount:(NSInteger)count;
 
 // Add operation for cache

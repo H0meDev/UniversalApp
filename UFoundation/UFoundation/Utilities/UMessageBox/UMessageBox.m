@@ -15,6 +15,6 @@
 
 @implementation UMessageBox
 
-singletonImplementationWith(UMessageBox, messageBox);
+singletonImplementationWith(UMessageBox, box);
 
 @end

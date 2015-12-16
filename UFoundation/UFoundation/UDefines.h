@@ -165,15 +165,17 @@ static classname *shared##method = nil; \
 #define resourcePathWithName(name, type)  [[NSBundle mainBundle]pathForResource:name ofType:type]
 #define bundlePathWithName(name)          [[NSBundle mainBundle]pathForResource:name ofType:@"bundle"]
 #define resourcePathWith(bundle, name)    [NSString stringWithFormat:@"%@/%@", bundlePathWithName(bundle), name]
-#define cacheDirectoryPath()              [currentDocumentsPath() stringByAppendingPathComponent:@"CachesDirectory"]
+#define cacheDirectoryPath()              [currentDocumentsPath() stringByAppendingPathComponent:@"Caches"]
 #define cachePathWith(name)               [cacheDirectoryPath() stringByAppendingPathComponent:name]
 
 #define checkFileExists(path)         [[NSFileManager defaultManager]fileExistsAtPath:path]
 #define checkCacheDirectoryExists()   checkFileExists(cacheDirectoryPath())
 
-#define createCacheDirectory()            [[NSFileManager defaultManager]createDirectoryAtPath:cacheDirectoryPath()\
+#define createCacheDirectory()              [[NSFileManager defaultManager]createDirectoryAtPath:cacheDirectoryPath()\
 withIntermediateDirectories:YES attributes:NULL error:NULL]
-#define createFile(name)                  [[NSFileManager defaultManager]createFileAtPath:name contents:nil attributes:nil]
+#define createCacheDirectoryWith(directory) [[NSFileManager defaultManager]createDirectoryAtPath:directory \
+withIntermediateDirectories:YES attributes:NULL error:NULL]
+#define createFile(name)                    [[NSFileManager defaultManager]createFileAtPath:name contents:nil attributes:nil]
 
 // Image
 #define loadImage(name)                     [UIImage imageNamed:name]

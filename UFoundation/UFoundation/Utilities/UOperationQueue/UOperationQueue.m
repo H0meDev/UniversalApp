@@ -57,7 +57,7 @@ static UOperationQueue *sharedCache = nil;
             // Initialize
             _operations = [NSMutableArray array];
             _operationQueue = [[NSOperationQueue alloc]init];
-            _operationQueue.maxConcurrentOperationCount = 8;
+            _operationQueue.maxConcurrentOperationCount = 10;
             
             // Received memory warning
             [[NSNotificationCenter defaultCenter]addObserver:self

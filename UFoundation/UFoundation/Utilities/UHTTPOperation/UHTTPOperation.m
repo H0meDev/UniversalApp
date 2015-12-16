@@ -11,6 +11,7 @@
 #import "UTimerBooster.h"
 #import "NSObject+UAExtension.h"
 #import "NSString+UAExtension.h"
+#import "NSDictionary+UAExtension.h"
 
 @implementation UHTTPStatus
 
@@ -73,7 +74,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
     self = [super init];
     if (self) {
         _accessLock = [[NSLock alloc]init];
-        _filePath = cachePathWith(@"http_cached.dat");
+        _filePath = cachePathWith(@"http_cache");
         
         if (!checkFileExists(_filePath)) {
             // Check directory
@@ -219,9 +220,9 @@ singletonImplementationWith(UHTTPDataCache, cache);
             
 #if DEBUG
             NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
-            NSDictionary *header = mrequest.allHTTPHeaderFields;
+            NSString *header = checkValidNSDictionary(mrequest.allHTTPHeaderFields)?[mrequest.allHTTPHeaderFields JSONString]:@"";
             NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
-            NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nHEADER: \n%@\nBODY: %@\n*********************************",mrequest.URL.absoluteString, mrequest.HTTPMethod, header, body);
+            NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nHEADER: %@\nBODY: %@\n*********************************",mrequest.URL.absoluteString, mrequest.HTTPMethod, header, body);
 #endif
         }
     }
@@ -254,9 +255,9 @@ singletonImplementationWith(UHTTPDataCache, cache);
             
 #if DEBUG
             NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
-            NSDictionary *header = mrequest.allHTTPHeaderFields;
+            NSString *header = checkValidNSDictionary(mrequest.allHTTPHeaderFields)?[mrequest.allHTTPHeaderFields JSONString]:@"";
             NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
-            NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nHEADER: \n%@\nBODY: %@\n*********************************", mrequest.URL.absoluteString, mrequest.HTTPMethod, header, body);
+            NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nHEADER: %@\nBODY: %@\n*********************************", mrequest.URL.absoluteString, mrequest.HTTPMethod, header, body);
 #endif
         }
     }

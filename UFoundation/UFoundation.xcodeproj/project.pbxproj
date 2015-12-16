@@ -110,6 +110,8 @@
 		F57848DF1BAD587B00E7121B /* UTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F57848DD1BAD587B00E7121B /* UTableViewController.m */; };
 		F5AFC7561C070047000444A6 /* UListView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5AFC7541C070047000444A6 /* UListView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F5AFC7571C070047000444A6 /* UListView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5AFC7551C070047000444A6 /* UListView.m */; };
+		F5C5B70A1C1E9A2300611DFD /* UHTTPImage.h in Headers */ = {isa = PBXBuildFile; fileRef = F5C5B7081C1E9A2300611DFD /* UHTTPImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F5C5B70B1C1E9A2300611DFD /* UHTTPImage.m in Sources */ = {isa = PBXBuildFile; fileRef = F5C5B7091C1E9A2300611DFD /* UHTTPImage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -219,6 +221,8 @@
 		F5974D021B02057F004AA14F /* UDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UDefines.h; sourceTree = "<group>"; };
 		F5AFC7541C070047000444A6 /* UListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UListView.h; path = UIFoundation/UListView.h; sourceTree = "<group>"; };
 		F5AFC7551C070047000444A6 /* UListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UListView.m; path = UIFoundation/UListView.m; sourceTree = "<group>"; };
+		F5C5B7081C1E9A2300611DFD /* UHTTPImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UHTTPImage.h; sourceTree = "<group>"; };
+		F5C5B7091C1E9A2300611DFD /* UHTTPImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UHTTPImage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -294,6 +298,7 @@
 		F51C11B91B90630300F29C3F /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				F5C5B7071C1E9A1100611DFD /* UHTTPImage */,
 				F51C11BA1B90630300F29C3F /* UHTTPOperation */,
 				F51C11BD1B90630300F29C3F /* UHTTPRequest */,
 				F51C11C01B90630300F29C3F /* UModel */,
@@ -496,6 +501,15 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		F5C5B7071C1E9A1100611DFD /* UHTTPImage */ = {
+			isa = PBXGroup;
+			children = (
+				F5C5B7081C1E9A2300611DFD /* UHTTPImage.h */,
+				F5C5B7091C1E9A2300611DFD /* UHTTPImage.m */,
+			);
+			path = UHTTPImage;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -503,6 +517,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5C5B70A1C1E9A2300611DFD /* UHTTPImage.h in Headers */,
 				F5476E701C190C9300AF9F9D /* URefreshView.h in Headers */,
 				F5476E6C1C190C5200AF9F9D /* UGridListView.h in Headers */,
 				F5AFC7561C070047000444A6 /* UListView.h in Headers */,
@@ -675,6 +690,7 @@
 				F51C11DC1B90630300F29C3F /* UIButton+UAExtension.m in Sources */,
 				F51C11D01B90630300F29C3F /* NSArray+UAExtension.m in Sources */,
 				F51C12001B90633900F29C3F /* UIImageView+UAExtension.m in Sources */,
+				F5C5B70B1C1E9A2300611DFD /* UHTTPImage.m in Sources */,
 				F51C11E21B90630300F29C3F /* UILabel+UAExtension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

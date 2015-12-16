@@ -11,6 +11,6 @@
 
 @interface UMessageBox : NSObject
 
-singletonInterfaceWith(UMessageBox, messageBox);
+singletonInterfaceWith(UMessageBox, box);
 
 @end

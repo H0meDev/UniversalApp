@@ -63,5 +63,6 @@
 #import "UOperationQueue.h"
 #import "UThreadPool.h"
 #import "UTimerBooster.h"
+#import "UHTTPImage.h"
 
 #endif

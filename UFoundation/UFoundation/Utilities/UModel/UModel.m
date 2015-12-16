@@ -52,13 +52,12 @@
                     }
                     
                     // Get property name
-                    objc_property_t property = properties[i];
-                    const char *property_name = property_getName(property);
+                    const char *property_name = ivar_getName(ivars[i]);
                     
                     // Record property type & name
                     NSString *name = [[NSString alloc]initWithCString:property_name encoding:NSUTF8StringEncoding];
                     NSString *type = [[NSString alloc]initWithCString:type_name encoding:NSUTF8StringEncoding];
-                    [mArray addObject:@{@"name":name, @"type":type}];
+                    [mArray addObject:@{@"name":[name substringFromIndex:1], @"type":type}];
                 }
                 
                 // Clear ivar

@@ -132,20 +132,24 @@
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if (!_selected) {
+    if (!_selected && _cancelable) {
         self.backgroundMaskView.backgroundColor = sysClearColor();
     }
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event
 {
-    if (!_selected) {
+    if (!_selected && _cancelable) {
         self.backgroundMaskView.backgroundColor = sysClearColor();
     }
 }
 
 - (void)setSelected:(BOOL)selected
 {
+    if (_selected && !_cancelable) {
+        return;
+    }
+    
     [super setSelected:selected];
     
     _selected = selected;
