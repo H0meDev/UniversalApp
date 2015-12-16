@@ -128,14 +128,10 @@
     _backgroundMaskView.frame = self.backgroundView.bounds;
 }
 
-- (UIColor *)backgroundColor
+- (void)addSubview:(UIView *)view
 {
-    return self.backgroundView.backgroundColor;
-}
-
-- (void)setBackgroundColor:(UIColor *)backgroundColor
-{
-    self.backgroundView.backgroundColor = backgroundColor;
+    [self.backgroundView addSubview:view];
+    [self.backgroundView insertSubview:view belowSubview:_backgroundMaskView];
 }
 
 - (void)dealloc
@@ -201,7 +197,7 @@
     UImageView *backgroundView = [[UImageView alloc]init];
     backgroundView.userInteractionEnabled = NO;
     backgroundView.backgroundColor = sysClearColor();
-    [self addSubview:backgroundView];
+    [super addSubview:backgroundView];
     _backgroundView = backgroundView;
     
     UIView *backgroundMaskView = [[UIView alloc]init];
@@ -211,6 +207,16 @@
     [backgroundView addSubview:_backgroundMaskView];
     
     return _backgroundView;
+}
+
+- (UIColor *)backgroundColor
+{
+    return self.backgroundView.backgroundColor;
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    self.backgroundView.backgroundColor = backgroundColor;
 }
 
 #pragma mark - Event callback

@@ -89,7 +89,7 @@
     backgroundMaskView.backgroundColor = sysClearColor();
     backgroundMaskView.userInteractionEnabled = NO;
     backgroundMaskView = backgroundMaskView;
-    [self addSubview:backgroundMaskView];
+    [super addSubview:backgroundMaskView];
     _backgroundMaskView = backgroundMaskView;
     
     return _backgroundMaskView;
