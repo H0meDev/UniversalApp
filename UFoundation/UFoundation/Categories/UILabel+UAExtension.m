@@ -42,10 +42,6 @@
 
 - (CGSize)contentSizeWith:(CGSize)size
 {
-    if (!checkClass(self.text, NSString)) {
-        return CGSizeZero;
-    }
-    
     return [self sizeThatFits:size];
 }
 

@@ -41,20 +41,22 @@
 
 - (CGSize)contentSizeWith:(CGSize)size
 {
-    if (!checkClass(self.text, NSString)) {
-        return CGSizeZero;
-    }
+//    if (!checkClass(self.text, NSString)) {
+//        return CGSizeZero;
+//    }
+//    
+//    NSDictionary *attributes = nil;
+//    if (systemVersionFloat() >= 7.0) {
+//        attributes = self.defaultTextAttributes;
+//    } else {
+//        __autoreleasing NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc]init];
+//        style.lineBreakMode = NSLineBreakByWordWrapping;
+//        attributes = @{NSFontAttributeName:self.font, NSParagraphStyleAttributeName:style.copy};
+//    }
+//    
+//    return [self.text contentSizeWithAttributes:attributes size:size];
     
-    NSDictionary *attributes = nil;
-    if (systemVersionFloat() >= 7.0) {
-        attributes = self.defaultTextAttributes;
-    } else {
-        __autoreleasing NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc]init];
-        style.lineBreakMode = NSLineBreakByWordWrapping;
-        attributes = @{NSFontAttributeName:self.font, NSParagraphStyleAttributeName:style.copy};
-    }
-    
-    return [self.text contentSizeWithAttributes:attributes size:size];
+    return [self sizeThatFits:size];
 }
 
 @end
