@@ -625,37 +625,7 @@
                 
                 if (needsAttached) {
                     // Attach cell
-                    UListViewCellItem *item = _itemArray[index];
-                    UListViewCell *cell = [self cellAtIndex:index];
-                    
-                    // Attached to scrollView
-                    [self.contentView addSubview:cell];
-                    
-                    // Resize
-                    switch (_style) {
-                        case UListViewStyleHorizontal:
-                        {
-                            cell.frame = rectMake(item.originValue, 0, item.sizeValue, self.scrollView.sizeHeight);
-                        }
-                            break;
-                            
-                        case UListViewStyleVertical:
-                        {
-                            cell.frame = rectMake(0, item.originValue, self.scrollView.sizeWidth, item.sizeValue);
-                        }
-                            break;
-                            
-                        default:
-                            break;
-                    }
-                    
-                    dispatch_async(main_queue(), ^{
-                        // For visible option
-                        [cell cellWillAppear];
-                        
-                        // Reset cell seprator line
-                        [self resetSepratorWith:cell index:index];
-                    });
+                    [self attachCellWith:index];
                 }
             }
         }
@@ -736,8 +706,10 @@
                 // Remove
                 [cell removeFromSuperview];
                 
-                // For invisible option
-                [cell cellDidDisappear];
+                dispatch_async(main_queue(), ^{
+                    // For invisible option
+                    [cell cellDidDisappear];
+                });
             }
         } else {
             [subviews addObject:cell];
@@ -806,6 +778,41 @@
     }
     
     return contains;
+}
+
+- (void)attachCellWith:(NSInteger)index
+{
+    UListViewCellItem *item = _itemArray[index];
+    UListViewCell *cell = [self cellAtIndex:index];
+    
+    // Attached to scrollView
+    [self.contentView addSubview:cell];
+    
+    // Resize
+    switch (_style) {
+        case UListViewStyleHorizontal:
+        {
+            cell.frame = rectMake(item.originValue, 0, item.sizeValue, self.scrollView.sizeHeight);
+        }
+            break;
+            
+        case UListViewStyleVertical:
+        {
+            cell.frame = rectMake(0, item.originValue, self.scrollView.sizeWidth, item.sizeValue);
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    dispatch_async(main_queue(), ^{
+        // For visible option
+        [cell cellWillAppear];
+        
+        // Reset cell seprator line
+        [self resetSepratorWith:cell index:index];
+    });
 }
 
 - (UListViewCell *)cellAtIndex:(NSInteger)index
@@ -1000,8 +1007,10 @@
             // Remove
             [cell removeFromSuperview];
             
-            // For invisible option
-            [cell cellDidDisappear];
+            dispatch_async(main_queue(), ^{
+                // For invisible option
+                [cell cellDidDisappear];
+            });
         }
     }
     

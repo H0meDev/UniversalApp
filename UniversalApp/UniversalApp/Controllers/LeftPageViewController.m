@@ -111,8 +111,8 @@
         cell = (LeftListItemCell *)[listView dequeueReusableCellWithIdentifier:@"LeftListItemCell"];
     }
     
-//    NSInteger indexValue = index % _dataList.count;
-    [cell setCellData:_dataList[0]];
+    NSInteger indexValue = index % _dataList.count;
+    [cell performOnMainThread:@selector(setCellData:) with:_dataList[indexValue]];
     
     NSLog(@"Load item %@", @(index));
     
