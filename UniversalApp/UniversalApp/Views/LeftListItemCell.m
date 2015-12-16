@@ -20,7 +20,7 @@
 - (void)cellDidLoad
 {
     _imageView = [[UIImageView alloc]init];
-    _imageView.backgroundColor = sysClearColor();
+    _imageView.backgroundColor = sysYellowColor();
     [self addSubview:_imageView];
 }
 

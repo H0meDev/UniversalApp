@@ -132,24 +132,20 @@
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if (!_selected && _cancelable) {
+    if (!_selected) {
         self.backgroundMaskView.backgroundColor = sysClearColor();
     }
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event
 {
-    if (!_selected && _cancelable) {
+    if (!_selected) {
         self.backgroundMaskView.backgroundColor = sysClearColor();
     }
 }
 
 - (void)setSelected:(BOOL)selected
 {
-    if (_selected && !_cancelable) {
-        return;
-    }
-    
     [super setSelected:selected];
     
     _selected = selected;
@@ -158,6 +154,12 @@
     } else {
         self.backgroundMaskView.backgroundColor = sysClearColor();
     }
+}
+
+- (void)addSubview:(UIView *)view
+{
+    [super addSubview:view];
+    [super insertSubview:view belowSubview:_backgroundMaskView];
 }
 
 @end
@@ -361,7 +363,11 @@
 
 - (void)touchUpInsideAction
 {
-    self.contentView.selected = !self.contentView.selected;
+    if (self.cancelable && self.contentView.selected) {
+        self.contentView.selected = NO;
+    } else {
+        self.contentView.selected = YES;
+    }
     
     if (self.contentView.selected) {
         [self cellDidSelected];
@@ -380,10 +386,8 @@
 
 @interface UListView ()
 {
-    NSLock *_dequeueLock;
     NSArray *_itemArray; // Array of UListViewCellItem
     NSMutableDictionary *_cellReusePool;
-    CGRange _currentRange;
 }
 
 // For cells
@@ -407,10 +411,7 @@
         _spaceValue = 0;
         _headerValue = 0;
         _footerValue = 0;
-        _currentRange.min = -1;
-        _currentRange.max = -1;
         
-        _dequeueLock = [[NSLock alloc]init];
         _cellReusePool = [NSMutableDictionary dictionary];
         
         self.clipsToBounds = YES;
@@ -480,6 +481,8 @@
     
     UIScrollView *scrollView = [[UIScrollView alloc]init];
     scrollView.backgroundColor = sysClearColor();
+    scrollView.panGestureRecognizer.maximumNumberOfTouches = 1;
+    scrollView.panGestureRecognizer.minimumNumberOfTouches = 1;
     [self addSubview:scrollView];
     _scrollView = scrollView;
     
@@ -575,61 +578,47 @@
 
 - (void)dequeueAllViewsWith:(CGPoint)offset
 {
-    [_dequeueLock lock];
-    
     // Visible cells
     [self dequeueCellsWith:offset];
-    
-    [_dequeueLock unlock];
 }
 
 - (void)dequeueCellsWith:(CGPoint)offset
 {
     if (_itemArray) {
         CGRange range = [self visibleRangeWith:offset];
-        if (_currentRange.min == range.min && _currentRange.max == range.max) {
-            return;
-        }
-        
-        _currentRange.min = range.min;
-        _currentRange.max = range.max;
-        
         NSInteger beginIndex = range.min;
         NSInteger endIndex = range.max;
         
         if (_itemArray.count > endIndex) {
             for (NSInteger index = beginIndex; index <= endIndex; index ++) {
-                @autoreleasepool
-                {
-                    NSArray *cells = [self currentVisibleCellsWith:offset];
+                NSArray *cells = [self currentVisibleCellsWith:offset];
+                
+                BOOL needsAttached = NO;
+                if ((index - beginIndex) <= cells.count) {
+                    needsAttached = ![self checkCellWith:index from:cells];
+                } else {
+                    needsAttached = YES;
+                }
+                
+                if (needsAttached) {
+                    // Attach cell
+                    UListViewCellItem *item = _itemArray[index];
+                    UListViewCell *cell = [self cellAtIndex:index];
                     
-                    BOOL needsAttached = NO;
-                    if ((index - beginIndex) <= cells.count) {
-                        needsAttached = ![self checkCellWith:index from:cells];
-                    } else {
-                        needsAttached = YES;
+                    if (_style == UListViewStyleHorizontal) {
+                        cell.frame = rectMake(item.originValue, 0, item.sizeValue, self.scrollView.sizeHeight);
+                    } else if (_style == UListViewStyleVertical) {
+                        cell.frame = rectMake(0, item.originValue, self.scrollView.sizeWidth, item.sizeValue);
                     }
                     
-                    if (needsAttached) {
-                        // Attach cell
-                        UListViewCellItem *item = _itemArray[index];
-                        UListViewCell *cell = [self cellAtIndex:index];
-                        
-                        if (_style == UListViewStyleHorizontal) {
-                            cell.frame = rectMake(item.originValue, 0, item.sizeValue, self.scrollView.sizeHeight);
-                        } else if (_style == UListViewStyleVertical) {
-                            cell.frame = rectMake(0, item.originValue, self.scrollView.sizeWidth, item.sizeValue);
-                        }
-                        
-                        // For visible option
-                        [cell cellWillAppear];
-                        
-                        // Reset cell seprator line
-                        [self resetSepratorWith:cell index:index];
-                        
-                        // Attached to scrollView
-                        [self.contentView addSubview:cell];
-                    }
+                    // For visible option
+                    [cell cellWillAppear];
+                    
+                    // Reset cell seprator line
+                    [self resetSepratorWith:cell index:index];
+                    
+                    // Attached to scrollView
+                    [self.contentView addSubview:cell];
                 }
             }
         }
@@ -765,7 +754,7 @@
     cell.index = index;
     cell.cancelable = self.cancelable;
     cell.contentView.selected = NO;
-    [cell setTarget:self action:@selector(cellTouchedDownAction:)];
+    [cell setTarget:self action:@selector(cellTouchedUpAction:)];
     
     for (NSNumber *indexValue in _selectedIndexs) {
         if ([indexValue integerValue] == index) {
@@ -852,7 +841,7 @@
 
 #pragma mark - Actions
 
-- (void)cellTouchedDownAction:(UListViewCell *)cell
+- (void)cellTouchedUpAction:(UListViewCell *)cell
 {
     if (!self.multipleSelected) {
         NSArray *cells = [self currentVisibleCellsWith:_scrollView.contentOffset];
@@ -953,10 +942,6 @@
             [cell cellDidDisappear];
         }
     }
-    
-    // Reset all
-    _currentRange.min = -1;
-    _currentRange.max = -1;
     
     _itemArray = nil;
     _selectedIndexs = nil;

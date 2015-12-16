@@ -99,7 +99,7 @@
     if (listView.style == UListViewStyleHorizontal) {
         return listView.sizeWidth / 3.;
     } else {
-        return self.containerView.sizeHeight - tabHeight();
+        return listView.sizeHeight / 3.;
     }
 }
 
@@ -111,8 +111,8 @@
         cell = (LeftListItemCell *)[listView dequeueReusableCellWithIdentifier:@"LeftListItemCell"];
     }
     
-    NSInteger indexValue = index % _dataList.count;
-    [cell setCellData:_dataList[indexValue]];
+//    NSInteger indexValue = index % _dataList.count;
+    [cell setCellData:_dataList[0]];
     
     NSLog(@"Load item %@", @(index));
     
@@ -121,6 +121,8 @@
 
 - (void)listView:(UListView *)listView didSelectCellAtIndex:(NSInteger)index
 {
+//    [listView deselectCellAtIndex:index];
+    
     NSLog(@"UListViewCell selected %@", @(index));
 }
 

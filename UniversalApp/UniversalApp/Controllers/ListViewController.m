@@ -94,10 +94,10 @@
 {
     NSLog(@"UListViewCell selected %@", @(index));
     
-    [listView deselectCellAtIndex:index];
-    
-    ListViewController *list = [[ListViewController alloc]init];
-    [self pushViewController:list];
+//    [listView deselectCellAtIndex:index];
+//    
+//    ListViewController *list = [[ListViewController alloc]init];
+//    [self pushViewController:list];
 }
 
 - (void)listView:(UListView *)listView didDeselectCellAtIndex:(NSInteger)index
