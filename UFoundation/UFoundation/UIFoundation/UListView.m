@@ -289,12 +289,24 @@
         CGFloat height = frame.size.height;
         
         self.contentView.frame = rectMake(0, 0, width, height);
-        if (_style == UListViewStyleVertical) {
-            self.headerLineView.frame = rectMake(0, 0, width, headerValue);
-            self.footerLineView.frame = rectMake(0, height - footerValue, width, footerValue);
-        } else if (_style == UListViewStyleHorizontal) {
-            self.headerLineView.frame = rectMake(0, 0, headerValue, height);
-            self.footerLineView.frame = rectMake(width - footerValue, 0, footerValue, height);
+        
+        switch (_style) {
+            case UListViewStyleHorizontal:
+            {
+                self.headerLineView.frame = rectMake(0, 0, headerValue, height);
+                self.footerLineView.frame = rectMake(width - footerValue, 0, footerValue, height);
+            }
+                break;
+                
+            case UListViewStyleVertical:
+            {
+                self.headerLineView.frame = rectMake(0, 0, width, headerValue);
+                self.footerLineView.frame = rectMake(0, height - footerValue, width, footerValue);
+            }
+                break;
+                
+            default:
+                break;
         }
     }
 }
@@ -506,14 +518,25 @@
 {
     [super setFrame:frame];
     
-    if (_style == UListViewStyleVertical) {
-        self.scrollView.showsVerticalScrollIndicator = YES;
-        self.scrollView.showsHorizontalScrollIndicator = NO;
-        self.scrollView.contentSize = sizeMake(0, frame.size.height);
-    } else if (_style == UListViewStyleHorizontal) {
-        self.scrollView.showsVerticalScrollIndicator = NO;
-        self.scrollView.showsHorizontalScrollIndicator = YES;
-        self.scrollView.contentSize = sizeMake(frame.size.width, 0);
+    switch (_style) {
+        case UListViewStyleHorizontal:
+        {
+            self.scrollView.showsVerticalScrollIndicator = NO;
+            self.scrollView.showsHorizontalScrollIndicator = YES;
+            self.scrollView.contentSize = sizeMake(frame.size.width, 0);
+        }
+            break;
+            
+        case UListViewStyleVertical:
+        {
+            self.scrollView.showsVerticalScrollIndicator = YES;
+            self.scrollView.showsHorizontalScrollIndicator = NO;
+            self.scrollView.contentSize = sizeMake(0, frame.size.height);
+        }
+            break;
+            
+        default:
+            break;
     }
     
     // Resize
@@ -605,26 +628,42 @@
                     UListViewCellItem *item = _itemArray[index];
                     UListViewCell *cell = [self cellAtIndex:index];
                     
-                    if (_style == UListViewStyleHorizontal) {
-                        cell.frame = rectMake(item.originValue, 0, item.sizeValue, self.scrollView.sizeHeight);
-                    } else if (_style == UListViewStyleVertical) {
-                        cell.frame = rectMake(0, item.originValue, self.scrollView.sizeWidth, item.sizeValue);
-                    }
-                    
-                    // For visible option
-                    [cell cellWillAppear];
-                    
-                    // Reset cell seprator line
-                    [self resetSepratorWith:cell index:index];
-                    
                     // Attached to scrollView
                     [self.contentView addSubview:cell];
+                    
+                    // Resize
+                    switch (_style) {
+                        case UListViewStyleHorizontal:
+                        {
+                            cell.frame = rectMake(item.originValue, 0, item.sizeValue, self.scrollView.sizeHeight);
+                        }
+                            break;
+                            
+                        case UListViewStyleVertical:
+                        {
+                            cell.frame = rectMake(0, item.originValue, self.scrollView.sizeWidth, item.sizeValue);
+                        }
+                            break;
+                            
+                        default:
+                            break;
+                    }
+                    
+                    dispatch_async(main_queue(), ^{
+                        // For visible option
+                        [cell cellWillAppear];
+                        
+                        // Reset cell seprator line
+                        [self resetSepratorWith:cell index:index];
+                    });
                 }
             }
         }
         
-        // Remove unused cells
-        [self removeUnusedCells];
+        dispatch_async(main_queue(), ^{
+            // Remove unused cells
+            [self removeUnusedCells];
+        });
     }
 }
 
@@ -639,37 +678,47 @@
         CGFloat offsetRValue = offset.x + self.scrollView.sizeWidth;
         CGFloat offsetBValue = offset.y + self.scrollView.sizeHeight;
         
+        BOOL needsBreak = NO;
         for (NSInteger index = 0; index < _itemArray.count; index ++) {
             UListViewCellItem *item = _itemArray[index];
             CGFloat minValue = item.originValue;
             CGFloat maxValue = item.originValue + item.sizeValue;
             
-            // Begin, pick the first suitable index
-            if (beginIndex == -1) {
-                if (_style == UListViewStyleHorizontal) {
-                    if (maxValue >= offsetLValue) {
+            switch (_style) {
+                case UListViewStyleHorizontal:
+                {
+                    if (beginIndex == -1 && maxValue >= offsetLValue) {
                         beginIndex = index;
                     }
-                } else if (_style == UListViewStyleVertical) {
-                    if (maxValue >= offsetTValue) {
-                        beginIndex = index;
+                    
+                    if ((maxValue <= offsetRValue) || (minValue <= offsetRValue && maxValue >= offsetRValue)) {
+                        endIndex = index;
+                    } else {
+                        needsBreak = YES;
                     }
                 }
+                    break;
+                    
+                case UListViewStyleVertical:
+                {
+                    if (beginIndex == -1 && maxValue >= offsetTValue) {
+                        beginIndex = index;
+                    }
+                    
+                    if ((maxValue <= offsetBValue) || (minValue <= offsetBValue && maxValue >= offsetBValue)) {
+                        endIndex = index;
+                    } else {
+                        needsBreak = YES;
+                    }
+                }
+                    break;
+                    
+                default:
+                    break;
             }
             
-            // End, pick the last suitable index
-            if (_style == UListViewStyleHorizontal) {
-                if ((maxValue <= offsetRValue) || (minValue <= offsetRValue && maxValue >= offsetRValue)) {
-                    endIndex = index;
-                } else {
-                    break;
-                }
-            } else if (_style == UListViewStyleVertical) {
-                if ((maxValue <= offsetBValue) || (minValue <= offsetBValue && maxValue >= offsetBValue)) {
-                    endIndex = index;
-                } else {
-                    break;
-                }
+            if (needsBreak) {
+                break;
             }
         }
     }
@@ -729,16 +778,29 @@
     if (checkValidNSArray(cells)) {
         UListViewCellItem *item = _itemArray[index];
         for (UListViewCell *cellItem in cells) {
-            if (_style == UListViewStyleHorizontal) {
-                if (cellItem.originX == item.originValue) {
-                    contains = YES;
-                    break;
+            switch (_style) {
+                case UListViewStyleHorizontal:
+                {
+                    if (cellItem.originX == item.originValue) {
+                        contains = YES;
+                    }
                 }
-            } else if (_style == UListViewStyleVertical) {
-                if (cellItem.originY == item.originValue) {
-                    contains = YES;
                     break;
+                    
+                case UListViewStyleVertical:
+                {
+                    if (cellItem.originY == item.originValue) {
+                        contains = YES;
+                    }
                 }
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            if (contains) {
+                break;
             }
         }
     }
@@ -974,12 +1036,23 @@
     originValue += _footerValue; // Footer
     
     // Resize
-    if (_style == UListViewStyleHorizontal) {
-        self.contentView.sizeWidth = originValue;
-        self.scrollView.contentSize = sizeMake(originValue, 0);
-    } else if (_style == UListViewStyleVertical) {
-        self.contentView.sizeHeight = originValue;
-        self.scrollView.contentSize = sizeMake(0, originValue);
+    switch (_style) {
+        case UListViewStyleHorizontal:
+        {
+            self.contentView.sizeWidth = originValue;
+            self.scrollView.contentSize = sizeMake(originValue, 0);
+        }
+            break;
+            
+        case UListViewStyleVertical:
+        {
+            self.contentView.sizeHeight = originValue;
+            self.scrollView.contentSize = sizeMake(0, originValue);
+        }
+            break;
+            
+        default:
+            break;
     }
     
     // Load cells
