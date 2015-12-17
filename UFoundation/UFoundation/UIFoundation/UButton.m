@@ -49,7 +49,7 @@
 
 @end
 
-@interface UBarButtonActionItem : NSObject
+@interface UButtonActionItem : NSObject
 
 @property (nonatomic, weak) id target;
 @property (nonatomic, assign) SEL action;
@@ -59,11 +59,11 @@
 
 @end
 
-@implementation UBarButtonActionItem
+@implementation UButtonActionItem
 
 + (id)item
 {
-    __autoreleasing UBarButtonActionItem *item = [[UBarButtonActionItem alloc]init];
+    __autoreleasing UButtonActionItem *item = [[UButtonActionItem alloc]init];
     
     return item;
 }
@@ -283,12 +283,14 @@
     
     _isSelected = selected;
     
-    // Selected
-    if (!selected) {
-        [self refreshButtonWith:UIControlStateNormal];
-    } else {
-        [self refreshButtonWith:UIControlStateSelected];
-    }
+    dispatch_async(main_queue(), ^{
+        // Selected
+        if (!selected) {
+            [self refreshButtonWith:UIControlStateNormal];
+        } else {
+            [self refreshButtonWith:UIControlStateSelected];
+        }
+    });
 }
 
 #pragma mark -  Actions
@@ -305,7 +307,9 @@
 
 - (void)touchDragOutsideAction
 {
-    [self refreshButtonWith:UIControlStateNormal];
+    dispatch_async(main_queue(), ^{
+        [self refreshButtonWith:UIControlStateNormal];
+    });
 }
 
 #pragma mark - Targets
@@ -530,8 +534,8 @@
 
 - (void)performActionWithEvent:(UIControlEvents)event
 {
-    UBarButtonActionItem *actionItem = nil;
-    for (UBarButtonActionItem *item in _actionItems) {
+    UButtonActionItem *actionItem = nil;
+    for (UButtonActionItem *item in _actionItems) {
         if (item.event == event) {
             actionItem = item;
             break;
@@ -551,8 +555,8 @@
 
 - (void)addActionWithEvent:(UIControlEvents)event target:(id)target action:(SEL)action
 {
-    UBarButtonActionItem *actionItem = nil;
-    for (UBarButtonActionItem *item in _actionItems) {
+    UButtonActionItem *actionItem = nil;
+    for (UButtonActionItem *item in _actionItems) {
         if (item.event == UIControlEventTouchUpInside) {
             actionItem = item;
             break;
@@ -562,7 +566,7 @@
     if (actionItem) {
         [_actionItems removeObject:actionItem];
     } else {
-        actionItem = [UBarButtonActionItem item];
+        actionItem = [UButtonActionItem item];
     }
     
     actionItem.target = target;
@@ -573,8 +577,8 @@
 
 - (void)removeActionWithEvent:(UIControlEvents)event
 {
-    UBarButtonActionItem *actionItem = nil;
-    for (UBarButtonActionItem *item in _actionItems) {
+    UButtonActionItem *actionItem = nil;
+    for (UButtonActionItem *item in _actionItems) {
         if (item.event == event) {
             actionItem = item;
             break;

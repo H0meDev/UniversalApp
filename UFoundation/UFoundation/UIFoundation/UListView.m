@@ -71,7 +71,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _highlightedColor = [sysLightGrayColor() colorWithAlpha:0.35];
+        _highlightedColor = [sysBlackColor() colorWithAlpha:0.15];
     }
     
     return self;
@@ -322,7 +322,7 @@
 {
     _highlightedColor = color;
     
-    self.contentView.highlightedColor = color;
+    self.contentView.highlightedColor = _highlightedColor;
 }
 
 - (void)setCancelable:(BOOL)cancelable
