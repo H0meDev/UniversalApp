@@ -238,7 +238,7 @@
         
         if (self.state == URefreshStateReady && !self.scrollView.dragging) {
             if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewWillStartRefresh:)]) {
-                [self.delegate refreshViewWillStartRefresh:self];
+                [self.delegate refreshViewWillStartRefresh:self.weakself];
             }
             
             // Start refresh
@@ -246,7 +246,7 @@
         } else if (checkAction(self.delegate, @selector(refreshView:progress:))) {
             // Callback
             if (self.progress != progress) {
-                [self.delegate refreshView:self progress:progress];
+                [self.delegate refreshView:self.weakself progress:progress];
                 self.progress = progress;
             }
         }
@@ -311,7 +311,7 @@
                              [UThreadPool addTarget:self sel:@selector(performAction)];
                              
                              if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewDidStartRefresh:)]) {
-                                 [self.delegate refreshViewDidStartRefresh:self];
+                                 [self.delegate refreshViewDidStartRefresh:self.weakself];
                              }
                          }
                      }];
@@ -325,7 +325,7 @@
     self.state = URefreshStateIdle;
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewWillFinishRefresh:)]) {
-        [self.delegate refreshViewWillFinishRefresh:self];
+        [self.delegate refreshViewWillFinishRefresh:self.weakself];
     }
     
     [self.indicatorView stopAnimation];
@@ -348,7 +348,7 @@
                              self.indicatorView.progress = 0;
                              
                              if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewDidFinishRefresh:)]) {
-                                 [self.delegate refreshViewDidFinishRefresh:self];
+                                 [self.delegate refreshViewDidFinishRefresh:self.weakself];
                              }
                          }
                      }];
@@ -468,7 +468,7 @@
         
         if (self.state == URefreshStateReady && !self.scrollView.dragging) {
             if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewWillStartRefresh:)]) {
-                [self.delegate refreshViewWillStartRefresh:self];
+                [self.delegate refreshViewWillStartRefresh:self.weakself];
             }
             
             // Start refresh
@@ -476,7 +476,7 @@
         } else if (checkAction(self.delegate, @selector(refreshView:progress:))) {
             // Callback
             if (self.progress != progress) {
-                [self.delegate refreshView:self progress:progress];
+                [self.delegate refreshView:self.weakself progress:progress];
                 self.progress = progress;
             }
         }
@@ -544,7 +544,7 @@
                              [UThreadPool addTarget:self sel:@selector(performAction)];
                              
                              if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewDidStartRefresh:)]) {
-                                 [self.delegate refreshViewDidStartRefresh:self];
+                                 [self.delegate refreshViewDidStartRefresh:self.weakself];
                              }
                          }
                      }];
@@ -558,7 +558,7 @@
     self.state = URefreshStateIdle;
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewWillFinishRefresh:)]) {
-        [self.delegate refreshViewWillFinishRefresh:self];
+        [self.delegate refreshViewWillFinishRefresh:self.weakself];
     }
     
     [self.indicatorView stopAnimation];
@@ -581,7 +581,7 @@
                              self.indicatorView.progress = 0;
                              
                              if (self.delegate && [self.delegate respondsToSelector:@selector(refreshViewDidFinishRefresh:)]) {
-                                 [self.delegate refreshViewDidFinishRefresh:self];
+                                 [self.delegate refreshViewDidFinishRefresh:self.weakself];
                              }
                          }
                      }];

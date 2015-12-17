@@ -948,11 +948,11 @@
     if (_delegate) {
         if (cell.selected && [_delegate respondsToSelector:@selector(listView:didSelectCellAtIndex:)]) {
             dispatch_async(main_queue(), ^{
-                [_delegate listView:self didSelectCellAtIndex:cell.index];
+                [_delegate listView:self.weakself didSelectCellAtIndex:cell.index];
             });
         } else if (!cell.selected && [_delegate respondsToSelector:@selector(listView:didDeselectCellAtIndex:)]) {
             dispatch_async(main_queue(), ^{
-                [_delegate listView:self didDeselectCellAtIndex:cell.index];
+                [_delegate listView:self.weakself didDeselectCellAtIndex:cell.index];
             });
         }
     }
@@ -1023,7 +1023,7 @@
     NSMutableArray *marray = [NSMutableArray array];
     
     for (NSInteger index = 0; index < count; index ++) {
-        CGFloat sizeValue = [self.delegate listView:self.weakself sizeValueForIndex:index];
+        CGFloat sizeValue = [_delegate listView:self.weakself sizeValueForIndex:index];
         sizeValue = [@(sizeValue) floatValue];
         originValue = [@(originValue) floatValue];
         
@@ -1102,7 +1102,7 @@
     
     if (_delegate && [_delegate respondsToSelector:@selector(listView:didSelectCellAtIndex:)]) {
         dispatch_async(main_queue(), ^{
-            [_delegate listView:self didSelectCellAtIndex:index];
+            [_delegate listView:self.weakself didSelectCellAtIndex:index];
         });
     }
 }
@@ -1145,7 +1145,7 @@
     
     if (_delegate && [_delegate respondsToSelector:@selector(listView:didDeselectCellAtIndex:)]) {
         dispatch_async(main_queue(), ^{
-            [_delegate listView:self didDeselectCellAtIndex:index];
+            [_delegate listView:self.weakself didDeselectCellAtIndex:index];
         });
     }
     
