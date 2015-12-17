@@ -210,6 +210,36 @@
     self.frame = frame;
 }
 
+- (CGFloat)contentWidth
+{
+    return [self contentSizeWith:sizeMake(MAXFLOAT, self.sizeHeight)].width;
+}
+
+- (CGFloat)contentHeight
+{
+    return [self contentSizeWith:sizeMake(self.sizeWidth, MAXFLOAT)].height;
+}
+
+- (CGSize)contentSizeWith:(CGSize)size
+{
+    return [self sizeThatFits:size];
+}
+
+- (void)resizeToFitWidth
+{
+    self.sizeWidth = self.contentWidth;
+}
+
+- (void)resizeToFitHeight
+{
+    self.sizeHeight = self.contentHeight;
+}
+
+- (void)resizeToFitContent
+{
+    self.size = sizeMake(self.contentWidth, self.contentHeight);
+}
+
 - (CGFloat)left
 {
     return self.originX;

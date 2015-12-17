@@ -7,22 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIView+UAExtension.h"
 
 @interface UILabel (UAExtension)
-
-// Current content width
-- (CGFloat)contentWidth;
-
-// Current content height
-- (CGFloat)contentHeight;
-
-// Resize to fill width
-- (void)resizeToFitWidth;
-
-// Resize to fill width
-- (void)resizeToFitHeight;
-
-// Resize to fill content
-- (void)resizeToFitContent;
 
 @end

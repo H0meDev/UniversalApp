@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIView+UAExtension.h"
 
 @interface UIButton (UAExtension)
 
@@ -70,20 +71,5 @@
 - (void)setSBackgroundImage:(UIImage *)image;
 - (void)setHBackgroundImage:(UIImage *)image;
 - (void)setDBackgroundImage:(UIImage *)image;
-
-// Current content width
-- (CGFloat)contentWidth;
-
-// Current content height
-- (CGFloat)contentHeight;
-
-// Resize to fill width
-- (void)resizeToFitWidth;
-
-// Resize to fill width
-- (void)resizeToFitHeight;
-
-// Resize to fill content
-- (void)resizeToFitContent;
 
 @end
