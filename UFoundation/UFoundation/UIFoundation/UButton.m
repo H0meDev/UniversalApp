@@ -539,7 +539,13 @@
     }
     
     if (actionItem) {
-        [actionItem.target performWithName:NSStringFromSelector(actionItem.action) with:self];
+        if (_synchronous) {
+            [actionItem.target performWithName:NSStringFromSelector(actionItem.action) with:self];
+        } else {
+            dispatch_async(main_queue(), ^{
+                [actionItem.target performWithName:NSStringFromSelector(actionItem.action) with:self];
+            });
+        }
     }
 }
 

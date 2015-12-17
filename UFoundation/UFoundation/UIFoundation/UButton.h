@@ -30,6 +30,7 @@
 // Custom inner frame for imageView & titleLabel
 @property (nonatomic, assign) CGRect imageFrame;
 @property (nonatomic, assign) CGRect titleFrame;
+@property (nonatomic, assign) BOOL synchronous;             // Default NO
 @property (nonatomic, assign) BOOL needsAutoResize;         // Default NO
 @property (nonatomic, assign) BOOL showMaskWhenHighlighted; // Default YES
 
