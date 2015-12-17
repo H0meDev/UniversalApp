@@ -91,5 +91,6 @@
 // Remove action
 - (void)removeTargetAction;
 - (void)removeTouchDownTargetAction;
+- (void)removeTargetActionWithEvent:(UIControlEvents)event;
 
 @end
