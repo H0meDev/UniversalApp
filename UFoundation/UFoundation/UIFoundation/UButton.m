@@ -9,7 +9,7 @@
 #import "UButton.h"
 #import "NSObject+UAExtension.h"
 
-@interface UBarButtonItem : NSObject
+@interface UButtonItem : NSObject
 
 // UI element
 @property (nonatomic, assign) UIControlState state;
@@ -26,11 +26,11 @@
 
 @end
 
-@implementation UBarButtonItem
+@implementation UButtonItem
 
 + (id)item
 {
-    __autoreleasing UBarButtonItem *item = [[UBarButtonItem alloc]init];
+    __autoreleasing UButtonItem *item = [[UButtonItem alloc]init];
     
     return item;
 }
@@ -332,11 +332,11 @@
 
 - (void)setTitle:(NSString *)title forState:(UIControlState)state
 {
-    UBarButtonItem *buttonItem = [self itemWith:state];
+    UButtonItem *buttonItem = [self itemWith:state];
     if (buttonItem) {
         buttonItem.title = title;
     } else {
-        buttonItem = [UBarButtonItem item];
+        buttonItem = [UButtonItem item];
         buttonItem.state = state;
         buttonItem.title = title;
         [_stateItems addObject:buttonItem];
@@ -353,11 +353,11 @@
 
 - (void)setTitleColor:(UIColor *)color forState:(UIControlState)state
 {
-    UBarButtonItem *buttonItem = [self itemWith:state];
+    UButtonItem *buttonItem = [self itemWith:state];
     if (buttonItem) {
         buttonItem.color = color;
     } else {
-        buttonItem = [UBarButtonItem item];
+        buttonItem = [UButtonItem item];
         buttonItem.state = state;
         buttonItem.color = color;
         [_stateItems addObject:buttonItem];
@@ -370,11 +370,11 @@
 
 - (void)setTitleFont:(UIFont *)font forState:(UIControlState)state
 {
-    UBarButtonItem *buttonItem = [self itemWith:state];
+    UButtonItem *buttonItem = [self itemWith:state];
     if (buttonItem) {
         buttonItem.font = font;
     } else {
-        buttonItem = [UBarButtonItem item];
+        buttonItem = [UButtonItem item];
         buttonItem.state = state;
         buttonItem.font = font;
         [_stateItems addObject:buttonItem];
@@ -387,11 +387,11 @@
 
 - (void)setImage:(UIImage *)image forState:(UIControlState)state
 {
-    UBarButtonItem *buttonItem = [self itemWith:state];
+    UButtonItem *buttonItem = [self itemWith:state];
     if (buttonItem) {
         buttonItem.image = image;
     } else {
-        buttonItem = [UBarButtonItem item];
+        buttonItem = [UButtonItem item];
         buttonItem.state = state;
         buttonItem.image = image;
         [_stateItems addObject:buttonItem];
@@ -404,11 +404,11 @@
 
 - (void)setBackgroundImage:(UIImage *)image forState:(UIControlState)state
 {
-    UBarButtonItem *buttonItem = [self itemWith:state];
+    UButtonItem *buttonItem = [self itemWith:state];
     if (buttonItem) {
         buttonItem.backgroundImage = image;
     } else {
-        buttonItem = [UBarButtonItem item];
+        buttonItem = [UButtonItem item];
         buttonItem.state = state;
         buttonItem.backgroundImage = image;
         [_stateItems addObject:buttonItem];
@@ -421,11 +421,11 @@
 
 - (void)setAlpha:(CGFloat)alpha forState:(UIControlState)state
 {
-    UBarButtonItem *buttonItem = [self itemWith:state];
+    UButtonItem *buttonItem = [self itemWith:state];
     if (buttonItem) {
         buttonItem.contentAlpha = alpha;
     } else {
-        buttonItem = [UBarButtonItem item];
+        buttonItem = [UButtonItem item];
         buttonItem.state = state;
         buttonItem.contentAlpha = alpha;
         [_stateItems addObject:buttonItem];
@@ -439,11 +439,11 @@
 
 - (void)setBackgroundAlpha:(CGFloat)alpha forState:(UIControlState)state
 {
-    UBarButtonItem *buttonItem = [self itemWith:state];
+    UButtonItem *buttonItem = [self itemWith:state];
     if (buttonItem) {
         buttonItem.backgroundAlpha = alpha;
     } else {
-        buttonItem = [UBarButtonItem item];
+        buttonItem = [UButtonItem item];
         buttonItem.state = state;
         buttonItem.backgroundAlpha = alpha;
         [_stateItems addObject:buttonItem];
@@ -456,7 +456,7 @@
 
 - (void)refreshButtonWith:(UIControlState)state
 {
-    UBarButtonItem *item = [self itemWith:state];
+    UButtonItem *item = [self itemWith:state];
     if (item) {
         if (item.title) {
             self.titleLabel.text = item.title;
@@ -493,9 +493,9 @@
     }
 }
 
-- (UBarButtonItem *)itemWith:(UIControlState)state
+- (UButtonItem *)itemWith:(UIControlState)state
 {
-    for (UBarButtonItem *item in _stateItems) {
+    for (UButtonItem *item in _stateItems) {
         if (item.state == state) {
             return item;
         }
