@@ -18,8 +18,8 @@
 @optional
 - (void)buttonBeginTracking:(UButton *)button;
 - (void)buttonContinueTracking:(UButton *)button;
-- (void)buttonEndTracking:(UIButton *)button;
-- (void)buttonCancelTracking:(UIButton *)button;
+- (void)buttonEndTracking:(UButton *)button;
+- (void)buttonCancelTracking:(UButton *)button;
 
 @end
 
