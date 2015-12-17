@@ -12,6 +12,17 @@
 #import "UIView+UAExtension.h"
 #import "UILabel+UAExtension.h"
 
+@class UButton;
+@protocol UButtonDelegate <NSObject>
+
+@optional
+- (void)buttonBeginTracking:(UButton *)button;
+- (void)buttonContinueTracking:(UButton *)button;
+- (void)buttonEndTracking:(UIButton *)button;
+- (void)buttonCancelTracking:(UIButton *)button;
+
+@end
+
 @interface UButton : UIControl
 
 + (id)button;
@@ -19,7 +30,6 @@
 // Custom inner frame for imageView & titleLabel
 @property (nonatomic, assign) CGRect imageFrame;
 @property (nonatomic, assign) CGRect titleFrame;
-@property (nonatomic, assign) BOOL synchronous;             // Default NO
 @property (nonatomic, assign) BOOL needsAutoResize;         // Default NO
 @property (nonatomic, assign) BOOL showMaskWhenHighlighted; // Default YES
 
@@ -27,6 +37,8 @@
 @property (nonatomic, assign) NSTextAlignment textAlignment;
 // Background mask color when highlighted, set showMaskWhenHighlighted NO to close
 @property (nonatomic, copy) UIColor *backgroundMaskHColor;
+// Button event callback
+@property (nonatomic, weak) id<UButtonDelegate> delegate;
 
 // Title for UIControlState
 - (void)setTitle:(NSString *)title;
