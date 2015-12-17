@@ -326,22 +326,32 @@
 
 - (void)setTarget:(id)target action:(SEL)action
 {
-    [self addActionWithEvent:UIControlEventTouchUpInside target:target action:action];
+    [self setTarget:target action:action forEvent:UIControlEventTouchUpInside];
 }
 
 - (void)setTouchDownTarget:(id)target action:(SEL)action
 {
-    [self addActionWithEvent:UIControlEventTouchDown target:target action:action];
+    [self setTarget:target action:action forEvent:UIControlEventTouchDown];
+}
+
+- (void)setTarget:(id)target action:(SEL)action forEvent:(UIControlEvents)event
+{
+    [self addActionWithEvent:event target:target action:action];
 }
 
 - (void)removeTargetAction
 {
-    [self removeActionWithEvent:UIControlEventTouchUpInside];
+    [self removeTargetActionWithEvent:UIControlEventTouchUpInside];
 }
 
 - (void)removeTouchDownTargetAction
 {
-    [self removeActionWithEvent:UIControlEventTouchDown];
+    [self removeTargetActionWithEvent:UIControlEventTouchDown];
+}
+
+- (void)removeTargetActionWithEvent:(UIControlEvents)event
+{
+    [self removeActionWithEvent:event];
 }
 
 #pragma mark -  Inner Methods

@@ -86,6 +86,7 @@
 // Add action
 - (void)setTarget:(id)target action:(SEL)action;
 - (void)setTouchDownTarget:(id)target action:(SEL)action;
+- (void)setTarget:(id)target action:(SEL)action forEvent:(UIControlEvents)event;
 
 // Remove action
 - (void)removeTargetAction;
