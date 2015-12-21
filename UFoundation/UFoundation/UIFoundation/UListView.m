@@ -400,6 +400,7 @@
 {
     NSArray *_itemArray; // Array of UListViewCellItem
     NSMutableDictionary *_cellReusePool;
+    CGRange _lastRange;
 }
 
 // For cells
@@ -423,6 +424,8 @@
         _spaceValue = 0;
         _headerValue = 0;
         _footerValue = 0;
+        _lastRange.min = -1;
+        _lastRange.max = -1;
         
         _cellReusePool = [NSMutableDictionary dictionary];
         
@@ -609,6 +612,12 @@
 {
     if (_itemArray) {
         CGRange range = [self visibleRangeWith:offset];
+        if (range.min == _lastRange.min && range.max == _lastRange.max) {
+            return;
+        }
+        _lastRange.min = range.min;
+        _lastRange.max = range.max;
+        
         NSInteger beginIndex = range.min;
         NSInteger endIndex = range.max;
         
@@ -1013,6 +1022,9 @@
             });
         }
     }
+    
+    _lastRange.min = -1;
+    _lastRange.max = -1;
     
     _itemArray = nil;
     _selectedIndexs = nil;
