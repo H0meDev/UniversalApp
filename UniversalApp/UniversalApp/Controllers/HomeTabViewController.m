@@ -85,6 +85,7 @@
         [button setHTitleFont:boldSystemFont(18)];
         [button setSTitleFont:boldSystemFont(16)];
         [button setBackgroundColor:sysClearColor()];
+        [button setBackgroundMaskHColor:sysOrangeColor()];
         [button setTarget:self action:@selector(tabAction:)];
         [self.tabBarView addSubview:button];
         [buttons addObject:button];
