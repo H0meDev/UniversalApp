@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, UListViewCellSepratorLineStyle)
 
 @interface UListViewCell : UIView
 
-@property (nonatomic, readonly) UListViewStyle style;    // Default style is UListViewStyleVertical_selectionStyle
+@property (nonatomic, readonly) UListViewStyle style;    // Default style is UListViewStyleVertical
 @property (nonatomic, strong) UIColor *highlightedColor; // Color of highlighted and selected
 @property (nonatomic, readonly) BOOL selected;
 
