@@ -15,6 +15,43 @@
 
 @implementation NSString (UAExtension)
 
+- (NSInteger)compareVersionWith:(NSString *)version
+{
+    if (checkValidNSString(version)) {
+        NSArray *carray = [self componentsSeparatedByString:@"."];
+        if (checkValidNSArray(carray)) {
+            NSArray *tarray = [self componentsSeparatedByString:@"."];
+            if (checkValidNSArray(tarray)) {
+                NSInteger count = carray.count;
+                count = (count > tarray.count)?tarray.count:count;
+                
+                for (int i = 0; i < count; i ++) {
+                    NSInteger cvalue = [carray[i] integerValue];
+                    NSInteger tvalue = [tarray[i] integerValue];
+                    
+                    if (cvalue != tvalue) {
+                        if (cvalue > tvalue) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
+                
+                if (carray.count > tarray.count) {
+                    return 1;
+                } else if (carray.count < tarray.count) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        }
+    }
+    
+    return 2;
+}
+
 - (NSString *)URLEncodedString
 {
     return (__bridge NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,

@@ -12,6 +12,13 @@
 @interface NSString (UAExtension)
 
 /*
+ * Version compare
+ * The format is integer.integer.integer.integer
+ * The result is -1(less than version)、0(equals to version)、1(more than version)、2(illegal)
+ */
+- (NSInteger)compareVersionWith:(NSString *)version;
+
+/*
  * URL encode string
  */
 - (NSString *)URLEncodedString;
