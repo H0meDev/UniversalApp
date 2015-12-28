@@ -346,7 +346,7 @@
     //
 }
 
-- (void)cellWillReset
+- (void)cellNeedsUpdate
 {
     //
 }
@@ -994,7 +994,7 @@
     
     if (cell) {
         // Reset for reuse
-        [cell cellWillReset];
+        [cell cellNeedsUpdate];
     }
     
     return cell;

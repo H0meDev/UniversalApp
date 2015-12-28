@@ -21,7 +21,7 @@
     [self imageView];
 }
 
-- (void)cellWillReset
+- (void)cellNeedsUpdate
 {
     if (_imageView) {
         [_imageView removeFromSuperview];

@@ -54,7 +54,7 @@ typedef NS_ENUM(NSInteger, UListViewCellSepratorLineStyle)
 
 // To be overrided
 - (void)cellDidLoad;       // For initialization
-- (void)cellWillReset;     // For reset option if reuseable
+- (void)cellNeedsUpdate;   // For update option if reuseable
 - (void)cellDidSelected;   // For selected option
 - (void)cellDidDeselected; // For deselected option
 
