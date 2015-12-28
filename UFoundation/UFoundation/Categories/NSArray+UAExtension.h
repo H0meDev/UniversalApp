@@ -18,4 +18,8 @@
 - (NSArray *)replaceObjectWithIndex:(NSUInteger)index withObject:(id)object;
 - (NSArray *)appendWithArray:(NSArray *)array; // Append to last
 
+- (BOOL)containsItem:(id)item;
+- (void)allItemsPerformWith:(SEL)selector;
+- (void)allItemsPerformWith:(SEL)selector with:(id)object;
+
 @end

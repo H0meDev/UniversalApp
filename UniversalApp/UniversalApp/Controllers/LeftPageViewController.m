@@ -96,23 +96,18 @@
 
 - (CGFloat)listView:(UListView *)listView sizeValueForIndex:(NSInteger)index
 {
-    if (listView.style == UListViewStyleHorizontal) {
-        return listView.sizeWidth / 3.;
-    } else {
-        return listView.sizeHeight / 3.;
-    }
+    return 200;
 }
 
 - (UListViewCell *)listView:(UListView *)listView cellAtIndex:(NSInteger)index
 {
     LeftListItemCell *cell = (LeftListItemCell *)[listView dequeueReusableCellWithIdentifier:@"LeftListItemCell"];
     if (!cell) {
-        [listView registerCell:@"LeftListItemCell" forIdentifier:@"LeftListItemCell"];
-        cell = (LeftListItemCell *)[listView dequeueReusableCellWithIdentifier:@"LeftListItemCell"];
+        cell = (LeftListItemCell *)[listView cellReuseWith:@"LeftListItemCell" forIdentifier:@"LeftListItemCell"];
     }
     
     NSInteger indexValue = index % _dataList.count;
-    [cell performOnMainThread:@selector(setCellData:) with:_dataList[indexValue]];
+    [cell setCellData:_dataList[indexValue]];
     
     NSLog(@"Load item %@", @(index));
     

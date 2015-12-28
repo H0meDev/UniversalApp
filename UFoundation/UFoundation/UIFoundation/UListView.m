@@ -346,12 +346,7 @@
     //
 }
 
-- (void)cellWillAppear
-{
-    //
-}
-
-- (void)cellDidDisappear
+- (void)cellWillReset
 {
     //
 }
@@ -400,6 +395,7 @@
 {
     NSArray *_itemArray; // Array of UListViewCellItem
     NSMutableDictionary *_cellReusePool;
+    CGRange _lastRange;
 }
 
 // For cells
@@ -423,6 +419,8 @@
         _spaceValue = 0;
         _headerValue = 0;
         _footerValue = 0;
+        _lastRange.min = -1;
+        _lastRange.max = -1;
         
         _cellReusePool = [NSMutableDictionary dictionary];
         
@@ -609,6 +607,13 @@
 {
     if (_itemArray) {
         CGRange range = [self visibleRangeWith:offset];
+        if (_lastRange.min == range.min && _lastRange.max == range.max) {
+            return;
+        }
+        
+        _lastRange.min = range.min;
+        _lastRange.max = range.max;
+        
         NSInteger beginIndex = range.min;
         NSInteger endIndex = range.max;
         
@@ -630,10 +635,8 @@
             }
         }
         
-        dispatch_async(main_queue(), ^{
-            // Remove unused cells
-            [self removeUnusedCells];
-        });
+        // Remove unused cells
+        [self removeUnusedCells];
     }
 }
 
@@ -705,11 +708,6 @@
             if (cell.superview) {
                 // Remove
                 [cell removeFromSuperview];
-                
-                dispatch_async(main_queue(), ^{
-                    // For invisible option
-                    [cell cellDidDisappear];
-                });
             }
         } else {
             [subviews addObject:cell];
@@ -806,13 +804,8 @@
             break;
     }
     
-    dispatch_async(main_queue(), ^{
-        // For visible option
-        [cell cellWillAppear];
-        
-        // Reset cell seprator line
-        [self resetSepratorWith:cell index:index];
-    });
+    // Reset cell seprator line
+    [self resetSepratorWith:cell index:index];
 }
 
 - (UListViewCell *)cellAtIndex:(NSInteger)index
@@ -960,18 +953,25 @@
 
 #pragma mark - Outer Methods
 
-- (void)registerCell:(NSString *)cellName forIdentifier:(NSString *)identifier
+- (UListViewCell *)cellReuseWith:(NSString *)cellName forIdentifier:(NSString *)identifier
 {
-    if (!checkValidNSString(cellName) || !checkValidNSString(identifier)) {
-        return;
-    }
-    
-    Class class = NSClassFromString(cellName);
-    if (class) {
-        NSArray *array = _cellReusePool[identifier];
-        NSMutableArray *marray = (!array)?[NSMutableArray array]:[NSMutableArray arrayWithArray:array];
-        [marray addObject:[[class alloc]initWith:_style]];
-        [_cellReusePool setObject:[marray copy] forKey:identifier];
+    @autoreleasepool
+    {
+        UListViewCell *cell = nil;
+        if (!checkValidNSString(cellName) || !checkValidNSString(identifier)) {
+            return cell;
+        }
+        
+        Class class = NSClassFromString(cellName);
+        if (class && [class isSubclassOfClass:[UListViewCell class]]) {
+            cell = [[class alloc]initWith:_style];
+            NSArray *array = _cellReusePool[identifier];
+            NSMutableArray *marray = (!array)?[NSMutableArray array]:[NSMutableArray arrayWithArray:array];
+            [marray addObject:cell];
+            [_cellReusePool setObject:[marray copy] forKey:identifier];
+        }
+        
+        return cell;
     }
 }
 
@@ -992,6 +992,11 @@
         }
     }
     
+    if (cell) {
+        // Reset for reuse
+        [cell cellWillReset];
+    }
+    
     return cell;
 }
 
@@ -1006,13 +1011,11 @@
         if (checkClass(cell, UListViewCell) && cell.superview) {
             // Remove
             [cell removeFromSuperview];
-            
-            dispatch_async(main_queue(), ^{
-                // For invisible option
-                [cell cellDidDisappear];
-            });
         }
     }
+    
+    _lastRange.min = -1;
+    _lastRange.max = -1;
     
     _itemArray = nil;
     _selectedIndexs = nil;

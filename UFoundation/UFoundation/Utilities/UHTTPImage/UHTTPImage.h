@@ -9,7 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "UHTTPRequest.h"
 
-typedef void (^UHTTPImageCallback)(UIImage *image);
+@interface UHTTPImageItem : NSObject
+
+@property (nonatomic, strong) NSString *url;
+@property (nonatomic, strong) NSString *key;
+@property (nonatomic, strong) UIImage *image;
+
+@end
+
+typedef void (^UHTTPImageCallback)(UHTTPImageItem *item);
 
 @interface UHTTPImage : NSObject
 

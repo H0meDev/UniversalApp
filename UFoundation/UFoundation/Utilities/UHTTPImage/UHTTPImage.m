@@ -11,6 +11,7 @@
 #import "NSObject+UAExtension.h"
 #import "NSDate+UAExtension.h"
 #import "NSString+UAExtension.h"
+#import "NSArray+UAExtension.h"
 
 #pragma mark - UImageCacheItem class
 
@@ -165,7 +166,7 @@ singletonImplementationWith(UImageCache, cache);
         item.cachedKey = key;
         item.cachedDate = [NSDate timeInterval];
         
-        if (callback) {
+        if (callback && ![item.callbacks containsItem:callback]) {
             [item.callbacks addObject:callback];
         }
         
@@ -285,6 +286,20 @@ singletonImplementationWith(UImageCache, cache);
 
 @end
 
+#pragma mark - UHTTPImageItem class
+
+@implementation UHTTPImageItem
+
++ (id)item
+{
+    @autoreleasepool
+    {
+        return [[UHTTPImageItem alloc]init];
+    }
+}
+
+@end
+
 #pragma mark - UHTTPImage class
 
 @implementation UHTTPImage
@@ -309,10 +324,13 @@ singletonImplementationWith(UImageCache, cache);
                 if (UHTTPCodeOK == status.code) {
                     // Perform callback and cache image
                     NSArray *callbacks = [[UImageCache cache]cacheImageWith:url data:data];
-                    UIImage *image = [UIImage imageWithData:data];
-                    
                     for (UHTTPImageCallback callback in callbacks) {
-                        callback(image);
+                        UHTTPImageItem *item = [UHTTPImageItem item];
+                        item.key = key;
+                        item.url = url;
+                        item.image = [UIImage imageWithData:data];
+                        
+                        callback(item);
                     }
                 }
             }];
@@ -321,10 +339,12 @@ singletonImplementationWith(UImageCache, cache);
         // Load from local
         NSString *path = [[UImageCache cache]cachedPathWith:url];
         if (callback && checkValidNSString(path)) {
-            UIImage *image = [UIImage imageWithContentsOfFile:path];
-            if (callback) {
-                callback(image);
-            }
+            UHTTPImageItem *item = [UHTTPImageItem item];
+            item.key = key;
+            item.url = url;
+            item.image = [UIImage imageWithContentsOfFile:path];
+            
+            callback(item);
         }
     }
 }

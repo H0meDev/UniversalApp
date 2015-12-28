@@ -69,8 +69,7 @@
 {
     ListItemCell *cell = (ListItemCell *)[listView dequeueReusableCellWithIdentifier:@"ListItemCell"];
     if (!cell) {
-        [listView registerCell:@"ListItemCell" forIdentifier:@"ListItemCell"];
-        cell = (ListItemCell *)[listView dequeueReusableCellWithIdentifier:@"ListItemCell"];
+        cell = (ListItemCell *)[listView cellReuseWith:@"ListItemCell" forIdentifier:@"ListItemCell"];
     }
     
     NSDictionary *dict = nil;

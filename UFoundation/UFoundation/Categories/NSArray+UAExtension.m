@@ -59,4 +59,25 @@
     return [marray copy];
 }
 
+- (BOOL)containsItem:(id)item
+{
+    for (id object in self) {
+        if (object == item) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+- (void)allItemsPerformWith:(SEL)selector
+{
+    [self makeObjectsPerformSelector:selector];
+}
+
+- (void)allItemsPerformWith:(SEL)selector with:(id)object
+{
+    [self makeObjectsPerformSelector:selector withObject:object];
+}
+
 @end

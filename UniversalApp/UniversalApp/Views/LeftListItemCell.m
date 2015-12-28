@@ -9,9 +9,8 @@
 #import "LeftListItemCell.h"
 
 @interface LeftListItemCell ()
-{
-    UIImageView *_imageView;
-}
+
+@property (nonatomic, strong) UIImageView *imageView;
 
 @end
 
@@ -19,14 +18,32 @@
 
 - (void)cellDidLoad
 {
-    _imageView = [[UIImageView alloc]init];
-    _imageView.backgroundColor = sysYellowColor();
-    [self addSubview:_imageView];
+    [self imageView];
 }
 
-- (void)cellWillAppear
+- (void)cellWillReset
 {
-    _imageView.frame = rectMake(0, 0, self.sizeWidth, self.sizeHeight);
+    if (_imageView) {
+        [_imageView removeFromSuperview];
+        _imageView = nil;
+    }
+    
+    [self cellDidLoad];
+}
+
+- (UIImageView *)imageView
+{
+    if (_imageView) {
+        return _imageView;
+    }
+    
+    UIImageView *imageView = [[UIImageView alloc]init];
+    imageView.frame = rectMake(0, 0, screenWidth(), 200);
+    imageView.backgroundColor = sysYellowColor();
+    [self addSubview:imageView];
+    _imageView = imageView;
+    
+    return _imageView;
 }
 
 /*
@@ -42,8 +59,10 @@
     _imageView.image = nil;
     
     if (checkValidNSString(url)) {
-        [UHTTPImage downloadImageWith:url callback:^(UIImage *image) {
-            [_imageView performOnMainThread:@selector(setImage:) with:image];
+        [UHTTPImage downloadImageWith:url callback:^(UHTTPImageItem *item) {
+            if (_imageView) {
+                [_imageView setImage:item.image];
+            }
         }];
     }
 }
