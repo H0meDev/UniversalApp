@@ -28,7 +28,5 @@ typedef void (^UHTTPImageCallback)(UHTTPImageItem *item);
 + (NSInteger)numberOfCaches;
 
 + (void)removeAllCaches;
-+ (void)removeCacheWith:(NSString *)url;
-+ (void)removeCacheWithCachedKey:(NSString *)key;
 
 @end

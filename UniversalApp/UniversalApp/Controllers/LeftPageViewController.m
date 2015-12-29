@@ -38,7 +38,7 @@
     self.navigationBarView.rightView = rightView;
     
     CGFloat height = self.containerView.sizeHeight - tabHeight();
-    _listView = [[UListView alloc]initWith:UListViewStyleVertical];
+    _listView = [[UListView alloc]initWith:UListViewStyleHorizontal];
     _listView.frame = rectMake(0, 0, screenWidth(), height);
     _listView.delegate = self;
     _listView.dataSource = self;
@@ -74,7 +74,7 @@
 
 - (void)buttonAction:(UButton *)button
 {
-    [_listView reloadData];
+    [UHTTPImage removeAllCaches];
 }
 
 - (void)headerAction
@@ -96,6 +96,10 @@
 
 - (CGFloat)listView:(UListView *)listView sizeValueForIndex:(NSInteger)index
 {
+    if (listView.style == UListViewStyleHorizontal) {
+        return screenWidth();
+    }
+    
     return 200;
 }
 

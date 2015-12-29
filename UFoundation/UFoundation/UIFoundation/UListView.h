@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UDefines.h"
 
 typedef NS_ENUM(NSInteger, UListViewStyle)
 {
@@ -65,7 +66,7 @@ typedef NS_ENUM(NSInteger, UListViewCellSepratorLineStyle)
 @property (nonatomic, assign) CGFloat spaceValue;    // Default is 0.
 @property (nonatomic, assign) CGFloat headerValue;   // Default is 0.
 @property (nonatomic, assign) CGFloat footerValue;   // Default is 0.
-@property (nonatomic, assign) UListViewCellSepratorLineStyle separatorStyle; // Default is UListViewSepratorLineStyleNoEnds
+@property (nonatomic, assign) UListViewCellSepratorLineStyle separatorStyle; // Default is UListViewCellSepratorLineStyleNone
 
 @property (nonatomic, weak) id<UListViewDelegate> delegate;
 @property (nonatomic, weak) id<UListViewDataSource> dataSource;

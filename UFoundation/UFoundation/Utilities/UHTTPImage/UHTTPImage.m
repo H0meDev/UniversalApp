@@ -284,6 +284,17 @@ singletonImplementationWith(UImageCache, cache);
     return size;
 }
 
+- (void)removeAllCaches
+{
+    for (UImageCacheItem *item in _cachedArray) {
+        NSString *filePath = [NSString stringWithFormat:@"%@/%@", cachePathWith(@"Images"), item.fileName];
+        remove([filePath UTF8String]);
+    }
+    
+    [_cachedArray removeAllObjects];
+    [self cacheAllItems];
+}
+
 @end
 
 #pragma mark - UHTTPImageItem class
@@ -330,7 +341,9 @@ singletonImplementationWith(UImageCache, cache);
                         item.url = url;
                         item.image = [UIImage imageWithData:data];
                         
-                        callback(item);
+                        dispatch_async(main_queue(), ^{
+                            callback(item);
+                        });
                     }
                 }
             }];
@@ -361,17 +374,7 @@ singletonImplementationWith(UImageCache, cache);
 
 + (void)removeAllCaches
 {
-    //
-}
-
-+ (void)removeCacheWith:(NSString *)url
-{
-    //
-}
-
-+ (void)removeCacheWithCachedKey:(NSString *)key
-{
-    //
+    [[UImageCache cache]removeAllCaches];
 }
 
 @end

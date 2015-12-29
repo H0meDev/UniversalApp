@@ -27,6 +27,7 @@
 #import "UTabBarView.h"
 #import "UScrollView.h"
 #import "UListView.h"
+#import "UListTableView.h"
 #import "UWebView.h"
 #import "UStatusBarView.h"
 #import "UNavigationBarView.h"

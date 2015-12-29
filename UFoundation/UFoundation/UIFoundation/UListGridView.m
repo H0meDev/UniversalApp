@@ -1,14 +1,14 @@
 //
-//  UGridListView.m
+//  UListGridView.m
 //  UFoundation
 //
 //  Created by Think on 15/12/10.
 //  Copyright © 2015年 think. All rights reserved.
 //
 
-#import "UGridListView.h"
+#import "UListGridView.h"
 
-@implementation UGridListView
+@implementation UListGridView
 
 /*
 // Only override drawRect: if you perform custom drawing.

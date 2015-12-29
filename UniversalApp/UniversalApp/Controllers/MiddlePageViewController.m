@@ -9,7 +9,10 @@
 #import "MiddlePageViewController.h"
 #import "NextViewController.h"
 
-@interface MiddlePageViewController ()
+@interface MiddlePageViewController () <UListTableViewDataSource, UListTableViewDelegate>
+{
+    UListTableView *_tableView;
+}
 
 @end
 
@@ -23,14 +26,13 @@
     self.enableBackButton = NO;
     self.navigationBarView.title = @"Middle";
     
-    UButton *button = [UButton button];
-    button.frame = rectMake(0, 160, screenWidth(), 50);
-    [button setTitle:@"Push"];
-    [button setTitleColor:sysWhiteColor()];
-    [button setHTitleColor:sysLightGrayColor()];
-    button.backgroundColor = sysRedColor();
-    [button setTarget:self action:@selector(buttonAction)];
-    [self addSubview:button];
+    CGFloat height = self.containerView.sizeHeight - tabHeight();
+    UListTableView *tableView = [[UListTableView alloc]initWith:UListViewStyleVertical];
+    tableView.frame = rectMake(0, 0, screenWidth(), height);
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    [self addSubview:tableView];
+    _tableView = tableView;
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,11 +51,62 @@
 }
 */
 
-- (void)buttonAction
+- (NSInteger)numberOfSectionsInListView:(UListTableView *)tableView
 {
-    NextViewController *next = [[NextViewController alloc]init];
-    [next.navigationBarView.leftButton setTitle:self.navigationBarView.title];
-    [self pushViewController:next];
+    return 10;
+}
+
+- (NSInteger)tableView:(UListTableView *)tableView numberOftemsInSection:(NSInteger)section
+{
+    return 100;
+}
+
+- (CGFloat)tableView:(UListTableView *)tableView sizeValueForHeaderInSection:(NSInteger)section
+{
+    return 16;
+}
+
+- (CGFloat)tableView:(UListTableView *)tableView sizeValueForFooterInSection:(NSInteger)section
+{
+    if (section == 99) {
+        return 16;
+    }
+    
+    return 0;
+}
+
+- (UIView *)tableView:(UListTableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    @autoreleasepool
+    {
+        UIView *headerView = [[UIView alloc]init];
+        headerView.backgroundColor = sysBrownColor();
+        
+        return headerView;
+    }
+}
+
+- (UIView *)tableView:(UListTableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    @autoreleasepool
+    {
+        UIView *footerView = [[UIView alloc]init];
+        footerView.backgroundColor = sysBrownColor();
+        
+        return footerView;
+    }
+}
+
+- (CGFloat)tableView:(UListTableView *)tableView sizeValueForPath:(UIndexPath *)path
+{
+    return 80.;
+}
+
+- (UListTableViewCell *)tableView:(UListTableView *)tableView cellAtPath:(UIndexPath *)path
+{
+    NSLog(@"UListTableViewCell item %@ - %@", @(path.section), @(path.index));
+    
+    return [[UListTableViewCell alloc]initWith:tableView.style];
 }
 
 @end

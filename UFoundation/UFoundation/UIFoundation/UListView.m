@@ -7,7 +7,6 @@
 //
 
 #import "UListView.h"
-#import "UDefines.h"
 #import "NSObject+UAExtension.h"
 #import "UIColor+UAExtension.h"
 #import "UIView+UAExtension.h"
@@ -18,8 +17,8 @@
 @interface UListViewCellItem : NSObject
 
 @property (nonatomic, assign) NSInteger index;
-@property (nonatomic, assign) CGFloat sizeValue;   // Value of size
 @property (nonatomic, assign) CGFloat originValue; // Value of origin
+@property (nonatomic, assign) CGFloat sizeValue;   // Value of size
 
 + (id)item;
 
@@ -196,7 +195,7 @@
     self = [super initWithFrame:CGRectZero];
     if (self) {
         // Initalize
-        self.backgroundColor = sysClearColor();
+        super.backgroundColor = sysClearColor();
         self.userInteractionEnabled = YES;
         
         _style = style;
@@ -1026,21 +1025,24 @@
     NSMutableArray *marray = [NSMutableArray array];
     
     for (NSInteger index = 0; index < count; index ++) {
-        CGFloat sizeValue = [_delegate listView:self.weakself sizeValueForIndex:index];
-        sizeValue = [@(sizeValue) floatValue];
-        originValue = [@(originValue) floatValue];
-        
-        // To store item
-        UListViewCellItem *item = [UListViewCellItem item];
-        item.index = index;
-        item.sizeValue = sizeValue;
-        item.originValue = originValue;
-        [marray addObject:item];
-        
-        if (index == (count - 1)) {
-            originValue += sizeValue;
-        } else {
-            originValue += sizeValue + _spaceValue;
+        @autoreleasepool
+        {
+            CGFloat sizeValue = [_delegate listView:self.weakself sizeValueForIndex:index];
+            sizeValue = [@(sizeValue) floatValue];
+            originValue = [@(originValue) floatValue];
+            
+            // To store item
+            UListViewCellItem *item = [UListViewCellItem item];
+            item.index = index;
+            item.sizeValue = sizeValue;
+            item.originValue = originValue;
+            [marray addObject:item];
+            
+            if (index == (count - 1)) {
+                originValue += sizeValue;
+            } else {
+                originValue += sizeValue + _spaceValue;
+            }
         }
     }
     

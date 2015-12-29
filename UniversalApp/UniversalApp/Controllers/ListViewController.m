@@ -31,8 +31,8 @@
     _listView.frame = rectMake(0, 0, screenWidth(), height);
     _listView.delegate = self;
     _listView.dataSource = self;
-    _listView.cancelable = YES;
-    _listView.multipleSelected = YES;
+    _listView.cancelable = NO;
+    _listView.multipleSelected = NO;
     [self addSubview:_listView];
 }
 
