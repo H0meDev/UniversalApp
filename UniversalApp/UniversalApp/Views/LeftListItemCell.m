@@ -37,8 +37,9 @@
         return _imageView;
     }
     
+    CGFloat height = screenHeight() - statusHeight() - naviHeight() - tabHeight();
     UIImageView *imageView = [[UIImageView alloc]init];
-    imageView.frame = rectMake(0, 0, screenWidth(), 200);
+    imageView.frame = rectMake(0, 0, screenWidth(), height);
     imageView.backgroundColor = sysYellowColor();
     [self addSubview:imageView];
     _imageView = imageView;

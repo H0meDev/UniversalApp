@@ -59,5 +59,7 @@
 - (id)initWithFrame:(CGRect)frame style:(UListViewStyle)style;
 
 - (void)reloadData;
+- (void)reloadSection:(NSInteger)section;
+- (void)reloadSection:(NSInteger)section animated:(BOOL)animated;
 
 @end

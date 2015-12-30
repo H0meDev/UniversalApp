@@ -12,6 +12,7 @@
 @interface MiddlePageViewController () <UListTableViewDataSource, UListTableViewDelegate>
 {
     UListTableView *_tableView;
+    BOOL _expand;
 }
 
 @end
@@ -31,6 +32,7 @@
     tableView.frame = rectMake(0, 0, screenWidth(), height);
     tableView.delegate = self;
     tableView.dataSource = self;
+    tableView.backgroundColor = sysClearColor();
     [self addSubview:tableView];
     _tableView = tableView;
 }
@@ -53,25 +55,25 @@
 
 - (NSInteger)numberOfSectionsInListView:(UListTableView *)tableView
 {
-    return 10;
+    return 100;
 }
 
 - (NSInteger)tableView:(UListTableView *)tableView numberOftemsInSection:(NSInteger)section
 {
-    return 100;
+    if (section == 1 && !_expand) {
+        return 0;
+    }
+    
+    return 10;
 }
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForHeaderInSection:(NSInteger)section
 {
-    return 16;
+    return 40;
 }
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForFooterInSection:(NSInteger)section
 {
-    if (section == 99) {
-        return 16;
-    }
-    
     return 0;
 }
 
@@ -79,10 +81,18 @@
 {
     @autoreleasepool
     {
-        UIView *headerView = [[UIView alloc]init];
-        headerView.backgroundColor = sysBrownColor();
+        if (section == 1) {
+            UButton *headerView = [UButton button];
+            [headerView setBackgroundColor:sysBlueColor()];
+            [headerView setTarget:self action:@selector(sectionAction)];
+            return headerView;
+        } else {
+            UIView *headerView = [[UIView alloc]init];
+            headerView.backgroundColor = sysRedColor();
+            return headerView;
+        }
         
-        return headerView;
+        return nil;
     }
 }
 
@@ -91,7 +101,7 @@
     @autoreleasepool
     {
         UIView *footerView = [[UIView alloc]init];
-        footerView.backgroundColor = sysBrownColor();
+        footerView.backgroundColor = rgbColor(25.5 * section, 25.5 * section, (section % 2 == 1)?0:255.);
         
         return footerView;
     }
@@ -107,6 +117,13 @@
     NSLog(@"UListTableViewCell item %@ - %@", @(path.section), @(path.index));
     
     return [[UListTableViewCell alloc]initWith:tableView.style];
+}
+
+- (void)sectionAction
+{
+    _expand = !_expand;
+    
+    [_tableView reloadSection:1];
 }
 
 @end

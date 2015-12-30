@@ -176,6 +176,8 @@ withIntermediateDirectories:YES attributes:NULL error:NULL]
 #define createCacheDirectoryWith(directory) [[NSFileManager defaultManager]createDirectoryAtPath:directory \
 withIntermediateDirectories:YES attributes:NULL error:NULL]
 #define createFile(name)                    [[NSFileManager defaultManager]createFileAtPath:name contents:nil attributes:nil]
+#define removeFile(name)                    [[NSFileManager defaultManager]removeItemAtPath:name error:NULL]
+#define removeFileWith(name, error)         [[NSFileManager defaultManager]removeItemAtPath:name error:&error]
 
 // Image
 #define loadImage(name)                     [UIImage imageNamed:name]

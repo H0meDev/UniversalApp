@@ -31,8 +31,8 @@
 @property (nonatomic, assign) NSInteger section;
 @property (nonatomic, assign) CGFloat headerValue;
 @property (nonatomic, assign) CGFloat footerValue;
-@property (nonatomic, assign) UIView *headerView;
-@property (nonatomic, assign) UIView *footerView;
+@property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, assign) CGFloat originValue; // Value of origin
 @property (nonatomic, assign) CGFloat sizeValue;   // Value of size
 @property (nonatomic, strong) NSArray *itemArray;  // Array of UListTableItem
@@ -96,7 +96,7 @@
 @interface UListTableView ()
 {
     NSArray *_sectionArray;
-    NSArray *_lastItemArray;
+    NSArray *_visibleSections;
     NSMutableDictionary *_cellReusePool;
 }
 
@@ -139,7 +139,9 @@
 
 - (void)dealloc
 {
-    [_cellReusePool removeAllObjects];
+    if (_cellReusePool) {
+        [_cellReusePool removeAllObjects];
+    }
     
     _sectionArray = nil;
     _cellReusePool = nil;
@@ -230,20 +232,14 @@
                        context:(void *)context
 {
     if ([keyPath isEqualToString:@"contentOffset"]) {
-        // Dequeue all views
-        [self dequeueAllViewsWith:[change[@"new"] CGPointValue]];
+        // Dequeue all items
+        [self dequeueAllItemsWith:[change[@"new"] CGPointValue]];
     }
 }
 
 #pragma mark - Methods
 
-- (void)dequeueAllViewsWith:(CGPoint)offset
-{
-    // Visible cells
-    [self dequeueCellsWith:offset];
-}
-
-- (void)dequeueCellsWith:(CGPoint)offset
+- (void)dequeueAllItemsWith:(CGPoint)offset
 {
     if (_sectionArray) {
         NSArray *pathArray = [self visiableItemsWith:offset];
@@ -266,8 +262,55 @@
             }
         }
         
+        // Headers & Footers
+        [self dequeueAllHeadersWith:offset];
+        [self dequeueAllFootersWith:offset];
+        
         // Remove unused cells
         [self removeUnusedCells];
+    }
+}
+
+- (void)dequeueAllHeadersWith:(CGPoint)offset
+{
+    if (_visibleSections) {
+        for (NSInteger i = 0; i < _visibleSections.count; i ++) {
+            UListTableSectionItem *section = _visibleSections[i];
+            if (section.headerValue > 0 && !section.headerView && [self.dataSource respondsToSelector:@selector(tableView:viewForHeaderInSection:)])
+            {
+                section.headerView = [self.dataSource tableView:self.weakself viewForHeaderInSection:section.section];
+            }
+            [self.contentView addSubview:section.headerView];
+            
+            if (section.itemArray.count > 0 && i == 0 && offset.y >= 0) {
+                section.headerView.frame = rectMake(0, offset.y, self.sizeWidth, section.headerValue);
+            } else {
+                section.headerView.frame = rectMake(0, section.originValue, self.sizeWidth, section.headerValue);
+            }
+        }
+    }
+}
+
+- (void)dequeueAllFootersWith:(CGPoint)offset
+{
+    if (_visibleSections) {
+        for (NSInteger i = 0; i < _visibleSections.count; i ++) {
+            UListTableSectionItem *section = _visibleSections[i];
+            if (section.footerValue > 0 && !section.footerView && [self.dataSource respondsToSelector:@selector(tableView:viewForFooterInSection:)])
+            {
+                section.footerView = [self.dataSource tableView:self.weakself viewForFooterInSection:section.section];
+            }
+            [self.contentView addSubview:section.footerView];
+            
+            CGFloat offsetValue = self.scrollView.contentSize.height - self.scrollView.sizeHeight;
+            if (section.itemArray.count > 0 && i == _visibleSections.count - 1 && (offset.y <= offsetValue)) {
+                CGFloat originValue = offset.y + self.sizeHeight - section.footerValue;
+                section.footerView.frame = rectMake(0, originValue, self.sizeWidth, section.footerValue);
+            } else {
+                CGFloat originValue = section.originValue + section.sizeValue - section.footerValue;
+                section.footerView.frame = rectMake(0, originValue, self.sizeWidth, section.footerValue);
+            }
+        }
     }
 }
 
@@ -308,6 +351,9 @@
                 }
             }
             
+            // Reset sections
+            [self refreshSectionsWith:sections];
+            
             // Index path
             if (sections.count > 0) {
                 NSMutableArray *imarray = [NSMutableArray array];
@@ -346,6 +392,52 @@
         
         return nil;
     }
+}
+
+- (void)refreshSectionsWith:(NSArray *)sections
+{
+    if (checkValidNSArray(_visibleSections)) {
+        for (UListTableSectionItem *vsection in _visibleSections) {
+            BOOL contains = NO;
+            for (UListTableSectionItem *section in sections) {
+                if (vsection.section == section.section) {
+                    contains = YES;
+                    break;
+                }
+            }
+            
+            if (!contains) {
+                if (vsection.headerView) {
+                    [vsection.headerView removeFromSuperview];
+                }
+                
+                if (vsection.footerView) {
+                    [vsection.footerView removeFromSuperview];
+                }
+            }
+        }
+        
+        for (UListTableSectionItem *section in _sectionArray) {
+            BOOL contains = NO;
+            for (UListTableSectionItem *tsection in sections) {
+                if (tsection.section == section.section) {
+                    contains = YES;
+                    break;
+                }
+            }
+            
+            if (!contains) {
+                // Remove unused header & footer
+                [section.headerView removeFromSuperview];
+                [section.footerView removeFromSuperview];
+                
+                section.headerView = nil;
+                section.footerView = nil;
+            }
+        }
+    }
+    
+    _visibleSections = sections;
 }
 
 - (NSArray *)currentVisibleCellsWith:(CGPoint)offset
@@ -524,6 +616,17 @@
         return;
     }
     
+    // Load cells
+    [self reloadAllData];
+    self.scrollView.contentOffset = CGPointZero;
+}
+
+- (void)reloadAllData
+{
+    if (_sectionArray == nil) {
+        return;
+    }
+    
     // Remove all cells
     for (UListViewCell *cell in self.contentView.subviews) {
         if (checkClass(cell, UListViewCell) && cell.superview) {
@@ -532,10 +635,23 @@
         }
     }
     
+    for (UListTableSectionItem *section in _visibleSections) {
+        if (section.headerView) {
+            [section.headerView removeFromSuperview];
+            section.headerView = nil;
+        }
+        
+        if (section.footerView) {
+            [section.footerView removeFromSuperview];
+            section.footerView = nil;
+        }
+    }
+    
     _sectionArray = nil;
+    _visibleSections = nil;
     [_cellReusePool removeAllObjects];
     
-    CGFloat originValue = 0; // Header
+    CGFloat originValue = 0;
     NSInteger sections = [self.dataSource numberOfSectionsInListView:self.weakself];
     NSMutableArray *marray = [NSMutableArray array];
     
@@ -547,22 +663,19 @@
             sitem.section = section;
             sitem.originValue = originValue;
             
-            CGFloat headerValue = 0;
-            CGFloat footerValue = 0;
+            // Header
             if ([self.delegate respondsToSelector:@selector(tableView:sizeValueForHeaderInSection:)]) {
-                headerValue = [self.delegate tableView:self.weakself sizeValueForHeaderInSection:section];
+                sitem.headerValue = [self.delegate tableView:self.weakself sizeValueForHeaderInSection:section];
             }
             
+            // Footer
             if ([self.delegate respondsToSelector:@selector(tableView:sizeValueForFooterInSection:)]) {
-                footerValue = [self.delegate tableView:self.weakself sizeValueForFooterInSection:section];
+                sitem.footerValue = [self.delegate tableView:self.weakself sizeValueForFooterInSection:section];
             }
             
-            sitem.headerValue = headerValue;
-            sitem.footerValue = footerValue;
+            originValue += sitem.headerValue;
             
-            originValue += headerValue;
-            
-            CGFloat deltaValue = headerValue + footerValue;
+            CGFloat deltaValue = sitem.headerValue + sitem.footerValue;
             NSMutableArray *imarray = [NSMutableArray array];
             for (NSInteger index = 0; index < count; index ++) {
                 @autoreleasepool
@@ -587,7 +700,7 @@
                 }
             }
             
-            originValue += footerValue;
+            originValue += sitem.footerValue;
             
             sitem.sizeValue = deltaValue;
             sitem.itemArray = [imarray copy];
@@ -616,9 +729,40 @@
         default:
             break;
     }
+}
+
+- (void)reloadSection:(NSInteger)section
+{
+    [self reloadSection:section animated:YES];
+}
+
+- (void)reloadSection:(NSInteger)section animated:(BOOL)animated
+{
+    if (_sectionArray == nil) {
+        return;
+    }
     
-    // Load cells
-    self.scrollView.contentOffset = CGPointZero;
+    if (section >= 0 && section < _sectionArray.count) {
+        [self reloadAllData];
+        
+        UListTableSectionItem *item = _sectionArray[section];
+        switch (_style) {
+            case UListViewStyleHorizontal:
+            {
+                [self.scrollView setContentOffset:pointMake(item.originValue, 0) animated:animated];
+            }
+                break;
+                
+            case UListViewStyleVertical:
+            {
+                [self.scrollView setContentOffset:pointMake(0, item.originValue) animated:animated];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }
 }
 
 @end

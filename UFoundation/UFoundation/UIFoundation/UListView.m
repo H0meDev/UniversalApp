@@ -394,7 +394,6 @@
 {
     NSArray *_itemArray; // Array of UListViewCellItem
     NSMutableDictionary *_cellReusePool;
-    CGRange _lastRange;
 }
 
 // For cells
@@ -418,8 +417,6 @@
         _spaceValue = 0;
         _headerValue = 0;
         _footerValue = 0;
-        _lastRange.min = -1;
-        _lastRange.max = -1;
         
         _cellReusePool = [NSMutableDictionary dictionary];
         
@@ -458,7 +455,9 @@
 
 - (void)dealloc
 {
-    [_cellReusePool removeAllObjects];
+    if (_cellReusePool) {
+        [_cellReusePool removeAllObjects];
+    }
     
     _itemArray = nil;
     _cellReusePool = nil;
@@ -590,29 +589,16 @@
 {
     if ([keyPath isEqualToString:@"contentOffset"]) {
         // Dequeue all views
-        [self dequeueAllViewsWith:[change[@"new"] CGPointValue]];
+        [self dequeueAllItemsWith:[change[@"new"] CGPointValue]];
     }
 }
 
 #pragma mark - Methods
 
-- (void)dequeueAllViewsWith:(CGPoint)offset
-{
-    // Visible cells
-    [self dequeueCellsWith:offset];
-}
-
-- (void)dequeueCellsWith:(CGPoint)offset
+- (void)dequeueAllItemsWith:(CGPoint)offset
 {
     if (_itemArray) {
         CGRange range = [self visibleRangeWith:offset];
-        if (_lastRange.min == range.min && _lastRange.max == range.max) {
-            return;
-        }
-        
-        _lastRange.min = range.min;
-        _lastRange.max = range.max;
-        
         NSInteger beginIndex = range.min;
         NSInteger endIndex = range.max;
         
@@ -1013,11 +999,7 @@
         }
     }
     
-    _lastRange.min = -1;
-    _lastRange.max = -1;
-    
     _itemArray = nil;
-    _selectedIndexs = nil;
     [_cellReusePool removeAllObjects];
     
     CGFloat originValue = _headerValue; // Header
@@ -1071,6 +1053,13 @@
     
     // Load cells
     self.scrollView.contentOffset = CGPointZero;
+}
+
+- (void)clearSelectedIndexs
+{
+    _selectedIndexs = nil;
+    
+    [self reloadData];
 }
 
 - (void)selectCellAtIndex:(NSInteger)index

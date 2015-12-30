@@ -269,6 +269,18 @@ singletonImplementationWith(UImageCache, cache);
     return filePath;
 }
 
+- (void)removeCachedItemWith:(NSString *)url
+{
+    if (checkValidNSArray(_cachedArray)) {
+        NSMutableArray *marray = [NSMutableArray arrayWithArray:_cachedArray];
+        for (UImageCacheItem *item in _cachedArray) {
+            if ([item.url isEqualToString:url]) {
+                [marray removeObject:item];
+            }
+        }
+    }
+}
+
 - (NSInteger)numberOfCaches
 {
     return _cachedArray.count;
@@ -288,7 +300,7 @@ singletonImplementationWith(UImageCache, cache);
 {
     for (UImageCacheItem *item in _cachedArray) {
         NSString *filePath = [NSString stringWithFormat:@"%@/%@", cachePathWith(@"Images"), item.fileName];
-        remove([filePath UTF8String]);
+        removeFile(filePath);
     }
     
     [_cachedArray removeAllObjects];
@@ -345,6 +357,8 @@ singletonImplementationWith(UImageCache, cache);
                             callback(item);
                         });
                     }
+                } else {
+                    [[UImageCache cache]removeCachedItemWith:url];
                 }
             }];
         }
