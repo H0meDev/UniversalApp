@@ -324,6 +324,10 @@
                     
                     if (section.itemArray.count > 0 && i == 0 && offset.y >= 0) {
                         section.headerView.frame = rectMake(0, 0, self.sizeWidth, section.headerValue);
+                        
+                        if (checkValidNSArray(self.headerView.subviews)) {
+                            [self.headerView.subviews allItemsPerformWith:@selector(removeFromSuperview)];
+                        }
                         self.headerView.sizeHeight = section.headerValue;
                         [self.headerView addSubview:section.headerView];
                     } else {
@@ -338,6 +342,10 @@
                     
                     if (section.itemArray.count > 0 && i == 0 && offset.x >= 0) {
                         section.headerView.frame = rectMake(0, 0, section.headerValue, self.sizeHeight);
+                        
+                        if (checkValidNSArray(self.headerView.subviews)) {
+                            [self.headerView.subviews allItemsPerformWith:@selector(removeFromSuperview)];
+                        }
                         self.headerView.sizeWidth = section.headerValue;
                         [self.headerView addSubview:section.headerView];
                     } else {
@@ -372,6 +380,10 @@
                     CGFloat offsetValue = self.scrollView.contentSize.height - self.scrollView.sizeHeight;
                     if (section.itemArray.count > 0 && i == _visibleSections.count - 1 && (offset.y <= offsetValue)) {
                         section.footerView.frame = rectMake(0, 0, self.sizeWidth, section.footerValue);
+                        
+                        if (checkValidNSArray(self.footerView.subviews)) {
+                            [self.footerView.subviews allItemsPerformWith:@selector(removeFromSuperview)];
+                        }
                         self.footerView.sizeHeight = section.footerValue;
                         [self.footerView addSubview:section.footerView];
                     } else {
@@ -388,6 +400,10 @@
                     CGFloat offsetValue = self.scrollView.contentSize.width - self.scrollView.sizeWidth;
                     if (section.itemArray.count > 0 && i == _visibleSections.count - 1 && (offset.x <= offsetValue)) {
                         section.footerView.frame = rectMake(0, 0, section.footerValue, self.sizeHeight);
+                        
+                        if (checkValidNSArray(self.footerView.subviews)) {
+                            [self.footerView.subviews allItemsPerformWith:@selector(removeFromSuperview)];
+                        }
                         self.footerView.sizeWidth = section.footerValue;
                         [self.footerView addSubview:section.footerView];
                     } else {
