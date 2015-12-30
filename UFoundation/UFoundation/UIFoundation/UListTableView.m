@@ -104,6 +104,8 @@
 // For cells
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, strong) UIView *footerView;
 
 @end
 
@@ -195,6 +197,34 @@
     return _scrollView;
 }
 
+- (UIView *)headerView
+{
+    if (_headerView) {
+        return _headerView;
+    }
+    
+    UIView *headerView = [[UIView alloc]init];
+    headerView.backgroundColor = sysClearColor();
+    [self.scrollView addSubview:headerView];
+    _headerView = headerView;
+    
+    return _headerView;
+}
+
+- (UIView *)footerView
+{
+    if (_footerView) {
+        return _footerView;
+    }
+    
+    UIView *footerView = [[UIView alloc]init];
+    footerView.backgroundColor = sysClearColor();
+    [self.scrollView addSubview:footerView];
+    _footerView = footerView;
+    
+    return _footerView;
+}
+
 - (void)setFrame:(CGRect)frame
 {
     [super setFrame:frame];
@@ -202,6 +232,8 @@
     switch (_style) {
         case UListViewStyleHorizontal:
         {
+            self.headerView.sizeHeight = frame.size.height;
+            self.footerView.sizeHeight = frame.size.height;
             self.scrollView.showsVerticalScrollIndicator = NO;
             self.scrollView.showsHorizontalScrollIndicator = YES;
             self.scrollView.contentSize = sizeMake(frame.size.width, 0);
@@ -210,6 +242,8 @@
             
         case UListViewStyleVertical:
         {
+            self.headerView.sizeWidth = frame.size.width;
+            self.footerView.sizeWidth = frame.size.width;
             self.scrollView.showsVerticalScrollIndicator = YES;
             self.scrollView.showsHorizontalScrollIndicator = NO;
             self.scrollView.contentSize = sizeMake(0, frame.size.height);
@@ -286,8 +320,12 @@
             switch (_style) {
                 case UListViewStyleVertical:
                 {
+                    self.headerView.originY = offset.y;
+                    
                     if (section.itemArray.count > 0 && i == 0 && offset.y >= 0) {
-                        section.headerView.frame = rectMake(0, offset.y, self.sizeWidth, section.headerValue);
+                        section.headerView.frame = rectMake(0, 0, self.sizeWidth, section.headerValue);
+                        self.headerView.sizeHeight = section.headerValue;
+                        [self.headerView addSubview:section.headerView];
                     } else {
                         section.headerView.frame = rectMake(0, section.originValue, self.sizeWidth, section.headerValue);
                     }
@@ -296,8 +334,12 @@
                     
                 case UListViewStyleHorizontal:
                 {
+                    self.headerView.originX = offset.x;
+                    
                     if (section.itemArray.count > 0 && i == 0 && offset.x >= 0) {
-                        section.headerView.frame = rectMake(offset.x, 0, section.headerValue, self.sizeHeight);
+                        section.headerView.frame = rectMake(0, 0, section.headerValue, self.sizeHeight);
+                        self.headerView.sizeWidth = section.headerValue;
+                        [self.headerView addSubview:section.headerView];
                     } else {
                         section.headerView.frame = rectMake(section.originValue, 0, section.headerValue, self.sizeHeight);
                     }
@@ -325,10 +367,13 @@
             switch (_style) {
                 case UListViewStyleVertical:
                 {
+                    self.footerView.originY = offset.y + self.sizeHeight - section.footerValue;
+                    
                     CGFloat offsetValue = self.scrollView.contentSize.height - self.scrollView.sizeHeight;
                     if (section.itemArray.count > 0 && i == _visibleSections.count - 1 && (offset.y <= offsetValue)) {
-                        CGFloat originValue = offset.y + self.sizeHeight - section.footerValue;
-                        section.footerView.frame = rectMake(0, originValue, self.sizeWidth, section.footerValue);
+                        section.footerView.frame = rectMake(0, 0, self.sizeWidth, section.footerValue);
+                        self.footerView.sizeHeight = section.footerValue;
+                        [self.footerView addSubview:section.footerView];
                     } else {
                         CGFloat originValue = section.originValue + section.sizeValue - section.footerValue;
                         section.footerView.frame = rectMake(0, originValue, self.sizeWidth, section.footerValue);
@@ -338,10 +383,13 @@
                     
                 case UListViewStyleHorizontal:
                 {
+                    self.footerView.originX =  offset.x + self.sizeWidth - section.footerValue;
+                    
                     CGFloat offsetValue = self.scrollView.contentSize.width - self.scrollView.sizeWidth;
                     if (section.itemArray.count > 0 && i == _visibleSections.count - 1 && (offset.x <= offsetValue)) {
-                        CGFloat originValue = offset.x + self.sizeWidth - section.footerValue;
-                        section.footerView.frame = rectMake(originValue, 0, section.footerValue, self.sizeHeight);
+                        section.footerView.frame = rectMake(0, 0, section.footerValue, self.sizeHeight);
+                        self.footerView.sizeWidth = section.footerValue;
+                        [self.footerView addSubview:section.footerView];
                     } else {
                         CGFloat originValue = section.originValue + section.sizeValue - section.footerValue;
                         section.footerView.frame = rectMake(originValue, 0, section.footerValue, self.sizeHeight);

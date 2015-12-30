@@ -28,7 +28,7 @@
     self.navigationBarView.title = @"Middle";
     
     CGFloat height = self.containerView.sizeHeight - tabHeight();
-    UListTableView *tableView = [[UListTableView alloc]initWith:UListViewStyleHorizontal];
+    UListTableView *tableView = [[UListTableView alloc]initWith:UListViewStyleVertical];
     tableView.frame = rectMake(0, 0, screenWidth(), height);
     tableView.delegate = self;
     tableView.dataSource = self;
@@ -65,7 +65,7 @@
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForHeaderInSection:(NSInteger)section
 {
-    return 0;
+    return 40;
 }
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForFooterInSection:(NSInteger)section

@@ -19,6 +19,25 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[UListTableView refreshSectionsWith:]:UListTableView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_sectionArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[UNavigationBarView setBackgroundView:]:UNavigationBarView.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[LeftListItemCell cellDidLoad]:LeftListItemCell.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_imageView.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[UNavigationController popViewControllerAnimated:]:UNavigationController.m">
          <PersistentStrings>
             <PersistentString
@@ -41,25 +60,6 @@
             </PersistentString>
             <PersistentString
                value = "currentController">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[UNavigationBarView setBackgroundView:]:UNavigationBarView.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[LeftListItemCell cellDidLoad]:LeftListItemCell.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_imageView.frame">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[UListTableView refreshSectionsWith:]:UListTableView.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_sectionArray">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -217,6 +217,17 @@
          contextName = "-[UListTableView reloadSection:animated:]:UListTableView.m">
       </ContextState>
       <ContextState
+         contextName = "-[UListTableView dequeueAllFootersWith:]:UListTableView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.footerView.originX">
+            </PersistentString>
+            <PersistentString
+               value = "self.scrollView.contentSize.width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[URefreshHeaderView refreshView:progress:]:URefreshView.m">
          <PersistentStrings>
             <PersistentString
@@ -236,10 +247,10 @@
          contextName = "-[UNavigationController resetAllStates]:UNavigationController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_viewController">
+               value = "_viewController.contentView">
             </PersistentString>
             <PersistentString
-               value = "_viewController.contentView">
+               value = "_viewController">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -316,6 +327,9 @@
          <PersistentStrings>
             <PersistentString
                value = "_sectionArray">
+            </PersistentString>
+            <PersistentString
+               value = "self.headerView">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -554,10 +568,10 @@
                value = "self.viewControllers">
             </PersistentString>
             <PersistentString
-               value = "_viewController">
+               value = "currentController">
             </PersistentString>
             <PersistentString
-               value = "currentController">
+               value = "_viewController">
             </PersistentString>
             <PersistentString
                value = "_currentNavigationItem">
@@ -612,10 +626,10 @@
          contextName = "-[UNavigationController repositionAllViewWithX:]:UNavigationController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_viewController">
+               value = "_viewController.countOfControllerToPop">
             </PersistentString>
             <PersistentString
-               value = "_viewController.countOfControllerToPop">
+               value = "_viewController">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -631,7 +645,7 @@
          contextName = "-[UNavigationController repositionBarsWithX:]:UNavigationController.m">
          <PersistentStrings>
             <PersistentString
-               value = "leftButton">
+               value = "leftButton.attachedLabel.text">
             </PersistentString>
             <PersistentString
                value = "_currentNavigationItem.leftButton">
@@ -640,7 +654,7 @@
                value = "_currentNavigationItem">
             </PersistentString>
             <PersistentString
-               value = "leftButton.attachedLabel.text">
+               value = "leftButton">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -678,10 +692,10 @@
                value = "lastTitleLabel.text">
             </PersistentString>
             <PersistentString
-               value = "_lastNavigationItem">
+               value = "leftButton.superview ">
             </PersistentString>
             <PersistentString
-               value = "leftButton.superview ">
+               value = "_lastNavigationItem">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
