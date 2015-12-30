@@ -52,7 +52,9 @@
 
 - (void)removeAllSubviews
 {
-    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    if (checkValidNSArray(self.subviews)) {
+        [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    }
 }
 
 #pragma mark - Callback from super controller

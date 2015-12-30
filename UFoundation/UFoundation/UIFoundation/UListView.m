@@ -689,13 +689,15 @@
     // All added cells
     NSMutableArray *subviews = [NSMutableArray array];
     for (UListViewCell *cell in self.contentView.subviews) {
-        if (checkClass(cell, UListViewCell) && ![self checkVisibleWith:cell offset:offset]) {
-            if (cell.superview) {
-                // Remove
-                [cell removeFromSuperview];
+        if (checkClass(cell, UListViewCell)) {
+            if (![self checkVisibleWith:cell offset:offset]) {
+                if (cell.superview) {
+                    // Remove
+                    [cell removeFromSuperview];
+                }
+            } else {
+                [subviews addObject:cell];
             }
-        } else {
-            [subviews addObject:cell];
         }
     }
     

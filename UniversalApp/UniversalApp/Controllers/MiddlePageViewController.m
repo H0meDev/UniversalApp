@@ -28,7 +28,7 @@
     self.navigationBarView.title = @"Middle";
     
     CGFloat height = self.containerView.sizeHeight - tabHeight();
-    UListTableView *tableView = [[UListTableView alloc]initWith:UListViewStyleVertical];
+    UListTableView *tableView = [[UListTableView alloc]initWith:UListViewStyleHorizontal];
     tableView.frame = rectMake(0, 0, screenWidth(), height);
     tableView.delegate = self;
     tableView.dataSource = self;
@@ -60,39 +60,29 @@
 
 - (NSInteger)tableView:(UListTableView *)tableView numberOftemsInSection:(NSInteger)section
 {
-    if (section == 1 && !_expand) {
-        return 0;
-    }
-    
-    return 10;
+    return 3;
 }
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForHeaderInSection:(NSInteger)section
 {
-    return 40;
+    return 0;
 }
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForFooterInSection:(NSInteger)section
 {
-    return 0;
+    return 40;
 }
 
 - (UIView *)tableView:(UListTableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     @autoreleasepool
     {
-        if (section == 1) {
-            UButton *headerView = [UButton button];
-            [headerView setBackgroundColor:sysBlueColor()];
-            [headerView setTarget:self action:@selector(sectionAction)];
-            return headerView;
-        } else {
-            UIView *headerView = [[UIView alloc]init];
-            headerView.backgroundColor = sysRedColor();
-            return headerView;
-        }
+        UButton *headerView = [UButton button];
+        headerView.tag = section;
+        [headerView setBackgroundColor:sysBlueColor()];
+        [headerView setTarget:self action:@selector(sectionAction:)];
         
-        return nil;
+        return headerView;
     }
 }
 
@@ -101,7 +91,7 @@
     @autoreleasepool
     {
         UIView *footerView = [[UIView alloc]init];
-        footerView.backgroundColor = rgbColor(25.5 * section, 25.5 * section, (section % 2 == 1)?0:255.);
+        footerView.backgroundColor = sysRedColor();
         
         return footerView;
     }
@@ -116,14 +106,17 @@
 {
     NSLog(@"UListTableViewCell item %@ - %@", @(path.section), @(path.index));
     
-    return [[UListTableViewCell alloc]initWith:tableView.style];
+    UListTableViewCell *cell = [[UListTableViewCell alloc]initWith:tableView.style];
+    cell.backgroundColor = sysYellowColor();
+    
+    return cell;
 }
 
-- (void)sectionAction
+- (void)sectionAction:(UIButton *)button
 {
     _expand = !_expand;
     
-    [_tableView reloadSection:1];
+    [_tableView reloadSection:button.tag];
 }
 
 @end
