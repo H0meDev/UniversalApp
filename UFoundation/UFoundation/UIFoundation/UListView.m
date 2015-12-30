@@ -992,12 +992,7 @@
     }
     
     // Remove all cells
-    for (UListViewCell *cell in self.contentView.subviews) {
-        if (checkClass(cell, UListViewCell) && cell.superview) {
-            // Remove
-            [cell removeFromSuperview];
-        }
-    }
+    [self.contentView removeAllSubviews];
     
     _itemArray = nil;
     [_cellReusePool removeAllObjects];

@@ -8,6 +8,7 @@
 
 #import "UListTableView.h"
 #import "NSObject+UAExtension.h"
+#import "NSArray+UAExtension.h"
 #import "UIView+UAExtension.h"
 
 #pragma mark - Class UIndexPath
@@ -627,25 +628,8 @@
         return;
     }
     
-    // Remove all cells
-    for (UListViewCell *cell in self.contentView.subviews) {
-        if (checkClass(cell, UListViewCell) && cell.superview) {
-            // Remove
-            [cell removeFromSuperview];
-        }
-    }
-    
-    for (UListTableSectionItem *section in _visibleSections) {
-        if (section.headerView) {
-            [section.headerView removeFromSuperview];
-            section.headerView = nil;
-        }
-        
-        if (section.footerView) {
-            [section.footerView removeFromSuperview];
-            section.footerView = nil;
-        }
-    }
+    // Remove all
+    [self.contentView removeAllSubviews];
     
     _sectionArray = nil;
     _visibleSections = nil;
