@@ -717,35 +717,13 @@
 
 - (void)reloadSection:(NSInteger)section
 {
-    [self reloadSection:section animated:YES];
-}
-
-- (void)reloadSection:(NSInteger)section animated:(BOOL)animated
-{
     if (_sectionArray == nil) {
         return;
     }
     
     if (section >= 0 && section < _sectionArray.count) {
         [self reloadAllData];
-        
-        UListTableSectionItem *item = _sectionArray[section];
-        switch (_style) {
-            case UListViewStyleHorizontal:
-            {
-                [self.scrollView setContentOffset:pointMake(item.originValue, 0) animated:animated];
-            }
-                break;
-                
-            case UListViewStyleVertical:
-            {
-                [self.scrollView setContentOffset:pointMake(0, item.originValue) animated:animated];
-            }
-                break;
-                
-            default:
-                break;
-        }
+        self.scrollView.contentOffset = self.scrollView.contentOffset;
     }
 }
 

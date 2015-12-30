@@ -60,6 +60,5 @@
 
 - (void)reloadData;
 - (void)reloadSection:(NSInteger)section;
-- (void)reloadSection:(NSInteger)section animated:(BOOL)animated;
 
 @end
