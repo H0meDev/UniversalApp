@@ -414,7 +414,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
     CGFloat usedTime = (CGFloat)(endTime - _startTime)/CLOCKS_PER_SEC;
     
 #if DEBUG
-    NSString *status = @"OK";
+    NSString *statusText = @"OK";
 #endif
     
     @try
@@ -461,13 +461,13 @@ singletonImplementationWith(UHTTPDataCache, cache);
     @catch (NSException *exception)
     {
 #if DEBUG
-        status = @"Parse exception";
+        statusText = @"Parse exception";
 #endif
     }
     @finally
     {
 #if DEBUG
-        NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: %@\nTIME: %fs\nURL: %@\nDATA: \n%@\n*********************************",status, usedTime, request.URL.absoluteString, _responseObject);
+        NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: %@\nTIME: %fs\nURL: %@\nDATA: \n%@\n*********************************",statusText, usedTime, request.URL.absoluteString, _responseObject);
 #endif
         UHTTPStatus *status = [[UHTTPStatus alloc]init];
         status.code = _httpResponse.statusCode;
