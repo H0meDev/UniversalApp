@@ -207,7 +207,7 @@
     
     UIView *headerView = [[UIView alloc]init];
     headerView.backgroundColor = sysClearColor();
-    [self addSubview:headerView];
+    [self.scrollView addSubview:headerView];
     _headerView = headerView;
     
     return _headerView;
@@ -221,7 +221,7 @@
     
     UIView *footerView = [[UIView alloc]init];
     footerView.backgroundColor = sysClearColor();
-    [self addSubview:footerView];
+    [self.scrollView addSubview:footerView];
     _footerView = footerView;
     
     return _footerView;
@@ -336,6 +336,7 @@
                             
                             CGFloat originY = section.originValue + section.sizeValue - section.headerValue - offset.y;
                             originY = (originY > 0)?0:originY;
+                            originY = offset.y + originY;
                             
                             self.headerView.frame = rectMake(0, originY, self.sizeWidth, section.headerValue);
                             [self.headerView addSubview:section.headerView];
@@ -357,7 +358,7 @@
                             
                             CGFloat originY = section.footerValue + section.originValue - offset.y - self.sizeHeight;
                             originY = (originY < 0)?0:originY;
-                            originY = self.sizeHeight - section.footerValue + originY;
+                            originY = offset.y + self.sizeHeight - section.footerValue + originY;
                             
                             self.footerView.frame = rectMake(0, originY, self.sizeWidth, section.footerValue);
                             [self.footerView addSubview:section.footerView];
@@ -383,6 +384,7 @@
                             
                             CGFloat originX = section.originValue + section.sizeValue - section.headerValue - offset.x;
                             originX = (originX > 0)?0:originX;
+                            originX = offset.x + originX;
 
                             self.headerView.frame = rectMake(originX, 0, section.headerValue, self.sizeHeight);
                             [self.headerView addSubview:section.headerView];
@@ -404,7 +406,7 @@
                             
                             CGFloat originX = section.footerValue + section.originValue - offset.x - self.sizeWidth;
                             originX = (originX < 0)?0:originX;
-                            originX = self.sizeWidth - section.headerValue + originX;
+                            originX = offset.x + self.sizeWidth - section.headerValue + originX;
                             
                             self.footerView.frame = rectMake(originX, 0, section.headerValue, self.sizeHeight);
                             [self.footerView addSubview:section.footerView];

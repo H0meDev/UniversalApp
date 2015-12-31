@@ -79,8 +79,8 @@
     {
         UButton *headerView = [UButton button];
         headerView.tag = section;
-        [headerView setTitle:@"ABCDEFG"];
-        [headerView setBackgroundColor:(section % 2 == 0)?sysBlueColor():sysBrownColor()];
+        [headerView setTitle:[NSString stringWithFormat:@"HEADER %@", @(section + 1)]];
+        [headerView setBackgroundColor:sysBlueColor()];
         [headerView setTarget:self action:@selector(sectionAction:)];
         
         return headerView;
@@ -93,8 +93,8 @@
     {
         UButton *footerView = [UButton button];
         footerView.tag = section;
-        [footerView setTitle:@"HIJKLMN"];
-        [footerView setBackgroundColor:(section % 2 == 0)?sysRedColor():sysOrangeColor()];
+        [footerView setTitle:[NSString stringWithFormat:@"FOOTER %@", @(section + 1)]];
+        [footerView setBackgroundColor:sysRedColor()];
         [footerView setTarget:self action:@selector(sectionAction:)];
         
         return footerView;
