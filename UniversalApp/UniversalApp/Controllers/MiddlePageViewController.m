@@ -65,12 +65,12 @@
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForHeaderInSection:(NSInteger)section
 {
-    return 20;
+    return 80;
 }
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForFooterInSection:(NSInteger)section
 {
-    return 20;
+    return 80;
 }
 
 - (UIView *)tableView:(UListTableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -103,7 +103,7 @@
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForPath:(UIndexPath *)path
 {
-    return 80.;
+    return 160;
 }
 
 - (UListTableViewCell *)tableView:(UListTableView *)tableView cellAtPath:(UIndexPath *)path

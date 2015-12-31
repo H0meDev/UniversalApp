@@ -131,9 +131,7 @@ singletonImplementationWith(UImageCache, cache);
         }
     }
     
-    if (cachedArray.count > 0) {
-        [cachedArray writeToFile:filePath atomically:YES];
-    }
+    [cachedArray writeToFile:filePath atomically:YES];
 }
 
 - (BOOL)addImageCacheItemWith:(NSString *)url callback:(UHTTPImageCallback)callback
@@ -300,7 +298,13 @@ singletonImplementationWith(UImageCache, cache);
 {
     for (UImageCacheItem *item in _cachedArray) {
         NSString *filePath = [NSString stringWithFormat:@"%@/%@", cachePathWith(@"Images"), item.fileName];
-        removeFile(filePath);
+        
+        NSError *error = nil;
+        removeFileWith(filePath, error);
+        
+        if (error) {
+            NSLog(@"REMOVE CACHE ERROR :\n%@", error.description);
+        }
     }
     
     [_cachedArray removeAllObjects];
