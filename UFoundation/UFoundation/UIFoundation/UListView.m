@@ -619,9 +619,6 @@
                 }
             }
         }
-        
-        // Remove unused cells
-        [self removeUnusedCells];
     }
 }
 
@@ -851,24 +848,6 @@
             
         default:
             break;
-    }
-}
-
-- (void)removeUnusedCells
-{
-    for (NSString *key in _cellReusePool) {
-        NSArray *cells = _cellReusePool[key];
-        if (checkValidNSArray(cells)) {
-            NSMutableArray *marray = [NSMutableArray arrayWithArray:cells];
-            for (UListViewCell *cellItem in cells) {
-                if (cellItem.superview == nil) {
-                    [marray removeObject:cellItem];
-                }
-            }
-            
-            // Refresh
-            [_cellReusePool setObject:marray forKey:key];
-        }
     }
 }
 

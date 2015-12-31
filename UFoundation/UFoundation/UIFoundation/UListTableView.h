@@ -58,6 +58,10 @@
 - (id)initWith:(UListViewStyle)style;
 - (id)initWithFrame:(CGRect)frame style:(UListViewStyle)style;
 
+// Cell reuse
+- (UListTableViewCell *)cellReuseWith:(NSString *)cellName forIdentifier:(NSString *)identifier;
+- (UListTableViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier;
+
 - (void)reloadData;
 - (void)reloadSection:(NSInteger)section;
 

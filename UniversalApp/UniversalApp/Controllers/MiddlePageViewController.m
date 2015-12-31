@@ -60,17 +60,17 @@
 
 - (NSInteger)tableView:(UListTableView *)tableView numberOftemsInSection:(NSInteger)section
 {
-    return 3;
+    return 10;
 }
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForHeaderInSection:(NSInteger)section
 {
-    return 40;
+    return 20;
 }
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForFooterInSection:(NSInteger)section
 {
-    return 40;
+    return 20;
 }
 
 - (UIView *)tableView:(UListTableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -79,7 +79,8 @@
     {
         UButton *headerView = [UButton button];
         headerView.tag = section;
-        [headerView setBackgroundColor:sysBlueColor()];
+        [headerView setTitle:@"ABCDEFG"];
+        [headerView setBackgroundColor:(section % 2 == 0)?sysBlueColor():sysBrownColor()];
         [headerView setTarget:self action:@selector(sectionAction:)];
         
         return headerView;
@@ -90,8 +91,11 @@
 {
     @autoreleasepool
     {
-        UIView *footerView = [[UIView alloc]init];
-        footerView.backgroundColor = sysRedColor();
+        UButton *footerView = [UButton button];
+        footerView.tag = section;
+        [footerView setTitle:@"HIJKLMN"];
+        [footerView setBackgroundColor:(section % 2 == 0)?sysRedColor():sysOrangeColor()];
+        [footerView setTarget:self action:@selector(sectionAction:)];
         
         return footerView;
     }
@@ -106,7 +110,10 @@
 {
     NSLog(@"UListTableViewCell item %@ - %@", @(path.section), @(path.index));
     
-    UListTableViewCell *cell = [[UListTableViewCell alloc]initWith:tableView.style];
+    UListTableViewCell *cell = (UListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"UListTableViewCell"];
+    if (!cell) {
+        cell = (UListTableViewCell *)[tableView cellReuseWith:@"UListTableViewCell" forIdentifier:@"UListTableViewCell"];
+    }
     cell.backgroundColor = sysYellowColor();
     
     return cell;
