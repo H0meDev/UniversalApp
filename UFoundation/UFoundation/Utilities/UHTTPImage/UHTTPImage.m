@@ -270,10 +270,10 @@ singletonImplementationWith(UImageCache, cache);
 - (void)removeCachedItemWith:(NSString *)url
 {
     if (checkValidNSArray(_cachedArray)) {
-        NSMutableArray *marray = [NSMutableArray arrayWithArray:_cachedArray];
-        for (UImageCacheItem *item in _cachedArray) {
+        NSArray *cachedArray = [NSArray arrayWithArray:_cachedArray];
+        for (UImageCacheItem *item in cachedArray) {
             if ([item.url isEqualToString:url]) {
-                [marray removeObject:item];
+                [_cachedArray removeObject:item];
             }
         }
     }
