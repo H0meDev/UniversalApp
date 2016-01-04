@@ -55,22 +55,22 @@
 
 - (NSInteger)numberOfSectionsInListView:(UListTableView *)tableView
 {
-    return 100;
+    return 4000;
 }
 
 - (NSInteger)tableView:(UListTableView *)tableView numberOftemsInSection:(NSInteger)section
 {
-    return 10;
+    return 3;
 }
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForHeaderInSection:(NSInteger)section
 {
-    return 80;
+    return 20;
 }
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForFooterInSection:(NSInteger)section
 {
-    return 80;
+    return 20;
 }
 
 - (UIView *)tableView:(UListTableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -103,7 +103,7 @@
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForPath:(UIndexPath *)path
 {
-    return 160;
+    return 60;
 }
 
 - (UListTableViewCell *)tableView:(UListTableView *)tableView cellAtPath:(UIndexPath *)path
