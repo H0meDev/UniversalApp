@@ -159,6 +159,7 @@ static UHTTPRequest *sharedManager = nil;
     UHTTPOperationParam *rparam = [UHTTPOperationParam param];
     rparam.request = request;
     rparam.cached = param.cached;
+    rparam.cacheKey = param.cacheKey;
     rparam.timeout = param.timeout;
     rparam.retry = param.retry;
     rparam.retryInterval = param.retryInterval;

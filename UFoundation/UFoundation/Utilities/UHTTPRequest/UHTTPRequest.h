@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSString *method;     // Default is GET
 @property (nonatomic, strong) NSDictionary *header;
 @property (nonatomic, strong) NSDictionary *body;
+@property (nonatomic, strong) NSString *cacheKey;    // Key for customized cache
 @property (nonatomic, assign) CGFloat timeout;       // Default 30s
 @property (nonatomic, assign) CGFloat retry;         // Default 0
 @property (nonatomic, assign) CGFloat retryInterval; // Default 0

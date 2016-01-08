@@ -64,6 +64,7 @@ typedef NS_ENUM(NSInteger, UHTTPCode)
 
 @property (nonatomic, strong) NSURLRequest *request;
 @property (nonatomic, assign) BOOL cached;
+@property (nonatomic, assign) NSString *cacheKey;
 @property (nonatomic, assign) CGFloat timeout;
 @property (nonatomic, assign) NSInteger retry;
 @property (nonatomic, assign) CGFloat retryInterval;

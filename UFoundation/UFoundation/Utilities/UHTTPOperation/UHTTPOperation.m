@@ -58,6 +58,7 @@
         _timeout = 30;
         _retry = 0;
         _retryInterval = 0;
+        _cacheKey = @"";
     }
     
     return self;
@@ -202,7 +203,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
                 // Get cached data
                 NSString *url = param.request.URL.absoluteString;
                 NSString *method = param.request.HTTPMethod;
-                _cacheKey = [[NSString stringWithFormat:@"%@%@", url, method]MD5String];
+                _cacheKey = [[NSString stringWithFormat:@"%@%@%@", url, method, param.cacheKey]MD5String];
                 
                 id data = [[UHTTPDataCache cache]objectForKey:_cacheKey];
                 if (data) {
