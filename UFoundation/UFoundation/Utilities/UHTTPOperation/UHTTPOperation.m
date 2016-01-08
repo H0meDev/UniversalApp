@@ -197,11 +197,9 @@ singletonImplementationWith(UHTTPDataCache, cache);
             
             if (_cacheRequired) {
                 // Get cached data
-                NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
                 NSString *url = param.request.URL.absoluteString;
                 NSString *method = param.request.HTTPMethod;
-                NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
-                _cacheKey = [[NSString stringWithFormat:@"%@%@%@", url, method, body]MD5String];
+                _cacheKey = [[NSString stringWithFormat:@"%@%@", url, method]MD5String];
                 
                 id data = [[UHTTPDataCache cache]objectForKey:_cacheKey];
                 if (data) {
