@@ -85,7 +85,8 @@ singletonImplementationWith(UHTTPDataCache, cache);
             createFile(_filePath);
         }
         
-        _cachedData = [NSMutableDictionary dictionaryWithContentsOfFile:_filePath];
+        NSString *serialization = [[NSString alloc]initWithContentsOfFile:_filePath encoding:NSUTF8StringEncoding error:NULL];
+        _cachedData = [NSMutableDictionary dictionaryWithDictionary:[serialization JSONValue]];
         if (!_cachedData) {
             _cachedData = [NSMutableDictionary dictionary];
         }
@@ -102,7 +103,8 @@ singletonImplementationWith(UHTTPDataCache, cache);
     
     [_accessLock lock];
     [_cachedData setObject:value forKey:key];
-    [_cachedData writeToFile:_filePath atomically:YES];
+    NSString *serialization = [[_cachedData copy] JSONString];
+    [serialization writeToFile:_filePath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
     [_accessLock unlock];
 }
 
@@ -119,7 +121,8 @@ singletonImplementationWith(UHTTPDataCache, cache);
 {
     [_accessLock lock];
     [_cachedData removeAllObjects];
-    [_cachedData writeToFile:_filePath atomically:YES];
+    NSString *serialization = @"";
+    [serialization writeToFile:_filePath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
     [_accessLock unlock];
 }
 
