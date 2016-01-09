@@ -136,7 +136,7 @@ static UHTTPRequest *sharedManager = nil;
                     for (NSString *key in param.body) {
                         bodyValue = [bodyValue stringByAppendingFormat:@"%@=%@&", key, param.body[key]];
                     }
-                    body = [bodyValue substringToIndex:url.length - 1];
+                    body = [bodyValue substringToIndex:bodyValue.length - 1];
                 }
             }
             @catch (NSException *exception) {
@@ -206,7 +206,7 @@ static UHTTPRequest *sharedManager = nil;
                     for (NSString *key in param.body) {
                         bodyValue = [bodyValue stringByAppendingFormat:@"%@=%@&", key, param.body[key]];
                     }
-                    body = [bodyValue substringToIndex:url.length - 1];
+                    body = [bodyValue substringToIndex:bodyValue.length - 1];
                 }
             }
             @catch (NSException *exception) {
