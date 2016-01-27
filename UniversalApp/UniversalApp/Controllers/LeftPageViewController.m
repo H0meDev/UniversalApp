@@ -14,7 +14,6 @@
 {
     UListView *_listView;
     NSArray *_dataList;
-    UTextView *_textView;
 }
 
 @end
@@ -37,28 +36,19 @@
     [rightView setTitleFont:systemFont(16)];
     [rightView setTarget:self action:@selector(buttonAction:)];
     self.navigationBarView.rightView = rightView;
-//
-//    CGFloat height = self.containerView.sizeHeight - tabHeight();
-//    _listView = [[UListView alloc]initWith:UListViewStyleHorizontal];
-//    _listView.frame = rectMake(0, 0, screenWidth(), height);
-//    _listView.delegate = self;
-//    _listView.dataSource = self;
-//    [self addSubview:_listView];
-//    
-//    _dataList = @[@"https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png",
-//                  @"http://jiangsu.china.com.cn/uploadfile/2015/1210/1449719387615370.jpg",
-//                  @"http://gz.sese.com.cn/share/upload/20151117/0bf7affd-549d-476d-aed3-bb2bd354433b.jpg",
-//                  @"http://image.fvideo.cn/uploadfile/2012/03/15/20120315110710016.jpg",
-//                  @"http://news.cz001.com.cn/attachement/jpg/site2/20120614/d067e519eae31143846013.jpg"];
     
-    UTextView *textView = [[UTextView alloc]init];
-    textView.frame = rectMake(0, 0, screenWidth(), 200);
-    textView.font = systemFont(16);
-    textView.placeholder = @"请输入一段文本";
-    textView.text = @"";
-    textView.placeholderColor = sysLightGrayColor();
-    [self addSubview:textView];
-    _textView = textView;
+    CGFloat height = self.containerView.sizeHeight - tabHeight();
+    _listView = [[UListView alloc]initWith:UListViewStyleHorizontal];
+    _listView.frame = rectMake(0, 0, screenWidth(), height);
+    _listView.delegate = self;
+    _listView.dataSource = self;
+    [self addSubview:_listView];
+    
+    _dataList = @[@"https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png",
+                  @"http://jiangsu.china.com.cn/uploadfile/2015/1210/1449719387615370.jpg",
+                  @"http://gz.sese.com.cn/share/upload/20151117/0bf7affd-549d-476d-aed3-bb2bd354433b.jpg",
+                  @"http://image.fvideo.cn/uploadfile/2012/03/15/20120315110710016.jpg",
+                  @"http://news.cz001.com.cn/attachement/jpg/site2/20120614/d067e519eae31143846013.jpg"];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -84,9 +74,7 @@
 
 - (void)buttonAction:(UButton *)button
 {
-//    [UHTTPImage removeAllCaches];
-    
-    [_textView resignFirstResponder];
+    [UHTTPImage removeAllCaches];
 }
 
 - (void)headerAction

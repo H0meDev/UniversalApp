@@ -234,7 +234,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
 
 - (id)initWith:(UHTTPOperationParam *)param
       delegate:(id<UHTTPRequestDelegate>)delegate
-           tag:(int)tag
+    identifier:(int)identifier
 {
     self = [super init];
     if (self) {
@@ -242,7 +242,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
         if (checkClass(param, UHTTPOperationParam)) {
             _connection = [[NSURLConnection alloc]initWithRequest:param.request delegate:self startImmediately:NO];
             _delegate = delegate;
-            _tag = tag;
+            _identifier = identifier;
             
             // Default is 30
             [self setTimeOut:param.timeout];
@@ -294,7 +294,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
     _received = NULL;
     _receivedData = nil;
     
-    NSLog(@"UHTTPRequestOperation dealloc");
+    NSLog(@"%@ dealloc", NSStringFromClass([self class]));
 }
 
 #pragma mark - Methods
@@ -358,7 +358,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
                 _callback(status, nil);
             } else {
                 if (_delegate && [_delegate respondsToSelector:@selector(requestFinishedCallback:status:data:)]) {
-                    [_delegate requestFinishedCallback:_tag status:status data:nil];
+                    [_delegate requestFinishedCallback:_identifier status:status data:nil];
                 }
             }
         }
@@ -380,10 +380,10 @@ singletonImplementationWith(UHTTPDataCache, cache);
         status.code = _httpResponse.statusCode;
         _response(status);
     } else {
-        if (_delegate && [_delegate respondsToSelector:@selector(requestDidReceviedResponseCallback:)]) {
+        if (_delegate && [_delegate respondsToSelector:@selector(requestDidReceviedResponseCallback:status:)]) {
             UHTTPStatus *status = [[UHTTPStatus alloc]init];
             status.code = _httpResponse.statusCode;
-            [_delegate requestDidReceviedResponseCallback:status];
+            [_delegate requestDidReceviedResponseCallback:_identifier status:status];
         }
     }
 }
@@ -404,7 +404,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
         _received(data, _receivedLength, _httpResponse.expectedContentLength);
     } else {
         if (_delegate && [_delegate respondsToSelector:@selector(requestDidReceviedDataCallback:data:receivedLength:expectedLength:)]) {
-            [_delegate requestDidReceviedDataCallback:_tag data:data receivedLength:_receivedLength expectedLength:_httpResponse.expectedContentLength];
+            [_delegate requestDidReceviedDataCallback:_identifier data:data receivedLength:_receivedLength expectedLength:_httpResponse.expectedContentLength];
         }
     }
 }
@@ -481,7 +481,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
             _callback(status, _responseObject);
         } else {
             if (_delegate && [_delegate respondsToSelector:@selector(requestFinishedCallback:status:data:)]) {
-                [_delegate requestFinishedCallback:_tag status:status data:_responseObject];
+                [_delegate requestFinishedCallback:_identifier status:status data:_responseObject];
             }
         }
         
@@ -525,7 +525,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
             _callback(status, nil);
         } else {
             if (_delegate && [_delegate respondsToSelector:@selector(requestFinishedCallback:status:data:)]) {
-                [_delegate requestFinishedCallback:_tag status:status data:nil];
+                [_delegate requestFinishedCallback:_identifier status:status data:nil];
             }
         }
         

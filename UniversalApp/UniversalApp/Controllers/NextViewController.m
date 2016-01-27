@@ -11,7 +11,7 @@
 #import "NetworkSDK.h"
 #import "UserInfo.h"
 
-@interface NextViewController ()
+@interface NextViewController () <NetworkSDKDelegate>
 {
     UHTTPOperation *_request;
 }
@@ -56,22 +56,24 @@
     [button setTarget:self action:@selector(buttonAction)];
     [self addSubview:button];
     
-//    // 校导网登录
-//    LoginRequest *request = [LoginRequest model];
-//    request.username = @"";
-//    request.password = @"";
-//    
-//    __weak typeof(self) weakself = self;
+    // 校导网登录
+    LoginRequest *request = [LoginRequest model];
+    request.username = @"15827180617";
+    request.password = @"123456";
+    
+    [NetworkSDKExtension loginWith:request delegate:self identifier:0];
+    
+//    safeBlockReferences();
 //    _request = [NetworkSDK loginWith:request callback:^(UHTTPStatus *status, NetworkResponse *response) {
 //        if (NetworkSDKCodeOK == response.status) {
 //            // 登陆成功
 //            if (checkClass(response.data, LoginResponseData)) {
 //                [[UserInfo info]setLogin:response.data];
-//                UDataBase *database = [UserInfo info].database;
+////                UDataBase *database = [UserInfo info].database;
 ////                [database createTableWith:[response.data class]];
 ////                [database insertWithArray:@[response.data, response.data, response.data]];
-//                NSArray *results = [database selectWith:[response.data class] conditions:nil];
-//                NSLog(@"%@", results);
+////                NSArray *results = [database selectWith:[response.data class] conditions:nil];
+////                NSLog(@"%@", results);
 //            }
 //            
 //            // 接下来就获取信息吧
@@ -81,7 +83,7 @@
 //                } else {
 //                    // 获取失败
 //                }
-//                
+//
 //                weakself.button.hidden = NO;
 //            }];
 //        } else {
@@ -94,9 +96,9 @@
 {
     [super viewWillDisappear:animated];
     
-    if (_request && !_request.isCancelled) {
-        [_request cancel];
-    }
+//    if (_request && !_request.isCancelled) {
+//        [_request cancel];
+//    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -124,6 +126,31 @@
 {
     LastViewController *next = [[LastViewController alloc]init];
     [self pushViewController:next];
+}
+
+#pragma mark - NetworkSDKDelegate
+
+- (void)networkSDKCallback:(int)identifier status:(UHTTPStatus *)status response:(NetworkResponse *)response
+{
+    if (identifier == 0) {
+        // 登录
+        if (NetworkSDKCodeOK == response.status) {
+            // 登陆成功
+            if (checkClass(response.data, LoginResponseData)) {
+                [[UserInfo info]setLogin:response.data];
+            }
+            
+            // 接下来就获取信息吧
+            [NetworkSDKExtension userInfoWithDelegate:self identifier:1];
+        }
+    } else if (identifier == 1) {
+        if (NetworkSDKCodeOK == response.status) {
+            // 获取成功
+        } else {
+            // 获取失败
+        }
+
+    }
 }
 
 @end

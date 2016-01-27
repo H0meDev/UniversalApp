@@ -89,11 +89,11 @@ singletonInterfaceWith(UHTTPDataCache, cache);
 @protocol UHTTPRequestDelegate <NSObject>
 
 @required
-- (void)requestFinishedCallback:(int)tag status:(UHTTPStatus *)status data:(id)data;
+- (void)requestFinishedCallback:(int)identifier status:(UHTTPStatus *)status data:(id)data;
 
 @optional
-- (void)requestDidReceviedResponseCallback:(UHTTPStatus *)status;
-- (void)requestDidReceviedDataCallback:(int)tag
+- (void)requestDidReceviedResponseCallback:(int)identifier status:(UHTTPStatus *)status;
+- (void)requestDidReceviedDataCallback:(int)identifier
                                   data:(id)data
                         receivedLength:(long long)rlength
                         expectedLength:(long long)elength;
@@ -106,7 +106,7 @@ typedef void (^UHTTPCallback)(UHTTPStatus *status, id data);
 
 @interface UHTTPOperation : NSOperation
 
-@property (nonatomic, readonly) int tag;
+@property (nonatomic, readonly) int identifier;
 @property (nonatomic, readonly) id<UHTTPRequestDelegate> delegate;
 @property (nonatomic, readonly) NSURLRequest *request;
 
@@ -126,7 +126,7 @@ typedef void (^UHTTPCallback)(UHTTPStatus *status, id data);
       callback:(UHTTPCallback)callback;
 
 // Delegate
-- (id)initWith:(UHTTPOperationParam *)param delegate:(id<UHTTPRequestDelegate>)delegate tag:(int)tag;
+- (id)initWith:(UHTTPOperationParam *)param delegate:(id<UHTTPRequestDelegate>)delegate identifier:(int)identifier;
 
 // Cancel request operation
 - (void)cancel;

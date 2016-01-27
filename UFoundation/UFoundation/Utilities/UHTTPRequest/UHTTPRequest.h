@@ -38,8 +38,8 @@
 
 // Delegate style with no cache
 + (UHTTPOperation *)sendAsynWith:(UHTTPRequestParam *)param
-                        delegate:(id<UHTTPRequestDelegate>)delegate
-                             tag:(int)tag;
+                        delegate:(__weak id<UHTTPRequestDelegate>)delegate
+                      identifier:(int)identifier;
 
 /*
  * Synchronous request

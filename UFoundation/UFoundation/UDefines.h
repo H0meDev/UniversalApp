@@ -196,4 +196,8 @@ withIntermediateDirectories:YES attributes:NULL error:NULL]
 #define showErrorWith(text)   (systemVersionFloat() < 7.0)?[UProgressHUD showErrorWithStatus:text]:[UProgressHUD showLErrorWithStatus:text]
 #define dismiss()             [UProgressHUD dismiss]
 
+// Object references
+#define safeBlockReferences() __weak typeof(self) weakself = self
+#define safeBlockReferencesWith(instance) __weak typeof(self) weakself = instance
+
 #endif

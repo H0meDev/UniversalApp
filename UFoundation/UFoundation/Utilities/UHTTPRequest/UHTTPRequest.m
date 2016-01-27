@@ -42,50 +42,29 @@
 
 @end
 
-static UHTTPRequest *sharedManager = nil;
-
 @implementation UHTTPRequest
 
-#pragma mark - Singleton
-
-+ (UHTTPRequest *)sharedManager
++ (id)instance
 {
-    @synchronized (self)
+    @autoreleasepool
     {
-        if (sharedManager == nil) {
-            sharedManager = [[self alloc]init];
-        }
+        return [[UHTTPRequest alloc]init];
     }
-    return sharedManager;
-}
-
-+ (id)allocWithZone:(NSZone *)zone
-{
-    @synchronized (self) {
-        if (sharedManager == nil) {
-            sharedManager = [super allocWithZone:zone];
-            return sharedManager;
-        }
-    }
-    return nil;
 }
 
 - (id)init
 {
-    @synchronized(self)
-    {
-        self = [super init];
-        if (self) {
-            // Initialize
-        }
-        
-        return self;
+    self = [super init];
+    if (self) {
+        // Initialize
     }
+    
+    return self;
 }
 
-- (id)copyWithZone:(NSZone *)zone
+- (void)dealloc
 {
-    return self;
+    NSLog(@"%@ dealloc", NSStringFromClass([self class]));
 }
 
 #pragma mark - Request
@@ -93,20 +72,20 @@ static UHTTPRequest *sharedManager = nil;
 + (UHTTPOperation *)sendAsynWith:(UHTTPRequestParam *)param
                         callback:(UHTTPCallback)callback
 {
-    return [[UHTTPRequest sharedManager]sendAsynWith:param callback:callback delegate:nil tag:-1];
+    return [[UHTTPRequest instance]sendAsynWith:param callback:callback delegate:nil identifier:-1];
 }
 
 + (UHTTPOperation *)sendAsynWith:(UHTTPRequestParam *)param
-                        delegate:(id<UHTTPRequestDelegate>)delegate
-                             tag:(int)tag
+                        delegate:(__weak id<UHTTPRequestDelegate>)delegate
+                      identifier:(int)identifier
 {
-    return [[UHTTPRequest sharedManager]sendAsynWith:param callback:NULL delegate:delegate tag:tag];
+    return [[UHTTPRequest instance]sendAsynWith:param callback:NULL delegate:delegate identifier:identifier];
 }
 
 - (UHTTPOperation *)sendAsynWith:(UHTTPRequestParam *)param
                         callback:(UHTTPCallback)callback
                         delegate:(id<UHTTPRequestDelegate>)delegate
-                             tag:(int)tag
+                      identifier:(int)identifier
 {
     NSString *url = param.url;
     NSString *method = [param.method uppercaseString];
@@ -170,7 +149,7 @@ static UHTTPRequest *sharedManager = nil;
     }
     
     if (delegate) {
-        operation = [[UHTTPOperation alloc]initWith:rparam delegate:delegate tag:tag];
+        operation = [[UHTTPOperation alloc]initWith:rparam delegate:delegate identifier:identifier];
     }
     
     return operation.weakself;
