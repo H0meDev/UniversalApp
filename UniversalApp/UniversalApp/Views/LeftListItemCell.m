@@ -57,14 +57,8 @@
 
 - (void)setCellData:(NSString *)url
 {
-    _imageView.image = nil;
-    
     if (checkValidNSString(url)) {
-        [UHTTPImage downloadImageWith:url callback:^(UHTTPImageItem *item) {
-            if (_imageView) {
-                [_imageView setImage:item.image];
-            }
-        }];
+        [self.imageView setNetworkImage:url placeholder:nil];
     }
 }
 

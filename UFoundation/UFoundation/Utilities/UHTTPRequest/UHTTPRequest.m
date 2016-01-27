@@ -70,20 +70,57 @@
 #pragma mark - Request
 
 + (UHTTPOperation *)sendAsynWith:(UHTTPRequestParam *)param
-                        callback:(UHTTPCallback)callback
+                        complete:(UHTTPCompleteCallback)complete
 {
-    return [[UHTTPRequest instance]sendAsynWith:param callback:callback delegate:nil identifier:-1];
+    return [[UHTTPRequest instance]sendAsynWith:param
+                                       response:NULL
+                                       progress:NULL
+                                       complete:complete
+                                       delegate:nil
+                                     identifier:-1];
+}
+
++ (UHTTPOperation *)sendAsynWith:(UHTTPRequestParam *)param
+                        progress:(UHTTPProgressCallback)progress
+                        complete:(UHTTPCompleteCallback)complete
+{
+    return [[UHTTPRequest instance]sendAsynWith:param
+                                       response:NULL
+                                       progress:progress
+                                       complete:complete
+                                       delegate:nil
+                                     identifier:-1];
+}
+
++ (UHTTPOperation *)sendAsynWith:(UHTTPRequestParam *)param
+                        response:(UHTTPResponseCallback)response
+                        progress:(UHTTPProgressCallback)progress
+                        complete:(UHTTPCompleteCallback)complete
+{
+    return [[UHTTPRequest instance]sendAsynWith:param
+                                       response:response
+                                       progress:progress
+                                       complete:complete
+                                       delegate:nil
+                                     identifier:-1];
 }
 
 + (UHTTPOperation *)sendAsynWith:(UHTTPRequestParam *)param
                         delegate:(__weak id<UHTTPRequestDelegate>)delegate
                       identifier:(int)identifier
 {
-    return [[UHTTPRequest instance]sendAsynWith:param callback:NULL delegate:delegate identifier:identifier];
+    return [[UHTTPRequest instance]sendAsynWith:param
+                                       response:NULL
+                                       progress:NULL
+                                       complete:NULL
+                                       delegate:delegate
+                                     identifier:identifier];
 }
 
 - (UHTTPOperation *)sendAsynWith:(UHTTPRequestParam *)param
-                        callback:(UHTTPCallback)callback
+                        response:(UHTTPResponseCallback)response
+                        progress:(UHTTPProgressCallback)progress
+                        complete:(UHTTPCompleteCallback)complete
                         delegate:(id<UHTTPRequestDelegate>)delegate
                       identifier:(int)identifier
 {
@@ -144,8 +181,8 @@
     rparam.retryInterval = param.retryInterval;
     
     UHTTPOperation *operation = nil;
-    if (callback) {
-        operation = [[UHTTPOperation alloc]initWith:rparam callback:callback];
+    if (complete) {
+        operation = [[UHTTPOperation alloc]initWith:rparam response:response progress:progress callback:complete];
     }
     
     if (delegate) {

@@ -32,11 +32,20 @@
  * Asynchronous request
  */
 
-// Block style with no cache
+// Block style
 + (UHTTPOperation *)sendAsynWith:(UHTTPRequestParam *)param
-                        callback:(UHTTPCallback)callback;
+                        complete:(UHTTPCompleteCallback)callback;
 
-// Delegate style with no cache
++ (UHTTPOperation *)sendAsynWith:(UHTTPRequestParam *)param
+                        progress:(UHTTPProgressCallback)progress
+                        complete:(UHTTPCompleteCallback)callback;
+
++ (UHTTPOperation *)sendAsynWith:(UHTTPRequestParam *)param
+                        response:(UHTTPResponseCallback)response
+                        progress:(UHTTPProgressCallback)progress
+                        complete:(UHTTPCompleteCallback)callback;
+
+// Delegate style
 + (UHTTPOperation *)sendAsynWith:(UHTTPRequestParam *)param
                         delegate:(__weak id<UHTTPRequestDelegate>)delegate
                       identifier:(int)identifier;

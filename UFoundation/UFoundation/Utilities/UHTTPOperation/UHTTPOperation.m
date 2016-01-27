@@ -131,9 +131,9 @@ singletonImplementationWith(UHTTPDataCache, cache);
 
 @interface UHTTPOperation () <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 {
-    __block UHTTPCallback _callback;
-    __block UHTTPReceivedResponseCallback _response;
-    __block UHTTPReceivedDataCallback _received;
+    __block UHTTPCompleteCallback _callback;
+    __block UHTTPResponseCallback _response;
+    __block UHTTPProgressCallback _received;
     __weak id<UHTTPRequestDelegate> _delegate;
     
     BOOL _cacheRequired;
@@ -159,22 +159,22 @@ singletonImplementationWith(UHTTPDataCache, cache);
 #pragma mark - Life Circle
 
 - (id)initWith:(UHTTPOperationParam *)param
-      callback:(UHTTPCallback)callback
+      callback:(UHTTPCompleteCallback)callback
 {
-    return [self initWith:param recevied:NULL callback:callback];
+    return [self initWith:param progress:NULL callback:callback];
 }
 
 - (id)initWith:(UHTTPOperationParam *)param
-      recevied:(UHTTPReceivedDataCallback)recevied
-      callback:(UHTTPCallback)callback
+      progress:(UHTTPProgressCallback)progress
+      callback:(UHTTPCompleteCallback)callback
 {
-    return [self initWith:param response:NULL recevied:recevied callback:callback];
+    return [self initWith:param response:NULL progress:progress callback:callback];
 }
 
 - (id)initWith:(UHTTPOperationParam *)param
-      response:(UHTTPReceivedResponseCallback)response
-      recevied:(UHTTPReceivedDataCallback)recevied
-      callback:(UHTTPCallback)callback
+      response:(UHTTPResponseCallback)response
+      progress:(UHTTPProgressCallback)progress
+      callback:(UHTTPCompleteCallback)callback
 {
     self = [super init];
     if (self) {
@@ -187,8 +187,8 @@ singletonImplementationWith(UHTTPDataCache, cache);
                 _response = response;
             }
             
-            if (recevied) {
-                _received = recevied;
+            if (progress) {
+                _received = progress;
             }
             
             // Default is 30
@@ -357,8 +357,8 @@ singletonImplementationWith(UHTTPDataCache, cache);
             if (_callback) {
                 _callback(status, nil);
             } else {
-                if (_delegate && [_delegate respondsToSelector:@selector(requestFinishedCallback:status:data:)]) {
-                    [_delegate requestFinishedCallback:_identifier status:status data:nil];
+                if (_delegate && [_delegate respondsToSelector:@selector(requestCompleteCallback:status:data:)]) {
+                    [_delegate requestCompleteCallback:_identifier status:status data:nil];
                 }
             }
         }
@@ -380,31 +380,34 @@ singletonImplementationWith(UHTTPDataCache, cache);
         status.code = _httpResponse.statusCode;
         _response(status);
     } else {
-        if (_delegate && [_delegate respondsToSelector:@selector(requestDidReceviedResponseCallback:status:)]) {
+        if (_delegate && [_delegate respondsToSelector:@selector(requestResponseCallback:status:)]) {
             UHTTPStatus *status = [[UHTTPStatus alloc]init];
             status.code = _httpResponse.statusCode;
-            [_delegate requestDidReceviedResponseCallback:_identifier status:status];
+            [_delegate requestResponseCallback:_identifier status:status];
         }
     }
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    if (_receivedData == nil) {
-        _receivedData = [NSMutableData data];
+    @autoreleasepool
+    {
+        if (_receivedData == nil) {
+            _receivedData = [NSMutableData data];
+            
+            // Cancel timeout
+            [UTimerBooster removeTarget:self];
+        }
+        [_receivedData appendData:data];
         
-        // Cancel timeout
-        [UTimerBooster removeTarget:self];
-    }
-    [_receivedData appendData:data];
-    
-    _receivedLength += data.length;
-    
-    if (_received) {
-        _received(data, _receivedLength, _httpResponse.expectedContentLength);
-    } else {
-        if (_delegate && [_delegate respondsToSelector:@selector(requestDidReceviedDataCallback:data:receivedLength:expectedLength:)]) {
-            [_delegate requestDidReceviedDataCallback:_identifier data:data receivedLength:_receivedLength expectedLength:_httpResponse.expectedContentLength];
+        _receivedLength += data.length;
+        
+        if (_received) {
+            _received(data, _receivedLength, _httpResponse.expectedContentLength);
+        } else {
+            if (_delegate && [_delegate respondsToSelector:@selector(requestProgressCallback:data:receivedLength:expectedLength:)]) {
+                [_delegate requestProgressCallback:_identifier data:data receivedLength:_receivedLength expectedLength:_httpResponse.expectedContentLength];
+            }
         }
     }
 }
@@ -480,8 +483,8 @@ singletonImplementationWith(UHTTPDataCache, cache);
         if (_callback) {
             _callback(status, _responseObject);
         } else {
-            if (_delegate && [_delegate respondsToSelector:@selector(requestFinishedCallback:status:data:)]) {
-                [_delegate requestFinishedCallback:_identifier status:status data:_responseObject];
+            if (_delegate && [_delegate respondsToSelector:@selector(requestCompleteCallback:status:data:)]) {
+                [_delegate requestCompleteCallback:_identifier status:status data:_responseObject];
             }
         }
         
@@ -524,8 +527,8 @@ singletonImplementationWith(UHTTPDataCache, cache);
         if (_callback) {
             _callback(status, nil);
         } else {
-            if (_delegate && [_delegate respondsToSelector:@selector(requestFinishedCallback:status:data:)]) {
-                [_delegate requestFinishedCallback:_identifier status:status data:nil];
+            if (_delegate && [_delegate respondsToSelector:@selector(requestCompleteCallback:status:data:)]) {
+                [_delegate requestCompleteCallback:_identifier status:status data:nil];
             }
         }
         

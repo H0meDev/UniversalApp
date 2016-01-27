@@ -75,7 +75,7 @@ singletonImplementationWith(NetworkSDK, sharedInstance);
     __block Class classResponse = NSClassFromString([className stringByAppendingString:@"Response"]);
     Class classResponseData = NSClassFromString([className stringByAppendingString:@"ResponseData"]);
     
-    return [UHTTPRequest sendAsynWith:param callback:^(UHTTPStatus *status, id data) {
+    return [UHTTPRequest sendAsynWith:param complete:^(UHTTPStatus *status, id data) {
         if (UHTTPCodeOK == status.code) {
             classResponse = (classResponse)?classResponse:[NetworkResponse class];
             NetworkResponse *response = [classResponse modelWithDictionary:data];
@@ -201,7 +201,7 @@ singletonImplementationWith(NetworkSDK, sharedInstance);
     return [UHTTPRequest sendAsynWith:param delegate:self identifier:-1];
 }
 
-- (void)requestFinishedCallback:(int)identifier status:(UHTTPStatus *)status data:(id)data
+- (void)requestCompleteCallback:(int)identifier status:(UHTTPStatus *)status data:(id)data
 {
     if (UHTTPCodeOK == status.code) {
         _classResponse = (_classResponse)?_classResponse:[NetworkResponse class];

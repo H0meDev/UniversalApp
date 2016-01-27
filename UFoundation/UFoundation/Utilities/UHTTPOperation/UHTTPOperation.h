@@ -89,20 +89,20 @@ singletonInterfaceWith(UHTTPDataCache, cache);
 @protocol UHTTPRequestDelegate <NSObject>
 
 @required
-- (void)requestFinishedCallback:(int)identifier status:(UHTTPStatus *)status data:(id)data;
+- (void)requestCompleteCallback:(int)identifier status:(UHTTPStatus *)status data:(id)data;
 
 @optional
-- (void)requestDidReceviedResponseCallback:(int)identifier status:(UHTTPStatus *)status;
-- (void)requestDidReceviedDataCallback:(int)identifier
-                                  data:(id)data
-                        receivedLength:(long long)rlength
-                        expectedLength:(long long)elength;
+- (void)requestResponseCallback:(int)identifier status:(UHTTPStatus *)status;
+- (void)requestProgressCallback:(int)identifier
+                           data:(id)data
+                 receivedLength:(long long)rlength
+                 expectedLength:(long long)elength;
 
 @end
 
-typedef void (^UHTTPReceivedResponseCallback)(UHTTPStatus *status);
-typedef void (^UHTTPReceivedDataCallback)(id data, long long receivedLength, long long expectedLength);
-typedef void (^UHTTPCallback)(UHTTPStatus *status, id data);
+typedef void (^UHTTPResponseCallback)(UHTTPStatus *status);
+typedef void (^UHTTPProgressCallback)(id data, long long receivedLength, long long expectedLength);
+typedef void (^UHTTPCompleteCallback)(UHTTPStatus *status, id data);
 
 @interface UHTTPOperation : NSOperation
 
@@ -114,16 +114,16 @@ typedef void (^UHTTPCallback)(UHTTPStatus *status, id data);
  * Block style
  */
 - (id)initWith:(UHTTPOperationParam *)param
-      callback:(UHTTPCallback)callback;
+      callback:(UHTTPCompleteCallback)callback;
 
 - (id)initWith:(UHTTPOperationParam *)param
-      recevied:(UHTTPReceivedDataCallback)recevied
-      callback:(UHTTPCallback)callback;
+      progress:(UHTTPProgressCallback)progress
+      callback:(UHTTPCompleteCallback)callback;
 
 - (id)initWith:(UHTTPOperationParam *)param
-      response:(UHTTPReceivedResponseCallback)response
-      recevied:(UHTTPReceivedDataCallback)recevied
-      callback:(UHTTPCallback)callback;
+      response:(UHTTPResponseCallback)response
+      progress:(UHTTPProgressCallback)progress
+      callback:(UHTTPCompleteCallback)callback;
 
 // Delegate
 - (id)initWith:(UHTTPOperationParam *)param delegate:(id<UHTTPRequestDelegate>)delegate identifier:(int)identifier;

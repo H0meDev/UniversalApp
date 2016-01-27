@@ -7,6 +7,7 @@
 //
 
 #import "UIImageView+UAExtension.h"
+#import "UHTTPImage.h"
 
 @implementation UIImageView (UAExtension)
 
@@ -99,6 +100,31 @@
         
         return context;
     }
+}
+
+- (void)setNetworkImage:(NSString *)imageURL
+{
+    [self setNetworkImage:imageURL cachedKey:nil placeholder:nil];
+}
+
+- (void)setNetworkImage:(NSString *)imageURL placeholder:(UIImage *)image
+{
+    [self setNetworkImage:imageURL cachedKey:nil placeholder:image];
+}
+
+- (void)setNetworkImage:(NSString *)imageURL cachedKey:(NSString *)cachedKey
+{
+    [self setNetworkImage:imageURL cachedKey:cachedKey placeholder:nil];
+}
+
+- (void)setNetworkImage:(NSString *)imageURL cachedKey:(NSString *)cachedKey placeholder:(UIImage *)image
+{
+    self.image = image;
+    
+    safeBlockReferences();
+    [UHTTPImage downloadImageWith:imageURL cachedKey:cachedKey callback:^(UHTTPImageItem *item) {
+        weakself.image = item.image;
+    }];
 }
 
 @end

@@ -52,6 +52,7 @@
 #import "UITextField+UAExtension.h"
 #import "UIScrollView+UAExtension.h"
 #import "UIButton+UAExtension.h"
+#import "UIImageView+UAExtension.h"
 #import "UITableView+UAExtension.h"
 #import "UITableViewCell+UAExtension.h"
 #import "UIViewController+UAExtension.h"

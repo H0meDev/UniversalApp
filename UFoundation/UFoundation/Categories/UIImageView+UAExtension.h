@@ -13,4 +13,10 @@
 // Get the point of image color
 - (UIColor*)colorForPoint:(CGPoint)point;
 
+// Network image
+- (void)setNetworkImage:(NSString *)imageURL;
+- (void)setNetworkImage:(NSString *)imageURL placeholder:(UIImage *)image;
+- (void)setNetworkImage:(NSString *)imageURL cachedKey:(NSString *)cachedKey;
+- (void)setNetworkImage:(NSString *)imageURL cachedKey:(NSString *)cachedKey placeholder:(UIImage *)image;
+
 @end

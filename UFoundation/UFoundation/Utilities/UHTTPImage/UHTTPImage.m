@@ -338,44 +338,60 @@ singletonImplementationWith(UImageCache, cache);
 
 + (void)downloadImageWith:(NSString *)url cachedKey:(NSString *)key callback:(UHTTPImageCallback)callback
 {
-    NSString *path = [[UImageCache cache]cachedPathWith:url];
-    if (!path) {
-        // Add to cache
-        BOOL needs = [[UImageCache cache]addImageCacheItemWith:url callback:callback];
-        if (needs) {
-            // Download
-            UHTTPRequestParam *param = [UHTTPRequestParam param];
-            param.url = url;
-            
-            [UHTTPRequest sendAsynWith:param callback:^(UHTTPStatus *status, id data) {
-                if (UHTTPCodeOK == status.code) {
-                    // Perform callback and cache image
-                    NSArray *callbacks = [[UImageCache cache]cacheImageWith:url data:data];
-                    for (UHTTPImageCallback callback in callbacks) {
-                        UHTTPImageItem *item = [UHTTPImageItem item];
-                        item.key = key;
-                        item.url = url;
-                        item.image = [UIImage imageWithData:data];
-                        
-                        dispatch_async(main_queue(), ^{
-                            callback(item);
-                        });
-                    }
-                } else {
-                    [[UImageCache cache]removeCachedItemWith:url];
-                }
-            }];
-        }
-    } else {
-        // Load from local
+    @autoreleasepool
+    {
         NSString *path = [[UImageCache cache]cachedPathWith:url];
-        if (callback && checkValidNSString(path)) {
-            UHTTPImageItem *item = [UHTTPImageItem item];
-            item.key = key;
-            item.url = url;
-            item.image = [UIImage imageWithContentsOfFile:path];
-            
-            callback(item);
+        if (!path) {
+            // Add to cache
+            BOOL needs = [[UImageCache cache]addImageCacheItemWith:url callback:callback];
+            if (needs) {
+                // Download
+                UHTTPRequestParam *param = [UHTTPRequestParam param];
+                param.url = url;
+                
+                [UHTTPRequest sendAsynWith:param
+                                  progress:^(id data, long long receivedLength, long long expectedLength) {
+                                      @autoreleasepool
+                                      {
+                                          UHTTPImageItem *item = [UHTTPImageItem item];
+                                          item.key = key;
+                                          item.url = url;
+                                          item.image = [UIImage imageWithData:data];
+                                          
+                                          dispatch_async(main_queue(), ^{
+                                              callback(item);
+                                          });
+                                      }
+                                  } complete:^(UHTTPStatus *status, id data) {
+                                      if (UHTTPCodeOK == status.code) {
+                                          // Perform callback and cache image
+                                          NSArray *callbacks = [[UImageCache cache]cacheImageWith:url data:data];
+                                          for (UHTTPImageCallback callback in callbacks) {
+                                              UHTTPImageItem *item = [UHTTPImageItem item];
+                                              item.key = key;
+                                              item.url = url;
+                                              item.image = [UIImage imageWithData:data];
+                                              
+                                              dispatch_async(main_queue(), ^{
+                                                  callback(item);
+                                              });
+                                          }
+                                      } else {
+                                          [[UImageCache cache]removeCachedItemWith:url];
+                                      }
+                                  }];
+            }
+        } else {
+            // Load from local
+            NSString *path = [[UImageCache cache]cachedPathWith:url];
+            if (callback && checkValidNSString(path)) {
+                UHTTPImageItem *item = [UHTTPImageItem item];
+                item.key = key;
+                item.url = url;
+                item.image = [UIImage imageWithContentsOfFile:path];
+                
+                callback(item);
+            }
         }
     }
 }
