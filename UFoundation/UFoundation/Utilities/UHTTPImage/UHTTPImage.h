@@ -22,7 +22,16 @@ typedef void (^UHTTPImageCallback)(UHTTPImageItem *item);
 @interface UHTTPImage : NSObject
 
 + (void)downloadImageWith:(NSString *)url callback:(UHTTPImageCallback)callback;
-+ (void)downloadImageWith:(NSString *)url cachedKey:(NSString *)key callback:(UHTTPImageCallback)callback;
++ (void)downloadImageWith:(NSString *)url progress:(UHTTPImageCallback)progress callback:(UHTTPImageCallback)callback;
+
++ (void)downloadImageWith:(NSString *)url
+                cachedKey:(NSString *)key
+                 callback:(UHTTPImageCallback)callback;
+
++ (void)downloadImageWith:(NSString *)url
+                cachedKey:(NSString *)key
+                 progress:(UHTTPImageCallback)progress
+                 callback:(UHTTPImageCallback)callback;
 
 + (NSInteger)sizeOfCaches;
 + (NSInteger)numberOfCaches;

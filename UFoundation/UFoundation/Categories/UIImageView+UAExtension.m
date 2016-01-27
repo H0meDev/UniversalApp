@@ -122,7 +122,9 @@
     self.image = image;
     
     safeBlockReferences();
-    [UHTTPImage downloadImageWith:imageURL cachedKey:cachedKey callback:^(UHTTPImageItem *item) {
+    [UHTTPImage downloadImageWith:imageURL cachedKey:cachedKey progress:^(UHTTPImageItem *item) {
+        weakself.image = item.image;
+    } callback:^(UHTTPImageItem *item) {
         weakself.image = item.image;
     }];
 }
