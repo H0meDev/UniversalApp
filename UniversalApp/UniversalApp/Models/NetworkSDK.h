@@ -17,12 +17,19 @@ typedef NS_ENUM(NSInteger, NetworkCode)
 
 typedef void (^NetworkCallback)(UHTTPStatus *status, NetworkResponse *response);
 
+@protocol NetworkSDKDelegate <NSObject>
+
+@required
+- (void)networkSDKCallback:(UHTTPStatus *)status response:(NetworkResponse *)response;
+
+@end
+
 @interface NetworkSDK : NSObject
 
 // 校导网登录
-+ (void)loginWith:(LoginRequest *)request callback:(NetworkCallback)callback;
++ (UHTTPOperation *)loginWith:(LoginRequest *)request callback:(NetworkCallback)callback;
 
 // 获取用户信息
-+ (void)userInfoWithCallback:(NetworkCallback)callback;
++ (UHTTPOperation *)userInfoWithCallback:(NetworkCallback)callback;
 
 @end

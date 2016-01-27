@@ -39,7 +39,7 @@
 - (void)setHeaderView:(URefreshHeaderView *)headerView
 {
     headerView.scrollView = self;
-    objc_setAssociatedObject(self, "UIScrollViewHeader", headerView, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, "UIScrollViewHeader", headerView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (URefreshFooterView *)footerView
@@ -58,7 +58,7 @@
 - (void)setFooterView:(URefreshFooterView *)footerView
 {
     footerView.scrollView = self;
-    objc_setAssociatedObject(self, "UIScrollViewFooter", footerView, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, "UIScrollViewFooter", footerView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

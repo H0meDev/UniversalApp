@@ -41,7 +41,7 @@ singletonImplementationWith(NetworkSDK, sharedInstance);
     return self;
 }
 
-- (void)requestWithURL:(NSString *)url
+- (UHTTPOperation *)requestWithURL:(NSString *)url
                 method:(NSString *)method
                request:(NetworkRequest *)request
               callback:(NetworkCallback)callback
@@ -75,7 +75,7 @@ singletonImplementationWith(NetworkSDK, sharedInstance);
     __block Class classResponse = NSClassFromString([className stringByAppendingString:@"Response"]);
     Class classResponseData = NSClassFromString([className stringByAppendingString:@"ResponseData"]);
     
-    [UHTTPRequest sendAsynWith:param callback:^(UHTTPStatus *status, id data) {
+    return [UHTTPRequest sendAsynWith:param callback:^(UHTTPStatus *status, id data) {
         if (UHTTPCodeOK == status.code) {
             classResponse = (classResponse)?classResponse:[NetworkResponse class];
             NetworkResponse *response = [classResponse modelWithDictionary:data];
@@ -102,14 +102,14 @@ singletonImplementationWith(NetworkSDK, sharedInstance);
 }
 
 // 校导网登录
-+ (void)loginWith:(LoginRequest *)request callback:(NetworkCallback)callback
++ (UHTTPOperation *)loginWith:(LoginRequest *)request callback:(NetworkCallback)callback
 {
     NSString *interface = @"api/member/login/__version/2.0.0";
-    [[self sharedInstance]requestWithURL:interface method:@"POST" request:request callback:callback];
+    return [[self sharedInstance]requestWithURL:interface method:@"POST" request:request callback:callback];
 }
 
 // 获取用户信息
-+ (void)userInfoWithCallback:(NetworkCallback)callback
++ (UHTTPOperation *)userInfoWithCallback:(NetworkCallback)callback
 {
     UserInfo *userInfo = [UserInfo info];
     UserInfoRequest *request = [UserInfoRequest model];
@@ -117,7 +117,7 @@ singletonImplementationWith(NetworkSDK, sharedInstance);
     request.mid = userInfo.login.mid;
     
     NSString *interface = @"api/user/info/__version/2.0.0";
-    [[self sharedInstance]requestWithURL:interface method:@"POST" request:request callback:callback];
+    return [[self sharedInstance]requestWithURL:interface method:@"POST" request:request callback:callback];
 }
 
 @end

@@ -8,8 +8,15 @@
 
 #import "NextViewController.h"
 #import "LastViewController.h"
+#import "NetworkSDK.h"
+#import "UserInfo.h"
 
 @interface NextViewController ()
+{
+    UHTTPOperation *_request;
+}
+
+@property (nonatomic, strong) UButton *button;
 
 @end
 
@@ -48,12 +55,59 @@
     button.backgroundColor = sysRedColor();
     [button setTarget:self action:@selector(buttonAction)];
     [self addSubview:button];
+    
+//    // 校导网登录
+//    LoginRequest *request = [LoginRequest model];
+//    request.username = @"";
+//    request.password = @"";
+//    
+//    __weak typeof(self) weakself = self;
+//    _request = [NetworkSDK loginWith:request callback:^(UHTTPStatus *status, NetworkResponse *response) {
+//        if (NetworkSDKCodeOK == response.status) {
+//            // 登陆成功
+//            if (checkClass(response.data, LoginResponseData)) {
+//                [[UserInfo info]setLogin:response.data];
+//                UDataBase *database = [UserInfo info].database;
+////                [database createTableWith:[response.data class]];
+////                [database insertWithArray:@[response.data, response.data, response.data]];
+//                NSArray *results = [database selectWith:[response.data class] conditions:nil];
+//                NSLog(@"%@", results);
+//            }
+//            
+//            // 接下来就获取信息吧
+//            [NetworkSDK userInfoWithCallback:^(UHTTPStatus *status,NetworkResponse *response) {
+//                if (NetworkSDKCodeOK == response.status) {
+//                    // 获取成功
+//                } else {
+//                    // 获取失败
+//                }
+//                
+//                weakself.button.hidden = NO;
+//            }];
+//        } else {
+//            // 登录失败
+//        }
+//    }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (_request && !_request.isCancelled) {
+        [_request cancel];
+    }
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    //
 }
 
 /*

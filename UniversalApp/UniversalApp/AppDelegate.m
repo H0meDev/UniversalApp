@@ -9,8 +9,6 @@
 #import "AppDelegate.h"
 #import "BaseNavigationController.h"
 #import "HomeTabViewController.h"
-#import "NetworkSDK.h"
-#import "UserInfo.h"
 
 @interface AppDelegate ()
 
