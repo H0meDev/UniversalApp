@@ -11,4 +11,7 @@
 
 @interface UTextView : UITextView
 
+@property (nonatomic, copy) NSString *placeholder;
+@property (nonatomic, copy) UIColor *placeholderColor;
+
 @end

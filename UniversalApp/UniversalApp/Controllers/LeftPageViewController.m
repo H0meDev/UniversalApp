@@ -14,6 +14,7 @@
 {
     UListView *_listView;
     NSArray *_dataList;
+    UTextView *_textView;
 }
 
 @end
@@ -28,15 +29,15 @@
     self.enableBackButton = NO;
     self.navigationBarView.title = @"Left";
     
-//    UButton *rightView = [UButton button];
-//    rightView.selected = YES;
-//    rightView.frame = rectMake(screenWidth() - 60, 0, 60, naviHeight());
-//    [rightView setTitle:@"Option"];
-//    [rightView setTitleColor:sysBlackColor()];
-//    [rightView setTitleFont:systemFont(16)];
-//    [rightView setTarget:self action:@selector(buttonAction:)];
-//    self.navigationBarView.rightView = rightView;
-//    
+    UButton *rightView = [UButton button];
+    rightView.selected = YES;
+    rightView.frame = rectMake(screenWidth() - 60, 0, 60, naviHeight());
+    [rightView setTitle:@"Option"];
+    [rightView setTitleColor:sysBlackColor()];
+    [rightView setTitleFont:systemFont(16)];
+    [rightView setTarget:self action:@selector(buttonAction:)];
+    self.navigationBarView.rightView = rightView;
+//
 //    CGFloat height = self.containerView.sizeHeight - tabHeight();
 //    _listView = [[UListView alloc]initWith:UListViewStyleHorizontal];
 //    _listView.frame = rectMake(0, 0, screenWidth(), height);
@@ -50,12 +51,14 @@
 //                  @"http://image.fvideo.cn/uploadfile/2012/03/15/20120315110710016.jpg",
 //                  @"http://news.cz001.com.cn/attachement/jpg/site2/20120614/d067e519eae31143846013.jpg"];
     
-    UITextView *textView = [[UITextView alloc]init];
-    textView.frame = rectMake(0, 0, screenWidth(), 300);
+    UTextView *textView = [[UTextView alloc]init];
+    textView.frame = rectMake(0, 0, screenWidth(), 200);
     textView.font = systemFont(16);
-    textView.placeholder = @"这是一段文本";
+    textView.placeholder = @"请输入一段文本";
+    textView.text = @"";
     textView.placeholderColor = sysLightGrayColor();
     [self addSubview:textView];
+    _textView = textView;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -81,7 +84,9 @@
 
 - (void)buttonAction:(UButton *)button
 {
-    [UHTTPImage removeAllCaches];
+//    [UHTTPImage removeAllCaches];
+    
+    [_textView resignFirstResponder];
 }
 
 - (void)headerAction
