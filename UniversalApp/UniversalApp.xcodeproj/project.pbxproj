@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		F50233311B70E3AA00DB94EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F50233331B70E3AA00DB94EB /* Localizable.strings */; };
 		F511C1DC1B6F2A5F00DBAECE /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F511C1DB1B6F2A5F00DBAECE /* Resource.bundle */; };
-		F514CC8A1BF59D5B001B8906 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F514CC891BF59D5B001B8906 /* Launch Screen.storyboard */; };
 		F515080C1B92F60D00C12A87 /* LeftPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F515080B1B92F60D00C12A87 /* LeftPageViewController.m */; };
 		F51508101B92F61E00C12A87 /* MiddlePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F515080F1B92F61E00C12A87 /* MiddlePageViewController.m */; };
 		F51508131B92F62D00C12A87 /* RightPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51508121B92F62D00C12A87 /* RightPageViewController.m */; };
@@ -38,9 +37,11 @@
 		F5687D351B022B640073594C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F5687D341B022B640073594C /* AppDelegate.m */; };
 		F5687D3D1B022B640073594C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5687D3C1B022B640073594C /* Images.xcassets */; };
 		F5687D651B022D510073594C /* UFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5687D641B022D510073594C /* UFoundation.framework */; };
+		F575C7761C586156004516D5 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F575C7751C586156004516D5 /* Launch Screen.storyboard */; };
 		F5859F471B70B0BC004EC7D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F5859F491B70B0BC004EC7D2 /* InfoPlist.strings */; };
 		F5C5E5B31BB3C0EB00AC039F /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5C5E5B21BB3C0EB00AC039F /* CurrentViewController.m */; };
 		F5E7B0C51C1FC09B009FEB76 /* LeftListItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E7B0C41C1FC09B009FEB76 /* LeftListItemCell.m */; };
+		F5E7CBBE1C43AB7B00839C44 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F5E7CBBD1C43AB7B00839C44 /* libsqlite3.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +59,6 @@
 		F50233341B70E3AC00DB94EB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		F502DA191B709D0D00AC5B52 /* UniversalApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UniversalApp-Prefix.pch"; sourceTree = "<group>"; };
 		F511C1DB1B6F2A5F00DBAECE /* Resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Resource.bundle; path = ../UFoundation/Resource.bundle; sourceTree = "<group>"; };
-		F514CC891BF59D5B001B8906 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		F515080A1B92F60D00C12A87 /* LeftPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftPageViewController.h; sourceTree = "<group>"; };
 		F515080B1B92F60D00C12A87 /* LeftPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftPageViewController.m; sourceTree = "<group>"; };
 		F515080E1B92F61E00C12A87 /* MiddlePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiddlePageViewController.h; sourceTree = "<group>"; };
@@ -116,6 +116,7 @@
 		F5687D4B1B022B640073594C /* UniversalAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UniversalAppTests.m; sourceTree = "<group>"; };
 		F5687D5C1B022C570073594C /* UFoundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UFoundation.xcodeproj; path = ../UFoundation/UFoundation.xcodeproj; sourceTree = "<group>"; };
 		F5687D641B022D510073594C /* UFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UFoundation.framework; path = "DerivedData/UniversalApp/Build/Products/Debug-iphonesimulator/UFoundation.framework"; sourceTree = "<group>"; };
+		F575C7751C586156004516D5 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		F5859F481B70B0BC004EC7D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F5859F4A1B70B1A3004EC7D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Info.plist; sourceTree = "<group>"; };
 		F595BB001B70BB0800659E1D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -124,6 +125,7 @@
 		F5C5E5B21BB3C0EB00AC039F /* CurrentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentViewController.m; sourceTree = "<group>"; };
 		F5E7B0C31C1FC09B009FEB76 /* LeftListItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftListItemCell.h; sourceTree = "<group>"; };
 		F5E7B0C41C1FC09B009FEB76 /* LeftListItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftListItemCell.m; sourceTree = "<group>"; };
+		F5E7CBBD1C43AB7B00839C44 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5E7CBBE1C43AB7B00839C44 /* libsqlite3.tbd in Frameworks */,
 				F5687D651B022D510073594C /* UFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,6 +144,7 @@
 		F511C1F71B6F545900DBAECE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F5E7CBBD1C43AB7B00839C44 /* libsqlite3.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -171,16 +175,16 @@
 		F51C115B1B905B6900F29C3F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F51C11621B905B6900F29C3F /* NetworkModel.h */,
+				F51C11631B905B6900F29C3F /* NetworkModel.m */,
+				F51C11641B905B6900F29C3F /* NetworkSDK.h */,
+				F51C11651B905B6900F29C3F /* NetworkSDK.m */,
 				F51C115C1B905B6900F29C3F /* GlobalManager.h */,
 				F51C115D1B905B6900F29C3F /* GlobalManager.m */,
 				F51C115E1B905B6900F29C3F /* KeyValueObserver.h */,
 				F51C115F1B905B6900F29C3F /* KeyValueObserver.m */,
 				F51C11601B905B6900F29C3F /* LocalNotification.h */,
 				F51C11611B905B6900F29C3F /* LocalNotification.m */,
-				F51C11621B905B6900F29C3F /* NetworkModel.h */,
-				F51C11631B905B6900F29C3F /* NetworkModel.m */,
-				F51C11641B905B6900F29C3F /* NetworkSDK.h */,
-				F51C11651B905B6900F29C3F /* NetworkSDK.m */,
 				F51C11661B905B6900F29C3F /* SkinManager.h */,
 				F51C11671B905B6900F29C3F /* SkinManager.m */,
 				F51C11681B905B6900F29C3F /* UserInfo.h */,
@@ -277,7 +281,7 @@
 				F56C2CF71B0446B100D5DF66 /* AppBase */,
 				F5687D331B022B640073594C /* AppDelegate.h */,
 				F5687D341B022B640073594C /* AppDelegate.m */,
-				F514CC891BF59D5B001B8906 /* Launch Screen.storyboard */,
+				F575C7751C586156004516D5 /* Launch Screen.storyboard */,
 				F5687D3C1B022B640073594C /* Images.xcassets */,
 				F5687D2F1B022B640073594C /* Supporting Files */,
 			);
@@ -427,12 +431,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F575C7761C586156004516D5 /* Launch Screen.storyboard in Resources */,
 				F5687D3D1B022B640073594C /* Images.xcassets in Resources */,
 				F50233311B70E3AA00DB94EB /* Localizable.strings in Resources */,
 				F5859F471B70B0BC004EC7D2 /* InfoPlist.strings in Resources */,
 				F511C1DC1B6F2A5F00DBAECE /* Resource.bundle in Resources */,
 				F51C11791B905B6900F29C3F /* default_skin.plist in Resources */,
-				F514CC8A1BF59D5B001B8906 /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,9 +12,17 @@
 
 typedef NS_ENUM(NSInteger, NetworkCode)
 {
-    NetworkSDKCodeOK = 200,
+    NetworkSDKCodeOK = 1,
 };
 
+typedef void (^NetworkCallback)(UHTTPStatus *status, NetworkResponse *response);
+
 @interface NetworkSDK : NSObject
+
+// 校导网登录
++ (void)loginWith:(LoginRequest *)request callback:(NetworkCallback)callback;
+
+// 获取用户信息
++ (void)userInfoWithCallback:(NetworkCallback)callback;
 
 @end

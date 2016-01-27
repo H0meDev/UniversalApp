@@ -7,11 +7,18 @@
 //
 
 #import "BaseModel.h"
+#import "NetworkModel.h"
 
 /*
  * User information model
  */
 
 @interface UserInfo : BaseModel
+
+singletonInterfaceWith(UserInfo, info);
+
+@property (nonatomic, strong) UserInfoResponseData *info;
+@property (nonatomic, strong) LoginResponseData *login;
+@property (nonatomic, strong) UDataBase *database;
 
 @end

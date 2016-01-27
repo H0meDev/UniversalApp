@@ -10,4 +10,20 @@
 
 @implementation UserInfo
 
+singletonImplementationWith(UserInfo, info);
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        UDataBaseInfo *info = [[UDataBaseInfo alloc]init];
+        info.fileName = @"cailiang";
+        _database = [[UDataBase alloc]initWith:info];
+        
+        
+    }
+    
+    return self;
+}
+
 @end

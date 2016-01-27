@@ -14,9 +14,6 @@
 
 @interface UModel ()
 
-+ (NSArray *)properties;
-- (id)initWithModel:(UModel *)model;
-
 @end
 
 @implementation UModel

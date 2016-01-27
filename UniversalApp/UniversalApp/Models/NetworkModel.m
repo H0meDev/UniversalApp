@@ -8,14 +8,46 @@
 
 #import "NetworkModel.h"
 
-@implementation NetworkModel
+@implementation NetworkRequest
 
 @end
 
-@implementation NetworkModelContentFieldsItem
+@implementation NetworkResponse
 
 @end
 
-@implementation NetworkModelContentFieldsItemContentFieldsItem
+@implementation NetworkResponseData
+
+@end
+
+@implementation LoginRequest
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        _platform = 2;
+        _client_key = @"241eee72f987526954281241bbeb7c39";
+    }
+    
+    return self;
+}
+
+- (void)setPassword:(NSString *)password
+{
+    _password = [password MD5String];
+}
+
+@end
+
+@implementation LoginResponseData
+
+@end
+
+@implementation UserInfoRequest
+
+@end
+
+@implementation UserInfoResponseData
 
 @end

@@ -13,6 +13,9 @@
  */
 @interface UModel : NSObject
 
+// Properties of model
++ (NSArray *)properties;
+
 // Init
 + (id)model;
 
@@ -36,6 +39,9 @@
 
 // Model array to JSON (NSDictionary) array with UModel key
 + (NSArray *)arrayAndKeysWithModels:(NSArray *)array;
+
+// Init with model
+- (id)initWithModel:(UModel *)model;
 
 // Model to NSDictionary
 - (NSDictionary *)dictionary;

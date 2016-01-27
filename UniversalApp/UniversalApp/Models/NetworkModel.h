@@ -8,22 +8,54 @@
 
 #import "BaseModel.h"
 
-@interface NetworkModel : BaseModel
-
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSArray *content_fields;
+@interface NetworkRequest : BaseModel
 
 @end
 
-@interface NetworkModelContentFieldsItem : BaseModel
+@interface NetworkResponse : BaseModel
 
-@property (nonatomic, strong) NSString *time;
-@property (nonatomic, strong) NSArray *content_fields;
+@property (nonatomic, assign) NSInteger status;
+@property (nonatomic, strong) NSString *msg;
+@property (nonatomic, strong) id data;
 
 @end
 
-@interface NetworkModelContentFieldsItemContentFieldsItem : BaseModel
+@interface NetworkResponseData : BaseModel
 
-@property (nonatomic, strong) NSString *time;
+@end
+
+@interface LoginRequest : NetworkRequest
+
+@property (nonatomic, strong) NSString *client_key;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *password;
+@property (nonatomic, assign) NSInteger platform;
+
+@end
+
+@interface LoginResponseData : NetworkResponseData
+
+@property (nonatomic, assign) NSInteger id_;
+@property (nonatomic, assign) NSInteger jti;
+@property (nonatomic, strong) NSString *iss;
+@property (nonatomic, strong) NSString *aud;
+@property (nonatomic, strong) NSString *mid;
+@property (nonatomic, assign) NSInteger exp;
+@property (nonatomic, assign) NSInteger time;
+@property (nonatomic, strong) NSString *token_type;
+@property (nonatomic, strong) NSString *access_token;
+@property (nonatomic, strong) NSString *scope;
+@property (nonatomic, assign) NSInteger platform;
+
+@end
+
+@interface UserInfoRequest : NetworkRequest
+
+@property (nonatomic, strong) NSString *_fields;
+@property (nonatomic, strong) NSString *mid;
+
+@end
+
+@interface UserInfoResponseData : NetworkResponseData
 
 @end
