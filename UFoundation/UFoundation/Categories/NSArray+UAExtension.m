@@ -61,6 +61,14 @@
 
 - (BOOL)containsItem:(id)item
 {
+    if (!item) {
+        return NO;
+    }
+    
+    if ([self respondsToSelector:@selector(containsObject:)]) {
+        return [self containsObject:item];
+    }
+    
     for (id object in self) {
         if (object == item) {
             return YES;

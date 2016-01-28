@@ -42,6 +42,8 @@
     _listView.frame = rectMake(0, 0, screenWidth(), height);
     _listView.delegate = self;
     _listView.dataSource = self;
+    _listView.cancelable = YES;
+    _listView.multipleSelected = YES;
     [self addSubview:_listView];
     
     _dataList = @[@"http://b.hiphotos.baidu.com/zhidao/pic/item/d0c8a786c9177f3e0693932571cf3bc79f3d5676.jpg",
