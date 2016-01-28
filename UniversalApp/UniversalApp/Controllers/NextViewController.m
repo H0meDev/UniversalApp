@@ -58,8 +58,8 @@
     
     // 校导网登录
     LoginRequest *request = [LoginRequest model];
-    request.username = @"15827180617";
-    request.password = @"123456";
+    request.username = @"";
+    request.password = @"";
     
     [NetworkSDKExtension loginWith:request delegate:self identifier:0];
     
