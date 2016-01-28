@@ -1004,7 +1004,7 @@
         }
     }
     
-    _itemArray = marray;
+    _itemArray = [marray copy];
     originValue += _footerValue; // Footer
     
     // Resize
@@ -1028,7 +1028,7 @@
     }
     
     // Load cells
-    self.scrollView.contentOffset = CGPointZero;
+    self.scrollView.contentOffset = self.scrollView.contentOffset;
 }
 
 - (void)clearSelectedIndexs
@@ -1036,6 +1036,44 @@
     _selectedIndexs = nil;
     
     [self reloadData];
+}
+
+- (void)moveToIndex:(NSInteger)index
+{
+    [self moveToIndex:index animated:YES];
+}
+
+- (void)moveToIndex:(NSInteger)index animated:(BOOL)animated
+{
+    if (!_itemArray) {
+        [self reloadData];
+    }
+    
+    index = (index < 0)?0:index;
+    index = (index >= _itemArray.count)?_itemArray.count - 1:index;
+    
+    UListViewCellItem *item = _itemArray[index];
+    CGFloat originValue = item.originValue;
+    CGPoint offset = CGPointZero;
+    
+    switch (_style) {
+        case UListViewStyleHorizontal:
+        {
+            offset = pointMake(originValue, 0);
+        }
+            break;
+            
+        case UListViewStyleVertical:
+        {
+            offset = pointMake(0, originValue);
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    [self.scrollView setContentOffset:offset animated:animated];
 }
 
 - (void)selectCellAtIndex:(NSInteger)index

@@ -75,6 +75,7 @@
 - (void)buttonAction:(UButton *)button
 {
     [UHTTPImage removeAllCaches];
+    [_listView reloadData];
 }
 
 - (void)headerAction

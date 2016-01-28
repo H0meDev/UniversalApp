@@ -86,6 +86,10 @@ typedef NS_ENUM(NSInteger, UListViewCellSepratorLineStyle)
 - (void)reloadData;
 - (void)clearSelectedIndexs;
 
+// Move
+- (void)moveToIndex:(NSInteger)index;
+- (void)moveToIndex:(NSInteger)index animated:(BOOL)animated;
+
 // Selection
 - (void)selectCellAtIndex:(NSInteger)index;
 - (void)deselectCellAtIndex:(NSInteger)index; // With animated

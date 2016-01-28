@@ -864,4 +864,14 @@
     self.scrollView.contentOffset = self.scrollView.contentOffset;
 }
 
+- (void)moveToPath:(UIndexPath *)path
+{
+    //
+}
+
+- (void)moveToPath:(UIndexPath *)path animated:(BOOL)animated
+{
+    //
+}
+
 @end

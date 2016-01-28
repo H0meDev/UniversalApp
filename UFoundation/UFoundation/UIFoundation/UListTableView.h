@@ -62,7 +62,12 @@
 - (UListTableViewCell *)cellReuseWith:(NSString *)cellName forIdentifier:(NSString *)identifier;
 - (UListTableViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier;
 
+// Refresh
 - (void)reloadData;
 - (void)reloadSection:(NSInteger)section;
+
+// Move
+- (void)moveToPath:(UIndexPath *)path;
+- (void)moveToPath:(UIndexPath *)path animated:(BOOL)animated;
 
 @end
