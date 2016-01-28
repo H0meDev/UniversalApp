@@ -92,7 +92,7 @@
 
 - (NSInteger)numberOfItemsInListView:(UListView *)listView
 {
-    return 1000;
+    return 10000;
 }
 
 - (CGFloat)listView:(UListView *)listView sizeValueForIndex:(NSInteger)index
