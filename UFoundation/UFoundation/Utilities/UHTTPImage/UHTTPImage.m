@@ -52,7 +52,6 @@
 
 @interface UImageCache : NSObject
 {
-    NSLock *_cacheLock;
     NSString *_cachePath;
     NSMutableArray *_cachedArray;
     NSMutableArray *_memcaches;
@@ -79,7 +78,6 @@ singletonImplementationWith(UImageCache, cache);
 
 - (void)loadAllCachedItems
 {
-    _cacheLock = [[NSLock alloc]init];
     _memcaches = [NSMutableArray array];
     
     _cachePath = cachePathWith(@"Images");
@@ -136,18 +134,16 @@ singletonImplementationWith(UImageCache, cache);
     [cachedArray writeToFile:filePath atomically:YES];
 }
 
-- (BOOL)addImageCacheItemWith:(NSString *)url progress:(UHTTPImageCallback)progress callback:(UHTTPImageCallback)callback
+- (BOOL)addImageCacheItemWith:(NSString *)url progress:(UHTTPImageProgressCallback)progress callback:(UHTTPImageCompleteCallback)callback
 {
     return [self addImageCacheItemWith:url cachedkey:nil progress:progress callback:callback];
 }
 
 - (BOOL)addImageCacheItemWith:(NSString *)url
                     cachedkey:(NSString *)key
-                     progress:(UHTTPImageCallback)progress
-                     callback:(UHTTPImageCallback)callback
+                     progress:(UHTTPImageProgressCallback)progress
+                     callback:(UHTTPImageCompleteCallback)callback
 {
-    [_cacheLock lock];
-    
     UImageCacheItem *cacheItem = nil;
     for (UImageCacheItem *item in _cachedArray) {
         if ([item.url isEqualToString:url]) {
@@ -169,22 +165,29 @@ singletonImplementationWith(UImageCache, cache);
         item.cachedKey = key;
         item.cachedDate = [NSDate timeInterval];
         
-        if (callback && ![item.callbackArray containsItem:callback]) {
+        // Progress
+        if (progress) {
+            [item.progressArray addObject:progress];
+        }
+        
+        // Callback
+        if (callback) {
             [item.callbackArray addObject:callback];
         }
         
+        // Keep item
         [_cachedArray addObject:item];
     } else {
-        if (progress) {
-            [cacheItem.callbackArray addObject:progress];
+        // Progress
+        if (progress && ![cacheItem.progressArray containsItem:progress]) {
+            [cacheItem.progressArray addObject:progress];
         }
         
-        if (callback) {
+        // Callback
+        if (callback && ![cacheItem.callbackArray containsItem:callback]) {
             [cacheItem.callbackArray addObject:callback];
         }
     }
-    
-    [_cacheLock unlock];
     
     return (cacheItem == nil);
 }
@@ -196,8 +199,6 @@ singletonImplementationWith(UImageCache, cache);
 
 - (NSArray *)cacheImageWith:(NSString *)url cachedkey:(NSString *)key data:(NSData *)data
 {
-    [_cacheLock lock];
-    
     UImageCacheItem *cacheItem = nil;
     for (UImageCacheItem *item in _cachedArray) {
         if ([item.url isEqualToString:url]) {
@@ -227,6 +228,9 @@ singletonImplementationWith(UImageCache, cache);
         cacheItem.fileName = fileName;
     }
     
+    // All progress
+    [cacheItem.progressArray removeAllObjects];
+    
     // All callbacks
     NSArray *callbacks = nil;
     if (checkValidNSArray(cacheItem.callbackArray)) {
@@ -237,10 +241,28 @@ singletonImplementationWith(UImageCache, cache);
     // Clear all callbacks and cache
     [self cacheAllItems];
     
-    [_cacheLock unlock];
-    
     return callbacks;
+}
 
+- (NSArray *)progressArrayWith:(NSString *)url cachedkey:(NSString *)key
+{
+    UImageCacheItem *cacheItem = nil;
+    for (UImageCacheItem *item in _cachedArray) {
+        if ([item.url isEqualToString:url]) {
+            if (checkValidNSString(key)) {
+                if ([item.cachedKey isEqualToString:key]) {
+                    cacheItem = item;
+                    break;
+                }
+            } else {
+                key = [url MD5String];
+                cacheItem = item;
+                break;
+            }
+        }
+    }
+    
+    return cacheItem.progressArray;
 }
 
 - (NSString *)cachedPathWith:(NSString *)url
@@ -340,27 +362,27 @@ singletonImplementationWith(UImageCache, cache);
 
 @implementation UHTTPImage
 
-+ (void)downloadImageWith:(NSString *)url callback:(UHTTPImageCallback)callback
++ (void)downloadImageWith:(NSString *)url callback:(UHTTPImageCompleteCallback)callback
 {
     [self downloadImageWith:url cachedKey:nil progress:NULL callback:callback];
 }
 
-+ (void)downloadImageWith:(NSString *)url progress:(UHTTPImageCallback)progress callback:(UHTTPImageCallback)callback
++ (void)downloadImageWith:(NSString *)url progress:(UHTTPImageProgressCallback)progress callback:(UHTTPImageCompleteCallback)callback
 {
     [self downloadImageWith:url cachedKey:nil progress:progress callback:callback];
 }
 
 + (void)downloadImageWith:(NSString *)url
                 cachedKey:(NSString *)key
-                 callback:(UHTTPImageCallback)callback
+                 callback:(UHTTPImageCompleteCallback)callback
 {
     [self downloadImageWith:url cachedKey:key progress:NULL callback:callback];
 }
 
 + (void)downloadImageWith:(NSString *)url
                 cachedKey:(NSString *)key
-                 progress:(UHTTPImageCallback)progress
-                 callback:(UHTTPImageCallback)callback
+                 progress:(UHTTPImageProgressCallback)progress
+                 callback:(UHTTPImageCompleteCallback)callback
 {
     @autoreleasepool
     {
@@ -373,13 +395,29 @@ singletonImplementationWith(UImageCache, cache);
                 UHTTPRequestParam *param = [UHTTPRequestParam param];
                 param.url = url;
                 
+                NSMutableData *mdata = [NSMutableData data];
                 [UHTTPRequest sendAsynWith:param
-                                  progress:NULL
+                                  progress:^(id data, long long receivedLength, long long expectedLength) {
+                                      @autoreleasepool
+                                      {
+                                          if (checkValidNSData(data)) {
+                                              // Downloading progress
+                                              [mdata appendData:data];
+                                              
+                                              NSArray *progressArray = [[UImageCache cache]progressArrayWith:url cachedkey:key];
+                                              for (UHTTPImageProgressCallback progress in progressArray) {
+                                                  dispatch_async(main_queue(), ^{
+                                                      progress(data, receivedLength, expectedLength);
+                                                  });
+                                              }
+                                          }
+                                      }
+                                  }
                                   complete:^(UHTTPStatus *status, id data) {
                                       if (UHTTPCodeOK == status.code) {
                                           // Perform callback and cache image
                                           NSArray *callbackArray = [[UImageCache cache]cacheImageWith:url data:data];
-                                          for (UHTTPImageCallback callback in callbackArray) {
+                                          for (UHTTPImageCompleteCallback callback in callbackArray) {
                                               UHTTPImageItem *item = [UHTTPImageItem item];
                                               item.key = key;
                                               item.url = url;

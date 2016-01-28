@@ -642,11 +642,11 @@
             switch (_style) {
                 case UListViewStyleHorizontal:
                 {
-                    if (beginIndex == -1 && maxValue >= offsetLValue) {
+                    if (beginIndex == -1 && maxValue > offsetLValue) {
                         beginIndex = index;
                     }
                     
-                    if ((maxValue <= offsetRValue) || (minValue <= offsetRValue && maxValue >= offsetRValue)) {
+                    if ((maxValue < offsetRValue) || (minValue < offsetRValue && maxValue > offsetRValue)) {
                         endIndex = index;
                     } else {
                         needsBreak = YES;
@@ -656,11 +656,11 @@
                     
                 case UListViewStyleVertical:
                 {
-                    if (beginIndex == -1 && maxValue >= offsetTValue) {
+                    if (beginIndex == -1 && maxValue > offsetTValue) {
                         beginIndex = index;
                     }
                     
-                    if ((maxValue <= offsetBValue) || (minValue <= offsetBValue && maxValue >= offsetBValue)) {
+                    if ((maxValue < offsetBValue) || (minValue < offsetBValue && maxValue > offsetBValue)) {
                         endIndex = index;
                     } else {
                         needsBreak = YES;

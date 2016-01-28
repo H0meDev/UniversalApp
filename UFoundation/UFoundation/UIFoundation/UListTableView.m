@@ -125,7 +125,6 @@
         
         _style = style;
         _separatorStyle = UListViewCellSepratorLineStyleNoEnds;
-        
         _cellReusePool = [NSMutableDictionary dictionary];
     }
     
@@ -478,7 +477,7 @@
                         switch (_style) {
                             case UListViewStyleVertical:
                             {
-                                if (!((startValue > offsetBValue) || (endValue < offsetTValue))) {
+                                if (!((startValue >= offsetBValue) || (endValue < offsetTValue))) {
                                     [imarray addObject:item];
                                 }
                             }
@@ -486,7 +485,7 @@
                                 
                             case UListViewStyleHorizontal:
                             {
-                                if (!((startValue > offsetRValue) || (endValue < offsetLValue))) {
+                                if (!((startValue >= offsetRValue) || (endValue < offsetLValue))) {
                                     [imarray addObject:item];
                                 }
                             }

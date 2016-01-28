@@ -17,21 +17,22 @@
 
 @end
 
-typedef void (^UHTTPImageCallback)(UHTTPImageItem *item);
+typedef void (^UHTTPImageProgressCallback)(NSData *data, long long recieved, long long total);
+typedef void (^UHTTPImageCompleteCallback)(UHTTPImageItem *item);
 
 @interface UHTTPImage : NSObject
 
-+ (void)downloadImageWith:(NSString *)url callback:(UHTTPImageCallback)callback;
-+ (void)downloadImageWith:(NSString *)url progress:(UHTTPImageCallback)progress callback:(UHTTPImageCallback)callback;
++ (void)downloadImageWith:(NSString *)url callback:(UHTTPImageCompleteCallback)callback;
++ (void)downloadImageWith:(NSString *)url progress:(UHTTPImageProgressCallback)progress callback:(UHTTPImageCompleteCallback)callback;
 
 + (void)downloadImageWith:(NSString *)url
                 cachedKey:(NSString *)key
-                 callback:(UHTTPImageCallback)callback;
+                 callback:(UHTTPImageCompleteCallback)callback;
 
 + (void)downloadImageWith:(NSString *)url
                 cachedKey:(NSString *)key
-                 progress:(UHTTPImageCallback)progress
-                 callback:(UHTTPImageCallback)callback;
+                 progress:(UHTTPImageProgressCallback)progress
+                 callback:(UHTTPImageCompleteCallback)callback;
 
 + (NSInteger)sizeOfCaches;
 + (NSInteger)numberOfCaches;

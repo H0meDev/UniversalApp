@@ -7,6 +7,9 @@
 //
 
 #import "UIImageView+UAExtension.h"
+#import "NSObject+UAExtension.h"
+#import "UIImage+UAExtension.h"
+#import "UIColor+UAExtension.h"
 #import "UHTTPImage.h"
 
 @implementation UIImageView (UAExtension)
@@ -104,29 +107,52 @@
 
 - (void)setNetworkImage:(NSString *)imageURL
 {
-    [self setNetworkImage:imageURL cachedKey:nil placeholder:nil];
+    [self setNetworkImage:imageURL cachedKey:nil placeholder:nil error:nil];
 }
 
-- (void)setNetworkImage:(NSString *)imageURL placeholder:(UIImage *)image
+- (void)setNetworkImage:(NSString *)imageURL placeholder:(UIImage *)pimage
 {
-    [self setNetworkImage:imageURL cachedKey:nil placeholder:image];
+    [self setNetworkImage:imageURL cachedKey:nil placeholder:pimage error:nil];
+}
+
+- (void)setNetworkImage:(NSString *)imageURL placeholder:(UIImage *)pimage error:(UIImage *)eimage
+{
+    [self setNetworkImage:imageURL cachedKey:nil placeholder:pimage error:eimage];
 }
 
 - (void)setNetworkImage:(NSString *)imageURL cachedKey:(NSString *)cachedKey
 {
-    [self setNetworkImage:imageURL cachedKey:cachedKey placeholder:nil];
+    [self setNetworkImage:imageURL cachedKey:cachedKey placeholder:nil error:nil];
 }
 
-- (void)setNetworkImage:(NSString *)imageURL cachedKey:(NSString *)cachedKey placeholder:(UIImage *)image
+- (void)setNetworkImage:(NSString *)imageURL cachedKey:(NSString *)cachedKey placeholder:(UIImage *)pimage
 {
-    self.image = image;
-    
-    safeBlockReferences();
-    [UHTTPImage downloadImageWith:imageURL cachedKey:cachedKey progress:^(UHTTPImageItem *item) {
-        weakself.image = item.image;
-    } callback:^(UHTTPImageItem *item) {
-        weakself.image = item.image;
-    }];
+    [self setNetworkImage:imageURL cachedKey:cachedKey placeholder:pimage error:nil];
+}
+
+- (void)setNetworkImage:(NSString *)imageURL
+              cachedKey:(NSString *)cachedKey
+            placeholder:(UIImage *)pimage
+                  error:(UIImage *)eimage
+{
+    @autoreleasepool
+    {
+        if (!eimage && pimage) {
+            eimage = pimage;
+        }
+        
+        safeBlockReferences();
+        [UHTTPImage downloadImageWith:imageURL cachedKey:cachedKey
+                             progress:^(NSData *data, long long recieved, long long total) {
+                                 weakself.image = [UIImage imageWithData:data];
+                             } callback:^(UHTTPImageItem *item) {
+                                 if (item.image) {
+                                     weakself.image = item.image;
+                                 } else {
+                                     weakself.image = eimage;
+                                 }
+                             }];
+    }
 }
 
 @end

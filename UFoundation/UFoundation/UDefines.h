@@ -198,6 +198,6 @@ withIntermediateDirectories:YES attributes:NULL error:NULL]
 
 // Object references
 #define safeBlockReferences() __weak typeof(self) weakself = self
-#define safeBlockReferencesWith(instance) __weak typeof(self) weakself = instance
+#define safeBlockReferencesWith(instance) __weak typeof(instance) weakinstance = instance
 
 #endif

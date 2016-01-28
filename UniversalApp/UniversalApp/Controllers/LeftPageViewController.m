@@ -44,7 +44,7 @@
     _listView.dataSource = self;
     [self addSubview:_listView];
     
-    _dataList = @[@"https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png",
+    _dataList = @[@"http://b.hiphotos.baidu.com/zhidao/pic/item/d0c8a786c9177f3e0693932571cf3bc79f3d5676.jpg",
                   @"http://jiangsu.china.com.cn/uploadfile/2015/1210/1449719387615370.jpg",
                   @"http://gz.sese.com.cn/share/upload/20151117/0bf7affd-549d-476d-aed3-bb2bd354433b.jpg",
                   @"http://image.fvideo.cn/uploadfile/2012/03/15/20120315110710016.jpg",

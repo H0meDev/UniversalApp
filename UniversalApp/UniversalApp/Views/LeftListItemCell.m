@@ -10,7 +10,8 @@
 
 @interface LeftListItemCell ()
 
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIImageView *imageUView;
+@property (nonatomic, strong) UIImageView *imageDView;
 
 @end
 
@@ -18,33 +19,55 @@
 
 - (void)cellDidLoad
 {
-    [self imageView];
+    if (_imageUView) {
+        [_imageUView removeFromSuperview];
+        _imageUView = nil;
+    }
+    
+    if (_imageDView) {
+        [_imageDView removeFromSuperview];
+        _imageDView = nil;
+    }
+    
+    [self imageUView];
+    [self imageDView];
 }
 
 - (void)cellNeedsUpdate
 {
-    if (_imageView) {
-        [_imageView removeFromSuperview];
-        _imageView = nil;
-    }
-    
     [self cellDidLoad];
 }
 
-- (UIImageView *)imageView
+- (UIImageView *)imageUView
 {
-    if (_imageView) {
-        return _imageView;
+    if (_imageUView) {
+        return _imageUView;
     }
     
     CGFloat height = screenHeight() - statusHeight() - naviHeight() - tabHeight();
     UIImageView *imageView = [[UIImageView alloc]init];
-    imageView.frame = rectMake(0, 0, screenWidth(), height);
+    imageView.frame = rectMake(0, 0, screenWidth(), height / 2.);
     imageView.backgroundColor = sysYellowColor();
     [self addSubview:imageView];
-    _imageView = imageView;
+    _imageUView = imageView;
     
-    return _imageView;
+    return _imageUView;
+}
+
+- (UIImageView *)imageDView
+{
+    if (_imageDView) {
+        return _imageDView;
+    }
+    
+    CGFloat height = screenHeight() - statusHeight() - naviHeight() - tabHeight();
+    UIImageView *imageView = [[UIImageView alloc]init];
+    imageView.frame = rectMake(0, height / 2., screenWidth(), height / 2.);
+    imageView.backgroundColor = sysYellowColor();
+    [self addSubview:imageView];
+    _imageDView = imageView;
+    
+    return _imageDView;
 }
 
 /*
@@ -58,7 +81,8 @@
 - (void)setCellData:(NSString *)url
 {
     if (checkValidNSString(url)) {
-        [self.imageView setNetworkImage:url placeholder:nil];
+        [self.imageUView setNetworkImage:url placeholder:nil];
+        [self.imageDView setNetworkImage:url placeholder:nil];
     }
 }
 
