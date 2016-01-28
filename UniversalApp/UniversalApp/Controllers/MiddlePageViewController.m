@@ -28,11 +28,13 @@
     self.navigationBarView.title = @"Middle";
     
     CGFloat height = self.containerView.sizeHeight - tabHeight();
-    UListTableView *tableView = [[UListTableView alloc]initWith:UListViewStyleVertical];
+    UListTableView *tableView = [[UListTableView alloc]initWith:UListTableViewStyleVertical];
     tableView.frame = rectMake(0, 0, screenWidth(), height);
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.backgroundColor = sysClearColor();
+    tableView.multipleSelected = YES;
+    tableView.cancelable = YES;
     [self addSubview:tableView];
     _tableView = tableView;
 }
@@ -117,6 +119,18 @@
     cell.backgroundColor = sysYellowColor();
     
     return cell;
+}
+
+- (void)tableView:(UListTableView *)tableView didSelectCellAtPath:(UIndexPath *)path
+{
+    [tableView deselectCellAtPath:path];
+    
+    NSLog(@"UListTableViewCell select %@ - %@", @(path.section), @(path.index));
+}
+
+- (void)tableView:(UListTableView *)tableView didDeselectCellAtPath:(UIndexPath *)path
+{
+    NSLog(@"UListTableViewCell deselect %@ - %@", @(path.section), @(path.index));
 }
 
 - (void)sectionAction:(UIButton *)button

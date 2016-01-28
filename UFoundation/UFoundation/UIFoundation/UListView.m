@@ -167,7 +167,7 @@
 
 #pragma mark - UListViewCell class
 
-@interface UListViewCell () <URefreshViewDelegate>
+@interface UListViewCell ()
 {
     __weak id _target;
     SEL _action;
@@ -189,7 +189,10 @@
 
 + (id)cell
 {
-    return [[self alloc]initWithFrame:CGRectZero];
+    @autoreleasepool
+    {
+        return [[[self class] alloc]initWithFrame:CGRectZero];
+    }
 }
 
 - (id)initWith:(UListViewStyle)style
@@ -827,7 +830,6 @@
     }
     
     UListViewCell *cell = [self.dataSource listView:self.weakself cellAtIndex:index];
-    // For selection
     cell.index = index;
     cell.cancelable = self.cancelable;
     cell.contentView.selected = item.selected;

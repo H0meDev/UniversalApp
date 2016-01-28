@@ -10,6 +10,7 @@
 #import "NSObject+UAExtension.h"
 #import "NSArray+UAExtension.h"
 #import "UIView+UAExtension.h"
+#import "UIColor+UAExtension.h"
 
 #pragma mark - Class UIndexPath
 
@@ -21,6 +22,11 @@
     {
         return [[UIndexPath alloc]init];
     }
+}
+
+- (BOOL)isEqualsToPath:(UIndexPath *)path
+{
+    return (self.section == path.section) && (self.index == path.index);
 }
 
 @end
@@ -36,7 +42,7 @@
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, assign) CGFloat originValue; // Value of origin
 @property (nonatomic, assign) CGFloat sizeValue;   // Value of size
-@property (nonatomic, strong) NSArray *itemArray;  // Array of UListTableItem
+@property (nonatomic, strong) NSArray *itemArray;  // Array of UListTableIndexItem
 
 + (id)item;
 
@@ -54,27 +60,144 @@
 
 @end
 
-#pragma mark - Class UListTableItem
+#pragma mark - Class UListTableIndexItem
 
-@interface UListTableItem : NSObject
+@interface UListTableIndexItem : NSObject
 
 @property (nonatomic, assign) NSInteger section;
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, assign) CGFloat originValue; // Value of origin
 @property (nonatomic, assign) CGFloat sizeValue;   // Value of size
+@property (nonatomic, assign) BOOL selected;       // Selection
 
 + (id)item;
 
 @end
 
-@implementation UListTableItem
+@implementation UListTableIndexItem
 
 + (id)item
 {
     @autoreleasepool
     {
-        return [[UListTableItem alloc]init];
+        return [[UListTableIndexItem alloc]init];
     }
+}
+
+@end
+
+#pragma mark - UListTableViewCellContentView class
+
+@interface UListTableViewCellContentView : UIControl
+{
+    BOOL _selected;
+    __weak id _target;
+    SEL _action;
+}
+
+@property (nonatomic, strong) UIView *backgroundMaskView;
+@property (nonatomic, strong) UIColor *highlightedColor;
+@property (nonatomic, assign) BOOL cancelable;
+
+- (void)setTarget:(id)target action:(SEL)action;
+
+@end
+
+@implementation UListTableViewCellContentView
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        _highlightedColor = [sysBlackColor() colorWithAlpha:0.15];
+    }
+    
+    return self;
+}
+
+#pragma mark - Properties
+
+- (UIView *)backgroundMaskView
+{
+    if (_backgroundMaskView) {
+        return _backgroundMaskView;
+    }
+    
+    UIView *backgroundMaskView = [[UIView alloc]init];
+    backgroundMaskView.backgroundColor = sysClearColor();
+    backgroundMaskView.userInteractionEnabled = NO;
+    backgroundMaskView = backgroundMaskView;
+    [super addSubview:backgroundMaskView];
+    _backgroundMaskView = backgroundMaskView;
+    
+    return _backgroundMaskView;
+}
+
+#pragma mark - Methods
+
+- (void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
+    
+    self.backgroundMaskView.frame = rectMake(0, 0, frame.size.width, frame.size.height);
+}
+
+- (void)setTarget:(id)target action:(SEL)action
+{
+    if (_target && _action) {
+        [self removeTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    _target = target;
+    _action = action;
+    
+    [self addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+}
+
+#pragma mark - Event callback
+
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    self.backgroundMaskView.backgroundColor = _highlightedColor;
+    
+    return YES;
+}
+
+- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    return YES;
+}
+
+- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    if (!_selected) {
+        self.backgroundMaskView.backgroundColor = sysClearColor();
+    }
+}
+
+- (void)cancelTrackingWithEvent:(UIEvent *)event
+{
+    if (!_selected) {
+        self.backgroundMaskView.backgroundColor = sysClearColor();
+    }
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+    
+    _selected = selected;
+    if (_selected) {
+        self.backgroundMaskView.backgroundColor = _highlightedColor;
+    } else {
+        self.backgroundMaskView.backgroundColor = sysClearColor();
+    }
+}
+
+- (void)addSubview:(UIView *)view
+{
+    [super addSubview:view];
+    [super insertSubview:view belowSubview:_backgroundMaskView];
 }
 
 @end
@@ -82,13 +205,221 @@
 #pragma mark - Class UListTableViewCell
 
 @interface UListTableViewCell ()
+{
+    __weak id _target;
+    SEL _action;
+}
 
-@property (nonatomic, assign) NSInteger sectionValue;
-@property (nonatomic, assign) NSInteger indexValue;
+@property (nonatomic, strong) UListTableViewCellContentView *contentView;
+@property (nonatomic, strong) UIImageView *headerLineView;
+@property (nonatomic, strong) UIImageView *footerLineView;
+@property (nonatomic, strong) UIndexPath *path;
+@property (nonatomic, assign) BOOL cancelable;
+
+- (void)setTarget:(id)target action:(SEL)action;
 
 @end
 
 @implementation UListTableViewCell
+
++ (id)cell
+{
+    @autoreleasepool
+    {
+        return [[[self class] alloc]initWithFrame:CGRectZero];
+    }
+}
+
+- (id)initWith:(UListTableViewStyle)style
+{
+    self = [super initWithFrame:CGRectZero];
+    if (self) {
+        // Initalize
+        super.backgroundColor = sysClearColor();
+        self.userInteractionEnabled = YES;
+        
+        _style = style;
+        
+        [self cellDidLoad];
+    }
+    
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initalize
+        _style = UListTableViewStyleVertical;
+        
+        [self cellDidLoad];
+    }
+    
+    return self;
+}
+
+- (void)cellDidLoad
+{
+    //
+}
+
+- (void)cellNeedsUpdate
+{
+    //
+}
+
+- (void)cellDidSelected
+{
+    //
+}
+
+- (void)cellDidDeselected
+{
+    //
+}
+
+#pragma mark - Methods
+
+- (void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
+    
+    if (!CGRectEqualToRect(frame, CGRectZero)) {
+        CGFloat headerValue = 0.5;
+        CGFloat footerValue = 0.5;
+        CGFloat width = frame.size.width;
+        CGFloat height = frame.size.height;
+        
+        self.contentView.frame = rectMake(0, 0, width, height);
+        
+        switch (_style) {
+            case UListTableViewStyleHorizontal:
+            {
+                self.headerLineView.frame = rectMake(0, 0, headerValue, height);
+                self.footerLineView.frame = rectMake(width - footerValue, 0, footerValue, height);
+            }
+                break;
+                
+            case UListTableViewStyleVertical:
+            {
+                self.headerLineView.frame = rectMake(0, 0, width, headerValue);
+                self.footerLineView.frame = rectMake(0, height - footerValue, width, footerValue);
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
+- (void)setBackgroundColor:(UIColor *)color
+{
+    [super setBackgroundColor:sysClearColor()];
+    
+    self.contentView.backgroundColor = color;
+}
+
+- (void)setHighlightedColor:(UIColor *)color
+{
+    _highlightedColor = color;
+    
+    self.contentView.highlightedColor = _highlightedColor;
+}
+
+- (void)setCancelable:(BOOL)cancelable
+{
+    self.contentView.cancelable = cancelable;
+}
+
+- (void)addSubview:(UIView *)view
+{
+    [self.contentView addSubview:view];
+}
+
+- (void)setTarget:(id)target action:(SEL)action
+{
+    _target = target;
+    _action = action;
+}
+
+#pragma mark - Properties
+
+- (UListTableViewCellContentView *)contentView
+{
+    if (_contentView) {
+        return _contentView;
+    }
+    
+    UListTableViewCellContentView *contentView = [[UListTableViewCellContentView alloc]init];
+    contentView.userInteractionEnabled = YES;
+    contentView.backgroundColor = sysWhiteColor();
+    [contentView setTarget:self action:@selector(touchUpInsideAction)];
+    [super addSubview:contentView];
+    _contentView = contentView;
+    
+    return _contentView;
+}
+
+- (UIImageView *)headerLineView
+{
+    if (_headerLineView) {
+        return _headerLineView;
+    }
+    
+    UIImageView *headerLineView = [[UIImageView alloc]init];
+    headerLineView.backgroundColor = [sysBlackColor() colorWithAlpha:0.2];
+    [self.contentView addSubview:headerLineView];
+    _headerLineView = headerLineView;
+    
+    return _headerLineView;
+}
+
+- (UIImageView *)footerLineView
+{
+    if (_footerLineView) {
+        return _footerLineView;
+    }
+    
+    UIImageView *footerLineView = [[UIImageView alloc]init];
+    footerLineView.backgroundColor = [sysBlackColor() colorWithAlpha:0.2];
+    [self.contentView addSubview:footerLineView];
+    _footerLineView = footerLineView;
+    
+    return _footerLineView;
+}
+
+- (BOOL)cancelable
+{
+    return self.contentView.cancelable;
+}
+
+- (BOOL)selected
+{
+    return self.contentView.selected;
+}
+
+#pragma mark - Action
+
+- (void)touchUpInsideAction
+{
+    if (self.cancelable && self.contentView.selected) {
+        self.contentView.selected = NO;
+    } else {
+        self.contentView.selected = YES;
+    }
+    
+    if (self.contentView.selected) {
+        [self cellDidSelected];
+    } else {
+        [self cellDidDeselected];
+    }
+    
+    if (_target && _action) {
+        [_target performWithName:NSStringFromSelector(_action) with:self];
+    }
+}
 
 @end
 
@@ -99,6 +430,7 @@
     NSArray *_sectionArray;
     NSArray *_visibleSections;
     NSMutableDictionary *_cellReusePool;
+    UIndexPath *_selectedPath;
 }
 
 // For cells
@@ -111,12 +443,12 @@
 
 @implementation UListTableView
 
-- (id)initWith:(UListViewStyle)style
+- (id)initWith:(UListTableViewStyle)style
 {
     return [self initWithFrame:CGRectZero style:style];
 }
 
-- (id)initWithFrame:(CGRect)frame style:(UListViewStyle)style
+- (id)initWithFrame:(CGRect)frame style:(UListTableViewStyle)style
 {
     self = [self initWithFrame:frame];
     if (self) {
@@ -124,7 +456,8 @@
         self.backgroundColor = sysWhiteColor();
         
         _style = style;
-        _separatorStyle = UListViewCellSepratorLineStyleNoEnds;
+        _selectedPath = nil;
+        _separatorStyle = UListTableViewCellSepratorLineStyleNoEnds;
         _cellReusePool = [NSMutableDictionary dictionary];
     }
     
@@ -231,7 +564,7 @@
     [super setFrame:frame];
     
     switch (_style) {
-        case UListViewStyleHorizontal:
+        case UListTableViewStyleHorizontal:
         {
             self.scrollView.showsVerticalScrollIndicator = NO;
             self.scrollView.showsHorizontalScrollIndicator = YES;
@@ -241,7 +574,7 @@
         }
             break;
             
-        case UListViewStyleVertical:
+        case UListTableViewStyleVertical:
         {
             self.scrollView.showsVerticalScrollIndicator = YES;
             self.scrollView.showsHorizontalScrollIndicator = NO;
@@ -281,7 +614,7 @@
         NSArray *pathArray = [self visiableItemsWith:offset];
         if (pathArray) {
             for (NSInteger i = 0; i < pathArray.count; i ++) {
-                UListTableItem *item = pathArray[i];
+                UListTableIndexItem *item = pathArray[i];
                 NSArray *cells = [self currentVisibleCellsWith:offset];
                 
                 BOOL needsAttached = NO;
@@ -322,7 +655,7 @@
             }
             
             switch (_style) {
-                case UListViewStyleVertical:
+                case UListTableViewStyleVertical:
                 {
                     // Header
                     if (section.headerView) {
@@ -370,7 +703,7 @@
                 }
                     break;
                     
-                case UListViewStyleHorizontal:
+                case UListTableViewStyleHorizontal:
                 {
                     // Header
                     if (section.headerView) {
@@ -441,7 +774,7 @@
                 CGFloat endValue = startValue + section.sizeValue;
                 
                 switch (_style) {
-                    case UListViewStyleVertical:
+                    case UListTableViewStyleVertical:
                     {
                         if (!((startValue > offsetBValue) || (endValue < offsetTValue))) {
                             [sections addObject:section];
@@ -449,7 +782,7 @@
                     }
                         break;
                         
-                    case UListViewStyleHorizontal:
+                    case UListTableViewStyleHorizontal:
                     {
                         if (!((startValue > offsetRValue) || (endValue < offsetLValue))) {
                             [sections addObject:section];
@@ -470,12 +803,12 @@
                 NSMutableArray *imarray = [NSMutableArray array];
                 for (UListTableSectionItem *section in sections) {
                     // Cell items
-                    for (UListTableItem *item in section.itemArray) {
+                    for (UListTableIndexItem *item in section.itemArray) {
                         CGFloat startValue = item.originValue;
                         CGFloat endValue = startValue + item.sizeValue;
                         
                         switch (_style) {
-                            case UListViewStyleVertical:
+                            case UListTableViewStyleVertical:
                             {
                                 if (!((startValue >= offsetBValue) || (endValue < offsetTValue))) {
                                     [imarray addObject:item];
@@ -483,7 +816,7 @@
                             }
                                 break;
                                 
-                            case UListViewStyleHorizontal:
+                            case UListTableViewStyleHorizontal:
                             {
                                 if (!((startValue >= offsetRValue) || (endValue < offsetLValue))) {
                                     [imarray addObject:item];
@@ -579,14 +912,14 @@
             CGRectContainsPoint(frame, pointRB));
 }
 
-- (BOOL)checkCellWith:(UListTableItem *)item from:(NSArray *)cells
+- (BOOL)checkCellWith:(UListTableIndexItem *)item from:(NSArray *)cells
 {
     BOOL contains = NO;
     
     if (checkValidNSArray(cells)) {
         for (UListTableViewCell *cellItem in cells) {
             switch (_style) {
-                case UListViewStyleHorizontal:
+                case UListTableViewStyleHorizontal:
                 {
                     if (cellItem.originX == item.originValue) {
                         contains = YES;
@@ -594,7 +927,7 @@
                 }
                     break;
                     
-                case UListViewStyleVertical:
+                case UListTableViewStyleVertical:
                 {
                     if (cellItem.originY == item.originValue) {
                         contains = YES;
@@ -615,24 +948,36 @@
     return contains;
 }
 
-- (void)attachCellWith:(UListTableItem *)item
+- (void)attachCellWith:(UListTableIndexItem *)item
 {
     UIndexPath *path = [UIndexPath path];
     path.section = item.section;
     path.index = item.index;
     
+    if (!self.multipleSelected) {
+        if (_selectedPath && [path isEqualsToPath:_selectedPath]) {
+            item.selected = YES;
+        } else {
+            item.selected = NO;
+        }
+    }
+    
     UListTableViewCell *cell = [self.dataSource tableView:self.weakself cellAtPath:path];
+    cell.path = path;
+    cell.cancelable = self.cancelable;
+    cell.contentView.selected = item.selected;
+    [cell setTarget:self action:@selector(cellTouchedUpAction:)];
     [self.contentView addSubview:cell];
     
     if (checkClass(cell, UListTableViewCell)) {
         switch (_style) {
-            case UListViewStyleVertical:
+            case UListTableViewStyleVertical:
             {
                 cell.frame = rectMake(0, item.originValue, self.sizeWidth, item.sizeValue);
             }
                 break;
                 
-            case UListViewStyleHorizontal:
+            case UListTableViewStyleHorizontal:
             {
                 cell.frame = rectMake(item.originValue, 0, item.sizeValue, self.sizeHeight);
             }
@@ -646,20 +991,23 @@
     [self resetSepratorWith:cell item:item];
 }
 
-- (void)resetSepratorWith:(UListTableViewCell *)cell item:(UListTableItem *)item
+- (void)resetSepratorWith:(UListTableViewCell *)cell item:(UListTableIndexItem *)item
 {
-    UIView *headerLineView = [cell valueForKey:@"headerLineView"];
-    UIView *footerLineView = [cell valueForKey:@"footerLineView"];;
+    UIView *headerLineView = [cell headerLineView];
+    UIView *footerLineView = [cell footerLineView];
+    
+    [cell.contentView bringSubviewToFront:headerLineView];
+    [cell.contentView bringSubviewToFront:footerLineView];
     
     switch (_separatorStyle) {
-        case UListViewCellSepratorLineStyleNone:
+        case UListTableViewCellSepratorLineStyleNone:
         {
             headerLineView.hidden = YES;
             footerLineView.hidden = YES;
         }
             break;
             
-        case UListViewCellSepratorLineStyleNoEnds:
+        case UListTableViewCellSepratorLineStyleNoEnds:
         {
             UListTableSectionItem *section = _sectionArray[item.section];
             if (item.index == section.itemArray.count - 1) {
@@ -672,7 +1020,7 @@
         }
             break;
             
-        case UListViewCellSepratorLineStyleFull:
+        case UListTableViewCellSepratorLineStyleFull:
         {
             if (item.index == 0) {
                 headerLineView.hidden = NO;
@@ -743,7 +1091,7 @@
                         sizeValue = [@(sizeValue) floatValue];
                         originValue = [@(originValue) floatValue];
                         
-                        UListTableItem *item = [UListTableItem item];
+                        UListTableIndexItem *item = [UListTableIndexItem item];
                         item.section = section;
                         item.index = index;
                         item.sizeValue = sizeValue;
@@ -768,14 +1116,14 @@
     
     // Resize
     switch (_style) {
-        case UListViewStyleHorizontal:
+        case UListTableViewStyleHorizontal:
         {
             self.contentView.sizeWidth = originValue;
             self.scrollView.contentSize = sizeMake(originValue, 0);
         }
             break;
             
-        case UListViewStyleVertical:
+        case UListTableViewStyleVertical:
         {
             self.contentView.sizeHeight = originValue;
             self.scrollView.contentSize = sizeMake(0, originValue);
@@ -787,7 +1135,72 @@
     }
 }
 
+#pragma mark - Action
+
+- (void)cellTouchedUpAction:(UListTableViewCell *)cell
+{
+    NSArray *cells = [self currentVisibleCellsWith:_scrollView.contentOffset];
+    
+    for (UListTableViewCell *cellItem in cells) {
+        UListTableSectionItem *section = _sectionArray[cell.path.section];
+        UListTableIndexItem *item = section.itemArray[cell.path.index];
+        
+        if ([cellItem.path isEqualsToPath:cell.path]) {
+            item.selected = (self.cancelable && item.selected)?NO:YES;
+            cellItem.contentView.selected = item.selected;
+            
+            if (!self.multipleSelected) {
+                _selectedPath = (item.selected)?cell.path:nil;
+            }
+        } else if (!self.multipleSelected) {
+            item.selected = NO;
+            cellItem.contentView.selected = item.selected;
+        }
+    }
+    
+    if (_delegate) {
+        if (cell.selected && [_delegate respondsToSelector:@selector(tableView:didSelectCellAtPath:)]) {
+            dispatch_async(main_queue(), ^{
+                [_delegate tableView:self.weakself didSelectCellAtPath:cell.path];
+            });
+        } else if (!cell.selected && [_delegate respondsToSelector:@selector(tableView:didDeselectCellAtPath:)]) {
+            dispatch_async(main_queue(), ^{
+                [_delegate tableView:self.weakself didDeselectCellAtPath:cell.path];
+            });
+        }
+    }
+}
+
 #pragma mark - Outer Methods
+
+- (NSArray *)selectedIndexs
+{
+    @autoreleasepool
+    {
+        if (!self.multipleSelected) {
+            if (_selectedPath) {
+                return @[_selectedPath];
+            }
+        } else {
+            NSMutableArray *marray = [NSMutableArray array];
+            for (UListTableSectionItem *section in _sectionArray) {
+                for (UListTableIndexItem *item in section.itemArray) {
+                    if (item.selected) {
+                        UIndexPath *path = [UIndexPath path];
+                        path.section = item.section;
+                        path.index = item.index;
+                        
+                        [marray addObject:path];
+                    }
+                }
+            }
+            
+            return [marray copy];
+        }
+        
+        return nil;
+    }
+}
 
 - (UListTableViewCell *)cellReuseWith:(NSString *)cellName forIdentifier:(NSString *)identifier
 {
@@ -862,6 +1275,46 @@
     
     // Load items
     self.scrollView.contentOffset = self.scrollView.contentOffset;
+}
+
+- (void)deselectCellAtPath:(UIndexPath *)path
+{
+    [self deselectCellAtPath:path animated:YES];
+}
+
+- (void)deselectCellAtPath:(UIndexPath *)path animated:(BOOL)animated
+{
+    if (!path || path.section < 0 || path.section >= _sectionArray.count) {
+        return;
+    }
+    
+    UListTableSectionItem *section = _sectionArray[path.section];
+    UListTableIndexItem *item = section.itemArray[path.index];
+    item.selected = NO;
+    
+    __weak UListTableViewCell *cell = nil;
+    NSArray *cells = [self currentVisibleCellsWith:_scrollView.contentOffset];
+    for (UListTableViewCell *cellItem in cells) {
+        if ([cellItem.path isEqualsToPath:path]) {
+            cell = cellItem;
+        }
+    }
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(tableView:didDeselectCellAtPath:)]) {
+        dispatch_async(main_queue(), ^{
+            [_delegate tableView:self.weakself didDeselectCellAtPath:path];
+        });
+    }
+    
+    if (cell) {
+        if (!animated) {
+            cell.contentView.selected = NO;
+        } else {
+            [UIView animateWithDuration:0.3 animations:^{
+                cell.contentView.selected = NO;
+            }];
+        }
+    }
 }
 
 - (void)moveToPath:(UIndexPath *)path

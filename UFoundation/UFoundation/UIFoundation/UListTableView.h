@@ -6,7 +6,21 @@
 //  Copyright © 2015年 think. All rights reserved.
 //
 
-#import "UListView.h"
+#import <UIKit/UIKit.h>
+#import "UDefines.h"
+
+typedef NS_ENUM(NSInteger, UListTableViewStyle)
+{
+    UListTableViewStyleVertical = 0,
+    UListTableViewStyleHorizontal,
+};
+
+typedef NS_ENUM(NSInteger, UListTableViewCellSepratorLineStyle)
+{
+    UListTableViewCellSepratorLineStyleNone = 0,
+    UListTableViewCellSepratorLineStyleNoEnds,
+    UListTableViewCellSepratorLineStyleFull,
+};
 
 @interface UIndexPath : NSObject
 
@@ -14,6 +28,7 @@
 @property (nonatomic, assign) NSInteger index;
 
 + (id)path;
+- (BOOL)isEqualsToPath:(UIndexPath *)path;
 
 @end
 
@@ -44,7 +59,20 @@
 
 @end
 
-@interface UListTableViewCell : UListViewCell
+@interface UListTableViewCell : UIView
+
+@property (nonatomic, readonly) UListTableViewStyle style;    // Default style is UListTableViewStyleVertical
+@property (nonatomic, strong) UIColor *highlightedColor; // Color of highlighted and selected
+@property (nonatomic, readonly) BOOL selected;
+
++ (id)cell; // Default style is UListTableViewStyleVertical
+- (id)initWith:(UListTableViewStyle)style; // The style must be consistent with UListTableView
+
+// To be overrided
+- (void)cellDidLoad;       // For initialization
+- (void)cellNeedsUpdate;   // For update option if reuseable
+- (void)cellDidSelected;   // For selected option
+- (void)cellDidDeselected; // For deselected option
 
 @end
 
@@ -52,11 +80,14 @@
 
 @property (nonatomic, weak) id<UListTableViewDelegate> delegate;
 @property (nonatomic, weak) id<UListTableViewDataSource> dataSource;
-@property (nonatomic, readonly) UListViewStyle style;
-@property (nonatomic, assign) UListViewCellSepratorLineStyle separatorStyle; // Default is UListViewCellSepratorLineStyleNone
+@property (nonatomic, readonly) UListTableViewStyle style;
+@property (nonatomic, assign) UListTableViewCellSepratorLineStyle separatorStyle; // Default is UListViewCellSepratorLineStyleNone
+@property (nonatomic, assign) BOOL multipleSelected; // Default is NO
+@property (nonatomic, assign) BOOL cancelable;       // Default is NO
+@property (nonatomic, readonly) NSArray *selectedIndexs;
 
-- (id)initWith:(UListViewStyle)style;
-- (id)initWithFrame:(CGRect)frame style:(UListViewStyle)style;
+- (id)initWith:(UListTableViewStyle)style;
+- (id)initWithFrame:(CGRect)frame style:(UListTableViewStyle)style;
 
 // Cell reuse
 - (UListTableViewCell *)cellReuseWith:(NSString *)cellName forIdentifier:(NSString *)identifier;
@@ -65,6 +96,10 @@
 // Refresh
 - (void)reloadData;
 - (void)reloadSection:(NSInteger)section;
+
+// Selection
+- (void)deselectCellAtPath:(UIndexPath *)path;
+- (void)deselectCellAtPath:(UIndexPath *)path animated:(BOOL)animated;
 
 // Move
 - (void)moveToPath:(UIndexPath *)path;

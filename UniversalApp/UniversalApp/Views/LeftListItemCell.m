@@ -81,8 +81,8 @@
 - (void)setCellData:(NSString *)url
 {
     if (checkValidNSString(url)) {
-//        [self.imageUView setNetworkImage:url placeholder:nil];
-//        [self.imageDView setNetworkImage:url placeholder:nil];
+        [self.imageUView setNetworkImage:url placeholder:nil];
+        [self.imageDView setNetworkImage:url placeholder:nil];
     }
 }
 
