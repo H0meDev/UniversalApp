@@ -1251,6 +1251,11 @@
 
 - (void)reloadData
 {
+    [self reloadDataWith:CGPointZero];
+}
+
+- (void)reloadDataWith:(CGPoint)offset
+{
     if (_sectionArray == nil) {
         return;
     }
@@ -1262,7 +1267,7 @@
     [self loadWithSectionIndex:0];
     
     // Load items
-    self.scrollView.contentOffset = self.scrollView.contentOffset;
+    self.scrollView.contentOffset = offset;
 }
 
 - (void)reloadSection:(NSInteger)section

@@ -144,7 +144,7 @@
         safeBlockReferences();
         [UHTTPImage downloadImageWith:imageURL cachedKey:cachedKey
                              progress:^(NSData *data, long long recieved, long long total) {
-                                 weakself.image = [UIImage imageWithData:data];
+//                                 weakself.image = [UIImage imageWithData:data];
                              } callback:^(UHTTPImageItem *item) {
                                  if (item.image) {
                                      weakself.image = item.image;

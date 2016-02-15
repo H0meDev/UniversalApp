@@ -965,6 +965,11 @@
 
 - (void)reloadData
 {
+    [self reloadDataWith:CGPointZero];
+}
+
+- (void)reloadDataWith:(CGPoint)offset
+{
     if (_itemArray == nil) {
         return;
     }
@@ -1025,7 +1030,7 @@
     }
     
     // Load cells
-    self.scrollView.contentOffset = self.scrollView.contentOffset;
+    self.scrollView.contentOffset = offset;
 }
 
 - (void)clearSelectedIndexs

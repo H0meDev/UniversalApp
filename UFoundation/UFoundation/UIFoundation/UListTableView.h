@@ -95,6 +95,7 @@ typedef NS_ENUM(NSInteger, UListTableViewCellSepratorLineStyle)
 
 // Refresh
 - (void)reloadData;
+- (void)reloadDataWith:(CGPoint)offset;
 - (void)reloadSection:(NSInteger)section;
 
 // Selection

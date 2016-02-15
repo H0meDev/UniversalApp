@@ -46,11 +46,20 @@
     _listView.multipleSelected = YES;
     [self addSubview:_listView];
     
-    _dataList = @[@"http://b.hiphotos.baidu.com/zhidao/pic/item/d0c8a786c9177f3e0693932571cf3bc79f3d5676.jpg",
-                  @"http://jiangsu.china.com.cn/uploadfile/2015/1210/1449719387615370.jpg",
-                  @"http://gz.sese.com.cn/share/upload/20151117/0bf7affd-549d-476d-aed3-bb2bd354433b.jpg",
-                  @"http://image.fvideo.cn/uploadfile/2012/03/15/20120315110710016.jpg",
-                  @"http://news.cz001.com.cn/attachement/jpg/site2/20120614/d067e519eae31143846013.jpg"];
+    _dataList = @[@"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/y/w/ywzwdjof0.jpg",
+                  @"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/y/g/ygjngsyu0.jpg",
+                  @"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/y/o/yoczvk12l.jpg",
+                  @"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/1/1/11rokrbk1.jpg",
+                  @"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/1/3/133hlkh8y.jpg",
+                  @"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/1/3/13arkybo4.jpg",
+                  @"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/1/6/169a41rlj.jpg",
+                  @"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/1/6/16htzbdrp.jpg",
+                  @"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/1/6/16pkkxz7p.jpg",
+                  @"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/1/9/19j8uqb10n.jpg",
+                  @"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/1/9/19r0an0jm.jpg",
+                  @"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/1/9/19yhu49sq.jpg",
+                  @"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/1/g/1gz8lq6a4.jpg",
+                  @"http://www.xiaoxiongbizhi.com/wallpapers/1920_1200_85/1/h/1h8l5bv9s.jpg"];
 }
 
 - (void)viewDidAppear:(BOOL)animated

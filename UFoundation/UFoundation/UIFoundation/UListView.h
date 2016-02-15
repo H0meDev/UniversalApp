@@ -84,6 +84,7 @@ typedef NS_ENUM(NSInteger, UListViewCellSepratorLineStyle)
 
 // Refresh
 - (void)reloadData;
+- (void)reloadDataWith:(CGPoint)offset;
 - (void)clearSelectedIndexs;
 
 // Move
