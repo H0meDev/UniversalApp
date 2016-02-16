@@ -309,6 +309,11 @@ singletonImplementation(UHTTPQueue);
             
             // Parse data
             NSString *responseString = [[NSString alloc]initWithData:receivedData encoding:stringEncoding];
+            if (!responseString && stringEncoding == NSUTF8StringEncoding) {
+                stringEncoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+                responseString = [[NSString alloc]initWithData:receivedData encoding:stringEncoding];
+            }
+            
             if (responseString && responseString.length > 1) {
                 // To JSON
                 NSData *data = [responseString dataUsingEncoding:NSUTF8StringEncoding];
