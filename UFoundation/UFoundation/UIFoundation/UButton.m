@@ -223,58 +223,50 @@
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    dispatch_async(main_queue(), ^{
-        [self refreshButtonWith:UIControlStateHighlighted];
-        
-        if (_delegate && [_delegate respondsToSelector:@selector(buttonBeginTracking:)]) {
-            [_delegate buttonBeginTracking:self.weakself];
-        }
-    });
+    [self refreshButtonWith:UIControlStateHighlighted];
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(buttonBeginTracking:)]) {
+        [_delegate buttonBeginTracking:self.weakself];
+    }
     
     return YES;
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    dispatch_async(main_queue(), ^{
-        [self refreshButtonWith:UIControlStateHighlighted];
-        
-        if (_delegate && [_delegate respondsToSelector:@selector(buttonContinueTracking:)]) {
-            [_delegate buttonContinueTracking:self.weakself];
-        }
-    });
+    [self refreshButtonWith:UIControlStateHighlighted];
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(buttonContinueTracking:)]) {
+        [_delegate buttonContinueTracking:self.weakself];
+    }
     
     return YES;
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    dispatch_async(main_queue(), ^{
-        if (_isSelected) {
-            [self refreshButtonWith:UIControlStateSelected];
-        } else {
-            [self refreshButtonWith:UIControlStateNormal];
-        }
-        
-        if (_delegate && [_delegate respondsToSelector:@selector(buttonEndTracking:)]) {
-            [_delegate buttonEndTracking:self.weakself];
-        }
-    });
+    if (_isSelected) {
+        [self refreshButtonWith:UIControlStateSelected];
+    } else {
+        [self refreshButtonWith:UIControlStateNormal];
+    }
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(buttonEndTracking:)]) {
+        [_delegate buttonEndTracking:self.weakself];
+    }
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event
 {
-    dispatch_async(main_queue(), ^{
-        if (_isSelected) {
-            [self refreshButtonWith:UIControlStateSelected];
-        } else {
-            [self refreshButtonWith:UIControlStateNormal];
-        }
-        
-        if (_delegate && [_delegate respondsToSelector:@selector(buttonCancelTracking:)]) {
-            [_delegate buttonCancelTracking:self.weakself];
-        }
-    });
+    if (_isSelected) {
+        [self refreshButtonWith:UIControlStateSelected];
+    } else {
+        [self refreshButtonWith:UIControlStateNormal];
+    }
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(buttonCancelTracking:)]) {
+        [_delegate buttonCancelTracking:self.weakself];
+    }
 }
 
 - (void)setSelected:(BOOL)selected
@@ -307,9 +299,8 @@
 
 - (void)touchDragOutsideAction
 {
-    dispatch_async(main_queue(), ^{
-        [self refreshButtonWith:UIControlStateNormal];
-    });
+    _backgroundMaskView.backgroundColor = sysClearColor();
+    self.selected = _isSelected;
 }
 
 #pragma mark - Targets
@@ -517,7 +508,9 @@
         } else if (UIControlStateHighlighted == state && _showMaskWhenHighlighted) {
             _backgroundMaskView.backgroundColor = _backgroundMaskHColor;
         } else {
-            _backgroundMaskView.backgroundColor = sysClearColor();
+            [UIView animateWithDuration:0.1 animations:^{
+                _backgroundMaskView.backgroundColor = sysClearColor();
+            }];
         }
         
         // Alpha
@@ -527,7 +520,9 @@
     } else if (UIControlStateHighlighted == state && _showMaskWhenHighlighted) {
         _backgroundMaskView.backgroundColor = _backgroundMaskHColor;
     } else {
-        _backgroundMaskView.backgroundColor = sysClearColor();
+        [UIView animateWithDuration:0.1 animations:^{
+            _backgroundMaskView.backgroundColor = sysClearColor();
+        }];
     }
 }
 

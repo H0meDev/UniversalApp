@@ -10,7 +10,34 @@
 #import "NSObject+UAExtension.h"
 #import "NSDictionary+UAExtension.h"
 #import "NSString+UAExtension.h"
-#import "UOperationQueue.h"
+
+@interface UHTTPQueue ()
+{
+    UOperationQueue *_queue;
+}
+
+@end
+
+@implementation UHTTPQueue
+
+singletonImplementation(UHTTPQueue);
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        _queue = [UOperationQueue queue];
+    }
+    
+    return self;
+}
+
+- (UOperationQueue *)operationQueue
+{
+    return _queue;
+}
+
+@end
 
 @implementation UHTTPRequestParam
 
@@ -34,6 +61,11 @@
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    //
 }
 
 @end
@@ -179,6 +211,9 @@
     rparam.timeout = param.timeout;
     rparam.retry = param.retry;
     rparam.retryInterval = param.retryInterval;
+    
+    UOperationQueue *queue = [UHTTPQueue sharedUHTTPQueue].operationQueue;
+    [rparam performWithName:@"setOperationQueue:" with:queue];
     
     UHTTPOperation *operation = nil;
     if (complete) {

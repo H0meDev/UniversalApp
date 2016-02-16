@@ -11,19 +11,25 @@
 
 @interface UOperationQueue : NSObject
 
-// Default is 10
-+ (void)setMaxConcurrentCount:(NSInteger)count;
++ (UOperationQueue *)queue;
+
+- (void)setMaxConcurrentCount:(NSInteger)count; // Default is 10
+- (void)setMaxOperationsCount:(NSUInteger)count; // Default is MAXFLOAT
 
 // Add operation for cache
 // The operation will be stored, so you have to remove by
 // calling removeOperation method. Or, the object will never
 // be dealloced.
-+ (void)addOperation:(NSOperation *)operation;
+- (void)addOperation:(NSOperation *)operation;
 
 // Remove the operation to release the memory
-+ (void)removeOperation:(NSOperation *)operation;
+- (void)removeOperation:(NSOperation *)operation;
 
 // Clear the memory
-+ (void)clearMemory;
+- (void)clearMemory;
+
+// For control
+- (NSUInteger)operationsCount;
+- (BOOL)isQueueFull;
 
 @end

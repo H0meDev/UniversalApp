@@ -7,19 +7,14 @@
 //
 
 #import "UOperationQueue.h"
-#import <UIKit/UIKit.h>
 #import "UDefines.h"
-
-static UOperationQueue *sharedCache = nil;
 
 @interface UOperationQueue ()
 {
-    NSOperationQueue *_operationQueue;
     NSMutableArray *_operations;
+    NSOperationQueue *_operationQueue;
+    NSUInteger _maxOperationsCount;
 }
-
-// Shared instance
-+ (UOperationQueue *)sharedCache;
 
 @end
 
@@ -27,26 +22,12 @@ static UOperationQueue *sharedCache = nil;
 
 #pragma mark - Singleton
 
-+ (UOperationQueue *)sharedCache
++ (UOperationQueue *)queue
 {
-    @synchronized (self)
+    @autoreleasepool
     {
-        if (sharedCache == nil) {
-            sharedCache = [[self alloc]init];
-        }
+        return [[self alloc]init];
     }
-    return sharedCache;
-}
-
-+ (id)allocWithZone:(NSZone *)zone
-{
-    @synchronized (self) {
-        if (sharedCache == nil) {
-            sharedCache = [super allocWithZone:zone];
-            return sharedCache;
-        }
-    }
-    return nil;
 }
 
 - (id)init
@@ -55,6 +36,7 @@ static UOperationQueue *sharedCache = nil;
         self = [super init];
         if (self) {
             // Initialize
+            _maxOperationsCount = MAXFLOAT;
             _operations = [NSMutableArray array];
             _operationQueue = [[NSOperationQueue alloc]init];
             _operationQueue.maxConcurrentOperationCount = 10;
@@ -85,30 +67,19 @@ static UOperationQueue *sharedCache = nil;
 
 #pragma mark - Methods
 
-+ (void)setMaxConcurrentCount:(NSInteger)count
+- (void)setMaxOperationsCount:(NSUInteger)count
 {
-    [[self sharedCache]setMaxConcurrentCount:count];
+    _maxOperationsCount = count;
 }
 
-// Add operation for cache
-+ (void)addOperation:(NSOperation *)operation
+- (NSUInteger)operationsCount
 {
-    if (checkClass(operation, NSOperation)) {
-        [[self sharedCache]addOperation:operation];
-    }
+    return _operations.count;
 }
 
-+ (void)removeOperation:(NSOperation *)operation
+- (BOOL)isQueueFull
 {
-    if (checkClass(operation, NSOperation)) {
-        [[self sharedCache]removeOperation:operation];
-    }
-}
-
-// Clear the memory
-+ (void)clearMemory
-{
-    [[self sharedCache]clearMemory];
+    return NO;
 }
 
 - (void)appDidBReceiveMemoryWarning

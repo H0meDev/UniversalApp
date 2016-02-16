@@ -6,7 +6,6 @@
 //  Copyright (c) 2014年 Cailiang. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "UDefines.h"
 
 // References http://httpstatus.es/

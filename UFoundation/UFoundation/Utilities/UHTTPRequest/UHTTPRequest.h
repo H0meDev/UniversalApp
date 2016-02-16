@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "UHTTPOperation.h"
+#import "UOperationQueue.h"
+
+@interface UHTTPQueue : NSObject
+
+singletonInterface(UHTTPQueue);
+
+- (UOperationQueue *)operationQueue;
+
+@end
 
 @interface UHTTPRequestParam : NSObject
 

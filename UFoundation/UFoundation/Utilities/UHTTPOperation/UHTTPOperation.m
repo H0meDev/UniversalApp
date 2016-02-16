@@ -9,7 +9,6 @@
 #import "UHTTPOperation.h"
 #import "UOperationQueue.h"
 #import "UTimerBooster.h"
-#import "NSObject+UAExtension.h"
 #import "NSString+UAExtension.h"
 #import "NSDictionary+UAExtension.h"
 
@@ -40,6 +39,12 @@
 
 @end
 
+@interface UHTTPOperationParam ()
+
+@property (nonatomic, strong) UOperationQueue *queue;
+
+@end
+
 @implementation UHTTPOperationParam
 
 + (id)param
@@ -62,6 +67,16 @@
     }
     
     return self;
+}
+
+- (void)setOperationQueue:(UOperationQueue *)queue
+{
+    _queue = queue;
+}
+
+- (void)dealloc
+{
+    _queue = nil;
 }
 
 @end
@@ -143,6 +158,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
     NSInteger _timeout;
     NSInteger _countOfRetry;
     NSUInteger _timeInterval;
+    __strong UOperationQueue *_operationQueue;
     __strong UHTTPOperation *_operationHolder;
     
     long long _receivedLength;
@@ -198,6 +214,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
             _countOfRetry = param.retry;
             _timeInterval = param.retryInterval;
             _cacheRequired = param.cached;
+            _operationQueue = param.queue;
             
             if (_cacheRequired) {
                 // Get cached data
@@ -218,7 +235,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
             }
             
             // Add to UOperationQueue
-            [UOperationQueue addOperation:self];
+            [_operationQueue addOperation:self];
             
 #if DEBUG
             NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
@@ -251,9 +268,10 @@ singletonImplementationWith(UHTTPDataCache, cache);
             _countOfRetry = param.retry;
             _timeInterval = param.retryInterval;
             _cacheRequired = param.cached;
+            _operationQueue = param.queue;
             
             // Add to UOperationQueue
-            [UOperationQueue addOperation:self];
+            [_operationQueue addOperation:self];
             
 #if DEBUG
             NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
@@ -286,13 +304,16 @@ singletonImplementationWith(UHTTPDataCache, cache);
 
 - (void)dealloc
 {
-    _connection = nil;
-    _request = nil;
     _response = nil;
     _delegate = nil;
     _callback = NULL;
     _received = NULL;
+    
+    _request = nil;
+    _connection = nil;
+    _httpResponse = nil;
     _receivedData = nil;
+    _operationQueue = nil;
     
     NSLog(@"%@ dealloc", NSStringFromClass([self class]));
 }
@@ -320,7 +341,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
     
     // Remove timeout & operation
     [UTimerBooster removeTarget:self];
-    [UOperationQueue removeOperation:self];
+    [_operationQueue removeOperation:self];
     
     [super cancel];
   
@@ -493,8 +514,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
             [[UHTTPDataCache cache]setValue:_responseObject forKey:_cacheKey];
         }
         
-        _receivedData = nil;
-        [UOperationQueue removeOperation:self];
+        [_operationQueue removeOperation:self];
     }
 }
 
@@ -535,8 +555,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
         _operationHolder = nil;
     }
     
-    _receivedData = nil;
-    [UOperationQueue removeOperation:self];
+    [_operationQueue removeOperation:self];
 }
 
 #pragma mark - For HTTPS request
