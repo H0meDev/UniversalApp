@@ -154,7 +154,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
     BOOL _cacheRequired;
     NSString *_cacheKey;
     
-    time_t _startTime;
+    clock_t _startTime;
     NSInteger _timeout;
     NSInteger _countOfRetry;
     NSUInteger _timeInterval;

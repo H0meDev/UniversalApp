@@ -79,7 +79,7 @@
 
 - (BOOL)isQueueFull
 {
-    return NO;
+    return (_operations.count == _maxOperationsCount);
 }
 
 - (void)appDidBReceiveMemoryWarning
@@ -104,7 +104,7 @@
 
 - (void)addOperation:(NSOperation *)operation
 {
-    if (checkClass(operation, NSOperation)) {
+    if (checkClass(operation, NSOperation) && ![self isQueueFull]) {
         [_operations addObject:operation];
         [_operationQueue addOperation:operation];
     }

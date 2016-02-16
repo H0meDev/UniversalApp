@@ -35,6 +35,13 @@ singletonInterface(UHTTPQueue);
 
 @end
 
+@interface UHTTPRequestResult : NSObject
+
+@property (nonatomic, strong) UHTTPStatus *status;
+@property (nonatomic, strong) id data;
+
+@end
+
 @interface UHTTPRequest : NSObject
 
 /*
@@ -63,8 +70,6 @@ singletonInterface(UHTTPQueue);
  * Synchronous request
  */
 
-+ (NSData *)sendSyncWith:(UHTTPRequestParam *)param
-                response:(NSURLResponse **)response
-                   error:(NSError **)error;
++ (UHTTPRequestResult *)sendSyncWith:(UHTTPRequestParam *)param;
 
 @end

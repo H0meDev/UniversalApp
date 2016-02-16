@@ -70,6 +70,10 @@ singletonImplementation(UHTTPQueue);
 
 @end
 
+@implementation UHTTPRequestResult
+
+@end
+
 @interface UHTTPRequest ()
 
 @end
@@ -227,9 +231,7 @@ singletonImplementation(UHTTPQueue);
     return operation.weakself;
 }
 
-+ (NSData *)sendSyncWith:(UHTTPRequestParam *)param
-                response:(NSURLResponse **)response
-                   error:(NSError **)error
++ (UHTTPRequestResult *)sendSyncWith:(UHTTPRequestParam *)param
 {
     NSString *url = param.url;
     NSString *method = [param.method uppercaseString];
@@ -277,7 +279,86 @@ singletonImplementation(UHTTPQueue);
         [request setValue:value forHTTPHeaderField:field];
     }
     
-    return [NSURLConnection sendSynchronousRequest:request returningResponse:response error:error];
+    // Start time
+    clock_t startTime = clock();
+    
+    id responseObject = nil;
+    NSHTTPURLResponse *httpResponse = nil;
+    NSError *error = nil;
+    NSData *receivedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&httpResponse error:&error];
+    __autoreleasing UHTTPRequestResult *result = [[UHTTPRequestResult alloc]init];
+    
+#if DEBUG
+    NSString *statusText = error?@"ERROR":@"OK";
+#endif
+    
+    @try
+    {
+        if (receivedData) {
+            NSStringEncoding stringEncoding = NSUTF8StringEncoding;
+            if (httpResponse.textEncodingName) {
+                if ([httpResponse.textEncodingName isEqualToString:@"gb2312"]) {
+                    stringEncoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+                } else {
+                    CFStringEncoding encoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)httpResponse.textEncodingName);
+                    if (encoding != kCFStringEncodingInvalidId) {
+                        stringEncoding = CFStringConvertEncodingToNSStringEncoding(encoding);
+                    }
+                }
+            }
+            
+            // Parse data
+            NSString *responseString = [[NSString alloc]initWithData:receivedData encoding:stringEncoding];
+            if (responseString && responseString.length > 1) {
+                // To JSON
+                NSData *data = [responseString dataUsingEncoding:NSUTF8StringEncoding];
+                if (data && data.length > 0) {
+                    responseObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+                }
+            }
+            
+            if (!responseObject) {
+                if (responseString) {
+                    responseObject = responseString;
+                    NSLog(@"Current data is not JSON");
+                } else {
+                    responseObject = receivedData;
+                    NSLog(@"Current data can not be parsed");
+                }
+            }
+            
+            responseString = nil;
+        }
+    }
+    @catch (NSException *exception)
+    {
+#if DEBUG
+        statusText = @"Parse exception";
+#endif
+    }
+    @finally
+    {
+        clock_t endTime = clock();
+        CGFloat usedTime = (CGFloat)(endTime - startTime)/CLOCKS_PER_SEC;
+        
+#if DEBUG
+        if (![statusText isEqualToString:@"OK"]) {
+            NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: %@\nTIME: %fs\nURL: %@\nDESCRIPTION: \n%@\n*********************************", statusText, usedTime, request.URL.absoluteString, error.description);
+        } else {
+            NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: %@\nTIME: %fs\nURL: %@\nDATA: \n%@\n*********************************",statusText, usedTime, request.URL.absoluteString, responseObject);
+        }
+#endif
+        UHTTPStatus *status = [[UHTTPStatus alloc]init];
+        status.code = httpResponse.statusCode;
+        status.time = usedTime;
+        status.countOfRetry = 0;
+        status.url = request.URL.absoluteString;
+        
+        result.status = status;
+        result.data = responseObject;
+    }
+    
+    return result;
 }
 
 @end
