@@ -551,8 +551,10 @@
         if (_synchronous) {
             [actionItem.target performWithName:NSStringFromSelector(actionItem.action) with:self];
         } else {
-            dispatch_async(main_queue(), ^{
-                [actionItem.target performWithName:NSStringFromSelector(actionItem.action) with:self];
+            dispatch_async(global_queue(), ^{
+                dispatch_async(main_queue(), ^{
+                    [actionItem.target performWithName:NSStringFromSelector(actionItem.action) with:self];
+                });
             });
         }
     }
