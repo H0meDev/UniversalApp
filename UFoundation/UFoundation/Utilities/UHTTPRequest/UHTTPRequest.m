@@ -361,10 +361,6 @@ singletonImplementation(UHTTPQueue);
         status.countOfRetry = 0;
         status.url = request.URL.absoluteString;
         
-        if (status.code == UHTTPCodeFound) {
-            status.redirectURL = httpResponse.allHeaderFields[@"Location"];
-        }
-        
         result.status = status;
         result.data = responseObject;
     }
