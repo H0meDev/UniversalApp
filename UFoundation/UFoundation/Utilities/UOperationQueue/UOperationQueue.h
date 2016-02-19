@@ -14,7 +14,7 @@
 + (UOperationQueue *)queue;
 
 - (void)setMaxConcurrentCount:(NSInteger)count; // Default is 10
-- (void)setMaxOperationsCount:(NSUInteger)count; // Default is MAXFLOAT
+- (void)setMaxOperationsCount:(NSUInteger)count; // Default is ULLONG_MAX
 
 // Add operation for cache
 // The operation will be stored, so you have to remove by

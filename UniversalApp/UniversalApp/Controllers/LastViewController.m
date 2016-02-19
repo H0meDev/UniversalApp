@@ -28,6 +28,9 @@
     self.navigationBarView.title = @"Last";
     [self.navigationBarView.leftButton setTitle:@"Next"];
     
+    self.statusBarView.backgroundColor = rgbColor(8, 68, 118);
+    self.navigationBarView.backgroundColor = rgbColor(8, 68, 118);
+    
     CGFloat height = self.containerView.sizeHeight;
     UITableView *tableView = [[UITableView alloc]init];
     tableView.frame = rectMake(0, 0, screenWidth(), height);

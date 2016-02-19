@@ -58,6 +58,7 @@ singletonImplementation(UHTTPQueue);
         _timeout = 30;
         _retry = 0;
         _retryInterval = 0;
+        _redirect = YES;
     }
     
     return self;
@@ -215,6 +216,7 @@ singletonImplementation(UHTTPQueue);
     rparam.timeout = param.timeout;
     rparam.retry = param.retry;
     rparam.retryInterval = param.retryInterval;
+    rparam.redirect = param.redirect;
     
     UOperationQueue *queue = [UHTTPQueue sharedUHTTPQueue].operationQueue;
     [rparam performWithName:@"setOperationQueue:" with:queue];
@@ -358,6 +360,10 @@ singletonImplementation(UHTTPQueue);
         status.time = usedTime;
         status.countOfRetry = 0;
         status.url = request.URL.absoluteString;
+        
+        if (status.code == UHTTPCodeFound) {
+            status.redirectURL = httpResponse.allHeaderFields[@"Location"];
+        }
         
         result.status = status;
         result.data = responseObject;

@@ -25,6 +25,9 @@
     
     self.navigationBarView.title = @"List";
     
+    self.statusBarView.backgroundColor = rgbColor(249, 42, 35);
+    self.navigationBarView.backgroundColor = rgbColor(249, 42, 35);
+    
     CGFloat height = self.containerView.sizeHeight;
     _listView = [[UListView alloc]initWith:UListViewStyleVertical];
     _listView.tag = 1;

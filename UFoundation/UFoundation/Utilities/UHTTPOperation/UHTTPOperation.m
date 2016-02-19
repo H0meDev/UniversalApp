@@ -64,6 +64,7 @@
         _retry = 0;
         _retryInterval = 0;
         _cacheKey = @"";
+        _redirect = YES;
     }
     
     return self;
@@ -158,6 +159,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
     NSInteger _timeout;
     NSInteger _countOfRetry;
     NSUInteger _timeInterval;
+    BOOL _redirect;
     __strong UOperationQueue *_operationQueue;
     __strong UHTTPOperation *_operationHolder;
     
@@ -198,13 +200,13 @@ singletonImplementationWith(UHTTPDataCache, cache);
         if (checkClass(param, UHTTPOperationParam)) {
             _connection = [[NSURLConnection alloc]initWithRequest:param.request delegate:self startImmediately:NO];
             
-            _callback = callback;
+            _callback = [callback copy];
             if (response) {
-                _response = response;
+                _response = [response copy];
             }
             
             if (progress) {
-                _received = progress;
+                _received = [progress copy];
             }
             
             // Default is 30
@@ -212,6 +214,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
             _receivedLength = 0;
             _request = param.request;
             _countOfRetry = param.retry;
+            _redirect = param.redirect;
             _timeInterval = param.retryInterval;
             _cacheRequired = param.cached;
             _operationQueue = param.queue;
@@ -390,6 +393,19 @@ singletonImplementationWith(UHTTPDataCache, cache);
 
 #pragma mark - NSURLConnectionDelegate & NSURLConnectionDataDelegate
 
+- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(nullable NSURLResponse *)response
+{
+    if (!response) {
+        return request;
+    }
+    
+    if (_redirect) {
+        return request;
+    }
+    
+    return nil;
+}
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     NSLog(@"\nUHTTP RECEIVED RESPONSE:\n*********************************\n%@\n*********************************",response.description);
@@ -399,11 +415,21 @@ singletonImplementationWith(UHTTPDataCache, cache);
     if (_response) {
         UHTTPStatus *status = [[UHTTPStatus alloc]init];
         status.code = _httpResponse.statusCode;
+        
+        if (status.code == UHTTPCodeFound) {
+            status.redirectURL = _httpResponse.allHeaderFields[@"Location"];
+        }
+        
         _response(status);
     } else {
         if (_delegate && [_delegate respondsToSelector:@selector(requestResponseCallback:status:)]) {
             UHTTPStatus *status = [[UHTTPStatus alloc]init];
             status.code = _httpResponse.statusCode;
+            
+            if (status.code == UHTTPCodeFound) {
+                status.redirectURL = _httpResponse.allHeaderFields[@"Location"];
+            }
+            
             [_delegate requestResponseCallback:_identifier status:status];
         }
     }
@@ -506,6 +532,10 @@ singletonImplementationWith(UHTTPDataCache, cache);
         status.countOfRetry = _countOfRetry;
         status.url = request.URL.absoluteString;
         
+        if (status.code == UHTTPCodeFound) {
+            status.redirectURL = _httpResponse.allHeaderFields[@"Location"];
+        }
+        
         if (_callback) {
             _callback(status, _responseObject);
         } else {
@@ -548,6 +578,10 @@ singletonImplementationWith(UHTTPDataCache, cache);
         status.time = usedTime;
         status.countOfRetry = _countOfRetry;
         status.url = request.URL.absoluteString;
+        
+        if (status.code == UHTTPCodeFound) {
+            status.redirectURL = _httpResponse.allHeaderFields[@"Location"];
+        }
         
         if (_callback) {
             _callback(status, nil);

@@ -36,7 +36,7 @@
         self = [super init];
         if (self) {
             // Initialize
-            _maxOperationsCount = MAXFLOAT;
+            _maxOperationsCount = ULLONG_MAX;
             _operations = [NSMutableArray array];
             _operationQueue = [[NSOperationQueue alloc]init];
             _operationQueue.maxConcurrentOperationCount = 10;
