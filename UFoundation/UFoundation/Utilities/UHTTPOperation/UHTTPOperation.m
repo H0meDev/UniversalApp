@@ -242,6 +242,8 @@ singletonImplementationWith(UHTTPDataCache, cache);
             
 #if DEBUG
             NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
+            [mrequest setTimeoutInterval:120];
+            
             NSString *header = checkValidNSDictionary(mrequest.allHTTPHeaderFields)?[mrequest.allHTTPHeaderFields JSONString]:@"";
             NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
             NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nHEADER: %@\nBODY: %@\n*********************************",mrequest.URL.absoluteString, mrequest.HTTPMethod, header, body);
@@ -278,6 +280,8 @@ singletonImplementationWith(UHTTPDataCache, cache);
             
 #if DEBUG
             NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
+            [mrequest setTimeoutInterval:120];
+            
             NSString *header = checkValidNSDictionary(mrequest.allHTTPHeaderFields)?[mrequest.allHTTPHeaderFields JSONString]:@"";
             NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
             NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nHEADER: %@\nBODY: %@\n*********************************", mrequest.URL.absoluteString, mrequest.HTTPMethod, header, body);
@@ -332,6 +336,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
 {
     if (seconds > 0) {
         _timeout = seconds;
+        _timeout = (_timeout > 120)?120:0;
     }
     
     [UTimerBooster start];
@@ -399,7 +404,8 @@ singletonImplementationWith(UHTTPDataCache, cache);
         return request;
     }
     
-    if (_redirect) {
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+    if (_redirect && httpResponse.statusCode == UHTTPCodeFound) {
         return request;
     }
     
