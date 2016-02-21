@@ -28,8 +28,8 @@
     // Do any additional setup after loading the view.
     
     self.navigationBarView.title = @"Next";
-//    self.statusBarView.backgroundColor = sysClearColor();
-//    self.navigationBarView.backgroundColor = sysClearColor();
+    self.statusBarView.backgroundColor = sysClearColor();
+    self.navigationBarView.backgroundColor = sysClearColor();
     self.containerView.backgroundColor = sysLightGrayColor();
     
 //    UNavigationBarButton *rightButton = [UNavigationBarButton button];
@@ -92,6 +92,13 @@
 //    }];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.navigationBarView.hidden = YES;
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -110,6 +117,26 @@
 - (void)dealloc
 {
     //
+}
+
+- (void)controllerWillMove
+{
+    self.navigationBarView.hidden = NO;
+}
+
+- (void)controllerDidMoveBack
+{
+    self.navigationBarView.hidden = YES;
+}
+
+- (void)controllerWillPush
+{
+    self.navigationBarView.hidden = NO;
+}
+
+- (void)controllerWillPop
+{
+    self.navigationBarView.hidden = NO;
 }
 
 /*

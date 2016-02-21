@@ -298,7 +298,7 @@
 
 - (BOOL)isValidateInPoint:(CGPoint)point
 {
-    return (point.x > 0 && point.x <= 40) && (point.y > naviHeight());
+    return (point.x > 0 && point.x <= 50) && (point.y > naviHeight());
 }
 
 - (void)repositionAllViewWithX:(CGFloat)xvalue animated:(BOOL)animated
@@ -594,6 +594,11 @@
 {
     if (!viewController || _isGestureMoving) {
         return;
+    }
+    
+    // Callback
+    if (checkAction(_viewController, @selector(controllerWillPush))) {
+        [_viewController controllerWillPush];
     }
     
     [super pushViewController:viewController animated:animated];

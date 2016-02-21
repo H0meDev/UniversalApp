@@ -63,6 +63,7 @@
 - (void)controllerWillMoveBack;
 - (void)controllerDidMoveBack;
 - (void)controllerWillMovePop;
+- (void)controllerWillPush;
 - (void)controllerWillPop;
 
 /*

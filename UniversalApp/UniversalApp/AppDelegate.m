@@ -72,6 +72,8 @@
 {
     HomeTabViewController *home = [[HomeTabViewController alloc]init];
     BaseNavigationController *root = [BaseNavigationController controllerWithRoot:home];
+    root.statusBarContentBackgroundTransparent = YES;
+    root.navigationBarContentBackgroundTransparent = YES;
     self.window.rootViewController = root;
 }
 
