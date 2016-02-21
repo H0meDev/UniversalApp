@@ -17,11 +17,13 @@
  * Status bar
  */
 @property (nonatomic, weak, readonly) UStatusBarView *statusBarView;
+@property (nonatomic, assign) BOOL statusBarContentBackgroundTransparent; // Default is NO
 
 /*
  * Navigation bar
  */
 @property (nonatomic, weak, readonly) UNavigationBarView *navigationBarView;
+@property (nonatomic, assign) BOOL navigationBarContentBackgroundTransparent; // Default is NO
 
 /*
  * Controller of current visiable UViewController

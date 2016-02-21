@@ -23,11 +23,6 @@
     CGFloat _transformRate;
     BOOL _isGestureMoving;
     
-    UImageView *_lastStatusBGView;
-    UImageView *_currentStatusBGView;
-    UImageView *_lastNaviBGView;
-    UImageView *_currentNaviBGView;
-    
     // For bars
     __weak UStatusBarView *_lastStatusView;
     __weak UStatusBarView *_currentStatusView;
@@ -37,6 +32,12 @@
 
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIView *shadowView;
+@property (nonatomic, strong) UIView *statusContentView;
+@property (nonatomic, strong) UIView *navigationContentView;
+@property (nonatomic, strong) UImageView *lastStatusBGView;
+@property (nonatomic, strong) UImageView *lastNavigationBGView;
+@property (nonatomic, strong) UImageView *currentStatusBGView;
+@property (nonatomic, strong) UImageView *currentNavigationBGView;
 @property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
 @property (nonatomic, weak) UViewController *viewController;
 
@@ -141,30 +142,42 @@
     }
     
     // Status bar background
+    UIView *statusContentView = [[UIView alloc]init];
+    statusContentView.frame = rectMake(0, 0, screenWidth(), statusHeight());
+    statusContentView.backgroundColor = sysWhiteColor();
+    [self.view addSubview:statusContentView];
+    _statusContentView = statusContentView;
+    
     UImageView *lastStatusBGView = [[UImageView alloc]init];
-    lastStatusBGView.frame = rectMake(0, 0, screenWidth(), statusHeight());
+    lastStatusBGView.frame = _statusContentView.bounds;
     lastStatusBGView.backgroundColor = rgbColor(239, 239, 239);
-    [self.view addSubview:lastStatusBGView];
+    [_statusContentView addSubview:lastStatusBGView];
     _lastStatusBGView = lastStatusBGView;
     
     UImageView *currentStatusBGView = [[UImageView alloc]init];
-    currentStatusBGView.frame = rectMake(0, 0, screenWidth(), statusHeight());
+    currentStatusBGView.frame = _statusContentView.bounds;
     currentStatusBGView.backgroundColor = rgbColor(239, 239, 239);
-    [self.view addSubview:currentStatusBGView];
+    [_statusContentView addSubview:currentStatusBGView];
     _currentStatusBGView = currentStatusBGView;
     
     // Navigation bar background
-    UImageView *lastNaviBGView = [[UImageView alloc]init];
-    lastNaviBGView.frame = rectMake(0, statusHeight(), screenWidth(), naviHeight());
-    lastNaviBGView.backgroundColor = rgbColor(239, 239, 239);
-    [self.view addSubview:lastNaviBGView];
-    _lastNaviBGView = lastNaviBGView;
+    UIView *navigationContentView = [[UIView alloc]init];
+    navigationContentView.frame = rectMake(0, statusHeight(), screenWidth(), naviHeight());
+    navigationContentView.backgroundColor = sysWhiteColor();
+    [self.view addSubview:navigationContentView];
+    _navigationContentView = navigationContentView;
     
-    UImageView *currentNaviBGView = [[UImageView alloc]init];
-    currentNaviBGView.frame = rectMake(0, statusHeight(), screenWidth(), naviHeight());
-    currentNaviBGView.backgroundColor = rgbColor(239, 239, 239);
-    [self.view addSubview:currentNaviBGView];
-    _currentNaviBGView = currentNaviBGView;
+    UImageView *lastNavigationBGView = [[UImageView alloc]init];
+    lastNavigationBGView.frame = _navigationContentView.bounds;
+    lastNavigationBGView.backgroundColor = rgbColor(239, 239, 239);
+    [_navigationContentView addSubview:lastNavigationBGView];
+    _lastNavigationBGView = lastNavigationBGView;
+    
+    UImageView *currentNavigationBGView = [[UImageView alloc]init];
+    currentNavigationBGView.frame = _navigationContentView.bounds;
+    currentNavigationBGView.backgroundColor = rgbColor(239, 239, 239);
+    [_navigationContentView addSubview:currentNavigationBGView];
+    _currentNavigationBGView = currentNavigationBGView;
     
     UIView *contentView = [[UIView alloc]init];
     contentView.frame = rectMake(0, 0, screenWidth(), statusHeight() + naviHeight());
@@ -191,6 +204,28 @@
     _shadowView = shadowView;
     
     return _shadowView;
+}
+
+- (void)setStatusBarContentBackgroundTransparent:(BOOL)transparent
+{
+    _statusBarContentBackgroundTransparent = transparent;
+    
+    if (transparent) {
+        _statusContentView.backgroundColor = sysClearColor();
+    } else {
+        _statusContentView.backgroundColor = sysWhiteColor();
+    }
+}
+
+- (void)setNavigationBarContentBackgroundTransparent:(BOOL)transparent
+{
+    _navigationBarContentBackgroundTransparent = transparent;
+    
+    if (transparent) {
+        _navigationContentView.backgroundColor = sysClearColor();
+    } else {
+        _navigationContentView.backgroundColor = sysWhiteColor();
+    }
 }
 
 #pragma mark - Methods
@@ -238,14 +273,14 @@
         _lastStatusView = controller.statusBarView;
         _lastNavigationView = controller.navigationBarView;
         [_lastStatusView performWithName:@"setBackgroundView:" with:_lastStatusBGView];
-        [_lastNavigationView performWithName:@"setBackgroundView:" with:_lastNaviBGView];
+        [_lastNavigationView performWithName:@"setBackgroundView:" with:_lastNavigationBGView];
     }
     
     // Current
     _currentStatusView = viewController.statusBarView;
     _currentNavigationView = viewController.navigationBarView;
     [_currentStatusView performWithName:@"setBackgroundView:" with:_currentStatusBGView];
-    [_currentNavigationView performWithName:@"setBackgroundView:" with:_currentNaviBGView];
+    [_currentNavigationView performWithName:@"setBackgroundView:" with:_currentNavigationBGView];
     
     // Bring current to front
     [self.contentView addSubview:_currentStatusView];
@@ -365,9 +400,9 @@
         _currentStatusBGView.alpha = 1.0 - alpha;
     }
     
-    if (![_lastNaviBGView.backgroundColor isEqualToColor:_currentNaviBGView.backgroundColor]) {
-        _lastNaviBGView.alpha = alpha;
-        _currentNaviBGView.alpha = 1.0 - alpha;
+    if (![_lastNavigationBGView.backgroundColor isEqualToColor:_currentNavigationBGView.backgroundColor]) {
+        _lastNavigationBGView.alpha = alpha;
+        _currentNavigationBGView.alpha = 1.0 - alpha;
     }
 }
 
