@@ -55,9 +55,6 @@
 - (void)insertWithArray:(NSArray *)models;
 - (void)insertWithArray:(NSArray *)models table:(NSString *)table;
 
-// Update model
-- (BOOL)updateWith:(UModel *)model changes:(NSArray *)changes; // changes: array of changed property names
-
 // Select models
 - (NSArray *)selectWith:(Class)class conditions:(NSArray *)conditions; // conditions: array of UDataBaseTableCondition
 - (NSArray *)selectWith:(Class)class conditions:(NSArray *)conditions table:(NSString *)table;

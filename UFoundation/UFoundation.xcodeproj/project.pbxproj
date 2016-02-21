@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F508C3C11C771EED004867B8 /* USQLite.h in Headers */ = {isa = PBXBuildFile; fileRef = F508C3BF1C771EED004867B8 /* USQLite.h */; };
+		F508C3C21C771EED004867B8 /* USQLite.m in Sources */ = {isa = PBXBuildFile; fileRef = F508C3C01C771EED004867B8 /* USQLite.m */; };
 		F50E63151B7C6D8000E442E8 /* UNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F50E63141B7C6D8000E442E8 /* UNavigationController.m */; };
 		F50ED6071B79A1230027EC82 /* UImagePickerControllerController.h in Headers */ = {isa = PBXBuildFile; fileRef = F50ED6051B79A1230027EC82 /* UImagePickerControllerController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F50ED6081B79A1230027EC82 /* UImagePickerControllerController.m in Sources */ = {isa = PBXBuildFile; fileRef = F50ED6061B79A1230027EC82 /* UImagePickerControllerController.m */; };
@@ -119,6 +121,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F508C3BF1C771EED004867B8 /* USQLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = USQLite.h; sourceTree = "<group>"; };
+		F508C3C01C771EED004867B8 /* USQLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = USQLite.m; sourceTree = "<group>"; };
 		F50E63141B7C6D8000E442E8 /* UNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UNavigationController.m; path = UIFoundation/UNavigationController.m; sourceTree = "<group>"; };
 		F50ED6051B79A1230027EC82 /* UImagePickerControllerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UImagePickerControllerController.h; path = UIFoundation/UImagePickerControllerController.h; sourceTree = "<group>"; };
 		F50ED6061B79A1230027EC82 /* UImagePickerControllerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UImagePickerControllerController.m; path = UIFoundation/UImagePickerControllerController.m; sourceTree = "<group>"; };
@@ -524,6 +528,8 @@
 		F5E7CBB81C43AB7B00839C44 /* UDataBase */ = {
 			isa = PBXGroup;
 			children = (
+				F508C3BF1C771EED004867B8 /* USQLite.h */,
+				F508C3C01C771EED004867B8 /* USQLite.m */,
 				F5E7CBB91C43AB7B00839C44 /* UDataBase.h */,
 				F5E7CBBA1C43AB7B00839C44 /* UDataBase.m */,
 			);
@@ -551,6 +557,7 @@
 				F51C11D51B90630300F29C3F /* NSDictionary+UAExtension.h in Headers */,
 				F51C11E51B90630300F29C3F /* UITableViewCell+UAExtension.h in Headers */,
 				F51C11F71B90630300F29C3F /* UProgressHUD.h in Headers */,
+				F508C3C11C771EED004867B8 /* USQLite.h in Headers */,
 				F51C11D11B90630300F29C3F /* NSData+UAExtension.h in Headers */,
 				F51C11E71B90630300F29C3F /* UITextField+UAExtension.h in Headers */,
 				F51C11F51B90630300F29C3F /* UOperationQueue.h in Headers */,
@@ -674,6 +681,7 @@
 				F51C11E61B90630300F29C3F /* UITableViewCell+UAExtension.m in Sources */,
 				F51C11E01B90630300F29C3F /* UIImage+UAExtension.m in Sources */,
 				F51C11E81B90630300F29C3F /* UITextField+UAExtension.m in Sources */,
+				F508C3C21C771EED004867B8 /* USQLite.m in Sources */,
 				F56C2CD61B0444D300D5DF66 /* UImageView.m in Sources */,
 				F51C11FA1B90630300F29C3F /* UThreadPool.m in Sources */,
 				F52BE99D1BE9E91700BF1243 /* UMessageBox.m in Sources */,
