@@ -69,6 +69,7 @@ typedef NS_ENUM(NSInteger, UHTTPCode)
 @property (nonatomic, assign) NSInteger retry;
 @property (nonatomic, assign) CGFloat retryInterval;
 @property (nonatomic, assign) BOOL redirect;  // Allow redirect, default is YES, invalidate for synchronous
+@property (nonatomic, assign) BOOL enableLog; // Default is YES
 
 + (id)param;
 

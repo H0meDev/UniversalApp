@@ -65,6 +65,7 @@
         _retryInterval = 0;
         _cacheKey = @"";
         _redirect = YES;
+        _enableLog = YES;
     }
     
     return self;
@@ -160,6 +161,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
     NSInteger _countOfRetry;
     NSUInteger _timeInterval;
     BOOL _redirect;
+    BOOL _enableLog;
     __strong UOperationQueue *_operationQueue;
     __strong UHTTPOperation *_operationHolder;
     
@@ -214,8 +216,9 @@ singletonImplementationWith(UHTTPDataCache, cache);
             _receivedLength = 0;
             _request = param.request;
             _countOfRetry = param.retry;
-            _redirect = param.redirect;
             _timeInterval = param.retryInterval;
+            _redirect = param.redirect;
+            _enableLog = param.enableLog;
             _cacheRequired = param.cached;
             _operationQueue = param.queue;
             
@@ -272,6 +275,8 @@ singletonImplementationWith(UHTTPDataCache, cache);
             _request = param.request;
             _countOfRetry = param.retry;
             _timeInterval = param.retryInterval;
+            _redirect = param.redirect;
+            _enableLog = param.enableLog;
             _cacheRequired = param.cached;
             _operationQueue = param.queue;
             
@@ -354,15 +359,22 @@ singletonImplementationWith(UHTTPDataCache, cache);
     [super cancel];
   
 #if DEBUG
-    NSURLRequest *request = _connection.originalRequest;
-    NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: CANCELD\nURL: %@\n*********************************", request.URL.absoluteString);
+    if (_enableLog) {
+        NSURLRequest *request = _connection.originalRequest;
+        NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: CANCELD\nURL: %@\n*********************************", request.URL.absoluteString);
+    }
 #endif
 }
 
 - (void)requestTimeout
 {
     NSURLRequest *request = _connection.originalRequest;
-    NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: TIMEOUT\nTIME: %@s\nURL: %@\n*********************************", [NSNumber numberWithInteger:_timeout], request.URL.absoluteString);
+    
+#if DEBUG
+    if (_enableLog) {
+        NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: TIMEOUT\nTIME: %@s\nURL: %@\n*********************************", [NSNumber numberWithInteger:_timeout], request.URL.absoluteString);
+    }
+#endif
     
     // Cancel connection
     [_connection cancel];
@@ -414,21 +426,17 @@ singletonImplementationWith(UHTTPDataCache, cache);
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    NSLog(@"\nUHTTP RECEIVED RESPONSE:\n*********************************\n%@\n*********************************",response.description);
-    
-    _httpResponse = (NSHTTPURLResponse *)response;
-    
-    if (_response) {
-        UHTTPStatus *status = [[UHTTPStatus alloc]init];
-        status.code = _httpResponse.statusCode;
-        
-        if (status.code == UHTTPCodeFound) {
-            status.redirectURL = _httpResponse.allHeaderFields[@"Location"];
+    @autoreleasepool
+    {
+#if DEBUG
+        if (_enableLog) {
+            NSLog(@"\nUHTTP RECEIVED RESPONSE:\n*********************************\n%@\n*********************************",response.description);
         }
+#endif
         
-        _response(status);
-    } else {
-        if (_delegate && [_delegate respondsToSelector:@selector(requestResponseCallback:status:)]) {
+        _httpResponse = (NSHTTPURLResponse *)response;
+        
+        if (_response) {
             UHTTPStatus *status = [[UHTTPStatus alloc]init];
             status.code = _httpResponse.statusCode;
             
@@ -436,7 +444,18 @@ singletonImplementationWith(UHTTPDataCache, cache);
                 status.redirectURL = _httpResponse.allHeaderFields[@"Location"];
             }
             
-            [_delegate requestResponseCallback:_identifier status:status];
+            _response(status);
+        } else {
+            if (_delegate && [_delegate respondsToSelector:@selector(requestResponseCallback:status:)]) {
+                UHTTPStatus *status = [[UHTTPStatus alloc]init];
+                status.code = _httpResponse.statusCode;
+                
+                if (status.code == UHTTPCodeFound) {
+                    status.redirectURL = _httpResponse.allHeaderFields[@"Location"];
+                }
+                
+                [_delegate requestResponseCallback:_identifier status:status];
+            }
         }
     }
 }
@@ -467,140 +486,159 @@ singletonImplementationWith(UHTTPDataCache, cache);
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    NSURLRequest *request = [connection originalRequest];
-    clock_t endTime = clock();
-    CGFloat usedTime = (CGFloat)(endTime - _startTime)/CLOCKS_PER_SEC;
-    
-#if DEBUG
-    NSString *statusText = @"OK";
-#endif
-    
-    @try
+    @autoreleasepool
     {
-        if (_receivedData) {
-            NSStringEncoding stringEncoding = NSUTF8StringEncoding;
-            if (_httpResponse.textEncodingName) {
-                if ([_httpResponse.textEncodingName isEqualToString:@"gb2312"]) {
-                    stringEncoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-                } else {
+        NSURLRequest *request = [connection originalRequest];
+        clock_t endTime = clock();
+        CGFloat usedTime = (CGFloat)(endTime - _startTime)/CLOCKS_PER_SEC;
+        
+#if DEBUG
+        NSString *statusText = @"OK";
+#endif
+        
+        @try
+        {
+            if (_receivedData) {
+                if (_httpResponse.textEncodingName) {
+                    NSStringEncoding stringEncoding = NSUTF8StringEncoding;
                     CFStringEncoding encoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)_httpResponse.textEncodingName);
                     if (encoding != kCFStringEncodingInvalidId) {
                         stringEncoding = CFStringConvertEncodingToNSStringEncoding(encoding);
+                        
+                        // Parse text
+                        NSString *responseString = [[NSString alloc]initWithData:_receivedData encoding:stringEncoding];
+                        if (!responseString && stringEncoding == NSUTF8StringEncoding) {
+                            stringEncoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+                            responseString = [[NSString alloc]initWithData:_receivedData encoding:stringEncoding];
+                        }
+                        
+                        if (responseString && responseString.length > 1) {
+                            // To JSON
+                            NSError *error = nil;
+                            NSData *data = [responseString dataUsingEncoding:NSUTF8StringEncoding];
+                            if (data && data.length > 0) {
+                                _responseObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+                            }
+                        }
+                        
+                        if (!_responseObject) {
+                            if (responseString) {
+                                _responseObject = responseString;
+#if DEBUG
+                                if (_enableLog) {
+                                    NSLog(@"Current data is not JSON");
+                                }
+#endif
+                            } else {
+                                _responseObject = _receivedData;
+#if DEBUG
+                                if (_enableLog) {
+                                    NSLog(@"Current data can not be parsed to JSON");
+                                }
+#endif
+                            }
+                        }
+                        
+                        responseString = nil;
                     }
-                }
-            }
-            
-            _responseObject = nil;
-            NSError *error = nil;
-            
-            // Parse data
-            NSString *responseString = [[NSString alloc]initWithData:_receivedData encoding:stringEncoding];
-            if (!responseString && stringEncoding == NSUTF8StringEncoding) {
-                stringEncoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-                responseString = [[NSString alloc]initWithData:_receivedData encoding:stringEncoding];
-            }
-            
-            if (responseString && responseString.length > 1) {
-                // To JSON
-                NSData *data = [responseString dataUsingEncoding:NSUTF8StringEncoding];
-                if (data && data.length > 0) {
-                    _responseObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-                }
-            }
-            
-            if (!_responseObject) {
-                if (responseString) {
-                    _responseObject = responseString;
-                    NSLog(@"Current data is not JSON");
+                    
+                    _responseObject = nil;
                 } else {
                     _responseObject = _receivedData;
-                    NSLog(@"Current data can not be parsed");
+                    NSLog(@"Current data can not be parsed to text");
+                }
+            }
+        }
+        @catch (NSException *exception)
+        {
+#if DEBUG
+            statusText = @"Parse exception";
+#endif
+        }
+        @finally
+        {
+#if DEBUG
+            if (_enableLog) {
+                NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: %@\nTIME: %fs\nURL: %@\nDATA: \n%@\n*********************************",statusText, usedTime, request.URL.absoluteString, _responseObject);
+            }
+#endif
+            UHTTPStatus *status = [[UHTTPStatus alloc]init];
+            status.code = _httpResponse.statusCode;
+            status.time = usedTime;
+            status.countOfRetry = _countOfRetry;
+            status.url = request.URL.absoluteString;
+            
+            if (status.code == UHTTPCodeFound) {
+                status.redirectURL = _httpResponse.allHeaderFields[@"Location"];
+            }
+            
+            if (_callback) {
+                _callback(status, _responseObject);
+            } else {
+                if (_delegate && [_delegate respondsToSelector:@selector(requestCompleteCallback:status:data:)]) {
+                    [_delegate requestCompleteCallback:_identifier status:status data:_responseObject];
                 }
             }
             
-            responseString = nil;
-        }
-    }
-    @catch (NSException *exception)
-    {
-#if DEBUG
-        statusText = @"Parse exception";
-#endif
-    }
-    @finally
-    {
-#if DEBUG
-        NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: %@\nTIME: %fs\nURL: %@\nDATA: \n%@\n*********************************",statusText, usedTime, request.URL.absoluteString, _responseObject);
-#endif
-        UHTTPStatus *status = [[UHTTPStatus alloc]init];
-        status.code = _httpResponse.statusCode;
-        status.time = usedTime;
-        status.countOfRetry = _countOfRetry;
-        status.url = request.URL.absoluteString;
-        
-        if (status.code == UHTTPCodeFound) {
-            status.redirectURL = _httpResponse.allHeaderFields[@"Location"];
-        }
-        
-        if (_callback) {
-            _callback(status, _responseObject);
-        } else {
-            if (_delegate && [_delegate respondsToSelector:@selector(requestCompleteCallback:status:data:)]) {
-                [_delegate requestCompleteCallback:_identifier status:status data:_responseObject];
+            // Cache data
+            if (_cacheRequired) {
+                [[UHTTPDataCache cache]setValue:_responseObject forKey:_cacheKey];
             }
+            
+            [_operationQueue removeOperation:self];
         }
-        
-        // Cache data
-        if (_cacheRequired) {
-            [[UHTTPDataCache cache]setValue:_responseObject forKey:_cacheKey];
-        }
-        
-        [_operationQueue removeOperation:self];
     }
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    // Cancel timeout
-    [UTimerBooster removeTarget:self];
-    
-    NSURLRequest *request = [connection originalRequest];
-    clock_t endTime = clock();
-    CGFloat usedTime = (CGFloat)(endTime - _startTime)/CLOCKS_PER_SEC;
-    
-    NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: ERROR\nTIME: %fs\nURL: %@\nDESCRIPTION: \n%@\n*********************************", usedTime, request.URL.absoluteString, error.description);
-    
-    if (_countOfRetry > 1) {
-        _countOfRetry --;
+    @autoreleasepool
+    {
+        // Cancel timeout
+        [UTimerBooster removeTarget:self];
         
-        if (!_operationHolder) {
-            _operationHolder = self;
+        NSURLRequest *request = [connection originalRequest];
+        clock_t endTime = clock();
+        CGFloat usedTime = (CGFloat)(endTime - _startTime)/CLOCKS_PER_SEC;
+
+#if DEBUG
+        if (_enableLog) {
+             NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: ERROR\nTIME: %fs\nURL: %@\nDESCRIPTION: \n%@\n*********************************", usedTime, request.URL.absoluteString, error.description);
         }
+#endif
         
-        [UTimerBooster addTarget:self sel:@selector(startConnection) time:_timeInterval];
-    } else {
-        UHTTPStatus *status = [[UHTTPStatus alloc]init];
-        status.code = _httpResponse.statusCode;
-        status.time = usedTime;
-        status.countOfRetry = _countOfRetry;
-        status.url = request.URL.absoluteString;
-        
-        if (status.code == UHTTPCodeFound) {
-            status.redirectURL = _httpResponse.allHeaderFields[@"Location"];
-        }
-        
-        if (_callback) {
-            _callback(status, nil);
-        } else {
-            if (_delegate && [_delegate respondsToSelector:@selector(requestCompleteCallback:status:data:)]) {
-                [_delegate requestCompleteCallback:_identifier status:status data:nil];
+        if (_countOfRetry > 1) {
+            _countOfRetry --;
+            
+            if (!_operationHolder) {
+                _operationHolder = self;
             }
+            
+            [UTimerBooster addTarget:self sel:@selector(startConnection) time:_timeInterval];
+        } else {
+            UHTTPStatus *status = [[UHTTPStatus alloc]init];
+            status.code = _httpResponse.statusCode;
+            status.time = usedTime;
+            status.countOfRetry = _countOfRetry;
+            status.url = request.URL.absoluteString;
+            
+            if (status.code == UHTTPCodeFound) {
+                status.redirectURL = _httpResponse.allHeaderFields[@"Location"];
+            }
+            
+            if (_callback) {
+                _callback(status, nil);
+            } else {
+                if (_delegate && [_delegate respondsToSelector:@selector(requestCompleteCallback:status:data:)]) {
+                    [_delegate requestCompleteCallback:_identifier status:status data:nil];
+                }
+            }
+            
+            _operationHolder = nil;
         }
         
-        _operationHolder = nil;
+        [_operationQueue removeOperation:self];
     }
-    
-    [_operationQueue removeOperation:self];
 }
 
 #pragma mark - For HTTPS request

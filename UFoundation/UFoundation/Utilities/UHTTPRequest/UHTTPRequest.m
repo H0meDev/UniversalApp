@@ -59,6 +59,7 @@ singletonImplementation(UHTTPQueue);
         _retry = 0;
         _retryInterval = 0;
         _redirect = YES;
+        _enableLog = YES;
     }
     
     return self;
@@ -217,6 +218,7 @@ singletonImplementation(UHTTPQueue);
     rparam.retry = param.retry;
     rparam.retryInterval = param.retryInterval;
     rparam.redirect = param.redirect;
+    rparam.enableLog = param.enableLog;
     
     UOperationQueue *queue = [UHTTPQueue sharedUHTTPQueue].operationQueue;
     [rparam performWithName:@"setOperationQueue:" with:queue];
@@ -297,44 +299,56 @@ singletonImplementation(UHTTPQueue);
     @try
     {
         if (receivedData) {
-            NSStringEncoding stringEncoding = NSUTF8StringEncoding;
             if (httpResponse.textEncodingName) {
-                if ([httpResponse.textEncodingName isEqualToString:@"gb2312"]) {
-                    stringEncoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-                } else {
-                    CFStringEncoding encoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)httpResponse.textEncodingName);
-                    if (encoding != kCFStringEncodingInvalidId) {
-                        stringEncoding = CFStringConvertEncodingToNSStringEncoding(encoding);
+                NSStringEncoding stringEncoding = NSUTF8StringEncoding;
+                CFStringEncoding encoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)httpResponse.textEncodingName);
+                
+                if (encoding != kCFStringEncodingInvalidId) {
+                    stringEncoding = CFStringConvertEncodingToNSStringEncoding(encoding);
+                    
+                    // Parse to text
+                    NSString *responseString = [[NSString alloc]initWithData:receivedData encoding:stringEncoding];
+                    if (!responseString) {
+                        stringEncoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+                        responseString = [[NSString alloc]initWithData:receivedData encoding:stringEncoding];
                     }
+                    
+                    if (responseString && responseString.length > 1) {
+                        // To JSON
+                        NSData *data = [responseString dataUsingEncoding:NSUTF8StringEncoding];
+                        if (data && data.length > 0) {
+                            responseObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+                        }
+                    }
+                    
+                    if (!responseObject) {
+                        if (responseString) {
+                            responseObject = responseString;
+#if DEBUG
+                            if (param.enableLog) {
+                                NSLog(@"Current data is not JSON");
+                            }
+#endif
+                        } else {
+                            responseObject = receivedData;
+#if DEBUG
+                            if (param.enableLog) {
+                                NSLog(@"Current data can not be parsed to JSON");
+                            }
+#endif
+                        }
+                    }
+                    
+                    responseString = nil;
                 }
-            }
-            
-            // Parse data
-            NSString *responseString = [[NSString alloc]initWithData:receivedData encoding:stringEncoding];
-            if (!responseString && stringEncoding == NSUTF8StringEncoding) {
-                stringEncoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-                responseString = [[NSString alloc]initWithData:receivedData encoding:stringEncoding];
-            }
-            
-            if (responseString && responseString.length > 1) {
-                // To JSON
-                NSData *data = [responseString dataUsingEncoding:NSUTF8StringEncoding];
-                if (data && data.length > 0) {
-                    responseObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+            } else {
+                responseObject = receivedData;
+#if DEBUG
+                if (param.enableLog) {
+                    NSLog(@"Current data can not be parsed to text");
                 }
+#endif
             }
-            
-            if (!responseObject) {
-                if (responseString) {
-                    responseObject = responseString;
-                    NSLog(@"Current data is not JSON");
-                } else {
-                    responseObject = receivedData;
-                    NSLog(@"Current data can not be parsed");
-                }
-            }
-            
-            responseString = nil;
         }
     }
     @catch (NSException *exception)
@@ -349,10 +363,12 @@ singletonImplementation(UHTTPQueue);
         CGFloat usedTime = (CGFloat)(endTime - startTime)/CLOCKS_PER_SEC;
         
 #if DEBUG
-        if (![statusText isEqualToString:@"OK"]) {
-            NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: %@\nTIME: %fs\nURL: %@\nDESCRIPTION: \n%@\n*********************************", statusText, usedTime, request.URL.absoluteString, error.description);
-        } else {
-            NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: %@\nTIME: %fs\nURL: %@\nDATA: \n%@\n*********************************",statusText, usedTime, request.URL.absoluteString, responseObject);
+        if (param.enableLog) {
+            if (![statusText isEqualToString:@"OK"]) {
+                NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: %@\nTIME: %fs\nURL: %@\nDESCRIPTION: \n%@\n*********************************", statusText, usedTime, request.URL.absoluteString, error.description);
+            } else {
+                NSLog(@"\nUHTTP REQUEST RESULT\n*********************************\nSTATUS: %@\nTIME: %fs\nURL: %@\nDATA: \n%@\n*********************************",statusText, usedTime, request.URL.absoluteString, responseObject);
+            }
         }
 #endif
         UHTTPStatus *status = [[UHTTPStatus alloc]init];

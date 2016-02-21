@@ -31,6 +31,7 @@ singletonInterface(UHTTPQueue);
 @property (nonatomic, assign) BOOL redirect;         // Allow redirect, default is YES, invalidate for synchronous
 @property (nonatomic, assign) BOOL json;             // Default is YES, JSON format for POST or other methods
 @property (nonatomic, assign) BOOL cached;           // Default is NO, when cached, the request will load data from cached firstly
+@property (nonatomic, assign) BOOL enableLog;        // Default is YES
 
 + (id)param;
 
