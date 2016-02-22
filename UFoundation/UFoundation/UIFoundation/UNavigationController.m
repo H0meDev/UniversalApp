@@ -296,7 +296,7 @@
 
 - (BOOL)isValidateInPoint:(CGPoint)point
 {
-    return (point.x > 0 && point.x <= 50) && (point.y > naviHeight());
+    return (point.x > 0 && point.x <= 20) && (point.y > naviHeight());
 }
 
 - (void)repositionAllViewWithX:(CGFloat)xvalue animated:(BOOL)animated
@@ -545,9 +545,8 @@
     [self repositionAllViewWithX:xvalue animated:NO];
     
     CGFloat delta = screenWidth() / 4.0;
-    CGFloat duration = 0.4 * (screenWidth() - xvalue) / (screenWidth() - delta);
-    duration = (duration < 0.25)?0.25:duration;
-    [UIView animateWithDuration:naviAnimtaionDuration()
+    CGFloat duration = naviAnimtaionDuration() * (screenWidth() - xvalue) / (screenWidth() - delta);
+    [UIView animateWithDuration:duration
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
