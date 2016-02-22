@@ -82,6 +82,7 @@
     _transformRate = (systemVersionFloat() >= 7.0)?0.35:1.0;
     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]init];
+    panGesture.maximumNumberOfTouches = 1;
     panGesture.delegate = self;
     [panGesture addTarget:self action:@selector(panAction:)];
     [self.view addGestureRecognizer:panGesture];
