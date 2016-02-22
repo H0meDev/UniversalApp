@@ -84,6 +84,9 @@
 @property (nonatomic, strong) UNavigationContentView *contentView;
 @property (nonatomic, weak) UImageView *backgroundView;
 
+// Paired bar view
+@property (nonatomic, weak) UNavigationBarView *pairedBarView;
+
 @end
 
 @implementation UNavigationBarView
@@ -208,38 +211,22 @@
     _backgroundView.backgroundColor = _backgroundColor;
 }
 
-- (void)repositionCurrentWith:(NSNumber *)xvalue
+- (void)repositionWith:(NSNumber *)xvalue
 {
-    [self repositionWith:[xvalue floatValue] current:YES animated:NO before:NO];
+    [self repositionWith:[xvalue floatValue] animated:NO before:NO];
 }
 
-- (void)repositionLastWith:(NSNumber *)xvalue
+- (void)repositionAnimationWith:(NSNumber *)xvalue
 {
-    [self repositionWith:[xvalue floatValue] current:NO animated:NO before:NO];
+    [self repositionWith:[xvalue floatValue] animated:YES before:NO];
 }
 
-- (void)repositionCurrentAnimationWith:(NSNumber *)xvalue
+- (void)repositionBeforeAnimationWith:(NSNumber *)xvalue
 {
-    [self repositionWith:[xvalue floatValue] current:YES animated:YES before:NO];
-}
-
-- (void)repositionCurrentBeforeAnimationWith:(NSNumber *)xvalue
-{
-    [self repositionWith:[xvalue floatValue] current:YES animated:YES before:YES];
-}
-
-- (void)repositionLastAnimationWith:(NSNumber *)xvalue
-{
-    [self repositionWith:[xvalue floatValue] current:NO animated:YES before:NO];
-}
-
-- (void)repositionLastBeforeAnimationWith:(NSNumber *)xvalue
-{
-    [self repositionWith:[xvalue floatValue] current:NO animated:YES before:YES];
+    [self repositionWith:[xvalue floatValue] animated:YES before:YES];
 }
 
 - (void)repositionWith:(CGFloat)xvalue
-               current:(BOOL)current
               animated:(BOOL)animated
                 before:(BOOL)before
 {
@@ -294,9 +281,18 @@
     leftItemView.alpha = alpha;
     rightItemView.alpha = alpha;
     
-    if (!current && _leftButton) {
-        UImageView *imageView = [_leftButton valueForKey:@"imageView"];
-        imageView.alpha = alpha;
+    // Left button icon
+    if (_leftButton) {
+        UNavigationBarButton *pairedButton = _pairedBarView.leftButton;
+        UIColor *leftColor = [_leftButton valueForKey:@"imageColor"];
+        UIColor *pairedColor = [pairedButton valueForKey:@"imageColor"];
+        
+        if (!pairedButton || pairedButton.hidden != _leftButton.hidden || !(leftColor && pairedColor) ||
+            (![leftColor isEqualToColor:pairedColor]))
+        {
+            UImageView *imageView = [_leftButton valueForKey:@"imageView"];
+            imageView.alpha = alpha;
+        }
     }
 
     if (_centerView) {

@@ -28,9 +28,12 @@
     // Do any additional setup after loading the view.
     
     self.navigationBarView.title = @"Next";
-    self.statusBarView.backgroundColor = sysClearColor();
-    self.navigationBarView.backgroundColor = sysClearColor();
-    self.containerView.backgroundColor = sysLightGrayColor();
+    
+//    self.statusBarView.backgroundColor = sysClearColor();
+//    self.navigationBarView.backgroundColor = sysClearColor();
+//    self.containerView.backgroundColor = sysLightGrayColor();
+//    self.navigationBarView.leftButton.hidden = YES;
+//    self.navigationBarView.bottomLineColor = sysClearColor();
     
 //    UNavigationBarButton *rightButton = [UNavigationBarButton button];
 //    rightButton.frame = rectMake(screenWidth() - 70, 0, 70, naviHeight() - naviBLineH());
@@ -96,7 +99,7 @@
 {
     [super viewDidAppear:animated];
     
-    self.navigationBarView.hidden = YES;
+//    self.navigationBarView.hidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -126,7 +129,7 @@
 
 - (void)controllerDidMoveBack
 {
-    self.navigationBarView.hidden = YES;
+//    self.navigationBarView.hidden = YES;
 }
 
 - (void)controllerWillPush

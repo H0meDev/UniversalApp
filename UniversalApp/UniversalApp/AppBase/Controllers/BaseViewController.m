@@ -81,7 +81,7 @@
         UNavigationBarButton *leftButton = [UNavigationBarButton button];
         leftButton.frame = rectMake(0, 0, 80, naviHeight() - naviBLineH());
         [leftButton setHAlpha:0.3];
-        [leftButton setBackImageWithColor:rgbColor(0, 131, 241)];
+        [leftButton setImageWithColor:rgbColor(0, 131, 241)];
         [leftButton setTitleColor:rgbColor(0, 131, 241)];
         [leftButton setTitleFont:systemFont(16)];
         [leftButton setTarget:self action:@selector(backAction)];

@@ -352,37 +352,39 @@
         
         // Reposition last
         if (!animated) {
-            if (before) {
-                [_lastNavigationView performWithName:@"repositionLastBeforeAnimationWith:" with:@(xvalue - screenWidth())];
+            if (!before) {
+                [_lastNavigationView performWithName:@"repositionWith:" with:@(xvalue - screenWidth())];
             } else {
-                [_lastNavigationView performWithName:@"repositionLastWith:" with:@(xvalue - screenWidth())];
+                [_lastNavigationView performWithName:@"repositionBeforeAnimationWith:" with:@(xvalue - screenWidth())];
             }
         } else {
-            [_lastNavigationView performWithName:@"repositionLastAnimationWith:" with:@(xvalue - screenWidth())];
+            [_lastNavigationView performWithName:@"repositionAnimationWith:" with:@(xvalue - screenWidth())];
         }
     }
     
     if (!_lastNavigationView.leftButton) {
         // As last
         if (!animated) {
-            if (before) {
-                [_currentNavigationView performWithName:@"repositionLastBeforeAnimationWith:" with:@(xvalue)];
+            if (!before) {
+                [_currentNavigationView performWithName:@"repositionWith:" with:@(xvalue)];
             } else {
-                [_currentNavigationView performWithName:@"repositionLastWith:" with:@(xvalue)];
+                [_currentNavigationView performWithName:@"repositionBeforeAnimationWith:" with:@(xvalue)];
             }
         } else {
-            [_currentNavigationView performWithName:@"repositionLastAnimationWith:" with:@(xvalue)];
+            [_currentNavigationView performWithName:@"repositionAnimationWith:" with:@(xvalue)];
         }
     } else {
         // As current
+        [_currentNavigationView performWithName:@"setPairedBarView:" with:_lastNavigationView];
+        
         if (!animated) {
-            if (before) {
-                [_currentNavigationView performWithName:@"repositionCurrentBeforeAnimationWith:" with:@(xvalue)];
+            if (!before) {
+                [_currentNavigationView performWithName:@"repositionWith:" with:@(xvalue)];
             } else {
-                [_currentNavigationView performWithName:@"repositionCurrentWith:" with:@(xvalue)];
+                [_currentNavigationView performWithName:@"repositionBeforeAnimationWith:" with:@(xvalue)];
             }
         } else {
-            [_currentNavigationView performWithName:@"repositionCurrentAnimationWith:" with:@(xvalue)];
+            [_currentNavigationView performWithName:@"repositionAnimationWith:" with:@(xvalue)];
         }
     }
     

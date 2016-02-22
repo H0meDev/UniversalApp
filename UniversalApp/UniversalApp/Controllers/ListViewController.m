@@ -25,8 +25,8 @@
     
     self.navigationBarView.title = @"List";
     
-    self.statusBarView.backgroundColor = rgbColor(249, 42, 35);
-    self.navigationBarView.backgroundColor = rgbColor(249, 42, 35);
+    self.statusBarView.backgroundColor = sysWhiteColor();
+    self.navigationBarView.backgroundColor = sysWhiteColor();
     
     CGFloat height = self.containerView.sizeHeight;
     _listView = [[UListView alloc]initWith:UListViewStyleVertical];
@@ -59,7 +59,7 @@
 
 - (NSInteger)numberOfItemsInListView:(UListView *)listView
 {
-    return 1000;
+    return 10;
 }
 
 - (CGFloat)listView:(UListView *)listView sizeValueForIndex:(NSInteger)index
@@ -96,10 +96,11 @@
 {
     NSLog(@"UListViewCell selected %@", @(index));
     
-//    [listView deselectCellAtIndex:index];
-//    
-//    ListViewController *list = [[ListViewController alloc]init];
-//    [self pushViewController:list];
+    [listView deselectCellAtIndex:index];
+    
+    ListViewController *list = [[ListViewController alloc]init];
+    [list.navigationBarView.leftButton setTitle:self.navigationBarView.title];
+    [self pushViewController:list];
 }
 
 - (void)listView:(UListView *)listView didDeselectCellAtIndex:(NSInteger)index

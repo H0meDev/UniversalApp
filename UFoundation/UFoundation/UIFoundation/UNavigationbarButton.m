@@ -14,6 +14,8 @@
     BOOL _needsConstraint;
 }
 
+@property (nonatomic, copy) UIColor *imageColor;
+
 @end
 
 @implementation UNavigationBarButton
@@ -77,22 +79,24 @@
     [super setDTitle:title];
 }
 
-- (void)setBackImageWithColor:(UIColor *)color
+- (void)setImageWithColor:(UIColor *)color
 {
+    _imageColor = color;
+    
     [self setImage:[self imageWith:color]];
 }
 
-- (void)setHBackImageWithColor:(UIColor *)color
+- (void)setHImageWithColor:(UIColor *)color
 {
     [self setHImage:[self imageWith:color]];
 }
 
-- (void)setSBackImageWithColor:(UIColor *)color
+- (void)setSImageWithColor:(UIColor *)color
 {
     [self setSImage:[self imageWith:color]];
 }
 
-- (void)setDBackImageWithColor:(UIColor *)color
+- (void)setDImageWithColor:(UIColor *)color
 {
     [self setDImage:[self imageWith:color]];
 }
