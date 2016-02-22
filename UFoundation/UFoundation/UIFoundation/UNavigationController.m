@@ -482,7 +482,10 @@
 {
     [self repositionAllViewWithX:xvalue animated:NO];
     
-    [UIView animateWithDuration:naviAnimtaionDuration()
+    CGFloat delta = screenWidth() / 4.0;
+    CGFloat duration = naviAnimtaionDuration() * xvalue / delta;
+    
+    [UIView animateWithDuration:duration
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
@@ -546,9 +549,10 @@
     
     CGFloat delta = screenWidth() / 4.0;
     CGFloat duration = naviAnimtaionDuration() * (screenWidth() - xvalue) / (screenWidth() - delta);
+    
     [UIView animateWithDuration:duration
                           delay:0
-                        options:UIViewAnimationOptionCurveEaseInOut
+                        options:UIViewAnimationOptionTransitionFlipFromLeft
                      animations:^{
                          [self repositionAllViewWithX:screenWidth() animated:NO];
                      }
