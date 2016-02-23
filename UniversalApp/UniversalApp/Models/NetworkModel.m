@@ -48,6 +48,10 @@
 
 @end
 
+@implementation RongToken
+
+@end
+
 @implementation UserInfoResponseData
 
 @end

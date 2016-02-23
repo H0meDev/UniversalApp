@@ -56,7 +56,47 @@
 
 @end
 
+@interface RongToken : UModel
+
+@property (nonatomic, assign) NSInteger code;
+@property (nonatomic, strong) NSString *userId;
+@property (nonatomic, strong) NSString *token;
+
+@end
+
 @interface UserInfoResponseData : NetworkResponseData
+
+@property (nonatomic, assign) NSInteger birthday;
+@property (nonatomic, assign) NSInteger city;
+@property (nonatomic, strong) NSString *city_name;
+@property (nonatomic, strong) NSString *company;
+@property (nonatomic, strong) NSString *email;
+@property (nonatomic, strong) NSString *evaluation;
+@property (nonatomic, strong) NSString *experience;
+@property (nonatomic, assign) NSInteger grade;
+@property (nonatomic, strong) NSString *grade_name;
+@property (nonatomic, strong) NSString *id;
+@property (nonatomic, assign) NSInteger identity;
+@property (nonatomic, strong) NSString *job;
+@property (nonatomic, assign) NSInteger level;
+@property (nonatomic, strong) NSString *logo;
+@property (nonatomic, strong) NSString *major;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *nickname;
+@property (nonatomic, strong) NSString *phone;
+@property (nonatomic, strong) NSString *practice;
+@property (nonatomic, assign) NSInteger province;
+@property (nonatomic, strong) NSString *province_name;
+@property (nonatomic, strong) NSString *qq;
+@property (nonatomic, strong) NSString *resume_url;
+@property (nonatomic, assign) NSInteger school;
+@property (nonatomic, strong) NSString *school_name;
+@property (nonatomic, assign) NSInteger sex;
+@property (nonatomic, strong) NSString *sign;
+@property (nonatomic, assign) NSInteger status;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *weixin;
+@property (nonatomic, strong) RongToken *rong_token;
 
 @end
 

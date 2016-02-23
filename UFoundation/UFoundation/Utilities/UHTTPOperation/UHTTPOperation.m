@@ -541,8 +541,6 @@ singletonImplementationWith(UHTTPDataCache, cache);
                         
                         responseString = nil;
                     }
-                    
-                    _responseObject = nil;
                 } else {
                     _responseObject = _receivedData;
                     NSLog(@"Current data can not be parsed to text");
@@ -586,6 +584,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
             }
             
             [_operationQueue removeOperation:self];
+            _responseObject = nil;
         }
     }
 }

@@ -60,23 +60,18 @@
     [self addSubview:button];
     
     // 校导网登录
-//    LoginRequest *request = [LoginRequest model];
-//    request.username = @"";
-//    request.password = @"";
-//    
-//    [NetworkSDKExtension loginWith:request delegate:self identifier:0];
-//    
+    LoginRequest *request = [LoginRequest model];
+    request.username = @"";
+    request.password = @"";
+    
+    [NetworkSDKExtension loginWith:request delegate:self identifier:0];
+    
 //    safeBlockReferences();
 //    _request = [NetworkSDK loginWith:request callback:^(UHTTPStatus *status, NetworkResponse *response) {
 //        if (NetworkSDKCodeOK == response.status) {
 //            // 登陆成功
 //            if (checkClass(response.data, LoginResponseData)) {
 //                [[UserInfo info]setLogin:response.data];
-////                UDataBase *database = [UserInfo info].database;
-////                [database createTableWith:[response.data class]];
-////                [database insertWithArray:@[response.data, response.data, response.data]];
-////                NSArray *results = [database selectWith:[response.data class] conditions:nil];
-////                NSLog(@"%@", results);
 //            }
 //            
 //            // 接下来就获取信息吧

@@ -208,10 +208,18 @@ singletonImplementationWith(NetworkSDK, sharedInstance);
         NetworkResponse *response = [_classResponse modelWithDictionary:data];
         
         if (_classResponseData) {
-            if (checkClass(response.data, NSDictionary)) {
-                response.data = [_classResponseData modelWithDictionary:response.data];
-            } else if (checkClass(response.data, NSArray)) {
-                response.data = [_classResponseData modelsWithArray:response.data];
+            if (response.data) {
+                if (checkClass(response.data, NSDictionary)) {
+                    response.data = [_classResponseData modelWithDictionary:response.data];
+                } else if (checkClass(response.data, NSArray)) {
+                    response.data = [_classResponseData modelsWithArray:response.data];
+                }
+            } else {
+                if (checkClass(data, NSDictionary)) {
+                    response.data = [_classResponseData modelWithDictionary:data];
+                } else if (checkClass(data, NSArray)) {
+                    response.data = [_classResponseData modelsWithArray:data];
+                }
             }
             
             // etc.
