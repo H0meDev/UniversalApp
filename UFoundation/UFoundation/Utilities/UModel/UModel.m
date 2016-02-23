@@ -55,7 +55,7 @@
                     NSString *name = [[NSString alloc]initWithCString:property_name encoding:NSUTF8StringEncoding];
                     NSString *type = [[NSString alloc]initWithCString:type_name encoding:NSUTF8StringEncoding];
                     
-                    if (!([name isEqualToString:@"_excludeProperties"] && [type isEqualToString:@"@\"NSArray\""])) {
+                    if (!([name isEqualToString:@"_excludeProperties"])) {
                         [marray addObject:@{@"name":[name substringFromIndex:1], @"type":type}];
                     }
                 }
@@ -175,7 +175,9 @@
                         className = [className stringByAppendingString:suffix];
                         class = NSClassFromString(className);
                         
-                        value = [[self class]valuesWithArray:value class:class];
+                        if (class) {
+                            value = [[self class]valuesWithArray:value class:class];
+                        }
                     }
                     
                     if (class && [value isKindOfClass:[NSNull class]]) {

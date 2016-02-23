@@ -62,7 +62,7 @@
 
 @interface UserInfoTable : UModel
 
-@property (nonatomic, strong) NSString *excludeProperties_;
+@property (nonatomic, strong) NSArray *excludeProperties_;
 @property (nonatomic, assign) NSInteger index_value;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, assign) CGFloat rate;
