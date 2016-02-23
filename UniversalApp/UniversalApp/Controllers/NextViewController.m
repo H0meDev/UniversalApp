@@ -64,8 +64,8 @@
     request.username = @"";
     request.password = @"";
     
-    [NetworkSDKExtension loginWith:request delegate:self identifier:0];
-    
+//    [NetworkSDKExtension loginWith:request delegate:self identifier:0];
+//    
 //    safeBlockReferences();
 //    _request = [NetworkSDK loginWith:request callback:^(UHTTPStatus *status, NetworkResponse *response) {
 //        if (NetworkSDKCodeOK == response.status) {
