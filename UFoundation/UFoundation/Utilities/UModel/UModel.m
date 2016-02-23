@@ -299,9 +299,6 @@
 {
     self = [super init];
     if (self) {
-        // Exclude items
-        _excludeProperties = @[@"excludeProperties"];
-        
         // Deep copy from model
         [self copyValuesWithModel:model];
     }
