@@ -13,6 +13,9 @@
  */
 @interface UModel : NSObject
 
+// Exclude properties : NSString type
+@property (nonatomic, strong) NSArray *excludeProperties;
+
 // Properties of model
 + (NSArray *)properties;
 
@@ -42,6 +45,9 @@
 
 // Init with model
 - (id)initWithModel:(UModel *)model;
+
+// Properties of model exclude with excludeProperties
+- (NSArray *)properties;
 
 // Model to NSDictionary
 - (NSDictionary *)dictionary;

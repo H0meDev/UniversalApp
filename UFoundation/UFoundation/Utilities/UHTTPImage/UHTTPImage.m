@@ -104,7 +104,7 @@ singletonImplementationWith(UImageCache, cache);
     if (!cachedArray) {
         _cachedArray = [NSMutableArray array];
     } else {
-        _cachedArray = [NSMutableArray arrayWithArray:cachedArray];
+        _cachedArray = [cachedArray mutableCopy];
     }
     
     // Remove all uncompleted items

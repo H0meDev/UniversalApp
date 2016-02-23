@@ -59,6 +59,7 @@
 
 // Ultities
 #import "UModel.h"
+#import "USQLite.h"
 #import "UProgressHUD.h"
 #import "UHTTPOperation.h"
 #import "UHTTPRequest.h"
@@ -66,6 +67,5 @@
 #import "UThreadPool.h"
 #import "UTimerBooster.h"
 #import "UHTTPImage.h"
-#import "UDataBase.h"
 
 #endif

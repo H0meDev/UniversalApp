@@ -13,7 +13,7 @@
 {
     NSMutableArray *_operations;
     NSOperationQueue *_operationQueue;
-    NSUInteger _maxOperationsCount;
+    long long _maxOperationsCount;
 }
 
 @end

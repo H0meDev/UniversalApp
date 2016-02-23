@@ -13,7 +13,7 @@
 
 - (NSArray *)addWithObject:(id)object
 {
-    NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
+    NSMutableArray *marray = [self mutableCopy];
     [marray addObject:object];
     
     return [marray copy];
@@ -21,7 +21,7 @@
 
 - (NSArray *)insertWithObject:(id)object atIndex:(NSUInteger)index
 {
-    NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
+    NSMutableArray *marray = [self mutableCopy];
     [marray insertObject:object atIndex:index];
     
     return [marray copy];
@@ -29,7 +29,7 @@
 
 - (NSArray *)removeLastObject
 {
-    NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
+    NSMutableArray *marray = [self mutableCopy];
     [marray removeLastObject];
     
     return [marray copy];
@@ -37,7 +37,7 @@
 
 - (NSArray *)removeObjectWithIndex:(NSUInteger)index
 {
-    NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
+    NSMutableArray *marray = [self mutableCopy];
     [marray removeObjectAtIndex:index];
     
     return [marray copy];
@@ -45,7 +45,7 @@
 
 - (NSArray *)replaceObjectWithIndex:(NSUInteger)index withObject:(id)object
 {
-    NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
+    NSMutableArray *marray = [self mutableCopy];
     [marray replaceObjectAtIndex:index withObject:object];
     
     return [marray copy];
@@ -53,7 +53,7 @@
 
 - (NSArray *)appendWithArray:(NSArray *)array
 {
-    NSMutableArray *marray = [NSMutableArray arrayWithArray:self];
+    NSMutableArray *marray = [self mutableCopy];
     [marray arrayByAddingObjectsFromArray:array];
     
     return [marray copy];

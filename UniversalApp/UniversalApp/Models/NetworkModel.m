@@ -51,3 +51,7 @@
 @implementation UserInfoResponseData
 
 @end
+
+@implementation UserInfoTable
+
+@end

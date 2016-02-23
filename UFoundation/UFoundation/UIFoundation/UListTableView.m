@@ -1215,7 +1215,7 @@
         if (class && [class isSubclassOfClass:[UListTableViewCell class]]) {
             cell = [[class alloc]initWith:_style];
             NSArray *array = _cellReusePool[identifier];
-            NSMutableArray *marray = (!array)?[NSMutableArray array]:[NSMutableArray arrayWithArray:array];
+            NSMutableArray *marray = (!array)?[NSMutableArray array]:[array mutableCopy];
             [marray addObject:cell];
             [_cellReusePool setObject:[marray copy] forKey:identifier];
         }

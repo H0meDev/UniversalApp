@@ -89,7 +89,7 @@
     
     NSMutableArray *marray = nil;
     if (_rowArray) {
-        marray = [NSMutableArray arrayWithArray:_rowArray];
+        marray = [_rowArray mutableCopy];
     } else {
         marray = [NSMutableArray array];
     }

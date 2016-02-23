@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F508C3C11C771EED004867B8 /* USQLite.h in Headers */ = {isa = PBXBuildFile; fileRef = F508C3BF1C771EED004867B8 /* USQLite.h */; };
-		F508C3C21C771EED004867B8 /* USQLite.m in Sources */ = {isa = PBXBuildFile; fileRef = F508C3C01C771EED004867B8 /* USQLite.m */; };
 		F50E63151B7C6D8000E442E8 /* UNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F50E63141B7C6D8000E442E8 /* UNavigationController.m */; };
 		F50ED6071B79A1230027EC82 /* UImagePickerControllerController.h in Headers */ = {isa = PBXBuildFile; fileRef = F50ED6051B79A1230027EC82 /* UImagePickerControllerController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F50ED6081B79A1230027EC82 /* UImagePickerControllerController.m in Sources */ = {isa = PBXBuildFile; fileRef = F50ED6061B79A1230027EC82 /* UImagePickerControllerController.m */; };
@@ -73,6 +71,8 @@
 		F51C12001B90633900F29C3F /* UIImageView+UAExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F51C11FE1B90633900F29C3F /* UIImageView+UAExtension.m */; };
 		F51DA8B41C322B1500B16DA1 /* UListTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = F51DA8B21C322B1500B16DA1 /* UListTableView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F51DA8B51C322B1500B16DA1 /* UListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F51DA8B31C322B1500B16DA1 /* UListTableView.m */; };
+		F5273B111C7B129D00676309 /* USQLite.h in Headers */ = {isa = PBXBuildFile; fileRef = F5273B0F1C7B129D00676309 /* USQLite.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F5273B121C7B129D00676309 /* USQLite.m in Sources */ = {isa = PBXBuildFile; fileRef = F5273B101C7B129D00676309 /* USQLite.m */; };
 		F52AD2BA1BB2AA630074DBA1 /* UIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = F52AD2B81BB2AA630074DBA1 /* UIndicatorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F52AD2BB1BB2AA630074DBA1 /* UIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F52AD2B91BB2AA630074DBA1 /* UIndicatorView.m */; };
 		F52BE99C1BE9E91700BF1243 /* UMessageBox.h in Headers */ = {isa = PBXBuildFile; fileRef = F52BE99A1BE9E91700BF1243 /* UMessageBox.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -116,13 +116,9 @@
 		F5AFC7571C070047000444A6 /* UListView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5AFC7551C070047000444A6 /* UListView.m */; };
 		F5C5B70A1C1E9A2300611DFD /* UHTTPImage.h in Headers */ = {isa = PBXBuildFile; fileRef = F5C5B7081C1E9A2300611DFD /* UHTTPImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F5C5B70B1C1E9A2300611DFD /* UHTTPImage.m in Sources */ = {isa = PBXBuildFile; fileRef = F5C5B7091C1E9A2300611DFD /* UHTTPImage.m */; };
-		F5E7CBBB1C43AB7B00839C44 /* UDataBase.h in Headers */ = {isa = PBXBuildFile; fileRef = F5E7CBB91C43AB7B00839C44 /* UDataBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F5E7CBBC1C43AB7B00839C44 /* UDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E7CBBA1C43AB7B00839C44 /* UDataBase.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F508C3BF1C771EED004867B8 /* USQLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = USQLite.h; sourceTree = "<group>"; };
-		F508C3C01C771EED004867B8 /* USQLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = USQLite.m; sourceTree = "<group>"; };
 		F50E63141B7C6D8000E442E8 /* UNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UNavigationController.m; path = UIFoundation/UNavigationController.m; sourceTree = "<group>"; };
 		F50ED6051B79A1230027EC82 /* UImagePickerControllerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UImagePickerControllerController.h; path = UIFoundation/UImagePickerControllerController.h; sourceTree = "<group>"; };
 		F50ED6061B79A1230027EC82 /* UImagePickerControllerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UImagePickerControllerController.m; path = UIFoundation/UImagePickerControllerController.m; sourceTree = "<group>"; };
@@ -188,6 +184,8 @@
 		F51C11FE1B90633900F29C3F /* UIImageView+UAExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+UAExtension.m"; sourceTree = "<group>"; };
 		F51DA8B21C322B1500B16DA1 /* UListTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UListTableView.h; path = UIFoundation/UListTableView.h; sourceTree = "<group>"; };
 		F51DA8B31C322B1500B16DA1 /* UListTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UListTableView.m; path = UIFoundation/UListTableView.m; sourceTree = "<group>"; };
+		F5273B0F1C7B129D00676309 /* USQLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = USQLite.h; sourceTree = "<group>"; };
+		F5273B101C7B129D00676309 /* USQLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = USQLite.m; sourceTree = "<group>"; };
 		F52AD2B81BB2AA630074DBA1 /* UIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIndicatorView.h; path = UIFoundation/UIndicatorView.h; sourceTree = "<group>"; };
 		F52AD2B91BB2AA630074DBA1 /* UIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIndicatorView.m; path = UIFoundation/UIndicatorView.m; sourceTree = "<group>"; };
 		F52BE99A1BE9E91700BF1243 /* UMessageBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMessageBox.h; sourceTree = "<group>"; };
@@ -233,8 +231,6 @@
 		F5AFC7551C070047000444A6 /* UListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UListView.m; path = UIFoundation/UListView.m; sourceTree = "<group>"; };
 		F5C5B7081C1E9A2300611DFD /* UHTTPImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UHTTPImage.h; sourceTree = "<group>"; };
 		F5C5B7091C1E9A2300611DFD /* UHTTPImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UHTTPImage.m; sourceTree = "<group>"; };
-		F5E7CBB91C43AB7B00839C44 /* UDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDataBase.h; sourceTree = "<group>"; };
-		F5E7CBBA1C43AB7B00839C44 /* UDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UDataBase.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -310,11 +306,11 @@
 		F51C11B91B90630300F29C3F /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				F5E7CBB81C43AB7B00839C44 /* UDataBase */,
+				F51C11C01B90630300F29C3F /* UModel */,
+				F5273B0E1C7B129D00676309 /* USQLite */,
 				F5C5B7071C1E9A1100611DFD /* UHTTPImage */,
 				F51C11BA1B90630300F29C3F /* UHTTPOperation */,
 				F51C11BD1B90630300F29C3F /* UHTTPRequest */,
-				F51C11C01B90630300F29C3F /* UModel */,
 				F51C11C31B90630300F29C3F /* UOperationQueue */,
 				F51C11C61B90630300F29C3F /* UProgressHUD */,
 				F51C11C91B90630300F29C3F /* UThreadPool */,
@@ -385,6 +381,15 @@
 				F51C11CE1B90630300F29C3F /* UTimerBooster.m */,
 			);
 			path = UTimerBooster;
+			sourceTree = "<group>";
+		};
+		F5273B0E1C7B129D00676309 /* USQLite */ = {
+			isa = PBXGroup;
+			children = (
+				F5273B0F1C7B129D00676309 /* USQLite.h */,
+				F5273B101C7B129D00676309 /* USQLite.m */,
+			);
+			path = USQLite;
 			sourceTree = "<group>";
 		};
 		F52BE9991BE9E91700BF1243 /* UMessageBox */ = {
@@ -525,17 +530,6 @@
 			path = UHTTPImage;
 			sourceTree = "<group>";
 		};
-		F5E7CBB81C43AB7B00839C44 /* UDataBase */ = {
-			isa = PBXGroup;
-			children = (
-				F508C3BF1C771EED004867B8 /* USQLite.h */,
-				F508C3C01C771EED004867B8 /* USQLite.m */,
-				F5E7CBB91C43AB7B00839C44 /* UDataBase.h */,
-				F5E7CBBA1C43AB7B00839C44 /* UDataBase.m */,
-			);
-			path = UDataBase;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -543,7 +537,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5E7CBBB1C43AB7B00839C44 /* UDataBase.h in Headers */,
+				F5273B111C7B129D00676309 /* USQLite.h in Headers */,
 				F51DA8B41C322B1500B16DA1 /* UListTableView.h in Headers */,
 				F5C5B70A1C1E9A2300611DFD /* UHTTPImage.h in Headers */,
 				F5476E701C190C9300AF9F9D /* URefreshView.h in Headers */,
@@ -557,7 +551,6 @@
 				F51C11D51B90630300F29C3F /* NSDictionary+UAExtension.h in Headers */,
 				F51C11E51B90630300F29C3F /* UITableViewCell+UAExtension.h in Headers */,
 				F51C11F71B90630300F29C3F /* UProgressHUD.h in Headers */,
-				F508C3C11C771EED004867B8 /* USQLite.h in Headers */,
 				F51C11D11B90630300F29C3F /* NSData+UAExtension.h in Headers */,
 				F51C11E71B90630300F29C3F /* UITextField+UAExtension.h in Headers */,
 				F51C11F51B90630300F29C3F /* UOperationQueue.h in Headers */,
@@ -629,7 +622,7 @@
 		F5974CBB1B01FA0D004AA14F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = think;
 				TargetAttributes = {
 					F5974CC21B01FA0E004AA14F = {
@@ -681,7 +674,6 @@
 				F51C11E61B90630300F29C3F /* UITableViewCell+UAExtension.m in Sources */,
 				F51C11E01B90630300F29C3F /* UIImage+UAExtension.m in Sources */,
 				F51C11E81B90630300F29C3F /* UITextField+UAExtension.m in Sources */,
-				F508C3C21C771EED004867B8 /* USQLite.m in Sources */,
 				F56C2CD61B0444D300D5DF66 /* UImageView.m in Sources */,
 				F51C11FA1B90630300F29C3F /* UThreadPool.m in Sources */,
 				F52BE99D1BE9E91700BF1243 /* UMessageBox.m in Sources */,
@@ -701,9 +693,9 @@
 				F56C2CE61B0444D300D5DF66 /* UTextView.m in Sources */,
 				F5AFC7571C070047000444A6 /* UListView.m in Sources */,
 				F51431CF1B89AFFF00C2372E /* UButton.m in Sources */,
+				F5273B121C7B129D00676309 /* USQLite.m in Sources */,
 				F51431CB1B89AE9300C2372E /* UTabBarButton.m in Sources */,
 				F56C2CDE1B0444D300D5DF66 /* UTabBarView.m in Sources */,
-				F5E7CBBC1C43AB7B00839C44 /* UDataBase.m in Sources */,
 				F5476E6D1C190C5200AF9F9D /* UListGridView.m in Sources */,
 				F56C2CE41B0444D300D5DF66 /* UTextField.m in Sources */,
 				F5476E711C190C9300AF9F9D /* URefreshView.m in Sources */,
@@ -751,6 +743,7 @@
 				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;

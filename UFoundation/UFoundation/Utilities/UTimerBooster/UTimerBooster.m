@@ -341,7 +341,7 @@ static UTimerBooster *sharedManager = nil;
         return;
     }
     
-    NSMutableArray *mArray = [NSMutableArray arrayWithArray:self.itemArray];
+    NSMutableArray *mArray = [self.itemArray mutableCopy];
     NSInteger count = self.itemArray.count;
     
     if (count == 0) {
@@ -367,7 +367,7 @@ static UTimerBooster *sharedManager = nil;
 {
     @autoreleasepool
     {
-        NSMutableArray *mArray = [NSMutableArray arrayWithArray:self.itemArray];
+        NSMutableArray *mArray = [self.itemArray mutableCopy];
         [mArray removeObject:item];
         self.itemArray = [NSArray arrayWithArray:mArray];
     }

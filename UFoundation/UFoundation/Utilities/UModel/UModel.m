@@ -22,7 +22,7 @@
 {
     @autoreleasepool
     {
-        NSMutableArray *mArray = [NSMutableArray array];
+        NSMutableArray *marray = [NSMutableArray array];
         Class current = [self class];
         
         while (1) {
@@ -54,7 +54,10 @@
                     // Record property type & name
                     NSString *name = [[NSString alloc]initWithCString:property_name encoding:NSUTF8StringEncoding];
                     NSString *type = [[NSString alloc]initWithCString:type_name encoding:NSUTF8StringEncoding];
-                    [mArray addObject:@{@"name":[name substringFromIndex:1], @"type":type}];
+                    
+                    if (!([name isEqualToString:@"_excludeProperties"] && [type isEqualToString:@"@\"NSArray\""])) {
+                        [marray addObject:@{@"name":[name substringFromIndex:1], @"type":type}];
+                    }
                 }
                 
                 // Clear ivar
@@ -76,7 +79,7 @@
             }
         }
         
-        return mArray;
+        return marray;
     }
 }
 
@@ -125,7 +128,7 @@
             model = [self model];
         }
         
-        NSArray *properties = [[model class] properties];
+        NSArray *properties = [model properties];
         for (NSDictionary *item in properties) {
             @try
             {
@@ -135,7 +138,9 @@
                 // For illegal name
                 NSString *rname = [NSString stringWithString:name];
                 if ([rname hasSuffix:@"_"] && rname.length > 0) {
-                    rname = [rname substringToIndex:rname.length - 1];
+                    if (![dict.allKeys containsObject:rname]) {
+                        rname = [rname substringToIndex:rname.length - 1];
+                    }
                 }
                 
                 Class class = NULL;
@@ -294,6 +299,9 @@
 {
     self = [super init];
     if (self) {
+        // Exclude items
+        _excludeProperties = @[@"excludeProperties"];
+        
         // Deep copy from model
         [self copyValuesWithModel:model];
     }
@@ -303,7 +311,7 @@
 
 - (void)copyValuesWithModel:(UModel *)model
 {
-    NSArray *properties = [[model class] properties];
+    NSArray *properties = [model properties];
     for (NSDictionary *item in properties) {
         NSString *name = item[@"name"];
         NSString *type = item[@"type"];
@@ -350,6 +358,34 @@
     return value;
 }
 
+- (NSArray *)properties
+{
+    @autoreleasepool
+    {
+        NSArray *properties = [[self class] properties];
+        
+        if (_excludeProperties && [_excludeProperties isKindOfClass:[NSArray class]] && _excludeProperties.count > 0) {
+            NSMutableArray *marray = [properties mutableCopy];
+            
+            for (NSString *excludeProperty in _excludeProperties) {
+                if ([excludeProperty isKindOfClass:[NSString class]] && excludeProperty.length > 0) {
+                    for (NSDictionary *property in properties) {
+                        if ([excludeProperty isEqualToString:property[@"name"]]) {
+                            [marray removeObject:property];
+                            
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            return [marray copy];
+        }
+        
+        return properties;
+    }
+}
+
 - (NSDictionary *)dictionary
 {
     return [self dictionaryWithModelKey:NO];
@@ -365,7 +401,7 @@
     @autoreleasepool
     {
         // Get current properties
-        NSArray *properties = [[self class] properties];
+        NSArray *properties = [self properties];
         NSMutableDictionary *mdict = [NSMutableDictionary dictionary];
         
         // Set value
@@ -390,11 +426,6 @@
                 if (!value) {
                     __autoreleasing id object = [[class alloc]init];
                     value = object;
-                }
-                
-                // For illegal name
-                if ([name hasSuffix:@"_"] && name.length > 0) {
-                    name = [name substringToIndex:name.length - 1];
                 }
                 
                 if (value) {
