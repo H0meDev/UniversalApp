@@ -61,12 +61,12 @@
     [self addSubview:button];
     
     // 校导网登录
-    LoginRequest *request = [LoginRequest model];
-    request.username = @"";
-    request.password = @"";
-    
-    [NetworkSDKExtension loginWith:request delegate:self identifier:0];
-    
+//    LoginRequest *request = [LoginRequest model];
+//    request.username = @"";
+//    request.password = @"";
+//    
+//    [NetworkSDKExtension loginWith:request delegate:self identifier:0];
+//    
 //    safeBlockReferences();
 //    _request = [NetworkSDK loginWith:request callback:^(UHTTPStatus *status, NetworkResponse *response) {
 //        if (NetworkSDKCodeOK == response.status) {
