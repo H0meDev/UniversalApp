@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const UModelClassNameKey;
+
 /*
  * UModel is working for JSON
  */

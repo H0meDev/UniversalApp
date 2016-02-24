@@ -12,6 +12,8 @@
 #import "NSString+UAExtension.h"
 #import "NSDictionary+UAExtension.h"
 
+NSString * const UModelClassNameKey = @"__UMODEL_CLASS_NAME_KEY__";
+
 @interface UModel ()
 
 @end
@@ -183,7 +185,7 @@
             return [self model];
         }
         
-        NSString *keyName = dict[@"UModelClassNameKey"];
+        NSString *keyName = dict[UModelClassNameKey];
         UModel *model = nil;
         if (keyName) {
             model = [NSClassFromString(keyName) model];
@@ -254,7 +256,7 @@
                 }
             }
             @catch (NSException *exception) {
-                NSLog(@"%@", exception.description);
+                NSLog(@"%@", exception.reason);
             }
         }
         
@@ -325,7 +327,7 @@
         }
     } else {
         if ([value isKindOfClass:[NSDictionary class]]) { // NSDictionary
-            NSString *keyName = value[@"UModelClassNameKey"];
+            NSString *keyName = value[UModelClassNameKey];
             if (keyName) {
                 class = NSClassFromString(keyName);
                 if (class && [class isSubclassOfClass:[UModel class]]) {
@@ -363,51 +365,62 @@
 
 - (void)copyValuesWithModel:(UModel *)model
 {
-    NSDictionary *propertyMap = [model propertyMap];
-    for (NSString *name in propertyMap) {
-        NSString *type = propertyMap[name];
-        
-        if ([type hasPrefix:@"@\""]) {
-            // NSObject
-            [self valueWithObject:[model valueForKey:name] key:name];
-        } else {
-            [self setValue:[model valueForKey:name] forKey:name];
+    @try {
+        NSDictionary *propertyMap = [model propertyMap];
+        for (NSString *name in propertyMap) {
+            NSString *type = propertyMap[name];
+            
+            if ([type hasPrefix:@"@\""]) {
+                // NSObject
+                [self valueWithObject:[model valueForKey:name] key:name];
+            } else {
+                [self setValue:[model valueForKey:name] forKey:name];
+            }
         }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception.reason);
     }
 }
 
 - (id)valueWithObject:(id)object key:(NSString *)keyName
 {
     id value = nil;
-    if ([object isKindOfClass:[NSArray class]]) { // NSArray
-        NSMutableArray *marray = [NSMutableArray array];
-        for (id item in object) {
-            id retValue = [self valueWithObject:item key:keyName];
-            if (retValue) {
-                [marray addObject:retValue];
+    @try {
+        if ([object isKindOfClass:[NSArray class]]) { // NSArray
+            NSMutableArray *marray = [NSMutableArray array];
+            for (id item in object) {
+                id retValue = [self valueWithObject:item key:keyName];
+                if (retValue) {
+                    [marray addObject:retValue];
+                }
             }
+            
+            // Set array value
+            [self setValue:[marray copy] forKey:keyName];
+        } else if ([object isKindOfClass:[UModel class]]) { // Model
+            value = [[object class] modelWithModel:object];
+            [self setValue:value forKey:keyName];
+        } else if ([object isKindOfClass:[NSString class]]) { // NSString
+            value = [NSString stringWithFormat:@"%@", object];
+            [self setValue:value forKey:keyName];
+        } else if ([object isKindOfClass:[NSDictionary class]]) { // NSDictionary
+            value = [NSDictionary dictionaryWithDictionary:object];
+            [self setValue:value forKey:keyName];
+        } else if ([object isKindOfClass:[NSData class]]) { // NSData
+            value = [NSData dataWithData:object];
+            [self setValue:value forKey:keyName];
+        } else if ([object isKindOfClass:[NSValue class]]) { // NSValue
+            value = [NSValue valueWithNonretainedObject:object];
+            [self setValue:value forKey:keyName];
         }
-        
-        // Set array value
-        [self setValue:[marray copy] forKey:keyName];
-    } else if ([object isKindOfClass:[UModel class]]) { // Model
-        value = [[object class] modelWithModel:object];
-        [self setValue:value forKey:keyName];
-    } else if ([object isKindOfClass:[NSString class]]) { // NSString
-        value = [NSString stringWithFormat:@"%@", object];
-        [self setValue:value forKey:keyName];
-    } else if ([object isKindOfClass:[NSDictionary class]]) { // NSDictionary
-        value = [NSDictionary dictionaryWithDictionary:object];
-        [self setValue:value forKey:keyName];
-    } else if ([object isKindOfClass:[NSData class]]) { // NSData
-        value = [NSData dataWithData:object];
-        [self setValue:value forKey:keyName];
-    } else if ([object isKindOfClass:[NSValue class]]) { // NSValue
-        value = [NSValue valueWithNonretainedObject:object];
-        [self setValue:value forKey:keyName];
     }
-    
-    return value;
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception.reason);
+    }
+    @finally {
+        return value;
+    }
 }
 
 - (NSDictionary *)propertyMap
@@ -438,7 +451,6 @@
         
         return propertyMap;
     }
-
 }
 
 - (NSArray *)propertyArray
@@ -521,13 +533,13 @@
                 }
             }
             @catch (NSException *exception) {
-                NSLog(@"%@", exception.description);
+                NSLog(@"%@", exception.reason);
             }
         }
         
         if (contains) {
             NSString *className = NSStringFromClass([self class]);
-            [mdict setObject:className forKey:@"UModelClassNameKey"];
+            [mdict setObject:className forKey:UModelClassNameKey];
         }
         
         return [mdict copy];
@@ -542,7 +554,7 @@
             NSDictionary *dict = [model dictionaryWithModelKey:contains];
             if (contains) {
                 NSMutableDictionary *mdict = [NSMutableDictionary dictionaryWithDictionary:dict];
-                [mdict setValue:NSStringFromClass([model class]) forKey:@"UModelClassNameKey"];
+                [mdict setValue:NSStringFromClass([model class]) forKey:UModelClassNameKey];
                 dict = [mdict copy];
             }
             value = dict;
