@@ -14,6 +14,7 @@
 @interface NextViewController () <NetworkSDKDelegate>
 {
     UHTTPOperation *_request;
+    LoginResponseData *_copy;
 }
 
 @property (nonatomic, strong) UButton *button;
@@ -64,8 +65,8 @@
     request.username = @"";
     request.password = @"";
     
-//    [NetworkSDKExtension loginWith:request delegate:self identifier:0];
-//    
+    [NetworkSDKExtension loginWith:request delegate:self identifier:0];
+    
 //    safeBlockReferences();
 //    _request = [NetworkSDK loginWith:request callback:^(UHTTPStatus *status, NetworkResponse *response) {
 //        if (NetworkSDKCodeOK == response.status) {
@@ -165,6 +166,8 @@
                 [[UserInfo info]setLogin:response.data];
             }
             
+            _copy = [LoginResponseData modelWithModel:response.data];
+            
             // 接下来就获取信息吧
             [NetworkSDKExtension userInfoWithDelegate:self identifier:1];
         }
@@ -174,7 +177,21 @@
         } else {
             // 获取失败
         }
-
+        
+        UserInfoResponseData *info = response.data;
+        info.data = _copy;
+        
+        NSMutableArray *marray = [NSMutableArray array];
+        for (int i = 0; i < 10; i ++) {
+            UserInfoResponseData *copy = [UserInfoResponseData modelWithModel:info];
+            [marray addObject:copy];
+        }
+        
+        NSArray *array = [marray copy];
+        array = [UModel arrayContainedkeysWithModels:array];
+        NSLog(@"%@",array);
+        array = [UModel modelsWithArray:array];
+        NSLog(@"%@",array);
     }
 }
 

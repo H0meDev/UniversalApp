@@ -17,7 +17,10 @@
 @property (nonatomic, strong) NSArray *excludeProperties;
 
 // Properties of model
-+ (NSArray *)properties;
++ (NSArray *)propertyArray;
+
+// Properties map
++ (NSDictionary *)propertyMap;
 
 // Init
 + (id)model;
@@ -40,14 +43,17 @@
 // Model array to JSON (NSDictionary) array
 + (NSArray *)arrayWithModels:(NSArray *)array;
 
-// Model array to JSON (NSDictionary) array with UModel key
-+ (NSArray *)arrayAndKeysWithModels:(NSArray *)array;
+// Model array to JSON (NSDictionary) array contained UModel keys
++ (NSArray *)arrayContainedkeysWithModels:(NSArray *)array;
 
 // Init with model
 - (id)initWithModel:(UModel *)model;
 
-// Properties of model exclude with excludeProperties
-- (NSArray *)properties;
+// Properties array of model exclude with excludeProperties
+- (NSArray *)propertyArray;
+
+// Properties map of model exclude with excludeProperties
+- (NSDictionary *)propertyMap;
 
 // Model to NSDictionary
 - (NSDictionary *)dictionary;

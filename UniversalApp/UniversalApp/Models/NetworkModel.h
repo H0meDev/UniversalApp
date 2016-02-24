@@ -66,6 +66,7 @@
 
 @interface UserInfoResponseData : NetworkResponseData
 
+@property (nonatomic, strong) LoginResponseData *data;
 @property (nonatomic, assign) NSInteger birthday;
 @property (nonatomic, assign) NSInteger city;
 @property (nonatomic, strong) NSString *city_name;
@@ -106,5 +107,6 @@
 @property (nonatomic, assign) NSInteger index_value;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, assign) CGFloat rate;
+@property (nonatomic, strong) NSDictionary *dict;
 
 @end

@@ -424,7 +424,7 @@
         return NO;
     }
     
-    NSArray *fileds = [model properties];
+    NSDictionary *fileds = [model propertyMap];
     NSString *expression = @"create table if not exists ";
     NSString *tableName = tbName;
     
@@ -432,7 +432,7 @@
         tableName = NSStringFromClass([model class]);
     }
     
-    if (checkValidNSArray(fileds)) {
+    if (checkValidNSDictionary(fileds)) {
         expression = [expression stringByAppendingString:tableName];
         
         NSString *allPrimaryKeys = @"";
@@ -471,17 +471,16 @@
         }
         
         // All fields
-        for (NSInteger i = 0; i < fileds.count; i ++) {
+        for (NSInteger i = 0; i < fileds.allKeys.count; i ++) {
             if (i == 0) {
                 expression = [expression stringByAppendingString:@"("];
             }
             
-            NSDictionary *filed = fileds[i];
-            NSString *name = filed[@"name"];
-            NSString *type = filed[@"type"];
+            NSString *name = fileds.allKeys[i];
+            NSString *type = fileds[name];
             
             if ([type hasPrefix:@"@"]) { // Object
-                NSString *className = [type substringWithRange:NSMakeRange(1, type.length - 2)];
+                NSString *className = [type substringWithRange:NSMakeRange(2, type.length - 3)];
                 Class class = NSClassFromString(className);
                 if (class == NULL) {
                     continue;

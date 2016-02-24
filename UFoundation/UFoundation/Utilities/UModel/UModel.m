@@ -18,7 +18,7 @@
 
 @implementation UModel
 
-+ (NSArray *)properties
++ (NSArray *)propertyArray
 {
     @autoreleasepool
     {
@@ -79,7 +79,72 @@
             }
         }
         
-        return marray;
+        return [marray copy];
+    }
+}
+
++ (NSDictionary *)propertyMap
+{
+    @autoreleasepool
+    {
+        NSMutableDictionary *mdict = [NSMutableDictionary dictionary];
+        Class current = [self class];
+        
+        while (1) {
+            @try
+            {
+                NSString *className = NSStringFromClass(current);
+                if ([className isEqualToString:@"NSObject"]) { // Get all properties
+                    break;
+                }
+                
+                Class class = objc_getClass([className UTF8String]);
+                unsigned int propert_count = 0;
+                unsigned int ivar_count = 0;
+                objc_property_t *properties = class_copyPropertyList(class, &propert_count);
+                Ivar *ivars = class_copyIvarList(class, &ivar_count);
+                
+                // Keep safe
+                int count = (propert_count >= ivar_count)?ivar_count:propert_count;
+                for (int i = 0; i < count; i++) {
+                    const char *type_name = ivar_getTypeEncoding(ivars[i]);
+                    if (!type_name || strlen(type_name) < 1) {
+                        i ++;
+                        continue;
+                    }
+                    
+                    // Get property name
+                    const char *property_name = ivar_getName(ivars[i]);
+                    
+                    // Record property type & name
+                    NSString *name = [[NSString alloc]initWithCString:property_name encoding:NSUTF8StringEncoding];
+                    NSString *type = [[NSString alloc]initWithCString:type_name encoding:NSUTF8StringEncoding];
+                    
+                    if (!([name isEqualToString:@"_excludeProperties"])) {
+                        [mdict setObject:type forKey:[name substringFromIndex:1]];
+                    }
+                }
+                
+                // Clear ivar
+                free(ivars);
+                ivars = NULL;
+                
+                // Clear properties
+                free(properties);
+                properties = NULL;
+            }
+            @catch (NSException *exception)
+            {
+                NSLog(@"%@",exception);
+            }
+            @finally
+            {
+                // Next class level
+                current = [current superclass];
+            }
+        }
+        
+        return [mdict copy];
     }
 }
 
@@ -90,7 +155,7 @@
 
 + (id)modelWithJSONData:(NSData *)data
 {
-    if (!data || ![data isKindOfClass:[NSData class]] || data.length == 0) {
+    if (!(data && [data isKindOfClass:[NSData class]]) || data.length == 0) {
         return [[self class]model];
     }
     
@@ -114,7 +179,7 @@
 {
     @autoreleasepool
     {
-        if (!dict || ![dict isKindOfClass:[NSDictionary class]]) {
+        if (!(dict && [dict isKindOfClass:[NSDictionary class]])) {
             return [self model];
         }
         
@@ -128,15 +193,14 @@
             model = [self model];
         }
         
-        NSArray *properties = [model properties];
-        for (NSDictionary *item in properties) {
+        NSDictionary *propertyMap = [model propertyMap];
+        for (NSString *name in propertyMap) {
             @try
             {
-                NSString *name = item[@"name"];
-                NSString *type = item[@"type"];
+                NSString *type = propertyMap[name];
+                NSString *rname = [NSString stringWithString:name];
                 
                 // For illegal name
-                NSString *rname = [NSString stringWithString:name];
                 if ([rname hasSuffix:@"_"] && rname.length > 0) {
                     if (![dict.allKeys containsObject:rname]) {
                         rname = [rname substringToIndex:rname.length - 1];
@@ -156,7 +220,7 @@
                 id value = [dict objectForKey:rname];
                 if (value) {
                     // To model again
-                    if (![class isSubclassOfClass:[NSArray class]]) {
+                    if (!(class && [class isSubclassOfClass:[NSArray class]])) {
                         value = [[self class]valueWithValue:value class:class];
                     } else {
                         // For NSArray
@@ -175,9 +239,7 @@
                         className = [className stringByAppendingString:suffix];
                         class = NSClassFromString(className);
                         
-                        if (class) {
-                            value = [[self class]valuesWithArray:value class:class];
-                        }
+                        value = [[self class]valuesWithArray:value class:class];
                     }
                     
                     if (class && [value isKindOfClass:[NSNull class]]) {
@@ -219,7 +281,7 @@
     return [[self class]arrayWithModels:array withKey:NO];
 }
 
-+ (NSArray *)arrayAndKeysWithModels:(NSArray *)array
++ (NSArray *)arrayContainedkeysWithModels:(NSArray *)array
 {
     return [[self class]arrayWithModels:array withKey:YES];
 }
@@ -248,22 +310,30 @@
 
 + (id)valueWithValue:(id)value class:(Class)class
 {
-    if (!class) {
-        return value;
-    }
-    
-    if ([class isSubclassOfClass:[NSDictionary class]]) {
-        value = [class modelWithDictionary:value];
-    } else if ([class isSubclassOfClass:[UModel class]]) {
-        if ([value isKindOfClass:[NSDictionary class]]) {
-            value = [class modelWithDictionary:value];
-        } else if ([value isKindOfClass:[NSString class]]) {
-            NSDictionary *dict = [value JSONValue];
-            if (dict) {
-                value = [class modelWithDictionary:dict];
+    id itemValue = nil;
+    if (class && [class isSubclassOfClass:[UModel class]]) {
+        if ([value isKindOfClass:[NSDictionary class]]) { // NSDictionary
+            itemValue = [class modelWithDictionary:value];
+        } else if ([value isKindOfClass:[NSString class]]) { // NSString
+            itemValue = [class modelWithJSONString:value];
+        } else if ([value isKindOfClass:[NSData class]]) { // NSData
+            itemValue = [class modelWithJSONData:value];
+        } else if ([value isKindOfClass:[NSArray class]]) { // NSArray
+            itemValue = [class modelsWithArray:value];
+        }
+    } else {
+        if ([value isKindOfClass:[NSDictionary class]]) { // NSDictionary
+            NSString *keyName = value[@"UModelClassNameKey"];
+            if (keyName) {
+                class = NSClassFromString(keyName);
+                if (class && [class isSubclassOfClass:[UModel class]]) {
+                    itemValue = [class modelWithDictionary:value];
+                }
             }
         }
     }
+    
+    value = itemValue?itemValue:value;
     
     return value;
 }
@@ -272,26 +342,7 @@
 {
     NSMutableArray *marray = [NSMutableArray array];
     for (id item in array) {
-        NSString *className = nil;
-        if (!class) {
-            if ([item isKindOfClass:[NSDictionary class]]) {
-                className = item[@"UModelClassNameKey"];
-                if ([className isKindOfClass:[NSString class]] && className.length > 0) {
-                    id model = [[self class]valueWithValue:item class:NSClassFromString(className)];
-                    if (model) {
-                        [marray addObject:model];
-                    } else {
-                        [marray addObject:item];
-                    }
-                } else {
-                    className = nil;
-                }
-            }
-        } else {
-            array = [class modelWithDictionary:item];
-            array = array?array:item;
-            [marray addObject:array];
-        }
+        [marray addObject:[[self class] valueWithValue:item class:class]];
     }
     
     return [marray copy];
@@ -310,10 +361,9 @@
 
 - (void)copyValuesWithModel:(UModel *)model
 {
-    NSArray *properties = [model properties];
-    for (NSDictionary *item in properties) {
-        NSString *name = item[@"name"];
-        NSString *type = item[@"type"];
+    NSDictionary *propertyMap = [model propertyMap];
+    for (NSString *name in propertyMap) {
+        NSString *type = propertyMap[name];
         
         if ([type hasPrefix:@"@\""]) {
             // NSObject
@@ -335,6 +385,7 @@
                 [marray addObject:retValue];
             }
         }
+        
         // Set array value
         [self setValue:[marray copy] forKey:keyName];
     } else if ([object isKindOfClass:[UModel class]]) { // Model
@@ -357,18 +408,49 @@
     return value;
 }
 
-- (NSArray *)properties
+- (NSDictionary *)propertyMap
 {
     @autoreleasepool
     {
-        NSArray *properties = [[self class] properties];
+        NSDictionary *propertyMap = [[self class] propertyMap];
+        if (_excludeProperties &&
+            [_excludeProperties isKindOfClass:[NSArray class]] &&
+            _excludeProperties.count > 0)
+        {
+            NSMutableDictionary *mdict = [propertyMap mutableCopy];
+            for (NSString *excludeProperty in _excludeProperties) {
+                if ([excludeProperty isKindOfClass:[NSString class]] && excludeProperty.length > 0) {
+                    for (NSString *name in propertyMap) {
+                        if ([excludeProperty isEqualToString:name]) {
+                            [mdict removeObjectForKey:name];
+                            
+                            break;
+                        }
+
+                    }
+                }
+            }
+            
+            return [mdict copy];
+        }
+        
+        return propertyMap;
+    }
+
+}
+
+- (NSArray *)propertyArray
+{
+    @autoreleasepool
+    {
+        NSArray *propertyArray = [[self class] propertyArray];
         
         if (_excludeProperties && [_excludeProperties isKindOfClass:[NSArray class]] && _excludeProperties.count > 0) {
-            NSMutableArray *marray = [properties mutableCopy];
+            NSMutableArray *marray = [propertyArray mutableCopy];
             
             for (NSString *excludeProperty in _excludeProperties) {
                 if ([excludeProperty isKindOfClass:[NSString class]] && excludeProperty.length > 0) {
-                    for (NSDictionary *property in properties) {
+                    for (NSDictionary *property in propertyArray) {
                         if ([excludeProperty isEqualToString:property[@"name"]]) {
                             [marray removeObject:property];
                             
@@ -381,7 +463,7 @@
             return [marray copy];
         }
         
-        return properties;
+        return propertyArray;
     }
 }
 
@@ -400,17 +482,16 @@
     @autoreleasepool
     {
         // Get current properties
-        NSArray *properties = [self properties];
+        NSDictionary *propertyMap = [self propertyMap];
         NSMutableDictionary *mdict = [NSMutableDictionary dictionary];
         
         // Set value
-        for (NSDictionary *item in properties) {
+        for (NSString *name in propertyMap) {
             @try
             {
-                NSString *name = item[@"name"];
-                NSString *type = item[@"type"];
-                
+                NSString *type = propertyMap[name];
                 Class class = NULL;
+                
                 if ([type hasPrefix:@"@\""]) {
                     // Get class name
                     NSRange range = NSMakeRange(2, type.length - 3);
@@ -481,7 +562,7 @@
     NSString *selfJSON = [[self dictionaryWithModelKey]JSONString];
     NSString *theJSON = [[self dictionaryWithModelKey]JSONString];
     
-    if (!selfJSON || !theJSON) {
+    if (!(selfJSON && theJSON)) {
         return NO;
     }
     

@@ -299,55 +299,46 @@ singletonImplementation(UHTTPQueue);
     @try
     {
         if (receivedData) {
+            NSStringEncoding stringEncoding = NSUTF8StringEncoding;
             if (httpResponse.textEncodingName) {
-                NSStringEncoding stringEncoding = NSUTF8StringEncoding;
                 CFStringEncoding encoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)httpResponse.textEncodingName);
-                
                 if (encoding != kCFStringEncodingInvalidId) {
                     stringEncoding = CFStringConvertEncodingToNSStringEncoding(encoding);
-                    
-                    // Parse to text
-                    NSString *responseString = [[NSString alloc]initWithData:receivedData encoding:stringEncoding];
-                    if (!responseString) {
-                        stringEncoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-                        responseString = [[NSString alloc]initWithData:receivedData encoding:stringEncoding];
-                    }
-                    
-                    if (responseString && responseString.length > 1) {
-                        // To JSON
-                        NSData *data = [responseString dataUsingEncoding:NSUTF8StringEncoding];
-                        if (data && data.length > 0) {
-                            responseObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-                        }
-                    }
-                    
-                    if (!responseObject) {
-                        if (responseString) {
-                            responseObject = responseString;
-#if DEBUG
-                            if (param.enableLog) {
-                                NSLog(@"Current data is not JSON");
-                            }
-#endif
-                        } else {
-                            responseObject = receivedData;
-#if DEBUG
-                            if (param.enableLog) {
-                                NSLog(@"Current data can not be parsed to JSON");
-                            }
-#endif
-                        }
-                    }
-                    
-                    responseString = nil;
                 }
-            } else {
+            }
+            
+            // Parsed to text
+            NSString *responseString = [[NSString alloc]initWithData:receivedData encoding:stringEncoding];
+            if (!responseString) {
+                stringEncoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+                responseString = [[NSString alloc]initWithData:receivedData encoding:stringEncoding];
+            }
+            
+            // Parsed to JSON
+            if (responseString && responseString.length > 1) {
+                NSError *error = nil;
+                NSData *data = [responseString dataUsingEncoding:NSUTF8StringEncoding];
+                if (data && data.length > 0) {
+                    responseObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+                }
+            }
+            
+            if (!responseString) {
                 responseObject = receivedData;
 #if DEBUG
                 if (param.enableLog) {
                     NSLog(@"Current data can not be parsed to text");
                 }
 #endif
+            } else {
+                if (!responseObject) {
+                    responseObject = responseString;
+#if DEBUG
+                    if (param.enableLog) {
+                        NSLog(@"Current data is not JSON");
+                    }
+#endif
+                }
             }
         }
     }

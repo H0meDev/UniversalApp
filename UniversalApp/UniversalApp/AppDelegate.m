@@ -24,9 +24,6 @@
     self.window.backgroundColor = sysWhiteColor();
     [self.window makeKeyAndVisible];
     
-    // Goto home
-    [self gotoHomePage];
-    
     NSMutableArray *marray = [NSMutableArray array];
     UModelSQLiteFieldDescription *desc1 = [[UModelSQLiteFieldDescription alloc]init];
     desc1.fieldName = @"index_value";
@@ -44,14 +41,17 @@
     
     UserInfoTable *model = [UserInfoTable modelWithDictionary:@{@"name":@"cailiang",
                                                                 @"rate":@"3.1415926",
-                                                                @"excludeProperties":@[@"ABCDEFG"]}];
+                                                                @"excludeProperties":@[@"ABCDEFG"],
+                                                                @"dict":@{@"key":@"value"},
+                                                                }];
     NSLog(@"%@", [model dictionary]);
+    NSLog(@"%@", [model dictionaryWithModelKey]);
     
     UModelSQLite *sqlite = [[UModelSQLite alloc]initWith:@"caches.sqlite"];
     BOOL success = [sqlite createTableWith:[UserInfoTable class] descriptions:marray];
     
     model.excludeProperties = @[@"index_value"];
-    NSArray *properties = [model properties];
+    NSArray *properties = [model propertyArray];
     success = [sqlite insertWith:model];
     
     success = [sqlite excuteWith:@"create table if not exists tb_demo1 (index_value integer primary key, name text, rate float)"];
@@ -74,6 +74,9 @@
     
     [sqlite close];
     sqlite = nil;
+    
+    // Goto home
+    [self gotoHomePage];
     
     return YES;
 }
