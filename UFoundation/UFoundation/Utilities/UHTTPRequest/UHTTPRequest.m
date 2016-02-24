@@ -276,12 +276,21 @@ singletonImplementation(UHTTPQueue);
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
     request.HTTPMethod = method;
     request.HTTPBody = (checkValidNSString(body))?[body dataUsingEncoding:NSUTF8StringEncoding]:nil;
+    [request setTimeoutInterval:param.timeout];
     
     // Set http header
     for (NSString *field in param.header) {
         NSString *value = param.header[field];
         [request setValue:value forHTTPHeaderField:field];
     }
+
+#if DEBUG
+    if (param.enableLog) {
+        NSString *header = checkValidNSDictionary(request.allHTTPHeaderFields)?[request.allHTTPHeaderFields JSONString]:@"";
+        NSString *body = [[NSString alloc]initWithData:request.HTTPBody encoding:NSUTF8StringEncoding];
+        NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nHEADER: %@\nBODY: %@\n*********************************", request.URL.absoluteString, request.HTTPMethod, header, body);
+    }
+#endif
     
     // Start time
     clock_t startTime = clock();

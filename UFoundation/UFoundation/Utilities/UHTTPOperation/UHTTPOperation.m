@@ -247,9 +247,11 @@ singletonImplementationWith(UHTTPDataCache, cache);
             NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
             [mrequest setTimeoutInterval:120];
             
-            NSString *header = checkValidNSDictionary(mrequest.allHTTPHeaderFields)?[mrequest.allHTTPHeaderFields JSONString]:@"";
-            NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
-            NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nHEADER: %@\nBODY: %@\n*********************************",mrequest.URL.absoluteString, mrequest.HTTPMethod, header, body);
+            if (_enableLog) {
+                NSString *header = checkValidNSDictionary(mrequest.allHTTPHeaderFields)?[mrequest.allHTTPHeaderFields JSONString]:@"";
+                NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
+                NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nHEADER: %@\nBODY: %@\n*********************************",mrequest.URL.absoluteString, mrequest.HTTPMethod, header, body);
+            }
 #endif
         }
     }
@@ -287,9 +289,11 @@ singletonImplementationWith(UHTTPDataCache, cache);
             NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
             [mrequest setTimeoutInterval:120];
             
-            NSString *header = checkValidNSDictionary(mrequest.allHTTPHeaderFields)?[mrequest.allHTTPHeaderFields JSONString]:@"";
-            NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
-            NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nHEADER: %@\nBODY: %@\n*********************************", mrequest.URL.absoluteString, mrequest.HTTPMethod, header, body);
+            if (_enableLog) {
+                NSString *header = checkValidNSDictionary(mrequest.allHTTPHeaderFields)?[mrequest.allHTTPHeaderFields JSONString]:@"";
+                NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
+                NSLog(@"\nUHTTP REQUEST START:\n*********************************\nURL: %@\nMETHOD: %@\nHEADER: %@\nBODY: %@\n*********************************", mrequest.URL.absoluteString, mrequest.HTTPMethod, header, body);
+            }
 #endif
         }
     }
