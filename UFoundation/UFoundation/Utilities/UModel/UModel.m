@@ -228,10 +228,12 @@
                         NSArray *compents = [rname componentsSeparatedByString:@"_"];
                         for (int i = 0; i < compents.count; i ++) {
                             NSString *compent = compents[i];
-                            NSString *firstAlpha = [[compent substringToIndex:1]uppercaseString];
-                            NSString *otherCompent = [compent substringFromIndex:1];
-                            compent = [firstAlpha stringByAppendingString:otherCompent];
-                            fieldName = [fieldName stringByAppendingString:compent];
+                            if (compent.length > 0) {
+                                NSString *firstAlpha = [[compent substringToIndex:1]uppercaseString];
+                                NSString *otherCompent = [compent substringFromIndex:1];
+                                compent = [firstAlpha stringByAppendingString:otherCompent];
+                                fieldName = [fieldName stringByAppendingString:compent];
+                            }
                         }
                         
                         NSString *suffix = [NSString stringWithFormat:@"%@Item", fieldName];
