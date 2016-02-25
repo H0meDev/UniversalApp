@@ -492,11 +492,12 @@ singletonImplementationWith(UHTTPDataCache, cache);
 {
     @autoreleasepool
     {
-        NSURLRequest *request = [connection originalRequest];
         uint64_t endTime = mach_absolute_time();
         mach_timebase_info_data_t info;
         mach_timebase_info(&info);
         CGFloat usedTime = (CGFloat)(endTime - _startTime) * info.numer/NSEC_PER_SEC;
+        
+        NSURLRequest *request = [connection originalRequest];
 #if DEBUG
         NSString *statusText = @"OK";
 #endif
