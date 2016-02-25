@@ -17,6 +17,7 @@
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, strong) UIColor *color;
 @property (nonatomic, strong) UIColor *backgroundColor;
+@property (nonatomic, strong) UIColor *boarderColor;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImage *backgroundImage;
 @property (nonatomic, assign) CGFloat contentAlpha;
@@ -42,6 +43,7 @@
         // Initialize
         self.contentAlpha = 1.0;
         self.backgroundAlpha = 1.0;
+        self.boarderColor = sysClearColor();
     }
     
     return self;
@@ -483,6 +485,23 @@
     }
 }
 
+- (void)setBoarderColor:(UIColor *)color forState:(UIControlState)state
+{
+    UButtonItem *buttonItem = [self itemWith:state];
+    if (buttonItem) {
+        buttonItem.boarderColor = color;
+    } else {
+        buttonItem = [UButtonItem item];
+        buttonItem.state = state;
+        buttonItem.boarderColor = color;
+        [_stateItems addObject:buttonItem];
+    }
+    
+    if (UIControlStateNormal == state) {
+        self.layer.borderColor = color.CGColor;
+    }
+}
+
 - (void)refreshButtonWith:(UIControlState)state
 {
     UButtonItem *item = [self itemWith:state];
@@ -501,6 +520,10 @@
         
         if (item.image) {
             self.imageView.image = item.image;
+        }
+        
+        if (item.boarderColor) {
+            self.layer.borderColor = item.boarderColor.CGColor;
         }
         
         if (item.backgroundImage) {
@@ -761,6 +784,36 @@
 - (void)setDBackgroundAlpha:(CGFloat)alpha
 {
     [self setBackgroundAlpha:alpha forState:UIControlStateDisabled];
+}
+
+- (void)setBorderWith:(CGFloat)width
+{
+    self.layer.borderWidth = width;
+}
+
+- (void)setCornerRadius:(CGFloat)radius
+{
+    self.layer.cornerRadius = radius;
+}
+
+- (void)setBorderColor:(UIColor *)color
+{
+    [self setBoarderColor:color forState:UIControlStateNormal];
+}
+
+- (void)setHBorderColor:(UIColor *)color
+{
+    [self setBoarderColor:color forState:UIControlStateHighlighted];
+}
+
+- (void)setSBorderColor:(UIColor *)color
+{
+    [self setBoarderColor:color forState:UIControlStateSelected];
+}
+
+- (void)setDBorderColor:(UIColor *)color
+{
+    [self setBoarderColor:color forState:UIControlStateDisabled];
 }
 
 @end

@@ -83,6 +83,16 @@
 - (void)setSBackgroundAlpha:(CGFloat)alpha;
 - (void)setDBackgroundAlpha:(CGFloat)alpha;
 
+// Border
+- (void)setBorderWidth:(CGFloat)width;
+- (void)setCornerRadius:(CGFloat)radius;
+
+// Border color
+- (void)setBorderColor:(UIColor *)color;
+- (void)setHBorderColor:(UIColor *)color;
+- (void)setSBorderColor:(UIColor *)color;
+- (void)setDBorderColor:(UIColor *)color;
+
 // Add action
 - (void)setTarget:(id)target action:(SEL)action;
 - (void)setTouchDownTarget:(id)target action:(SEL)action;
