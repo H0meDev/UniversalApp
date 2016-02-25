@@ -145,7 +145,7 @@
 - (void)setTarget:(id)target action:(SEL)action
 {
     if (_target && _action) {
-        [self removeTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+        [self removeTarget:_target action:_action forControlEvents:UIControlEventTouchUpInside];
     }
     
     _target = target;
