@@ -35,6 +35,7 @@
     tableView.backgroundColor = sysClearColor();
     tableView.multipleSelected = YES;
     tableView.cancelable = YES;
+    tableView.separatorStyle = UListTableViewCellSepratorLineStyleFull;
     [self addSubview:tableView];
     _tableView = tableView;
 }
@@ -57,7 +58,7 @@
 
 - (NSInteger)numberOfSectionsInListView:(UListTableView *)tableView
 {
-    return 4000;
+    return 10;
 }
 
 - (NSInteger)tableView:(UListTableView *)tableView numberOftemsInSection:(NSInteger)section
@@ -67,41 +68,41 @@
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForHeaderInSection:(NSInteger)section
 {
-    return 20;
+    return 0;
 }
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForFooterInSection:(NSInteger)section
 {
-    return 20;
+    return 0;
 }
 
-- (UIView *)tableView:(UListTableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    @autoreleasepool
-    {
-        UButton *headerView = [UButton button];
-        headerView.tag = section;
-        [headerView setTitle:[NSString stringWithFormat:@"HEADER %@", @(section + 1)]];
-        [headerView setBackgroundColor:sysBlueColor()];
-        [headerView setTarget:self action:@selector(sectionAction:)];
-        
-        return headerView;
-    }
-}
-
-- (UIView *)tableView:(UListTableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    @autoreleasepool
-    {
-        UButton *footerView = [UButton button];
-        footerView.tag = section;
-        [footerView setTitle:[NSString stringWithFormat:@"FOOTER %@", @(section + 1)]];
-        [footerView setBackgroundColor:sysRedColor()];
-        [footerView setTarget:self action:@selector(sectionAction:)];
-        
-        return footerView;
-    }
-}
+//- (UIView *)tableView:(UListTableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    @autoreleasepool
+//    {
+//        UButton *headerView = [UButton button];
+//        headerView.tag = section;
+//        [headerView setTitle:[NSString stringWithFormat:@"HEADER %@", @(section + 1)]];
+//        [headerView setBackgroundColor:rgbColor(239, 239, 239)];
+//        [headerView setTarget:self action:@selector(sectionAction:)];
+//        
+//        return headerView;
+//    }
+//}
+//
+//- (UIView *)tableView:(UListTableView *)tableView viewForFooterInSection:(NSInteger)section
+//{
+//    @autoreleasepool
+//    {
+//        UButton *footerView = [UButton button];
+//        footerView.tag = section;
+//        [footerView setTitle:[NSString stringWithFormat:@"FOOTER %@", @(section + 1)]];
+//        [footerView setBackgroundColor:rgbColor(239, 239, 239)];
+//        [footerView setTarget:self action:@selector(sectionAction:)];
+//        
+//        return footerView;
+//    }
+//}
 
 - (CGFloat)tableView:(UListTableView *)tableView sizeValueForPath:(UIndexPath *)path
 {
@@ -110,13 +111,11 @@
 
 - (UListTableViewCell *)tableView:(UListTableView *)tableView cellAtPath:(UIndexPath *)path
 {
-    NSLog(@"UListTableViewCell item %@ - %@", @(path.section), @(path.index));
-    
     UListTableViewCell *cell = (UListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"UListTableViewCell"];
     if (!cell) {
         cell = (UListTableViewCell *)[tableView cellReuseWith:@"UListTableViewCell" forIdentifier:@"UListTableViewCell"];
     }
-    cell.backgroundColor = sysYellowColor();
+    cell.backgroundColor = sysWhiteColor();
     
     return cell;
 }
@@ -124,13 +123,11 @@
 - (void)tableView:(UListTableView *)tableView didSelectCellAtPath:(UIndexPath *)path
 {
     [tableView deselectCellAtPath:path];
-    
-    NSLog(@"UListTableViewCell select %@ - %@", @(path.section), @(path.index));
 }
 
 - (void)tableView:(UListTableView *)tableView didDeselectCellAtPath:(UIndexPath *)path
 {
-    NSLog(@"UListTableViewCell deselect %@ - %@", @(path.section), @(path.index));
+    //
 }
 
 - (void)sectionAction:(UIButton *)button

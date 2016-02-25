@@ -1009,25 +1009,40 @@
             
         case UListTableViewCellSepratorLineStyleNoEnds:
         {
+            if (item.index == 0) {
+                headerLineView.hidden = YES;
+            } else {
+                headerLineView.hidden = NO;
+            }
+            
             UListTableSectionItem *section = _sectionArray[item.section];
             if (item.index == section.itemArray.count - 1) {
-                headerLineView.hidden = YES;
-                footerLineView.hidden = YES;
+                if (item.section == _sectionArray.count - 1) {
+                    footerLineView.hidden = YES;
+                } else {
+                    UListTableSectionItem *lsection = _sectionArray[item.section + 1];
+                    footerLineView.hidden = ((section.footerValue + lsection.headerValue) > 0.5);
+                }
             } else {
-                headerLineView.hidden = YES;
-                footerLineView.hidden = NO;
+                footerLineView.hidden = YES;
             }
         }
             break;
             
         case UListTableViewCellSepratorLineStyleFull:
         {
-            if (item.index == 0) {
-                headerLineView.hidden = NO;
-                footerLineView.hidden = NO;
+            headerLineView.hidden = NO;
+            
+            UListTableSectionItem *section = _sectionArray[item.section];
+            if (item.index == section.itemArray.count - 1) {
+                if (item.section == _sectionArray.count - 1) {
+                    footerLineView.hidden = NO;
+                } else {
+                    UListTableSectionItem *lsection = _sectionArray[item.section + 1];
+                    footerLineView.hidden = !((section.footerValue + lsection.headerValue) > 0.5);
+                }
             } else {
-                headerLineView.hidden = YES;
-                footerLineView.hidden = NO;
+                footerLineView.hidden = YES;
             }
         }
             break;

@@ -786,7 +786,7 @@
     [self setBackgroundAlpha:alpha forState:UIControlStateDisabled];
 }
 
-- (void)setBorderWith:(CGFloat)width
+- (void)setBorderWidth:(CGFloat)width
 {
     self.layer.borderWidth = width;
 }
