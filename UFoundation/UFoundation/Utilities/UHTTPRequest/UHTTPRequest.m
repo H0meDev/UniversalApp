@@ -102,7 +102,9 @@ singletonImplementation(UHTTPQueue);
 
 - (void)dealloc
 {
+#if DEBUG
     NSLog(@"%@ dealloc", NSStringFromClass([self class]));
+#endif
 }
 
 #pragma mark - Request

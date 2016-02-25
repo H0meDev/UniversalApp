@@ -331,7 +331,9 @@ singletonImplementationWith(UHTTPDataCache, cache);
     _receivedData = nil;
     _operationQueue = nil;
     
+#if DEBUG
     NSLog(@"%@ dealloc", NSStringFromClass([self class]));
+#endif
 }
 
 #pragma mark - Methods

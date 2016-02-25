@@ -155,7 +155,9 @@ singletonImplementationWith(NetworkSDK, sharedInstance);
 
 - (void)dealloc
 {
+#if DEBUG
     NSLog(@"%@ dealloc", NSStringFromClass([self class]));
+#endif
 }
 
 - (UHTTPOperation *)requestWithURL:(NSString *)url

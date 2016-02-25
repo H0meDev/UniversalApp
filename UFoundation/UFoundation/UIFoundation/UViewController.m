@@ -148,7 +148,9 @@
         _containerView = nil;
     }
     
+#if DEBUG
     NSLog(@"%@ dealloc", NSStringFromClass([self class]));
+#endif
 }
 
 /*

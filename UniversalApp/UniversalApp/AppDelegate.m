@@ -44,6 +44,7 @@
                                                                 @"excludeProperties":@[@"ABCDEFG"],
                                                                 @"dict":@{@"key":@"value"},
                                                                 }];
+    NSLog(@"%@", model);
     NSLog(@"%@", [model dictionary]);
     NSLog(@"%@", [model dictionaryWithModelKey]);
     

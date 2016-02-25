@@ -10,8 +10,12 @@
 
 @interface NSObject (UAExtension)
 
++ (NSString *)className;
+
 // Create an instance
 + (id)instance;
+
+- (NSString *)className;
 
 // Get weak self
 - (id)weakself;

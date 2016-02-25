@@ -583,9 +583,20 @@ NSString * const UModelClassNameKey = @"__UMODEL_CLASS_NAME_KEY__";
     return [selfJSON isEqualToString:theJSON];
 }
 
+- (NSString *)description
+{
+    NSString *description = [super description];
+#if DEBUG
+    description = [NSString stringWithFormat:@"%@%@", description, [self dictionary]];
+#endif
+    return description;
+}
+
 - (void)dealloc
 {
+#if DEBUG
     NSLog(@"%@ dealloc", NSStringFromClass([self class]));
+#endif
 }
 
 @end

@@ -10,12 +10,22 @@
 
 @implementation NSObject (UAExtension)
 
++ (NSString *)className
+{
+    return NSStringFromClass([self class]);
+}
+
 + (id)instance
 {
     @autoreleasepool
     {
         return [[self alloc]init];
     }
+}
+
+- (NSString *)className
+{
+    return NSStringFromClass([self class]);
 }
 
 - (id)weakself
