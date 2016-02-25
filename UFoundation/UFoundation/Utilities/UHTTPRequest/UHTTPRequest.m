@@ -7,6 +7,9 @@
 //
 
 #import "UHTTPRequest.h"
+
+#import <mach/mach_time.h>
+
 #import "NSObject+UAExtension.h"
 #import "NSDictionary+UAExtension.h"
 #import "NSString+UAExtension.h"
@@ -295,13 +298,19 @@ singletonImplementation(UHTTPQueue);
 #endif
     
     // Start time
-    clock_t startTime = clock();
+    uint64_t startTime = mach_absolute_time();
     
     id responseObject = nil;
     NSHTTPURLResponse *httpResponse = nil;
     NSError *error = nil;
     NSData *receivedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&httpResponse error:&error];
     __autoreleasing UHTTPRequestResult *result = [[UHTTPRequestResult alloc]init];
+    
+    // End time
+    uint64_t endTime = mach_absolute_time();
+    mach_timebase_info_data_t info;
+    mach_timebase_info(&info);
+    CGFloat usedTime = (CGFloat)(endTime - startTime) * info.numer/NSEC_PER_SEC;
     
 #if DEBUG
     NSString *statusText = error?@"ERROR":@"OK";
@@ -361,9 +370,6 @@ singletonImplementation(UHTTPQueue);
     }
     @finally
     {
-        clock_t endTime = clock();
-        CGFloat usedTime = (CGFloat)(endTime - startTime)/CLOCKS_PER_SEC;
-        
 #if DEBUG
         if (param.enableLog) {
             if (![statusText isEqualToString:@"OK"]) {

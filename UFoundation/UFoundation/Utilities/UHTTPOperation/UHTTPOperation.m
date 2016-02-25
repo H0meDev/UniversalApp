@@ -7,6 +7,9 @@
 //
 
 #import "UHTTPOperation.h"
+
+#import <mach/mach_time.h>
+
 #import "UOperationQueue.h"
 #import "UTimerBooster.h"
 #import "NSString+UAExtension.h"
@@ -156,7 +159,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
     BOOL _cacheRequired;
     NSString *_cacheKey;
     
-    clock_t _startTime;
+    uint64_t _startTime;
     NSInteger _timeout;
     NSInteger _countOfRetry;
     NSUInteger _timeInterval;
@@ -309,7 +312,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
 - (void)startConnection
 {
     // Start time
-    _startTime = clock();
+    _startTime = mach_absolute_time();
     
     // Timeout setting
     [UTimerBooster addTarget:self sel:@selector(requestTimeout) time:_timeout];
@@ -418,16 +421,12 @@ singletonImplementationWith(UHTTPDataCache, cache);
 
 - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(nullable NSURLResponse *)response
 {
-    if (!response) {
-        return request;
-    }
-    
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     if (_redirect && httpResponse.statusCode == UHTTPCodeFound) {
-        return request;
+        return nil;
     }
     
-    return nil;
+    return request;
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -494,8 +493,10 @@ singletonImplementationWith(UHTTPDataCache, cache);
     @autoreleasepool
     {
         NSURLRequest *request = [connection originalRequest];
-        clock_t endTime = clock();
-        CGFloat usedTime = (CGFloat)(endTime - _startTime)/CLOCKS_PER_SEC;
+        uint64_t endTime = mach_absolute_time();
+        mach_timebase_info_data_t info;
+        mach_timebase_info(&info);
+        CGFloat usedTime = (CGFloat)(endTime - _startTime) * info.numer/NSEC_PER_SEC;
 #if DEBUG
         NSString *statusText = @"OK";
 #endif
@@ -595,8 +596,10 @@ singletonImplementationWith(UHTTPDataCache, cache);
         [UTimerBooster removeTarget:self];
         
         NSURLRequest *request = [connection originalRequest];
-        clock_t endTime = clock();
-        CGFloat usedTime = (CGFloat)(endTime - _startTime)/CLOCKS_PER_SEC;
+        uint64_t endTime = mach_absolute_time();
+        mach_timebase_info_data_t info;
+        mach_timebase_info(&info);
+        CGFloat usedTime = (CGFloat)(endTime - _startTime) * info.numer/NSEC_PER_SEC;
 
 #if DEBUG
         if (_enableLog) {
