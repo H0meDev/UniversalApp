@@ -276,7 +276,11 @@ NSString * const UModelClassNameKey = @"__UMODEL_CLASS_NAME_KEY__";
 {
     @autoreleasepool
     {
-        return [[self alloc]initWithModel:model];
+        if (model && [model isKindOfClass:[UModel class]]) {
+            return [[[model class] alloc]initWithModel:model];
+        }
+        
+        return [self model];
     }
 }
 
@@ -308,7 +312,7 @@ NSString * const UModelClassNameKey = @"__UMODEL_CLASS_NAME_KEY__";
             return [marray copy];
         }
         
-        return nil;
+        return [NSArray array];
     }
 }
 
