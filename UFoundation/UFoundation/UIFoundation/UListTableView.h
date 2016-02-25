@@ -41,6 +41,8 @@ typedef NS_ENUM(NSInteger, UListTableViewCellSepratorLineStyle)
 - (NSInteger)numberOfSectionsInListView:(UListTableView *)tableView;
 - (NSInteger)tableView:(UListTableView *)tableView numberOftemsInSection:(NSInteger)section;
 - (UListTableViewCell *)tableView:(UListTableView *)tableView cellAtPath:(UIndexPath *)path;
+
+@optional
 - (UIView *)tableView:(UListTableView *)tableView viewForHeaderInSection:(NSInteger)section;
 - (UIView *)tableView:(UListTableView *)tableView viewForFooterInSection:(NSInteger)section;
 
