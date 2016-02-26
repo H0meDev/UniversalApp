@@ -246,10 +246,10 @@ singletonImplementationWith(UHTTPDataCache, cache);
             // Add to UOperationQueue
             [_operationQueue addOperation:self];
             
-#if DEBUG
+            // Timeout
             NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
             [mrequest setTimeoutInterval:120];
-            
+#if DEBUG
             if (_enableLog) {
                 NSString *header = checkValidNSDictionary(mrequest.allHTTPHeaderFields)?[mrequest.allHTTPHeaderFields JSONString]:@"";
                 NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
@@ -288,10 +288,10 @@ singletonImplementationWith(UHTTPDataCache, cache);
             // Add to UOperationQueue
             [_operationQueue addOperation:self];
             
-#if DEBUG
+            // Timeout
             NSMutableURLRequest *mrequest = (NSMutableURLRequest *)param.request;
             [mrequest setTimeoutInterval:120];
-            
+#if DEBUG
             if (_enableLog) {
                 NSString *header = checkValidNSDictionary(mrequest.allHTTPHeaderFields)?[mrequest.allHTTPHeaderFields JSONString]:@"";
                 NSString *body = [[NSString alloc]initWithData:mrequest.HTTPBody encoding:NSUTF8StringEncoding];
