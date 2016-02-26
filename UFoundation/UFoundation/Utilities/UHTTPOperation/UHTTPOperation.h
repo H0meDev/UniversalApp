@@ -54,7 +54,7 @@ typedef NS_ENUM(NSInteger, UHTTPCode)
 @interface UHTTPStatus : NSObject
 
 @property (nonatomic, assign) UHTTPCode code;         // Response code
-@property (nonatomic, assign) CGFloat time;           // Time (second(s)) of request used
+@property (nonatomic, assign) CGFloat time;           // Second(s) of request spent
 @property (nonatomic, strong) NSString *url;          // Original request url
 @property (nonatomic, strong) NSString *redirectURL;  // Redirect url
 @property (nonatomic, assign) NSInteger countOfRetry; // Count of retry left
