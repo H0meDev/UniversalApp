@@ -31,7 +31,6 @@
 #import "UWebView.h"
 #import "UStatusBarView.h"
 #import "UNavigationBarView.h"
-#import "UTabBarButton.h"
 #import "URefreshView.h"
 #import "UIndicatorView.h"
 #import "UMessageBox.h"

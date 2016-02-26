@@ -9,6 +9,14 @@
 #import "UTabBarView.h"
 #import "UDefines.h"
 
+#pragma mark - UTabBarButton class
+
+@implementation UTabBarButton
+
+@end
+
+#pragma mark - UTabBarView class
+
 @interface UTabBarView ()
 
 @property (nonatomic, strong) UIImageView *topLineView;

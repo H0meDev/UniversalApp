@@ -14,7 +14,7 @@
 #import "UIColor+UAExtension.h"
 #import "NSObject+UAExtension.h"
 
-#pragma mark - UNavigationBarButton Class
+#pragma mark - UNavigationBarButton class
 
 @interface UNavigationBarButton ()
 {
@@ -132,7 +132,7 @@
 
 @end
 
-#pragma mark - UNavigationContentView Class
+#pragma mark - UNavigationContentView class
 
 @interface UNavigationContentView : UIImageView
 
