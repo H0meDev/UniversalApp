@@ -69,6 +69,7 @@
         _cacheKey = @"";
         _redirect = YES;
         _enableLog = YES;
+        _enableParse = YES;
     }
     
     return self;
@@ -151,28 +152,30 @@ singletonImplementationWith(UHTTPDataCache, cache);
 
 @interface UHTTPOperation () <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 {
-    __block UHTTPCompleteCallback _callback;
-    __block UHTTPResponseCallback _response;
-    __block UHTTPProgressCallback _received;
     __weak id<UHTTPRequestDelegate> _delegate;
-    
-    BOOL _cacheRequired;
-    NSString *_cacheKey;
-    
-    uint64_t _startTime;
-    NSInteger _timeout;
-    NSInteger _countOfRetry;
-    NSUInteger _timeInterval;
-    BOOL _redirect;
-    BOOL _enableLog;
     __strong UOperationQueue *_operationQueue;
     __strong UHTTPOperation *_operationHolder;
     
-    long long _receivedLength;
+    UHTTPCompleteCallback _callback;
+    UHTTPResponseCallback _response;
+    UHTTPProgressCallback _received;
+    
+    id _responseObject;
+    NSString *_cacheKey;
     NSMutableData *_receivedData;
     NSURLConnection *_connection;
     NSHTTPURLResponse *_httpResponse;
-    id _responseObject;
+    
+    uint64_t _startTime;
+    NSUInteger _timeout;
+    NSUInteger _countOfRetry;
+    NSUInteger _timeInterval;
+    
+    BOOL _redirect;
+    BOOL _enableLog;
+    BOOL _enableParse;
+    BOOL _cacheRequired;
+    long long _receivedLength;
 }
 
 @end
@@ -222,6 +225,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
             _timeInterval = param.retryInterval;
             _redirect = param.redirect;
             _enableLog = param.enableLog;
+            _enableParse = param.enableParse;
             _cacheRequired = param.cached;
             _operationQueue = param.queue;
             
@@ -282,6 +286,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
             _timeInterval = param.retryInterval;
             _redirect = param.redirect;
             _enableLog = param.enableLog;
+            _enableParse = param.enableParse;
             _cacheRequired = param.cached;
             _operationQueue = param.queue;
             
@@ -503,7 +508,7 @@ singletonImplementationWith(UHTTPDataCache, cache);
 #endif
         @try
         {
-            if (_receivedData) {
+            if (_receivedData && _enableParse) {
                 NSStringEncoding stringEncoding = NSUTF8StringEncoding;
                 if (_httpResponse.textEncodingName) {
                     CFStringEncoding encoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)_httpResponse.textEncodingName);
@@ -545,6 +550,8 @@ singletonImplementationWith(UHTTPDataCache, cache);
 #endif
                     }
                 }
+            } else {
+                _responseObject = _receivedData;
             }
         }
         @catch (NSException *exception)

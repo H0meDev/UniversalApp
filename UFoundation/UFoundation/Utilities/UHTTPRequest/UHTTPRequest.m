@@ -63,6 +63,7 @@ singletonImplementation(UHTTPQueue);
         _retryInterval = 0;
         _redirect = YES;
         _enableLog = YES;
+        _enableParse = YES;
     }
     
     return self;
@@ -224,6 +225,7 @@ singletonImplementation(UHTTPQueue);
     rparam.retryInterval = param.retryInterval;
     rparam.redirect = param.redirect;
     rparam.enableLog = param.enableLog;
+    rparam.enableParse = param.enableParse;
     
     UOperationQueue *queue = [UHTTPQueue sharedUHTTPQueue].operationQueue;
     [rparam performWithName:@"setOperationQueue:" with:queue];
@@ -318,7 +320,7 @@ singletonImplementation(UHTTPQueue);
     
     @try
     {
-        if (receivedData) {
+        if (receivedData && param.enableParse) {
             NSStringEncoding stringEncoding = NSUTF8StringEncoding;
             if (httpResponse.textEncodingName) {
                 CFStringEncoding encoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)httpResponse.textEncodingName);
@@ -360,6 +362,8 @@ singletonImplementation(UHTTPQueue);
 #endif
                 }
             }
+        } else {
+            responseObject = receivedData;
         }
     }
     @catch (NSException *exception)

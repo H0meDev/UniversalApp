@@ -54,7 +54,7 @@ typedef NS_ENUM(NSInteger, UHTTPCode)
 @interface UHTTPStatus : NSObject
 
 @property (nonatomic, assign) UHTTPCode code;         // Response code
-@property (nonatomic, assign) CGFloat time;           // Time of request used
+@property (nonatomic, assign) CGFloat time;           // Time (second(s)) of request used
 @property (nonatomic, strong) NSString *url;          // Original request url
 @property (nonatomic, strong) NSString *redirectURL;  // Redirect url
 @property (nonatomic, assign) NSInteger countOfRetry; // Count of retry left
@@ -66,11 +66,12 @@ typedef NS_ENUM(NSInteger, UHTTPCode)
 @property (nonatomic, strong) NSURLRequest *request;
 @property (nonatomic, assign) BOOL cached;
 @property (nonatomic, assign) NSString *cacheKey;
-@property (nonatomic, assign) CGFloat timeout;
-@property (nonatomic, assign) NSInteger retry;
-@property (nonatomic, assign) CGFloat retryInterval;
-@property (nonatomic, assign) BOOL redirect;  // Allow redirect, default is YES, invalidate for synchronous
-@property (nonatomic, assign) BOOL enableLog; // Default is YES
+@property (nonatomic, assign) NSUInteger timeout;
+@property (nonatomic, assign) NSUInteger retry;
+@property (nonatomic, assign) NSUInteger retryInterval;
+@property (nonatomic, assign) BOOL redirect;    // Allow redirect, default is YES, invalidate for synchronous
+@property (nonatomic, assign) BOOL enableLog;   // Default is YES
+@property (nonatomic, assign) BOOL enableParse; // Default is YES, only for text
 
 + (id)param;
 

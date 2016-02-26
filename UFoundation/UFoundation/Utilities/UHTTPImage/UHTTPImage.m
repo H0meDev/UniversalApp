@@ -395,6 +395,7 @@ singletonImplementationWith(UImageCache, cache);
                 UHTTPRequestParam *param = [UHTTPRequestParam param];
                 param.url = url;
                 param.enableLog = NO;
+                param.enableParse = NO;
                 
                 NSMutableData *mdata = [NSMutableData data];
                 [UHTTPRequest sendAsynWith:param
