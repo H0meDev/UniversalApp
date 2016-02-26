@@ -591,7 +591,10 @@ NSString * const UModelClassNameKey = @"__UMODEL_CLASS_NAME_KEY__";
 {
     NSString *description = [super description];
 #if DEBUG
-    description = [NSString stringWithFormat:@"%@%@", description, [self dictionary]];
+    NSDictionary *dictValue = [self dictionary];
+    if (dictValue && [dictValue isKindOfClass:[NSDictionary class]]) {
+        description = [NSString stringWithFormat:@"%@%@", description, dictValue];
+    }
 #endif
     return description;
 }
