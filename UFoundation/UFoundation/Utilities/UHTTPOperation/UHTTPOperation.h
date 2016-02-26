@@ -71,7 +71,7 @@ typedef NS_ENUM(NSInteger, UHTTPCode)
 @property (nonatomic, assign) NSUInteger retryInterval;
 @property (nonatomic, assign) BOOL redirect;    // Allow redirect, default is YES, invalidate for synchronous
 @property (nonatomic, assign) BOOL enableLog;   // Default is YES
-@property (nonatomic, assign) BOOL enableParse; // Default is YES, only for text
+@property (nonatomic, assign) BOOL enableParse; // Default is YES, only for text (JSON string will be parsed to NSDicionary)
 
 + (id)param;
 
