@@ -8,7 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "ULabel.h"
-#import "UNavigationBarButton.h"
+#import "UButton.h"
+
+@interface UNavigationBarButton : UButton
+
+// Back image
+- (void)setImageWithColor:(UIColor *)color;
+- (void)setHImageWithColor:(UIColor *)color;
+- (void)setSImageWithColor:(UIColor *)color;
+- (void)setDImageWithColor:(UIColor *)color;
+
+@end
 
 @interface UNavigationBarView : UIView
 
