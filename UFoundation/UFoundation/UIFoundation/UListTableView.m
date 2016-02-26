@@ -266,7 +266,7 @@
         
         // Tap
         _tapRecognizer = [[UITapGestureRecognizer alloc]init];
-        [_tapRecognizer addTarget:self action:@selector(tapAction:)];
+        [_tapRecognizer addTarget:self action:@selector(tapAction)];
         [self.contentView addGestureRecognizer:_tapRecognizer];
     }
     
@@ -442,7 +442,7 @@
     }
 }
 
-- (void)tapAction:(UIGestureRecognizer *)recognizer
+- (void)tapAction
 {
     if (self.cancelable && self.contentView.selected) {
         self.contentView.selected = NO;
