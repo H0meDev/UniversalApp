@@ -32,7 +32,7 @@ singletonInterface(UHTTPQueue);
 @property (nonatomic, assign) BOOL json;                // Default is YES, JSON format for POST or other methods
 @property (nonatomic, assign) BOOL cached;              // Default is NO, when cached, the request will load data from cached firstly
 @property (nonatomic, assign) BOOL enableLog;           // Default is YES
-@property (nonatomic, assign) BOOL enableParse;         // Default is YES, only for text
+@property (nonatomic, assign) BOOL enableParse;         // Default is YES, only for text (JSON string will be parsed to NSDicionary)
 
 + (id)param;
 

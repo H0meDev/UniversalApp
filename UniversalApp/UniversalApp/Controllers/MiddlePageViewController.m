@@ -58,7 +58,7 @@
 
 - (NSInteger)numberOfSectionsInListView:(UListTableView *)tableView
 {
-    return 10;
+    return 1000;
 }
 
 - (NSInteger)tableView:(UListTableView *)tableView numberOftemsInSection:(NSInteger)section
