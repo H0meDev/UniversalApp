@@ -158,7 +158,19 @@
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    self.backgroundMaskView.backgroundColor = _highlightedColor;
+    BOOL needsHighlighted = YES;
+    for (UIGestureRecognizer *recognizer in touch.gestureRecognizers) {
+        if (checkClass(recognizer, UIPanGestureRecognizer)) {
+            if (recognizer.state != UIGestureRecognizerStatePossible) {
+                needsHighlighted = NO;
+                break;
+            }
+        }
+    }
+    
+    if (needsHighlighted) {
+        self.backgroundMaskView.backgroundColor = _highlightedColor;
+    }
     
     return YES;
 }
@@ -206,17 +218,22 @@
 
 @interface UListTableViewCell ()
 {
-    __weak id _target;
-    SEL _action;
+    __weak id _tapTarget;
+    SEL _tapAction;
+    __weak id _panTarget;
+    SEL _panAction;
 }
 
+@property (nonatomic, strong, readonly) UIPanGestureRecognizer *panRecognizer;
+@property (nonatomic, strong, readonly) UITapGestureRecognizer *tapRecognizer;
 @property (nonatomic, strong) UListTableViewCellContentView *contentView;
 @property (nonatomic, strong) UIImageView *headerLineView;
 @property (nonatomic, strong) UIImageView *footerLineView;
 @property (nonatomic, strong) UIndexPath *path;
 @property (nonatomic, assign) BOOL cancelable;
 
-- (void)setTarget:(id)target action:(SEL)action;
+- (void)setTapTarget:(id)target action:(SEL)action;
+- (void)setPanTarget:(id)target action:(SEL)action;
 
 @end
 
@@ -241,6 +258,16 @@
         _style = style;
         
         [self cellDidLoad];
+        
+        // Pan
+        _panRecognizer = [[UIPanGestureRecognizer alloc]init];
+        [_panRecognizer addTarget:self action:@selector(panAction:)];
+        [self.contentView addGestureRecognizer:_panRecognizer];
+        
+        // Tap
+        _tapRecognizer = [[UITapGestureRecognizer alloc]init];
+        [_tapRecognizer addTarget:self action:@selector(tapAction:)];
+        [self.contentView addGestureRecognizer:_tapRecognizer];
     }
     
     return self;
@@ -338,10 +365,16 @@
     [self.contentView addSubview:view];
 }
 
-- (void)setTarget:(id)target action:(SEL)action
+- (void)setTapTarget:(id)target action:(SEL)action
 {
-    _target = target;
-    _action = action;
+    _tapTarget = target;
+    _tapAction = action;
+}
+
+- (void)setPanTarget:(id)target action:(SEL)action
+{
+    _panTarget = target;
+    _panAction = action;
 }
 
 #pragma mark - Properties
@@ -355,7 +388,7 @@
     UListTableViewCellContentView *contentView = [[UListTableViewCellContentView alloc]init];
     contentView.userInteractionEnabled = YES;
     contentView.backgroundColor = sysWhiteColor();
-    [contentView setTarget:self action:@selector(touchUpInsideAction)];
+    [contentView setTarget:self action:@selector(tapAction)];
     [super addSubview:contentView];
     _contentView = contentView;
     
@@ -402,7 +435,14 @@
 
 #pragma mark - Action
 
-- (void)touchUpInsideAction
+- (void)panAction:(UIGestureRecognizer *)recognizer
+{
+    if (_panTarget && _panAction) {
+        [_panTarget performWithName:NSStringFromSelector(_panAction) with:self];
+    }
+}
+
+- (void)tapAction:(UIGestureRecognizer *)recognizer
 {
     if (self.cancelable && self.contentView.selected) {
         self.contentView.selected = NO;
@@ -416,8 +456,8 @@
         [self cellDidDeselected];
     }
     
-    if (_target && _action) {
-        [_target performWithName:NSStringFromSelector(_action) with:self];
+    if (_tapTarget && _tapAction) {
+        [_tapTarget performWithName:NSStringFromSelector(_tapAction) with:self];
     }
 }
 
@@ -966,7 +1006,9 @@
     cell.path = path;
     cell.cancelable = self.cancelable;
     cell.contentView.selected = item.selected;
-    [cell setTarget:self action:@selector(cellTouchedUpAction:)];
+    [cell setPanTarget:self action:@selector(cellPanAction:)];
+    [cell setTapTarget:self action:@selector(cellTapAction:)];
+    [cell.panRecognizer requireGestureRecognizerToFail:self.scrollView.panGestureRecognizer];
     [self.contentView addSubview:cell];
     
     if (checkClass(cell, UListTableViewCell)) {
@@ -1152,7 +1194,12 @@
 
 #pragma mark - Action
 
-- (void)cellTouchedUpAction:(UListTableViewCell *)cell
+- (void)cellPanAction:(UListTableViewCell *)cell
+{
+    //
+}
+
+- (void)cellTapAction:(UListTableViewCell *)cell
 {
     NSArray *cells = [self currentVisibleCellsWith:_scrollView.contentOffset];
     
